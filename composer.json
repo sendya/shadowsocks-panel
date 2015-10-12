@@ -1,0 +1,19 @@
+{
+    "name": "kookxiang/ss-panel",
+    "description": "Shadowsocks server panel",
+    "authors": [
+        {
+            "name": "kookxiang",
+            "email": "r18@ikk.me"
+        }
+    ],
+    "require": {
+        "robmorgan/phinx": "^0.4.5"
+    },
+    "config": {
+        "vendor-dir": "Package"
+    },
+    "autoload": {
+        "psr-4": { "": "Library/" }
+    }
+}
