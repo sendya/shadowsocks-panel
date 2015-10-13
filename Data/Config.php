@@ -24,14 +24,14 @@ define('TPL_PATH', 'Resource/'.TEMPLATE_NAME.'/');
  * This key is used to encrypt password and other information.
  * Don't touch it after application install finished.
  */
-define('ENCRYPT_KEY', 'úzØûÁ`·ÊæuÙĞ?');
+define('ENCRYPT_KEY', 'ÃºzÃ˜Ã»Ã`Â·ÃŠÃ¦uÃ™Ã?');
 
 /**
  * Cookie Key:
  * Password which used to encrypt cookie info.
  * If this key is leaked, generate it again and all the users will forced logout.
  */
-define('COOKIE_KEY', 'ÏS?XñÕD?Àó?');
+define('COOKIE_KEY', 'ÂÃS?XÃ±Ã•D?Ã€Ã³?');
 
 /**
  * Rewrite setting:
@@ -68,4 +68,4 @@ Core\Request::autoDetectBaseURL();
 /**
  * Database Connection:
  */
-Core\Database::register('mysql:dbname=ss_panel;host=localhost;charset=UTF8', 'root', '513030@loacg.com');
+Core\Database::register('mysql:dbname=ss_panel;host=localhost;charset=UTF8', 'root', 'root');
