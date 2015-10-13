@@ -1,7 +1,7 @@
 <?php
 /**
- * KK Forum
- * A simple bulletin board system
+ * KK SS-Panel
+ * A simple Shadowsocks Panel
  * Author: kookxiang <r18@ikk.me>
  */
 
@@ -13,7 +13,11 @@ if(!defined('ROOT_PATH'))
  * Site Name
  */
 define('SITE_NAME', 'Suki.im');
-
+/**
+ * Template Name
+ */
+define('TEMPLATE_NAME', 'Default');
+define('TPL_PATH', 'Resource/'.TEMPLATE_NAME.'/');
 
 /**
  * Encrypt Key:

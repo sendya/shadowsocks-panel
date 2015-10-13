@@ -44,7 +44,7 @@ class User {
             echo json_encode($result);
             exit();
         } else {
-            include Template::load('panel2/login');
+            include Template::load('/panel/login');
         }
     }
     

@@ -1,0 +1,30 @@
+﻿<div class="desktop-layout" data-options="dxLayout : { name: 'desktop', platform: 'generic' } " >
+    <div class="page">
+        <div class="wrapper">
+            <header>
+                <div class="logo" />
+            </header>
+        </div>
+        <div class="main-menu">
+            <div class="wrapper">
+                <nav id="navBar" data-bind="dxNavBar: {}" data-options="dxCommandContainer : { id: 'global-navigation', contentCssPosition: 'static' }" ></nav>
+            </div>
+        </div>
+        <div class="toolbar">
+            <div class="wrapper" data-options="dxContentPlaceholder : { name: 'header', contentCssPosition: 'static' } " >
+                <div data-bind="dxToolbar: { items: [{ text: title, location: 'left' }]}" data-options="dxCommandContainer : { id: 'desktop-toolbar' }">
+                </div>
+            </div>
+        </div>
+        <div class="wrapper">
+            <div class="content-wrapper">
+                <div class="content" data-options="dxContentPlaceholder : { name: 'content', contentCssPosition: 'static' } " ></div>
+            </div>
+
+            <div class="footer-gap"></div>
+        </div>
+        <footer>
+            <div class="wrapper copyright">2013&nbsp;&copy;&nbsp;Copyright Text</div>
+        </footer>
+    </div>
+</div>

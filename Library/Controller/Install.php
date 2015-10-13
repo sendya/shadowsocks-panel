@@ -3,15 +3,13 @@
 namespace Controller;
 
 use Core\Error;
-use Core\Template;
-use Helper\Encrypt;
 use Helper\Key;
 
 class Install {
 //GetConfig
     
     public function index() {
-        
+        // Default router
     }
     
     public function initSalt() {

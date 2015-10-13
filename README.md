@@ -1,10 +1,14 @@
-# shadowsocks-panel
-Shadowsocks Panel new
+Shadowsocks Panel
+===================
 
+### Nginx config
 
-Based KK-Framework
+    if (!-e $request_filename) {
+        rewrite (.*) /index.php last;
+    }
+
+Based KK-Framework :
 https://github.com/kookxiang/KK-Framework
 
-
-
-
+SS Python Manyuser.
+https://github.com/mengskysama/shadowsocks/tree/manyuser
