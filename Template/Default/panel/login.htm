@@ -169,7 +169,7 @@ jQuery(document).ready(function($) {
 				</div>
 				<!-- Add class "fade-in-effect" for login form effect -->
 				<form method="post" role="form" id="login" class="login-form fade-in-effect" autocomplete="off">
-					
+
 					<div class="login-header">
 						<a href="/" class="logo">
 							<img src="{TPL_PATH}images/logo@2x.png" alt="" width="80" />
@@ -211,7 +211,7 @@ jQuery(document).ready(function($) {
 						</a>
 						<p>注册，然后变成一只猫!</p>
 					</div>
-	
+
 					<div class="form-group">
 						<input type="text" class="form-control input-dark" name="r_email" id="r_email" autocomplete="off" placeholder="电子邮件" />
 					</div>
@@ -234,14 +234,14 @@ jQuery(document).ready(function($) {
 						</button>
 					</div>
 					<div class="form-group">
-						<button type="button" class="btn btn-dark  btn-block text-left" onclick="location.href = 'usr/login#login'">
+						<button type="button" class="btn btn-dark  btn-block text-left login-button" onclick="location.href = 'user/login#login'">
 							<i class="fa-lock"></i>
 							返 回 登 陆
 						</button>
 					</div>
 				</form>
 				<div class="external-login">
-					<a href="user/login#regiser"  class="facebook">
+					<a href="user/login#regiser"  class="facebook register-button">
 						<i class="fa-user"></i>
 						注册账号
 					</a>
@@ -251,11 +251,23 @@ jQuery(document).ready(function($) {
 	</div>
 	<script>
 		jQuery(document).ready(function($) {
-			var localhash = location.hash;
-			if (localhash == '#register') {
+
+			$(".register-button").click(function(){
 				$("#login").hide(); $(".external-login").hide(); $("#register").show();
-			} else {
+			});
+			$(".login-button").click(function(){
 				$("#login").show(); $(".external-login").show(); $("#register").hide();
+			});
+
+			var localhash = location.hash;
+			console.log(location.href.substring(0, location.href.lastIndexOf('#')));
+			if (localhash == '#register') {
+				console.log("in register");
+				$(".register-button").click();
+
+			} else {
+				console.log("in login");
+				$(".login-button").click();
 			}
 		});
 	</script>

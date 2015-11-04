@@ -68,4 +68,4 @@ Core\Request::autoDetectBaseURL();
 /**
  * Database Connection:
  */
-Core\Database::register('mysql:dbname=ss_panel;host=localhost;charset=UTF8', 'root', 'root');
+Core\Database::register('mysql:dbname=sspanel;host=localhost;charset=UTF8', 'root', 'root');

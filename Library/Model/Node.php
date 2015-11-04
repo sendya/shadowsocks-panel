@@ -1,9 +1,12 @@
 <?php
 /**
- * Shadowsocks Node
- * Author: Sendya
+ * SS-Panel
+ * A simple bulletin board system
+ * Author: Sendya <18x@mloli.com>
  */
+
 namespace Model;
+
 use Core\Database;
 
 class Node {
