@@ -1,6 +1,10 @@
 Shadowsocks Panel
 ===================
 
+### 2015.11.05 
+Add Invite model. 
+
+
 ### Nginx config
 
     if (!-e $request_filename) {

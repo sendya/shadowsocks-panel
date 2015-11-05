@@ -110,11 +110,20 @@ class User
             Database::commit();
         }
     }
+
     
+    public function updateUserName() {
+        
+    }
+
+
     /**
      * Get password
      */
     public function getPassword() {
         return $this->password;
     }
+
+
+
 }
