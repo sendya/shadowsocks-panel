@@ -122,9 +122,28 @@ class User
         }
     }
 
-    
-    public function updateNickName() {
-        
+    /**
+     * update User info
+     *
+     */
+    public function updateUser() {
+
+        $statement = null;
+        $statement = Database::prepare("UPDATE member SET email=:email, `password`=:pwd, nickname=:nickname,
+            `flow_up`=:flow_up, `flow_down`=:flow_down, transfer=:transfer, plan=:plan, `enable`=:enable, invite=:invite, regDateLine=:regDateLine WHERE uid=:userId");
+        $statement->bindValue(':email', $this->email, \PDO::PARAM_STR);
+        $statement->bindValue(':pwd', $this->password, \PDO::PARAM_STR);
+        $statement->bindValue(':nickname', $this->nickname, \PDO::PARAM_STR);
+        $statement->bindValue(':flow_up', $this->flow_up, \PDO::PARAM_INT);
+        $statement->bindValue(':flow_down', $this->flow_down, \PDO::PARAM_INT);
+        $statement->bindValue(':transfer', $this->transfer, \PDO::PARAM_INT);
+        $statement->bindValue(':plan', $this->plan, \PDO::PARAM_STR);
+        $statement->bindValue(':enable', $this->enable, \PDO::PARAM_INT);
+        $statement->bindValue(':invite', $this->invite, \PDO::PARAM_INT);
+        $statement->bindValue(':regDateLine', $this->regDateLine, \PDO::PARAM_INT);
+        $statement->bindValue(':userId', $this->uid, \PDO::PARAM_INT);
+        $statement->execute();
+        Database::commit();
     }
 
 
