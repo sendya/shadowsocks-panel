@@ -14,7 +14,6 @@ class Node {
 	public $name; // 节点名称
 	public $type; // 类型
 	public $server; // Server地址
-	public $port; //端口
 	public $method; // 加密方式
 	public $info; // 节点信息备注
 	public $status; // 状态

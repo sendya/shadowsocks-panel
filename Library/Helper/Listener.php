@@ -11,6 +11,7 @@ use Model\User;
 class Listener {
     
     public static function checkLogin() {
+        global $user;
         $cookie = $_COOKIE['auth'];
         if(!empty($cookie)) {
             $auth = new User();

@@ -19,6 +19,7 @@ class User
     public $nickname;//昵称
     private $password = 'default';//密码
     public $sspwd;// ss连接密码
+    public $port;// ss端口
     public $flow_up = 0;//上传流量
     public $flow_down = 0;//下载流量
     public $transfer;//总流量
@@ -45,7 +46,7 @@ class User
     {
         $cookie = Encrypt::decode(base64_decode($_COOKIE['auth']), COOKIE_KEY);
         if($cookie) {
-            list($this->uid, $this->email, $this->nickname) = explode('\t', $cookie);
+            list($this->uid, $this->email, $this->nickname) = explode("\t", $cookie);
         }
     }
 
@@ -87,11 +88,12 @@ class User
         if (!$inTransaction) {
             Database::beginTransaction();
         }
-        $statement = Database::prepare("INSERT INTO member SET email=:email, `password`=:pwd, sspwd=:sspwd, nickname=:nickname,
+        $statement = Database::prepare("INSERT INTO member SET email=:email, `password`=:pwd, sspwd=:sspwd, `port`=:port, nickname=:nickname,
             `flow_up`=:flow_up, `flow_down`=:flow_down, transfer=:transfer, plan=:plan, `enable`=:enable, invite=:invite, regDateLine=:regDateLine");
         $statement->bindValue(':email', $this->email, \PDO::PARAM_STR);
         $statement->bindValue(':pwd', $this->password, \PDO::PARAM_STR);
         $statement->bindValue(':sspwd', $this->sspwd, \PDO::PARAM_STR);
+        $statement->bindValue(':port', $this->port, \PDO::PARAM_INT);
         $statement->bindValue(':nickname', $this->nickname, \PDO::PARAM_STR);
         $statement->bindValue(':flow_up', $this->flow_up, \PDO::PARAM_INT);
         $statement->bindValue(':flow_down', $this->flow_down, \PDO::PARAM_INT);
@@ -157,11 +159,12 @@ class User
         if (!$inTransaction) {
             Database::beginTransaction();
         }
-        $statement = Database::prepare("UPDATE member SET email=:email, `password`=:pwd, sspwd=:sspwd, nickname=:nickname,
+        $statement = Database::prepare("UPDATE member SET email=:email, `password`=:pwd, sspwd=:sspwd, `port`=:port, nickname=:nickname,
             `flow_up`=:flow_up, `flow_down`=:flow_down, transfer=:transfer, plan=:plan, `enable`=:enable, invite=:invite, regDateLine=:regDateLine WHERE uid=:userId");
         $statement->bindValue(':email', $this->email, \PDO::PARAM_STR);
         $statement->bindValue(':pwd', $this->password, \PDO::PARAM_STR);
         $statement->bindValue(':sspwd', $this->sspwd, \PDO::PARAM_STR);
+        $statement->bindValue(':port', $this->port, \PDO::PARAM_INT);
         $statement->bindValue(':nickname', $this->nickname, \PDO::PARAM_STR);
         $statement->bindValue(':flow_up', $this->flow_up, \PDO::PARAM_INT);
         $statement->bindValue(':flow_down', $this->flow_down, \PDO::PARAM_INT);

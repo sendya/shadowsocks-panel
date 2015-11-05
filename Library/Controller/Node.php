@@ -18,7 +18,7 @@ use Model\User;
 class Node
 {
     public function Index() {
-        throw new Error("无知的人类啊", 555);
+        throw new Error("鏃犵煡鐨勪汉绫诲晩", 555);
     }
 
     public function QRCode() {
@@ -48,7 +48,7 @@ class Node
         $nodeList = Nodem::GetNodeArray();
         $info = "";
         foreach($nodeList as $node) {
-            $info.= NodeUtil::NodeJson($node->server, $node->port, $user->sspwd, $node->method);
+            $info.= NodeUtil::NodeJson($node->server, $node->port, $user->sspwd, $node->method) . ",";
         }
         include Template::load('/node/JsonAll');
         exit();

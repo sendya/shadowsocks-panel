@@ -1,30 +1,200 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+<import template="/panel/_head" />
+<php>
+    $gravatar = \Helper\Util::GetGravatar($user->email, 128);
+</php>
+<body class="page-body">
+<div class="modal fade" id="modal-1" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title">提示</h4>
+            </div>
+            <div class="modal-body"></div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-white" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-info" data-dismiss="modal">确定</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="page-loading-overlay">
+    <div class="loader-2"></div>
+</div>
+<div class="settings-pane">
+    <a href="javascript:;" data-toggle="settings-pane" data-animate="true">&times;</a>
+    <div class="settings-pane-inner">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="user-info">
+                    <div class="user-image">
+                        <a href="/member">
+                            <img src="{$gravatar}" class="img-responsive img-circle" />
+                        </a>
+                    </div>
+                    <div class="user-details">
+                        <h3>
+                            <a href="/member">{$user->nickname}</a>
+                            <!-- Available statuses: is-online, is-idle, is-busy and is-offline -->
+                            <span class="user-status is-online"></span>
+                        </h3>
+                        <p class="user-title">加入时间：{$user->regDateLine}</p>
+                        <div class="user-links">
+                            <a href="/user/info" class="btn btn-primary">个人资料</a>
+                            <a href="/user/logout" class="btn btn-success">退出</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-8 link-blocks-env">
+                <div class="links-block left-sep">
+                    <h4>
+                        <a href="javascript:;">
+                            <span>帮助</span>
+                        </a>
+                    </h4>
+                    <ul class="list-unstyled">
+                        <li>
+                            <a href="javascript:;">
+                                <i class="fa-angle-right"></i>
+                                支持中心
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/member/feedback">
+                                <i class="fa-angle-right"></i>
+                                提交问题
+                            </a>
+                        </li>
+                        <li>
+                            <a href="javascript:;">
+                                <i class="fa-angle-right"></i>
+                                使用协议
+                            </a>
+                        </li>
+                        <li>
+                            <a href="javascript:;">
+                                <i class="fa-angle-right"></i>
+                                服务条款
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="page-container">
+    <div class="sidebar-menu toggle-others fixed">
+        <div class="sidebar-menu-inner">
+            <header class="logo-env">
+                <!-- logo -->
+                <div class="logo">
+                    <a href="index" class="logo-expanded">
+                        <img src="{TPL_PATH}images/logo@2x.png" width="80" alt="" />
+                    </a>
+                    <a href="index.php" class="logo-collapsed">
+                        <img src="{TPL_PATH}images/logo-collapsed@2x.png" width="40" alt="" />
+                    </a>
+                </div>
+                <div class="mobile-menu-toggle visible-xs">
+                    <a href="javascript:;" data-toggle="user-info-menu">
+                        <i class="fa-bell-o"></i>
+                        <span class="badge badge-success">2</span>
+                    </a>
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="{description}" />
-    <meta name="author" content="{TPL_Author}" />
-    <base href="{BASE_URL}"/>
-    <title>{SITE_NAME} - Login</title>
+                    <a href="javascript:;" data-toggle="mobile-menu">
+                        <i class="fa-bars"></i>
+                    </a>
+                </div>
+                <div class="settings-icon">
+                    <a href="javascript:;" data-toggle="settings-pane" data-animate="true">
+                        <i class="linecons-cog"></i>
+                    </a>
+                </div>
+            </header>
+            <ul id="main-menu" class="main-menu">
+                <?php $self = $_SERVER['PHP_SELF'];?>
+                <li class="opened action">
+                <a href="/my">
+                    <i class="linecons-cog"></i>
+                    <span class="title">仪表盘</span>
+                </a>
+                </li>
+                <li class="">
+                <a href="/my/node">
+                    <i class="linecons-params "></i>
+                    <span class="title">节点列表</span>
+                    <span class="label label-success pull-right">1/6</span>
+                </a>
+                </li>
+                <li class="">
+                <a href="/my/info">
+                    <i class="linecons-user "></i>
+                    <span class="title">个人资料</span>
+                </a>
+                </li>
+                <li class="">
+                <a href="javascript:;">
+                    <i class="linecons-user "></i>
+                    <span class="title">资料修改</span>
+                </a>
+                <ul>
+                    <li class="">
+                    <a href="/my/passwd">
+                        <span class="title">修改网站登陆密码</span>
+                    </a>
+                    </li>
+                    <li class="">
+                    <a href="/my/sspwd">
+                        <span class="title">修改SS连接密码</span>
+                    </a>
+                    </li>
+                    <li class="">
+                    <a href="/my/nickname">
+                        <span class="title">修改用户昵称</span>
+                    </a>
+                    </li>
+                    <li class="">
+                    <a href="/my/plan_update">
+                        <span class="title">升级账户</span>
+                    </a>
+                    </li>
+                </ul>
+                </li>
+                <li class="">
+                <a href="/my/invite">
+                    <i class="linecons-heart "></i>
+                    <span class="title">邀请好友</span>
+                </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <i class="linecons-paper-plane"></i>
+                        <span class="title">SS服务</span>
+                    </a>
+                    <ul>
+                        <li>
+                            <a href="//gravatar.ifdream.net/" target="_blank">
+                                <i class="entypo-flow-line"></i>
+                                <span class="title">修改头像</span>
+                            </a>
+                        </li>
+                        <li><a href="/my/tos">
+                            <i class="entypo-flow-line"></i>
+                            <span class="title">关于{$SITE_NAME}</span>
+                        </a>
+                        </li>
+                    </ul>
+                </li>
+                <!-- php if -->
+                <li>
+                    <a href="/cp">
+                        <i class="linecons-cog"></i>
+                        <span class="title">管理员后台</span>
+                    </a>
+                </li>
 
-    <link rel="stylesheet" href="//cdn.css.net/fonts/css?family=Arimo:400,700,400italic">
-    <link rel="stylesheet" href="{TPL_PATH}css/fonts/linecons/css/linecons.css">
-    <link rel="stylesheet" href="{TPL_PATH}css/fonts/fontawesome/css/font-awesome.min.css">
-    <link rel="stylesheet" href="{TPL_PATH}css/bootstrap.css">
-    <link rel="stylesheet" href="{TPL_PATH}css/xenon-core.css">
-    <link rel="stylesheet" href="{TPL_PATH}css/xenon-forms.css">
-    <link rel="stylesheet" href="{TPL_PATH}css/xenon-components.css">
-    <link rel="stylesheet" href="{TPL_PATH}css/xenon-skins.css">
-    <link rel="stylesheet" href="{TPL_PATH}css/custom.css">
-
-    <script src="{TPL_PATH}js/jquery-1.11.1.min.js"></script>
-
-    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!--[if lt IE 9]>
-    <script src="{TPL_PATH}js/html5shiv.min.js"></script>
-    <script src="{TPL_PATH}js/respond.min.js"></script>
-    <![endif]-->
-</head>
+            </ul>
+        </div>
+    </div>

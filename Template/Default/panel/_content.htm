@@ -1,0 +1,95 @@
+<div class="main-content">
+    <nav class="navbar user-info-navbar" role="navigation">
+        <ul class="user-info-menu left-links list-inline list-unstyled">
+
+            <li class="hidden-sm hidden-xs">
+                <a href="javascript:;" data-toggle="sidebar">
+                    <i class="fa-bars"></i>
+                </a>
+            </li>
+
+            <li class="dropdown hover-line">
+                <a href="javascript:;" data-toggle="dropdown">
+                    <i class="fa-bell-o"></i>
+                    <span class="badge badge-purple"></span>
+                </a>
+
+                <ul class="dropdown-menu notifications">
+                    <li class="top">
+                        <p class="small">
+                            <a href="javascript:;" class="pull-right">全部标记已读</a>
+                            你有 <strong>0</strong> 条新的消息.
+                        </p>
+                    </li>
+
+                    <li>
+                        <ul class="dropdown-menu-list list-unstyled ps-scrollbar">
+                            <li class="active notification-success">
+                                <a href="javascript:;">
+                                    <i class="fa-user"></i>
+											<span class="line">
+												<strong>即日实行收费服务制</strong>
+											</span>
+                                    <span class="line small time">09/02 PM08:00</span>
+                                </a>
+                            </li>
+
+                            <li class="active notification-secondary">
+                                <a href="javascript:;">
+                                    <i class="fa-lock"></i>
+                                    <span class="line"><strong>Suki-S6 停止公告</strong></span>
+                                    <span class="line small time">09/06 AM10:20</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="external">
+                        <a href="javascript:;">
+                            <span>查看所有消息</span>
+                            <i class="fa-link-ext"></i>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+        <ul class="user-info-menu right-links list-inline list-unstyled">
+
+            <li class="dropdown user-profile">
+                <a href="#" data-toggle="dropdown">
+                    <img src="{$gravatar}" alt="user-image" class="img-circle img-inline userpic-32" width="28" />
+							<span>
+								{$user->nickname}
+                                <i class="fa-angle-down"></i>
+							</span>
+                </a>
+
+                <ul class="dropdown-menu user-profile-menu list-unstyled">
+                    <li>
+                        <a href="/my/info">
+                            <i class="fa-user"></i>
+                            个人资料
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/my/info">
+                            <i class="fa-wrench"></i>
+                            设置
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/my/help">
+                            <i class="fa-info"></i>
+                            帮助
+                        </a>
+                    </li>
+                    <li class="last">
+                        <a href="/action/logout">
+                            <i class="fa-lock"></i>
+                            登出
+                        </a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </nav>
+    <script type="text/javascript">function showToastr(messages,waitime,timeOut){if(timeOut==null||timeOut==0||timeOut=="")timeOut="5000";setTimeout(function(){var opts={"closeButton":true,"debug":false,"positionClass":"toast-top-right toast-default","toastClass":"black","onclick":null,"showDuration":"100","hideDuration":"1000","timeOut":timeOut,"extendedTimeOut":"1000","showEasing":"swing","hideEasing":"linear","showMethod":"fadeIn","hideMethod":"fadeOut"};toastr.info(messages,"系统提示",opts);},waitime);}</script>

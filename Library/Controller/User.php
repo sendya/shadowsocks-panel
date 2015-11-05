@@ -17,7 +17,7 @@ class User
 
     public function login()
     {
-
+        $controller = "Login";
         /**
          * 1. 判断用户是否已经登陆,
          *      若已经登陆,则直接跳转到控制面板(仪表盘)中.
@@ -61,11 +61,11 @@ class User
     public function register()
     {
         $result = array('error' => 1, 'message' => '注册失败');
-        $email = strtolower($_GET['r_email']);
-        $userName = $_GET['r_user_name'];
-        $passwd = $_GET['r_passwd'];
-        $repasswd = $_GET['r_passwd2'];
-        $inviteCode = $_GET['r_invite'];
+        $email = strtolower($_POST['r_email']);
+        $userName = $_POST['r_user_name'];
+        $passwd = $_POST['r_passwd'];
+        $repasswd = $_POST['r_passwd2'];
+        $inviteCode = $_POST['r_invite'];
         $invite = Invite::GetInviteByInvite($inviteCode); //校验 invite 是否可用
         if ($invite->status != 0) {
             $result['message'] = '邀请码不可用';
@@ -87,7 +87,7 @@ class User
             $user->insertToDB();
             $user->savePassword($passwd);
 
-            if (0 != $result['uid'] && null != $result['uid']) {
+            if (null != $user->uid && 0 != $user->uid) {
                 $result['error'] = 0;
                 $result['message'] = '注册成功';
             }

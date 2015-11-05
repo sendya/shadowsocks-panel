@@ -28,14 +28,14 @@ define('TRANSFER', 10);// Default flow 10GB
  * This key is used to encrypt password and other information.
  * Don't touch it after application install finished.
  */
-define('ENCRYPT_KEY', 'úzØûÁ`·ÊæuÙÐ?');
+define('ENCRYPT_KEY', 'sendya');
 
 /**
  * Cookie Key:
  * Password which used to encrypt cookie info.
  * If this key is leaked, generate it again and all the users will forced logout.
  */
-define('COOKIE_KEY', 'ÏS?XñÕD?Àó?');
+define('COOKIE_KEY', 'sendya');
 
 /**
  * Rewrite setting:
