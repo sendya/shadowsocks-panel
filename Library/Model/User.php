@@ -16,14 +16,14 @@ class User
     public $uid; //user id , pk
     public $email;//邮件,用于登陆  pk
     public $nickname;//昵称
-    private $password;//密码
-    public $flow_up;//上传流量
-    public $flow_down;//下载流量
+    private $password = 'default';//密码
+    public $flow_up = 0;//上传流量
+    public $flow_down = 0;//下载流量
     public $transfer;//总流量
-    public $plan;//账户类型
-    public $enable;//账户是否启用SS  0不启用  1启用
-    public $invite;//注册invite,为空则不是邀请的.
-    public $regDateLine;//注册时间
+    public $plan = 'A';//账户类型
+    public $enable = 1;//账户是否启用SS  0不启用  1启用
+    public $invite = '';//注册invite,为空则不是邀请的.
+    public $regDateLine = 0;//注册时间
 
     /**
      * Get a user by email

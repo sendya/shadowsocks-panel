@@ -5,6 +5,7 @@ use Core\Error;
 use Core\Template;
 use Helper\Encrypt;
 use Helper\Listener;
+use Model\User as Userm;
 
 /**
  * User Controller
@@ -27,7 +28,8 @@ class User {
             $email = htmlspecialchars($_REQUEST['email']);
             $passwd = htmlspecialchars($_REQUEST['passwd']);
             $remember_me = htmlspecialchars($_REQUEST['remember_me']);
-            $user = \Model\User::GetUserByEmail('18x@mloli.com');
+            $user = Userm::GetUserByEmail($email);
+            $result['passwd2'] = $user->getPassword();
             if($user) {
                 if($user->verifyPassword($passwd)) {
                     $result['error'] = 0;
@@ -40,6 +42,7 @@ class User {
                     setcookie("token",base64_encode($token), time()+$ext, "/");
                 }
             }
+
             echo json_encode($result);
             exit();
         } else {
@@ -56,18 +59,43 @@ class User {
     public function register() {
       $result = array('error'=> 1, 'message'=> '注册失败');
       $email = strtolower($_GET['r_email']);
-      $userName = $_POST['r_user_name'];
-      $passwd = $_POST['r_passwd'];
-      $repasswd = $_POST['r_passwd2'];
-      $code = $_POST['r_invite'];
+      $userName = $_GET['r_user_name'];
+      $passwd = $_GET['r_passwd'];
+      $repasswd = $_GET['r_passwd2'];
+      $code = $_GET['r_invite'];
 
       if($chkEmail = \Helper\Util::MailFormatCheck($email)) {
         $result['message'] = $chkEmail;
-      } else {
-        
+      } else if($code != '') {
+          $user = new Userm();
+          $user->email = $email;
+          $user->nickname = $userName;
+          $user->transfer = 1024*1024*1024*100; // 1GB * 100
+          $user->invite = '';
+          $user->regDateLine = time();
+          $result['uid'] = $user->insertToDB();
+          var_dump($user);
+          $user->savePassword($passwd);
+
+          if($result['uid'] != 0 && $result['uid'] != null) {
+              $result['message'] = '注册成功';
+              $result['error'] = 0;
+          }
       }
 
       echo json_encode($result);
       exit();
+    }
+
+    public function nickname() {
+        $result = array('error'=> 1, 'message'=> '修改失败');
+        $uid = trim($_POST['uid']);
+        $uid_cookie = Encrypt::decode(base64_decode($_COOKIE['token']), COOKIE_KEY);
+        $nickname = trim($_POST['nickname']);
+        if('' != $nickname) {
+            $user = Userm::GetUserByUserId();
+        }
+        echo $uid_cookie;
+        exit();
     }
 }
