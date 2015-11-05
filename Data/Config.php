@@ -20,6 +20,10 @@ define('TEMPLATE_NAME', 'Default');
 define('TPL_PATH', 'Resource/'.TEMPLATE_NAME.'/');
 
 /**
+ * Flow default value
+ */
+define('TRANSFER', 10);// Default flow 10GB
+/**
  * Encrypt Key:
  * This key is used to encrypt password and other information.
  * Don't touch it after application install finished.

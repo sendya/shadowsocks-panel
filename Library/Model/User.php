@@ -17,6 +17,7 @@ class User
     public $email;//邮件,用于登陆  pk
     public $nickname;//昵称
     private $password = 'default';//密码
+    public $sspwd;// ss连接密码
     public $flow_up = 0;//上传流量
     public $flow_down = 0;//下载流量
     public $transfer;//总流量
@@ -24,6 +25,28 @@ class User
     public $enable = 1;//账户是否启用SS  0不启用  1启用
     public $invite = '';//注册invite,为空则不是邀请的.
     public $regDateLine = 0;//注册时间
+
+    public static $instance;
+
+    /**
+     * Get current user object
+     * @return User
+     */
+    public static function getInstance()
+    {
+        if (!self::$instance) {
+            self::$instance = new self();
+        }
+        return self::$instance;
+    }
+
+    public function __construct()
+    {
+        $cookie = Encrypt::decode(base64_decode($_COOKIE['auth']), COOKIE_KEY);
+        if($cookie) {
+            list($this->uid, $this->email, $this->nickname) = explode('\t', $cookie);
+        }
+    }
 
     /**
      * Get a user by email
@@ -63,10 +86,11 @@ class User
         if (!$inTransaction) {
             Database::beginTransaction();
         }
-        $statement = Database::prepare("INSERT INTO member SET email=:email, `password`=:pwd, nickname=:nickname,
+        $statement = Database::prepare("INSERT INTO member SET email=:email, `password`=:pwd, sspwd=:sspwd, nickname=:nickname,
             `flow_up`=:flow_up, `flow_down`=:flow_down, transfer=:transfer, plan=:plan, `enable`=:enable, invite=:invite, regDateLine=:regDateLine");
         $statement->bindValue(':email', $this->email, \PDO::PARAM_STR);
         $statement->bindValue(':pwd', $this->password, \PDO::PARAM_STR);
+        $statement->bindValue(':sspwd', $this->sspwd, \PDO::PARAM_STR);
         $statement->bindValue(':nickname', $this->nickname, \PDO::PARAM_STR);
         $statement->bindValue(':flow_up', $this->flow_up, \PDO::PARAM_INT);
         $statement->bindValue(':flow_down', $this->flow_down, \PDO::PARAM_INT);
@@ -128,11 +152,15 @@ class User
      */
     public function updateUser() {
 
-        $statement = null;
-        $statement = Database::prepare("UPDATE member SET email=:email, `password`=:pwd, nickname=:nickname,
+        $inTransaction = Database::inTransaction();
+        if (!$inTransaction) {
+            Database::beginTransaction();
+        }
+        $statement = Database::prepare("UPDATE member SET email=:email, `password`=:pwd, sspwd=:sspwd, nickname=:nickname,
             `flow_up`=:flow_up, `flow_down`=:flow_down, transfer=:transfer, plan=:plan, `enable`=:enable, invite=:invite, regDateLine=:regDateLine WHERE uid=:userId");
         $statement->bindValue(':email', $this->email, \PDO::PARAM_STR);
         $statement->bindValue(':pwd', $this->password, \PDO::PARAM_STR);
+        $statement->bindValue(':sspwd', $this->sspwd, \PDO::PARAM_STR);
         $statement->bindValue(':nickname', $this->nickname, \PDO::PARAM_STR);
         $statement->bindValue(':flow_up', $this->flow_up, \PDO::PARAM_INT);
         $statement->bindValue(':flow_down', $this->flow_down, \PDO::PARAM_INT);
@@ -143,7 +171,9 @@ class User
         $statement->bindValue(':regDateLine', $this->regDateLine, \PDO::PARAM_INT);
         $statement->bindValue(':userId', $this->uid, \PDO::PARAM_INT);
         $statement->execute();
-        Database::commit();
+        if (!$inTransaction) {
+            Database::commit();
+        }
     }
 
 

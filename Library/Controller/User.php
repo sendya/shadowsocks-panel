@@ -37,11 +37,11 @@ class User
                     $result['error'] = 0;
                     $result['message'] = '登陆成功,即将跳转到 &gt;仪表盘';
 
-                    $token = $user->uid . "|" . $passwd;
+                    $token = $user->uid . "\t" . $user->email . "\t" . $user->nickname;
 
                     $token = Encrypt::encode($token, COOKIE_KEY);
                     $remember_me == 'week' ? $ext = 3600 * 24 * 7 : $ext = 3600;
-                    setcookie("token", base64_encode($token), time() + $ext, "/");
+                    setcookie("auth", base64_encode($token), time() + $ext, "/");
                 }
             }
 
@@ -54,7 +54,7 @@ class User
 
     public function logout()
     {
-        setcookie("token", '', time() - 3600, "/");
+        setcookie("auth", '', time() - 3600, "/");
         header("Location:/");
     }
 
@@ -82,7 +82,7 @@ class User
             $user = new Userm();
             $user->email = $email;
             $user->nickname = $userName;
-            $user->transfer = 1024 * 1024 * 1024 * 100; // 1GB * 100
+            $user->transfer = Util::GetGB() * TRANSFER; // 流量大小
             $user->invite = $inviteCode;
             $user->regDateLine = time();
             $user->insertToDB();
@@ -102,12 +102,35 @@ class User
     {
         $result = array('error' => 1, 'message' => '修改失败');
         $uid = trim($_POST['uid']);
-        $uid_cookie = Encrypt::decode(base64_decode($_COOKIE['token']), COOKIE_KEY);
+        $user_cookie = explode('\t', Encrypt::decode(base64_decode($_COOKIE['auth']), COOKIE_KEY));
         $nickname = trim($_POST['nickname']);
-        if ('' != $nickname) {
-            $user = Userm::GetUserByUserId();
+
+        if ('' != $nickname && $uid == $user_cookie[0] && $nickname == $user_cookie[2]) {
+            $user = Userm::GetUserByUserId($uid);
+            $user->nickname = $nickname;
+            $user->updateUser();
+            $result = array('error' => 0, 'message' => '修改成功');
         }
-        echo $uid_cookie;
+
+        echo json_encode($result);
+        exit();
+    }
+
+    public function ChangeSSPwd()
+    {
+        $result = array('error' => 1, 'message' => '修改失败');
+        $uid = trim($_GET['uid']);
+        $user_cookie = explode('\t', Encrypt::decode(base64_decode($_COOKIE['auth']), COOKIE_KEY));
+        $sspwd = trim(($_GET['sspwd']));
+        if ('' == $sspwd || null == $sspwd) $sspwd = Util::GetRandomPwd();
+        if ($uid == $user_cookie[0]) {
+            $user = Userm::GetUserByUserId($uid);
+            $user->sspwd = $sspwd;
+            $user->updateUser();
+            $result = array('error' => 1, 'message' => '修改SS连接密码成功');
+        }
+
+        echo json_encode($result);
         exit();
     }
 }
