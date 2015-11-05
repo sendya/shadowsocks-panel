@@ -7,6 +7,7 @@
 namespace Model;
 
 use Core\Database;
+use Helper\Encrypt;
 
 class User
 {
@@ -184,6 +185,14 @@ class User
         return $this->password;
     }
 
+
+    public static function getSSPwd($userId) {
+        $statement = Database::prepare("SELECT * FROM member WHERE uid=?");
+        $statement->bindValue(1, $userId, \PDO::PARAM_INT);
+        $statement->execute();
+        $statement->setFetchMode(\PDO::FETCH_CLASS, '\\Model\\User');
+        return $statement->fetch(\PDO::FETCH_CLASS);
+    }
 
 
 }

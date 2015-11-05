@@ -11,15 +11,16 @@ use Core\Error;
 class Listener {
     
     public static function checkLogin() {
-        $token = $_COOKIE['token'];
+        global $user, $uid;
+        $token = $_COOKIE['auth'];
         if(!empty($token)) {
             $token = Encrypt::decode(base64_decode($token), COOKIE_KEY); // Decode
-            list($uid, $password) = explode("|", $token);
-            if(!isset($uid) && !isset($password)) {
+            list($uid, $email, $nickname) = explode("\t", $token);
+            if(!isset($uid) && !isset($nickname) && !isset($email)) {
                 return false;
             }
             $user = \Model\User::GetUserByUserId($uid);
-            if($user->verifyPassword($password)) {
+            if($user->uid == $uid && $user->email == $email) {
                 return true;
             }
         }

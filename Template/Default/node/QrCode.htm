@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<php>
+    $ssurl = $info['ssurl'];
+    $ssqr = $info['ssqr'];
+</php>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <base href="{BASE_URL}"/>
+    <title>{SITE_NAME} - 节点信息</title>
+    <style>
+        .main{
+            text-align: center;
+        }
+        .qrcode {
+            margin-top : 20px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="main">
+    <p id="ssurl">{$ssurl}</p>
+    <p id="ssqr">{$ssqr}</p>
+    <div id="qrcode" class="qrcode"></div>
+    <div class="qrcode">请使用 客户端 的"<b>扫描屏幕上的二维码</b>"功能快速添加到配置列表</div>
+</div>
+
+<script src="{TPL_PATH}js/jquery-1.11.1.min.js"></script>
+<script src="{TPL_PATH}/js/jquery.qrcode.min.js"></script>
+<script>jQuery('#qrcode').qrcode("{$ssqr}");</script>
+</body>
+</html>
