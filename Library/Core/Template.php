@@ -18,7 +18,7 @@ class Template {
 	 * @throws Error
 	 */
 	public static function load($templateName){
-		if($templateName != 'Error') $templateName = TEMPLATE_NAME . $templateName;
+		if($templateName != 'Error') $templateName = TEMPLATE_NAME . "/" . $templateName;
 		$templateFileOrigin = self::getPath($templateName);
 		$templateFile = DATA_PATH."Template/{$templateName}.php";
 		if(!file_exists($templateFile) && !file_exists($templateFileOrigin))
