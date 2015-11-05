@@ -13,15 +13,17 @@ class User
     const ENCRYPT_TYPE_DEFAULT = 0;
     const ENCRYPT_TYPE_ENHANCE = 1;
 
-    public $uid;
-    public $email;
-    public $nickname;
-    private $password;
-    public $flow_up;
-    public $flow_down;
-    public $transfer;
-    public $plan;
-    public $enable;
+    public $uid; //user id , pk
+    public $email;//邮件,用于登陆  pk
+    public $nickname;//昵称
+    private $password;//密码
+    public $flow_up;//上传流量
+    public $flow_down;//下载流量
+    public $transfer;//总流量
+    public $plan;//账户类型
+    public $enable;//账户是否启用SS  0不启用  1启用
+    public $invite;//注册invite,为空则不是邀请的.
+    public $regDateLine;//注册时间
 
     /**
      * Get a user by email
@@ -61,16 +63,25 @@ class User
         if (!$inTransaction) {
             Database::beginTransaction();
         }
-        $statement = Database::prepare("INSERT INTO member SET email=:email, `password`=:pwd, nickname=:nickname");
+        $statement = Database::prepare("INSERT INTO member SET email=:email, `password`=:pwd, nickname=:nickname,
+            `flow_up`=:flow_up, `flow_down`=:flow_down, transfer=:transfer, plan=:plan, `enable`=:enable, invite=:invite, regDateLine=:regDateLine");
         $statement->bindValue(':email', $this->email, \PDO::PARAM_STR);
         $statement->bindValue(':pwd', $this->password, \PDO::PARAM_STR);
         $statement->bindValue(':nickname', $this->nickname, \PDO::PARAM_STR);
+        $statement->bindValue(':flow_up', $this->flow_up, \PDO::PARAM_INT);
+        $statement->bindValue(':flow_down', $this->flow_down, \PDO::PARAM_INT);
+        $statement->bindValue(':transfer', $this->transfer, \PDO::PARAM_INT);
+        $statement->bindValue(':plan', $this->plan, \PDO::PARAM_STR);
+        $statement->bindValue(':enable', $this->enable, \PDO::PARAM_INT);
+        $statement->bindValue(':invite', $this->invite, \PDO::PARAM_INT);
+        $statement->bindValue(':regDateLine', $this->regDateLine, \PDO::PARAM_INT);
+
         $statement->execute();
-        $this->id = Database::lastInsertId();
+        $this->uid = Database::lastInsertId();
         if (!$inTransaction) {
             Database::commit();
         }
-        return $this->id;
+        return $this->uid;
     }
 
     /**
@@ -112,7 +123,7 @@ class User
     }
 
     
-    public function updateUserName() {
+    public function updateNickName() {
         
     }
 
