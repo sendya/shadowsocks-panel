@@ -38,7 +38,6 @@ class User
                     $result['message'] = '登陆成功,即将跳转到 &gt;仪表盘';
 
                     $token = $user->uid . "\t" . $user->email . "\t" . $user->nickname;
-
                     $token = Encrypt::encode($token, COOKIE_KEY);
                     $remember_me == 'week' ? $ext = 3600 * 24 * 7 : $ext = 3600;
                     setcookie("auth", base64_encode($token), time() + $ext, "/");

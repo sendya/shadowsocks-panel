@@ -6,21 +6,21 @@
  */
 namespace Helper;
 
-use Core\Error;
+use Model\User;
 
 class Listener {
     
     public static function checkLogin() {
-        global $user, $uid;
-        $token = $_COOKIE['auth'];
-        if(!empty($token)) {
-            $token = Encrypt::decode(base64_decode($token), COOKIE_KEY); // Decode
-            list($uid, $email, $nickname) = explode("\t", $token);
-            if(!isset($uid) && !isset($nickname) && !isset($email)) {
+        $cookie = $_COOKIE['auth'];
+        if(!empty($cookie)) {
+            $auth = new User();
+            list($auth->uid, $auth->email, $auth->nickname) = explode("\t", Encrypt::decode(base64_decode($cookie), COOKIE_KEY));
+            if(!isset($auth) || $auth->uid == '' || $auth->email=='') {
                 return false;
             }
-            $user = \Model\User::GetUserByUserId($uid);
-            if($user->uid == $uid && $user->email == $email) {
+
+            $user = User::GetUserByEmail($auth->email);
+            if($user->uid == $auth->uid) {
                 return true;
             }
         }
