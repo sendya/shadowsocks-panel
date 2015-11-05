@@ -38,14 +38,10 @@ class Node {
 	 */
 	public static function GetNodeArray($type = 0) {
 		$nodeList = null;
-        try {
-            $statement = Database::prepare("SELECT * FROM node WHERE type=? ORDER BY `order`");
-            $statement->bindValue(1, $type);
-            $statement->execute();
-            $nodeList = $statement->fetchAll(\PDO::FETCH_CLASS, '\\Model\\Node');
-        } catch (\PDOException $e) {
-            $e->getMessage();
-        }
+		$statement = Database::prepare("SELECT * FROM node WHERE type=? ORDER BY `order`");
+		$statement->bindValue(1, $type);
+		$statement->execute();
+		$nodeList = $statement->fetchAll(\PDO::FETCH_CLASS, '\\Model\\Node');
 		return $nodeList;
 	}
 
@@ -54,14 +50,11 @@ class Node {
 	 * @return mixed
 	 */
 	public static function GetNodeCount() {
-		$nodeCount = 0;
-		try {
-			$statement = Database::prepare("SELECT count(*) FROM node");
-			$statement->execute();
-			$nodeCount = $statement->fetch(\PDO::FETCH_NUM);
-		} catch (\PDOException $e) {
-			$e->getMessage();
-		}
+
+		$statement = Database::prepare("SELECT count(*) FROM node");
+		$statement->execute();
+		$nodeCount = $statement->fetch(\PDO::FETCH_NUM);
+
 		return $nodeCount[0];
 	}
 
@@ -71,26 +64,22 @@ class Node {
 	 */
 	public function insertToDB() {
 		$statement = null;
-		try {
-			$inTransaction = Database::inTransaction();
-			if(!$inTransaction) Database::beginTransaction();
-			$statement = Database::prepare("INSERT INTO node SET `name`=:name, `type`=:type,
-				`server`=:server, `method`=:method, `info`=:info, `status`:=status, `order`=:order");
-			$statement->bindValue(':name', $this->name, \PDO::PARAM_STR);
-			$statement->bindValue(':type', $this->type, \PDO::PARAM_INT);
-			$statement->bindValue(':server', $this->server, \PDO::PARAM_STR);
-			$statement->bindValue(':method', $this->method, \PDO::PARAM_STR);
-			$statement->bindValue(':info', $this->info, \PDO::PARAM_STR);
-			$statement->bindValue(':status', $this->status, \PDO::PARAM_STR);
-			$statement->bindValue(':order', $this->order, \PDO::PARAM_INT);
-			$statement->execute();
-			$this->id = Database::lastInsertId();
-			if(!$inTransaction) Database::commit();
-		} catch (\PDOException $e) {
-			//$statement->rollBack();
-			Database::rollBack();
-			$e->getMessage();
-		}
+
+		$inTransaction = Database::inTransaction();
+		if(!$inTransaction) Database::beginTransaction();
+		$statement = Database::prepare("INSERT INTO node SET `name`=:name, `type`=:type,
+			`server`=:server, `method`=:method, `info`=:info, `status`:=status, `order`=:order");
+		$statement->bindValue(':name', $this->name, \PDO::PARAM_STR);
+		$statement->bindValue(':type', $this->type, \PDO::PARAM_INT);
+		$statement->bindValue(':server', $this->server, \PDO::PARAM_STR);
+		$statement->bindValue(':method', $this->method, \PDO::PARAM_STR);
+		$statement->bindValue(':info', $this->info, \PDO::PARAM_STR);
+		$statement->bindValue(':status', $this->status, \PDO::PARAM_STR);
+		$statement->bindValue(':order', $this->order, \PDO::PARAM_INT);
+		$statement->execute();
+		$this->id = Database::lastInsertId();
+		if(!$inTransaction) Database::commit();
+
 		return $this->id;
 	}
 
@@ -100,14 +89,9 @@ class Node {
 	 */
 	public static function deleteNode($nodeId) {
 
-		try {
-			$statement = Database::prepare("DELETE * FROM node WHERE id=:id");
-			$statement->bindValue(':id', $nodeId, \PDO::PARAM_INT);
-			Database::commit();
-		} catch (\PDOException $e) {
-			Database::rollBack();
-			$e->getMessage();
-		}
+		$statement = Database::prepare("DELETE * FROM node WHERE id=:id");
+		$statement->bindValue(':id', $nodeId, \PDO::PARAM_INT);
+		Database::commit();
 	}
 
 	/**
@@ -116,23 +100,18 @@ class Node {
 	 */
 	public function UpdateNode() {
 		$statement = null;
-		try {
-			$statement = Database::prepare("UPDATE node SET `name`=:name, `type`=:type,
-				`server`=:server, `method`=:method, `info`=:info, `status`:=status, `order`=:order WHERE id=:id");
-			$statement->bindValue(':name', $this->name, \PDO::PARAM_STR);
-			$statement->bindValue(':type', $this->type, \PDO::PARAM_INT);
-			$statement->bindValue(':server', $this->server, \PDO::PARAM_STR);
-			$statement->bindValue(':method', $this->method, \PDO::PARAM_STR);
-			$statement->bindValue(':info', $this->info, \PDO::PARAM_STR);
-			$statement->bindValue(':status', $this->status, \PDO::PARAM_STR);
-			$statement->bindValue(':order', $this->order, \PDO::PARAM_INT);
-			$statement->bindValue(':id', $this->id, \PDO::PARAM_INT);
-			$statement->execute();
-			Database::commit();
-		} catch (\PDOException $e) {
-			//$statement->rollBack();
-			Database::rollBack();
-			$e->getMessage();
-		}
+
+		$statement = Database::prepare("UPDATE node SET `name`=:name, `type`=:type,
+			`server`=:server, `method`=:method, `info`=:info, `status`:=status, `order`=:order WHERE id=:id");
+		$statement->bindValue(':name', $this->name, \PDO::PARAM_STR);
+		$statement->bindValue(':type', $this->type, \PDO::PARAM_INT);
+		$statement->bindValue(':server', $this->server, \PDO::PARAM_STR);
+		$statement->bindValue(':method', $this->method, \PDO::PARAM_STR);
+		$statement->bindValue(':info', $this->info, \PDO::PARAM_STR);
+		$statement->bindValue(':status', $this->status, \PDO::PARAM_STR);
+		$statement->bindValue(':order', $this->order, \PDO::PARAM_INT);
+		$statement->bindValue(':id', $this->id, \PDO::PARAM_INT);
+		$statement->execute();
+		Database::commit();
 	}
 }
