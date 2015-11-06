@@ -7,8 +7,8 @@ var public_vars = public_vars || {};
 jQuery.extend(public_vars, {
 	
 	breakpoints: {
-		largescreen: 	[991, -1],
-		tabletscreen: 	[768, 990],
+		largescreen: 	[1201, -1],
+		tabletscreen: 	[768, 1200],
 		devicescreen: 	[420, 767],
 		sdevicescreen:	[0, 419]
 	},

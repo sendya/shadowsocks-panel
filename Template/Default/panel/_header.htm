@@ -1,6 +1,7 @@
 <import template="/panel/_head" />
 <php>
     $gravatar = \Helper\Util::GetGravatar($user->email, 128);
+    $regTime = date("Y-m-d H:i", $user->regDateLine);
 </php>
 <body class="page-body">
 <div class="modal fade" id="modal-1" style="display: none;" aria-hidden="true">
@@ -25,7 +26,7 @@
     <a href="javascript:;" data-toggle="settings-pane" data-animate="true">&times;</a>
     <div class="settings-pane-inner">
         <div class="row">
-            <div class="col-md-4">
+            <div class="col-md-6">
                 <div class="user-info">
                     <div class="user-image">
                         <a href="/member">
@@ -38,7 +39,7 @@
                             <!-- Available statuses: is-online, is-idle, is-busy and is-offline -->
                             <span class="user-status is-online"></span>
                         </h3>
-                        <p class="user-title">加入时间：{$user->regDateLine}</p>
+                        <p class="user-title">加入时间：{$regTime}</p>
                         <div class="user-links">
                             <a href="/user/info" class="btn btn-primary">个人资料</a>
                             <a href="/user/logout" class="btn btn-success">退出</a>
@@ -46,7 +47,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-8 link-blocks-env">
+            <div class="col-md-6 link-blocks-env">
                 <div class="links-block left-sep">
                     <h4>
                         <a href="javascript:;">

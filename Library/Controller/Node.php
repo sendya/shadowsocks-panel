@@ -7,8 +7,6 @@
 
 namespace Controller;
 
-
-
 use Core\Error;
 use Core\Template;
 use Helper\Node as NodeUtil;

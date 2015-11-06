@@ -1100,7 +1100,10 @@ var public_vars = public_vars || {};
 
 	// Enable/Disable Resizable Event
 	var wid = 0;
-	
+	clearTimeout(wid);
+	wid = setTimeout(trigger_resizable, 10);
+
+
 	$(window).resize(function() {
 		clearTimeout(wid);
 		wid = setTimeout(trigger_resizable, 200);

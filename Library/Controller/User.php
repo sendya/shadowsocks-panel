@@ -6,7 +6,7 @@ use Helper\Util;
 use Helper\Encrypt;
 use Helper\Listener;
 use Model\Invite;
-use Model\User as Userm;
+use Model\User as UserModel;
 
 /**
  * User Controller
@@ -30,7 +30,10 @@ class User
             $email = htmlspecialchars($_REQUEST['email']);
             $passwd = htmlspecialchars($_REQUEST['passwd']);
             $remember_me = htmlspecialchars($_REQUEST['remember_me']);
-            $user = Userm::GetUserByEmail($email);
+
+            $user = UserModel::getInstance();
+            $user = $user->GetUserByEmail($email);
+
             $result['passwd2'] = $user->getPassword();
             if ($user) {
                 if ($user->verifyPassword($passwd)) {
@@ -78,7 +81,7 @@ class User
         } else if ($chkEmail = Util::MailFormatCheck($email)) {
             $result['message'] = $chkEmail;
         } else {
-            $user = new Userm();
+            $user = new UserModel();
             $user->email = $email;
             $user->nickname = $userName;
             $user->transfer = Util::GetGB() * TRANSFER; // 流量大小
@@ -105,7 +108,7 @@ class User
         $nickname = trim($_POST['nickname']);
 
         if ('' != $nickname && $uid == $user_cookie[0] && $nickname == $user_cookie[2]) {
-            $user = Userm::GetUserByUserId($uid);
+            $user = UserModel::GetUserByUserId($uid);
             $user->nickname = $nickname;
             $user->updateUser();
             $result = array('error' => 0, 'message' => '修改成功');
@@ -123,7 +126,7 @@ class User
         $sspwd = trim(($_GET['sspwd']));
         if ('' == $sspwd || null == $sspwd) $sspwd = Util::GetRandomPwd();
         if ($uid == $user_cookie[0]) {
-            $user = Userm::GetUserByUserId($uid);
+            $user = UserModel::GetUserByUserId($uid);
             $user->sspwd = $sspwd;
             $user->updateUser();
             $result = array('error' => 1, 'message' => '修改SS连接密码成功');

@@ -42,6 +42,9 @@ class Response
         if (file_exists(ROOT_PATH . $target)) {
             return $target;
         }
+        if (defined('USE_REWRITE') && USE_REWRITE) {
+            return $target;
+        }
         return 'index.php/' . $target;
     }
 
