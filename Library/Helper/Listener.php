@@ -21,7 +21,6 @@ class Listener {
     }
 
     public function __construct() {
-        header('Location: /user/login');
         global $user;
         $user = User::getInstance();
         if(!$user->uid) {
