@@ -57,3 +57,4 @@ a {
 a:hover {
   color: #bdbebe;
 }
+:not([class*="icon"]):not(i):not([class*="fxfont"]){font-family: "Microsoft YaHei" !important}
