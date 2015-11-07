@@ -6042,9 +6042,6 @@ div.text-overflow {
   color: #979898;
   font-size: 14px;
 }
-.chart-item-bg .chart-entry-view:hover {
-  background: #fafafa;
-}
 .chart-item-bg-2 {
   background: #fff;
   display: table;

@@ -25,34 +25,51 @@ class Util
 
     public static function ToKB($value)
     {
-        return $value / KB;
+        return $value / self::KB;
     }
 
     public static function ToMB($value)
     {
-        return $value / MB;
+        return $value / self::MB;
     }
 
     public static function ToGB($value)
     {
-        return $value / GB;
+        return $value / self::GB;
     }
 
     public static function FlowAutoShow($value)
     {
-        if ($value > KB) {
-            echo round($value / KB, 2);
+        /*
+        if ($value > self::KB) {
+            echo round($value / self::KB, 2);
             echo "GB";
-        } else if ($value > MB) {
-            echo round($value / MB, 2);
+        } else if ($value > self::MB) {
+            echo round($value / self::MB, 2);
             echo "MB";
-        } else if ($value > GB) {
-            echo round($value / GB, 2);
+        } else if ($value > self::GB) {
+            echo round($value / self::GB, 2);
             echo "KB";
         } else {
             echo round($value, 2);
             echo "";
         }
+        */
+        $str = "";
+        if ($value > self::GB) {
+            $str = round($value / self::GB, 2);
+            $str.= "GB";
+        } else if ($value > self::MB) {
+            $str = round($value / self::MB, 2);
+            $str.= "MB";
+        } else if ($value > self::KB) {
+            $str = round($value / self::KB, 2);
+            $str.= "KB";
+        } else {
+            $str = round($value, 2);
+            $str.= "";
+        }
+        return $str;
     }
 
     public static function CheckHtml($html)
@@ -154,8 +171,8 @@ class Util
     }
 
     // ----- get value
-    public static function GetKB() {return KB;}
-    public static function GetMB() {return MB;}
-    public static function GetGB() {return GB;}
+    public static function GetKB() {return self::KB;}
+    public static function GetMB() {return self::MB;}
+    public static function GetGB() {return self::GB;}
 
 }

@@ -42,13 +42,13 @@
 
         <div class="chart-item-bg">
             <div class="chart-label">
-                <div class="h3 text-secondary text-bold" data-count="this" data-from="0" data-to="99999" data-suffix="MB" data-duration="1">0 MB</div>
+                <div class="h3 text-secondary text-bold" data-count="this" data-from="0" data-to="{$flow}" data-suffix="MB" data-duration="1">{$flow} MB</div>
                 <span class="text-medium text-muted">流量使用情况</span>
             </div>
             <div class="progress progress-striped active" style="height: 20px;position: absolute;left:30px;right:30px;top:30%">
-                <div class="progress-bar progress-bar-info" style="width: 80%;height:20px;"></div>
+                <div class="progress-bar progress-bar-info" style="width: {$user_100}%;height:20px;"></div>
             </div>
-            <div style="position: absolute;left:30px;right:30px;top:40%">共有流量：9999GB<br/>可用流量：9998GB<br/><br/>您的当前IP：<code>127.0.0.1</code><br/>您的地区：<code>局域网</code><br/>
+            <div style="position: absolute;left:30px;right:30px;top:40%">共有流量：{$all_transfer}<br/>可用流量：{$usedflow}<br/><br/>您的当前IP：<code>127.0.0.1</code><br/>您的地区：<code>局域网</code><br/>
                 <h2><a href="//ss.suki.im/Help/" target="_blank">使用教程&gt;&gt;</a></h2>
             </div>
             <div  style="height: 298px;">
@@ -106,9 +106,9 @@
         <div class="chart-item-bg">
             <div class="chart-label">
                 <div  class="h1 text-purple text-bold">连接信息</div>
-                端口：<code>10000</code><br />
+                端口：<code>{$user->port}</code><br />
                 密码：<span id="showpwd"><b>点击显示密码</b></span><br />
-                套餐： <span class="label label-info">VIP</span>   &nbsp;<span class="btn btn-sm btn-secondary" id="updatePlan" style="padding: 1px;margin-bottom: 0px;"> 升级套餐 </span>   &nbsp;<span class="btn btn-sm btn-secondary" id="planList" style="padding: 1px;margin-bottom: 0px;"> 套餐详情 </span></span><br /><br />
+                套餐： <span class="label label-info">{$user->plan}</span>   &nbsp;<span class="btn btn-sm btn-secondary" id="updatePlan" style="padding: 1px;margin-bottom: 0px;"> 升级套餐 </span>   &nbsp;<span class="btn btn-sm btn-secondary" id="planList" style="padding: 1px;margin-bottom: 0px;"> 套餐详情 </span></span><br /><br />
                 最后使用时间：<code>{date('Y-m-d H:i:s', time())}</code>
 
             </div>
@@ -119,7 +119,7 @@
         </div>
     </div>
 </div>
-<script>$(document).ready(function(){$("#checkin").click(function(){$("#checkin").val("请稍等");showToastr("正在请求签到..请稍等",0,1500);$("#checkin").addClass("disabled");$.ajax({type:"GET",url:"/action/checkin",dataType:"json",success:function(result){showToastr(result.msg,0);$("#checkin").hide();$("#checkin-tag").hide();$("#checkinoff").show();$("#checkinoff-tag").show();},error:function(jqXHR){showToastr("发生错误："+jqXHR.status,0);}})});$("#updatePlan").click(function(){$.ajax({type:"GET",url:"/action/plan_update",dataType:"json",success:function(data){if(data.error){showToastr(data.msg,0);}else{showToastr(data.msg,0);}},error:function(jqXHR){showToastr("发生错误："+jqXHR.status,0);}})});$("#showpwd").click(function(){if($(this).html()=="<b>点击显示密码</b>"){$(this).html("{$user->sspwd}");}else{$(this).html("<b>点击显示密码</b>");}});showToastr("当前服务节点正常运行中，如果您觉得本站做的不错，可以<a href='https://shenghuo.alipay.com/send/payment/fill.htm?optEmail=18x@loacg.com' target='_blank'>向我捐赠</a>",800);showToastr("本站招收一名SS面板协同开发，使用PHP,技术不好可以，但是不要不会学的人。有意者发简历到&lt;support@mloli.com&gt;",800);$("#planList").click(function(){
+<script>$(document).ready(function(){$("#checkin").click(function(){$("#checkin").val("请稍等");showToastr("正在请求签到..请稍等",0,1500);$("#checkin").addClass("disabled");$.ajax({type:"GET",url:"/action/checkin",dataType:"json",success:function(result){showToastr(result.msg,0);$("#checkin").hide();$("#checkin-tag").hide();$("#checkinoff").show();$("#checkinoff-tag").show();},error:function(jqXHR){showToastr("发生错误："+jqXHR.status,0);}})});$("#updatePlan").click(function(){$.ajax({type:"GET",url:"/action/plan_update",dataType:"json",success:function(data){if(data.error){showToastr(data.msg,0);}else{showToastr(data.msg,0);}},error:function(jqXHR){showToastr("发生错误："+jqXHR.status,0);}})});$("#showpwd").click(function(){if($(this).html()=="<b>点击显示密码</b>"){$(this).html("{$user->sspwd}");}else{$(this).html("<b>点击显示密码</b>");}});showToastr("当前服务节点正常运行中，如果您觉得本站做的不错，可以<a href='https://shenghuo.alipay.com/send/payment/fill.htm?optEmail=18x@loacg.com' target='_blank'>向我捐赠</a>",800);$("#planList").click(function(){
     jQuery('#modal-1 .modal-body').html('套餐等级如下：<br /><br />套餐A： 5GB(免费) (体验服务)<br />套餐B： 100GB(13RMB)<br />套餐C： 200GB(20RMB)<br />套餐D： 500GB(35RMB)<br /><br />套餐VIP： 无限制流量,优先端口转发(仅内部开放)(目前VIP 6 人)');jQuery('#modal-1').modal('show', {backdrop: 'fade'});
 }); });
 </script>
