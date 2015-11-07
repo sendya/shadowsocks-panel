@@ -10,6 +10,7 @@ class Member extends Listener {
     public function index() {
         global $user;
         $controller = "Member";
+        $serverCount = \Model\Node::GetNodeCount();
         include Template::load("panel/member");
         //throw new Error('目前无法访问 <b>仪表盘</b><br/>', 555);
 

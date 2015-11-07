@@ -20,7 +20,7 @@
             <div class="xe-label">
                 <strong>
                     <a id="checkin" href="javascript:;" style="display: none;">点击签到</a>
-                    <span id="checkinoff">您已签到</span>
+                    <div id="checkinoff" style="display: inline">您已签到</div>
                 </strong>
                 <span id="checkin-tag" style="display: none;">签到送流量</span>
                 <span  id="checkinoff-tag" >11-07 18:00</span>
@@ -32,7 +32,7 @@
                 <i class="linecons-desktop"></i>
             </div>
             <div class="xe-label">
-                <strong class="num">1</strong>
+                <strong class="num">{$serverCount}</strong>
                 <span>服务器数</span>
             </div>
         </div>
@@ -106,10 +106,10 @@
         <div class="chart-item-bg">
             <div class="chart-label">
                 <div  class="h1 text-purple text-bold">连接信息</div>
-                <span class="text-small text-muted text-upper">端口：<code>10000</code></span><br />
-                <span class="text-small text-muted text-upper">密码：<span id="showpwd"><b>点击显示密码</b></span></span><br />
-                <span class="text-small text-muted text-upper">套餐： <span class="label label-info">VIP</span>   &nbsp;<span class="btn btn-sm btn-secondary" id="updatePlan" style="padding: 1px;margin-bottom: 0px;"> 升级套餐 </span>   &nbsp;<span class="btn btn-sm btn-secondary" id="planList" style="padding: 1px;margin-bottom: 0px;"> 套餐详情 </span></span><br /><br />
-                <span class="text-small text-muted text-upper">最后使用时间：<code>{date('Y-m-d H:i:s', time())}</code> </span>
+                端口：<code>10000</code><br />
+                密码：<span id="showpwd"><b>点击显示密码</b></span><br />
+                套餐： <span class="label label-info">VIP</span>   &nbsp;<span class="btn btn-sm btn-secondary" id="updatePlan" style="padding: 1px;margin-bottom: 0px;"> 升级套餐 </span>   &nbsp;<span class="btn btn-sm btn-secondary" id="planList" style="padding: 1px;margin-bottom: 0px;"> 套餐详情 </span></span><br /><br />
+                最后使用时间：<code>{date('Y-m-d H:i:s', time())}</code>
 
             </div>
             <div class="chart-right-legend">

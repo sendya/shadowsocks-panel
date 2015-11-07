@@ -14,19 +14,24 @@ class User
     const ENCRYPT_TYPE_DEFAULT = 0;
     const ENCRYPT_TYPE_ENHANCE = 1;
 
-    public $uid; //user id , pk
-    public $email;//ÓÊ¼ş,ÓÃÓÚµÇÂ½  pk
-    public $nickname;//êÇ³Æ
-    private $password = 'default';//ÃÜÂë
-    public $sspwd;// ssÁ¬½ÓÃÜÂë
-    public $port;// ss¶Ë¿Ú
-    public $flow_up = 0;//ÉÏ´«Á÷Á¿
-    public $flow_down = 0;//ÏÂÔØÁ÷Á¿
-    public $transfer;//×ÜÁ÷Á¿
-    public $plan = 'A';//ÕË»§ÀàĞÍ
-    public $enable = 1;//ÕË»§ÊÇ·ñÆôÓÃSS  0²»ÆôÓÃ  1ÆôÓÃ
-    public $invite = '';//×¢²áinvite,Îª¿ÕÔò²»ÊÇÑûÇëµÄ.
-    public $regDateLine = 0;//×¢²áÊ±¼ä
+    public $uid; //user id (ä¸»é”®)
+    public $email;//ç”µå­é‚®ä»¶  (ä¸»é”®)
+    public $nickname;//æ˜µç§°,æ²¡åµç”¨
+    private $password = 'default';//Fuck password
+    public $sspwd;// ssè¿æ¥å¯†ç 
+    public $port;// ssç«¯å£
+    public $flow_up = 0;//ä¸Šä¼ æµé‡
+    public $flow_down = 0;//ä¸‹è½½æµé‡
+    public $transfer;//æ€»æµé‡
+    public $plan = 'A';//è´¦æˆ·ç±»å‹
+    public $enable = 1;//æ˜¯å¦å¯ç”¨SS 0ä¸å¯ç”¨ 1å¯ç”¨
+    public $invite = '';//æ³¨å†Œæ‰€ç”¨çš„é‚€è¯·ç 
+    public $invite_num = 0;//ç”¨æˆ·æ‹¥æœ‰çš„é‚€è¯·ç 
+    public $regDateLine = 0;//æ³¨å†Œæ—¶é—´
+    public $lastConnTime;//ä¸Šæ¬¡ä½¿ç”¨æ—¶é—´
+    public $lastCheckinTime;//ä¸Šæ¬¡ç­¾åˆ°æ—¶é—´
+    public $lastFindPasswdTime;//ä¸Šæ¬¡æ‰¾å›å¯†ç æ—¶é—´ (æ‰¾å›å¯†ç æ—¶é—´å’Œæ¬¡æ•°ä»…ç”¨ä½œé™åˆ¶3æ¬¡æˆ–?æ¬¡åç¦æ­¢æ‰¾å›)
+    public $lastFindPasswdCount;//æ‰¾å›å¯†ç æ¬¡æ•°
 
     public static $instance;
 
