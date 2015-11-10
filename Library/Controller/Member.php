@@ -28,4 +28,27 @@ class Member extends Listener {
         //throw new Error('目前无法访问 <b>仪表盘</b><br/>', 555);
 
     }
+    //2015.11.10 start
+    public function NodeList() {
+
+    	throw new Error("This page is not available", 505);
+    }
+
+    /**
+     *	Invite list 
+     *	2015.11.11 start
+     */
+    public function Invite() {
+
+    	throw new Error("This page is not available", 505);
+    }
+
+    /**
+     *	User info page,
+     *	2015.11.12 start
+     */
+    public function Info() {
+    	
+    	throw new Error("This page is not available", 505);
+    }
 }
