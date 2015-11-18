@@ -19,6 +19,7 @@ class Invite
     public $invite;//邀请码 ( create index) pk
     public $reguid;//使用该邀请码注册的用户uid
     public $regDateLine;//使用该 invite 时间 mysql:datetime
+    public $plan; //Invite type
     public $status;//invite状态 (0-未使用, 1-已用, -1过期)
 
     /**
