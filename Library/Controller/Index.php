@@ -13,8 +13,8 @@ class Index {
      * 进入首页
      */
     public function index() {
-        include Template::load('/home/index');
-        //throw new \Core\Error("Coming Soon..", 233);
+        //include Template::load('/home/index');
+        throw new \Core\Error("Coming Soon..<br/>". time(), 233);
     }
     
 }

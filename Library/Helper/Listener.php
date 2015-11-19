@@ -24,7 +24,7 @@ class Listener {
         global $user;
         $user = User::getInstance();
         if(!$user->uid) {
-            Response::redirect('/user/login');
+            Response::redirect('/member/login');
         }
         $user = $user->GetUserByEmail($user->email);
     }

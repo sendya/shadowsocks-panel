@@ -18,12 +18,17 @@
                 <i class="fa-calendar"></i>
             </div>
             <div class="xe-label">
+                <if condition="$checkin">
                 <strong>
-                    <a id="checkin" href="javascript:;" style="display: none;">点击签到</a>
-                    <div id="checkinoff" style="display: inline">您已签到</div>
+                    <a id="checkin" href="javascript:;" style="color:#000;">点击签到</a>
                 </strong>
-                <span id="checkin-tag" style="display: none;">签到送流量</span>
-                <span  id="checkinoff-tag" >11-07 18:00</span>
+                <span id="checkin-tag">签到送流量</span>
+                <else>
+                <strong>
+                    <div id="checkinoff">您已签到</div>
+                </strong>
+                <span  id="checkinoff-tag" >{$checkinTime}</span>
+                </if>
             </div>
         </div>
 

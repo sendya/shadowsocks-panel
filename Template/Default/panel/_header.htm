@@ -29,20 +29,20 @@
             <div class="col-md-6">
                 <div class="user-info">
                     <div class="user-image">
-                        <a href="/member">
+                        <a href="/console">
                             <img src="{$gravatar}" class="img-responsive img-circle" />
                         </a>
                     </div>
                     <div class="user-details">
                         <h3>
-                            <a href="/member">{$user->nickname}</a>
+                            <a href="/console">{$user->nickname}</a>
                             <!-- Available statuses: is-online, is-idle, is-busy and is-offline -->
                             <span class="user-status is-online"></span>
                         </h3>
                         <p class="user-title">加入时间：{$regTime}</p>
                         <div class="user-links">
-                            <a href="/user/info" class="btn btn-primary">个人资料</a>
-                            <a href="/user/logout" class="btn btn-success">退出</a>
+                            <a href="/member/info" class="btn btn-primary">个人资料</a>
+                            <a href="/member/logout" class="btn btn-success">退出</a>
                         </div>
                     </div>
                 </div>
@@ -62,7 +62,7 @@
                             </a>
                         </li>
                         <li>
-                            <a href="/member/feedback">
+                            <a href="/console/feedback">
                                 <i class="fa-angle-right"></i>
                                 提交问题
                             </a>
@@ -94,7 +94,7 @@
                     <a href="index" class="logo-expanded">
                         <img src="{TPL_PATH}images/logo@2x.png" width="80" alt="" />
                     </a>
-                    <a href="index.php" class="logo-collapsed">
+                    <a href="index" class="logo-collapsed">
                         <img src="{TPL_PATH}images/logo-collapsed@2x.png" width="40" alt="" />
                     </a>
                 </div>
