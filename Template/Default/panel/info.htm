@@ -1,0 +1,49 @@
+<import template="/panel/_header" />
+<import template="/panel/_content" />
+<div class="page-title">
+
+    <div class="title-env">
+        <h1 class="title">用户中心</h1>
+        <p class="description">个人资料，用户信息等..</p>
+    </div>
+
+    <div class="breadcrumb-env">
+        <ol class="breadcrumb bc-1">
+            <li>
+                <a href="/member"><i class="fa-home"></i>主页</a>
+            </li>
+            <li>
+                <a href="javascript:;">用户中心</a>
+            </li>
+            <li class="active">
+                <strong>个人资料</strong>
+            </li>
+        </ol>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <i class="fa fa-angle-right"></i>
+            </div>
+            <div class="panel-body">
+                <div class="form-group">
+                    <p>用户名：{$user->nickname}</p>
+                    <p>邮箱：{$user->email}</p>
+                    <p>套餐：<span class="label label-info">{$user->plan}</span>
+                        <if condition="$user->plan == 'A'">
+                            &nbsp;&nbsp;您为免费体验账户，流量将不会每月重置，升级到会员账户即可提升流量限额。
+                        </if>
+                    </p>
+                    <p>账户余额：{$user->money} 元 </p>
+                    <p><a class="btn btn-danger btn-sm" href="javascript:;" onclick="alert('暂时无法执行此操作');">删除我的账户</a>&nbsp;&nbsp;</p>
+                    <div class="form-block">
+                        <input type="checkbox" checked class="iswitch">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<import template="/panel/_footer" />

@@ -1,137 +1,84 @@
 <?php
 namespace Controller;
 
+use Core\Error;
 use Core\Template;
-use Helper\Util;
-use Helper\Encrypt;
 use Helper\Listener;
-use Model\Invite;
-use Model\User as UserModel;
+use Helper\Util;
+use Model\Node;
 
-/**
- * User Controller
- * Author: Sendya
- */
-class Member {
+class Member extends Listener {
+    
+    public function Index() {
+        global $user;
+        $controller = __FUNCTION__;
+        $serverCount = \Model\Node::GetNodeCount();
 
-    public function login()
-    {
-        $controller = "Login";
-        /**
-         * 1. 判断用户是否已经登陆,
-         *      若已经登陆,则直接跳转到控制面板(仪表盘)中.
-         * 2. 加载登陆页面模板,进入登陆页面.
-         */
-        if (Listener::checkLogin()) {
-            header("Location:/member");
-        } else if (isset($_REQUEST['email']) && isset($_REQUEST['passwd'])) {
-            $result = array('error' => 1, 'message' => '账户名或密码错误, 请检查后再试!');
-            $email = htmlspecialchars($_REQUEST['email']);
-            $passwd = htmlspecialchars($_REQUEST['passwd']);
-            $remember_me = htmlspecialchars($_REQUEST['remember_me']);
-
-            $user = UserModel::getInstance();
-            $user = $user->GetUserByEmail($email);
-
-            $result['passwd2'] = $user->getPassword();
-            if ($user) {
-                if ($user->verifyPassword($passwd)) {
-                    $result['error'] = 0;
-                    $result['message'] = '登陆成功,即将跳转到 &gt;仪表盘';
-
-                    $token = $user->uid . "\t" . $user->email . "\t" . $user->nickname;
-                    $token = Encrypt::encode($token, COOKIE_KEY);
-                    $remember_me == 'week' ? $ext = 3600 * 24 * 7 : $ext = 3600;
-                    setcookie("auth", base64_encode($token), time() + $ext, "/");
-                }
-            }
-
-            echo json_encode($result);
-            exit();
-        } else {
-            include Template::load('/panel/login');
+        $flow = $user->flow_up + $user->flow_down;//已用
+        $usedflow = Util::FlowAutoShow($user->transfer - $flow);//剩余可用
+        $user_100 = 0;
+        if(!Member::fuckInt($flow) || !Member::fuckInt($user->transfer)){
+            $user_100 = round($flow / $user->transfer, 2)*100;
         }
+        if($user_100 == 0) $user_100 = 1;
+        $all_transfer = Util::FlowAutoShow($user->transfer);//共有流量
+        $flow = round($flow / Util::GetMB(), 2);
+        $checkin = false;//是否可以签到
+        $checkinTime = date("Y-m-d h:i", $user->lastCheckinTime);
+        if((time() - 3600*24) < $user->lastCheckinTime) $checkin = true;
+
+        include Template::load("panel/member");
+    }
+    //2015.11.10 start
+    public function Node() {
+        global $user;
+        $controller = __FUNCTION__;
+
+        $nodes = Node::GetNodeArray(0);
+        $nodeVip = Node::GetNodeArray(1);
+
+        include Template::load("panel/node");
+    	//throw new Error("This page is not available" , 404);
     }
 
-    public function logout()
-    {
-        setcookie("auth", '', time() - 3600, "/");
-        header("Location:/");
+    /**
+     *	Invite list 
+     *	2015.11.11 start
+     */
+    public function Invite() {
+        global $user;
+        $controller = __FUNCTION__;
+
+    	throw new Error("This page is not available", 404);
     }
 
+    /**
+     *	User info page,
+     *	2015.11.12 start
+     */
+    public function Info() {
+        global $user;
+        $controller = __FUNCTION__;
 
-    public function register()
-    {
-        $result = array('error' => 1, 'message' => '注册失败');
-        $email = strtolower($_POST['r_email']);
-        $userName = $_POST['r_user_name'];
-        $passwd = $_POST['r_passwd'];
-        $repasswd = $_POST['r_passwd2'];
-        $inviteCode = $_POST['r_invite'];
-        $invite = Invite::GetInviteByInvite($inviteCode); //校验 invite 是否可用
-        if ($invite->status != 0) {
-            $result['message'] = '邀请码不可用';
-        } else if ($repasswd != $passwd) {
-            $result['message'] = '两次密码输入不一致';
-        } else if (strlen($passwd) < 8) {
-            $result['message'] = '密码太短,至少8字符';
-        } else if (strlen($userName) < 4) {
-            $result['message'] = '昵称太短,至少2中文字符或6个英文字符';
-        } else if ($chkEmail = Util::MailFormatCheck($email)) {
-            $result['message'] = $chkEmail;
-        } else {
-            $user = new UserModel();
-            $user->email = $email;
-            $user->nickname = $userName;
-            $user->transfer = Util::GetGB() * TRANSFER; // 流量大小
-            $user->invite = $inviteCode;
-            $user->regDateLine = time();
-            $user->insertToDB();
-            $user->savePassword($passwd);
-
-            if (null != $user->uid && 0 != $user->uid) {
-                $result['error'] = 0;
-                $result['message'] = '注册成功';
-            }
-        }
-
-        echo json_encode($result);
-        exit();
+        include Template::load("panel/info");
     }
 
-    public function nickname()
-    {
-        $result = array('error' => 1, 'message' => '修改失败');
-        $uid = trim($_POST['uid']);
-        $user_cookie = explode('\t', Encrypt::decode(base64_decode($_COOKIE['auth']), COOKIE_KEY));
-        $nickname = trim($_POST['nickname']);
+    public function ChangePassword() {
+        global $user;
+        $controller = __FUNCTION__;
 
-        if ('' != $nickname && $uid == $user_cookie[0] && $nickname == $user_cookie[2]) {
-            $user = UserModel::GetUserByUserId($uid);
-            $user->nickname = $nickname;
-            $user->updateUser();
-            $result = array('error' => 0, 'message' => '修改成功');
-        }
-
-        echo json_encode($result);
-        exit();
+        include Template::load("panel/changePassword");
     }
 
-    public function ChangeSSPwd()
-    {
-        $result = array('error' => 1, 'message' => '修改失败');
-        $uid = trim($_GET['uid']);
-        $user_cookie = explode('\t', Encrypt::decode(base64_decode($_COOKIE['auth']), COOKIE_KEY));
-        $sspwd = trim(($_GET['sspwd']));
-        if ('' == $sspwd || null == $sspwd) $sspwd = Util::GetRandomPwd();
-        if ($uid == $user_cookie[0]) {
-            $user = UserModel::GetUserByUserId($uid);
-            $user->sspwd = $sspwd;
-            $user->updateUser();
-            $result = array('error' => 1, 'message' => '修改SS连接密码成功');
-        }
+    public function ChangeSSPassword() {
+        global $user;
+        $controller = __FUNCTION__;
 
-        echo json_encode($result);
-        exit();
+        include Template::load("panel/changeSSPassword");
+    }
+
+    private static function fuckInt($number) {
+        if($number == null || $number == 0) return true;
+        return false;
     }
 }

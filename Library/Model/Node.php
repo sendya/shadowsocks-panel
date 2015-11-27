@@ -12,7 +12,7 @@ use Core\Database;
 class Node {
 	public $id; // 节点id
 	public $name; // 节点名称
-	public $type; // 类型
+	public $type; // 类型 0 普通 1 vip
 	public $server; // Server地址
 	public $method; // 加密方式
 	public $info; // 节点信息备注

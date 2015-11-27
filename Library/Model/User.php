@@ -25,6 +25,7 @@ class User
     public $transfer;//总流量
     public $plan = 'A';//账户类型
     public $enable = 1;//是否启用SS 0不启用 1启用
+    public $money = 0;//狗屁用都没的 $
     public $invite = '';//注册所用的邀请码
     public $invite_num = 0;//用户拥有的邀请码
     public $regDateLine = 0;//注册时间

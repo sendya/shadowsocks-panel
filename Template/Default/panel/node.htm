@@ -1,0 +1,91 @@
+<import template="/panel/_header" />
+<import template="/panel/_content" />
+
+<div class="page-title">
+    <div class="title-env">
+        <h1 class="title">节点列表</h1>
+        <p class="description">请勿在任何地方公开节点地址！</p>
+    </div>
+    <div class="breadcrumb-env">
+        <ol class="breadcrumb bc-1"><li><a href="/member"><i class="fa-home"></i>主页</a></li><li><a href="javascript:;">节点列表</a></li><li class="active"><strong>节点信息</strong></li></ol>
+    </div>
+</div>
+<div class="row">
+    <!-- /.box-begin -->
+<loop variable="$nodes" key="$key" value="$node">
+    <div class="col-sm-6">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <i class="fa fa-angle-right"></i> {$node->name}
+                <div class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                        操作 <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li role="presentation"><a role="menuitem" target="_blank" tabindex="-1" href="/node/Json?id={$node->id}">配置文件</a></li>
+                        <li role="presentation"><a role="menuitem" target="_blank" tabindex="-1" href="/node/QRCode?id={$node->id}">二维码</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="panel-body">
+                <button class="btn btn-primary">地址:</button>
+                <button class="btn btn-secondary">  {$node->server}  </button>
+                <button class="btn btn-orange">可用</button>
+                <button class="btn btn-turquoise">{$node->method}</button>
+                <br>
+                <p>info</p>
+            </div>
+        </div>
+    </div><!-- /.box-end -->
+</loop>
+    <!-- /.pro-box-begin -->
+    <loop variable="$nodeVip" key="$key" value="$node">
+    <if condition="$user->plan == 'VIP'">
+    <div class="col-sm-6">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <i class="fa fa-code"></i> Pro节点 - name
+                <div class="dropdown">
+
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                        操作 <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li role="presentation"><a role="menuitem" target="_blank" tabindex="-1" href="node_json?id=1">配置文件</a></li>
+                        <li role="presentation"><a role="menuitem" target="_blank" tabindex="-1" href="node_qr?id=1">二维码</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="panel-body">
+                <button class="btn btn-primary">地址:</button>
+                <button class="btn btn-secondary">  s1.sscat.it  </button>
+                <button class="btn btn-orange">可用</button>
+                <button class="btn btn-turquoise">aes-128-cfb</button>
+                <br>
+                <p>info</p>
+            </div>
+        </div>
+    </div><!-- /.pro-box-end -->
+    <else>
+    <div class="col-sm-6">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <i class="fa fa-code"></i> Pro节点 - name
+                <div class="dropdown">
+                    你不是VIP
+                </div>
+            </div>
+            <div class="panel-body">
+                <button class="btn btn-primary">地址:</button>
+                <button class="btn btn-secondary">  s1.sscat.it  </button>
+                <button class="btn btn-orange">可用</button>
+                <button class="btn btn-turquoise">aes-128-cfb</button>
+                <br>
+                <p>info</p>
+            </div>
+        </div>
+    </div><!-- /.pro-box-end -->
+    </if>
+    </loop>
+</div>
+<import template="/panel/_footer" />

@@ -154,7 +154,7 @@ class Util
         $host = array(
             '//gravatar0.ifdream.net/avatar/',
             '//www.gravatar.com/avatar/',
-            '//cdn.css.net/avatar/',
+            'https://gravatar.css.network/avatar/',
             'http://ruby-china.org/',
             'http://gravatar.duoshuo.com/'
         ); // 前三个支持https
@@ -175,4 +175,18 @@ class Util
     public static function GetMB() {return self::MB;}
     public static function GetGB() {return self::GB;}
 
+    public static function CheckAction($link = ''){
+        global $controller;
+        $self = strtolower($_SERVER['PHP_SELF']);
+        echo 'c:' . $controller . '   -> ' . $self;
+        exit();
+        if($link == '')
+            $link = strtolower($controller);
+
+        if(strstr($self, $link)!=false){
+            echo 'active';
+        } else {
+            echo '';
+        }
+    }
 }

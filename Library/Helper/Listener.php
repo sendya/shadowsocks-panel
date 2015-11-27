@@ -28,5 +28,9 @@ class Listener {
         }
         $user = $user->GetUserByEmail($user->email);
     }
-    
+
+    public static function getController()
+    {
+        return __FUNCTION__;
+    }
 }

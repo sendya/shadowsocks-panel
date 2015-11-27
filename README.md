@@ -1,9 +1,11 @@
 Shadowsocks Panel
 ===================
 
-### 2015.11.05 
-Add Invite model. 
-
+### update
+```
+2015.11.27 : Add page template.
+2015.11.05 : Add Invite model. 
+```
 
 ### Nginx config
 
