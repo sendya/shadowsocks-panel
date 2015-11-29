@@ -11,21 +11,11 @@ jQuery(document).ready(function($) {
 	}, 1);
 	$("form#login").validate({
 		rules: {
-			email: {
-				required: true
-			},
-			passwd: {
-				required: true
-			}
-		},
+			email: {required: true},
+			passwd: {required: true}},
 		messages: {
-			email: {
-				required: "请输入用户名."
-			},
-			passwd: {
-				required: "请输入密码."
-			}
-		},
+			email: {required: "请输入用户名."},
+			passwd: {required: "请输入密码."}},
 		submitHandler: function(form) {
 			show_loading_bar(70);
 			var opts = {
@@ -43,7 +33,7 @@ jQuery(document).ready(function($) {
 				hideMethod: "fadeOut"
 			};
 			$.ajax({
-				url: "/member/login",
+				url: "/Sign/login",
 				method: "POST",
 				dataType: "json",
 				data: {
@@ -58,7 +48,7 @@ jQuery(document).ready(function($) {
 						pct: 100,
 						finish: function() {
 							if (resp.error == "0") {
-								window.location.href = "/console";
+								window.location.href = "/member";
 							} else if (resp.message != "") {
 								toastr.error(resp.message, "提示!", opts);
 								$('#email').select();
@@ -128,7 +118,7 @@ jQuery(document).ready(function($) {
 				return;
 			}
 			$.ajax({
-				url: "/member/register",
+				url: "/Sign/register",
 				method: "POST",
 				dataType: "json",
 				data: {
@@ -233,14 +223,14 @@ jQuery(document).ready(function($) {
 						</button>
 					</div>
 					<div class="form-group">
-						<button type="button" class="btn btn-dark  btn-block text-left login-button" onclick="location.href = '/member/login#login'">
+						<button type="button" class="btn btn-dark  btn-block text-left login-button" onclick="location.href = '/Sign/login#login'">
 							<i class="fa-lock"></i>
 							返 回 登 陆
 						</button>
 					</div>
 				</form>
 				<div class="external-login">
-					<a href="member/login#regiser"  class="facebook register-button">
+					<a href="Sign/login#regiser"  class="facebook register-button">
 						<i class="fa-user"></i>
 						注册账号
 					</a>

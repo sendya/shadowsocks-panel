@@ -1,6 +1,6 @@
 <?php
 /**
- * KK SS-Panel
+ * SS-Panel
  * A simple Shadowsocks management system
  * Author: Sendya <18x@loacg.com>
  */
@@ -14,17 +14,17 @@ class Listener {
     public static function checkLogin() {
         global $user;
         $user = User::getInstance();
-        if($user->uid) {
-            return true;
+        if(!$user->uid) {
+            return false;
         }
-        return false;
+        return true;
     }
 
     public function __construct() {
         global $user;
         $user = User::getInstance();
         if(!$user->uid) {
-            Response::redirect('/member/login');
+            Response::redirect('/Sign/login');
         }
         $user = $user->GetUserByEmail($user->email);
     }

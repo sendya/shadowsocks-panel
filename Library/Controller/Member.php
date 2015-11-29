@@ -1,10 +1,16 @@
 <?php
+/**
+ * SS-Panel
+ * A simple Shadowsocks management system
+ * Author: Sendya <18x@loacg.com>
+ */
 namespace Controller;
 
 use Core\Error;
 use Core\Template;
 use Helper\Listener;
 use Helper\Util;
+use Model\Invite;
 use Model\Node;
 
 class Member extends Listener {
@@ -48,8 +54,10 @@ class Member extends Listener {
     public function Invite() {
         global $user;
         $controller = __FUNCTION__;
+        $inviteList = Invite::GetInvitesByUid($user->id, 0);
+        include Template::load("panel/invite");
 
-    	throw new Error("This page is not available", 404);
+    	//throw new Error("This page is not available", 404);
     }
 
     /**
@@ -76,6 +84,23 @@ class Member extends Listener {
 
         include Template::load("panel/changeSSPassword");
     }
+
+    public function ChangeNickname() {
+        global $user;
+        $controller = __FUNCTION__;
+
+        include Template::load("panel/changeNickname");
+    }
+
+    public function ChangePlanLevel() {
+        global $user;
+        $controller = __FUNCTION__;
+
+        include Template::load("panel/changePlanLevel");
+    }
+
+
+
 
     private static function fuckInt($number) {
         if($number == null || $number == 0) return true;

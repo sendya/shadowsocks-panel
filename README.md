@@ -3,6 +3,7 @@ Shadowsocks Panel
 
 ### update
 ```
+2015.11.29 : Add page invite, changepassword..
 2015.11.27 : Add page template.
 2015.11.05 : Add Invite model. 
 ```

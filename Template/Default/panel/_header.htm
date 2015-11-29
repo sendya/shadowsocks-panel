@@ -1,8 +1,4 @@
 <import template="/panel/_head" />
-<php>
-    $gravatar = \Helper\Util::GetGravatar($user->email, 128);
-    $regTime = date("Y-m-d H:i", $user->regDateLine);
-</php>
 <body class="page-body">
 <div class="modal fade" id="modal-1" style="display: none;" aria-hidden="true">
     <div class="modal-dialog">
@@ -29,20 +25,20 @@
             <div class="col-md-6">
                 <div class="user-info">
                     <div class="user-image">
-                        <a href="/console">
-                            <img src="{$gravatar}" class="img-responsive img-circle" />
+                        <a href="/member">
+                            <img src="{$user->getGravatar()}" class="img-responsive img-circle" />
                         </a>
                     </div>
                     <div class="user-details">
                         <h3>
-                            <a href="/console">{$user->nickname}</a>
+                            <a href="/member">{$user->nickname}</a>
                             <!-- Available statuses: is-online, is-idle, is-busy and is-offline -->
                             <span class="user-status is-online"></span>
                         </h3>
                         <p class="user-title">加入时间：{$regTime}</p>
                         <div class="user-links">
                             <a href="/member/info" class="btn btn-primary">个人资料</a>
-                            <a href="/member/logout" class="btn btn-success">退出</a>
+                            <a href="/Sign/logout" class="btn btn-success">退出</a>
                         </div>
                     </div>
                 </div>
@@ -56,7 +52,7 @@
                     </h4>
                     <ul class="list-unstyled">
                         <li>
-                            <a href="javascript:;">
+                            <a href="Support/Tos">
                                 <i class="fa-angle-right"></i>
                                 支持中心
                             </a>
@@ -68,13 +64,13 @@
                             </a>
                         </li>
                         <li>
-                            <a href="javascript:;">
+                            <a href="Support/Tos">
                                 <i class="fa-angle-right"></i>
                                 使用协议
                             </a>
                         </li>
                         <li>
-                            <a href="javascript:;">
+                            <a href="Support/Tos">
                                 <i class="fa-angle-right"></i>
                                 服务条款
                             </a>
@@ -174,12 +170,12 @@
                     </a>
                     <ul>
                         <li>
-                            <a href="//gravatar.ifdream.net/" target="_blank">
+                            <a href="//gravatar.css.network/" target="_blank">
                                 <i class="entypo-flow-line"></i>
                                 <span class="title">修改头像</span>
                             </a>
                         </li>
-                        <li><a href="/tos">
+                        <li><a href="Support/Tos">
                             <i class="entypo-flow-line"></i>
                             <span class="title">关于{$SITE_NAME}</span>
                         </a>
@@ -188,7 +184,7 @@
                 </li>
                 <!-- php if -->
                 <li>
-                    <a href="/cpanel">
+                    <a href="/console">
                         <i class="linecons-cog"></i>
                         <span class="title">管理员后台</span>
                     </a>

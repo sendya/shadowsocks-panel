@@ -56,7 +56,7 @@
 
             <li class="dropdown user-profile">
                 <a href="#" data-toggle="dropdown">
-                    <img src="{$gravatar}" alt="user-image" class="img-circle img-inline userpic-32" width="28" />
+                    <img src="{$user->getGravatar()}" alt="user-image" class="img-circle img-inline userpic-32" width="28" />
 							<span>
 								{$user->nickname}
                                 <i class="fa-angle-down"></i>
@@ -65,25 +65,25 @@
 
                 <ul class="dropdown-menu user-profile-menu list-unstyled">
                     <li>
-                        <a href="/my/info">
+                        <a href="/member/info">
                             <i class="fa-user"></i>
                             个人资料
                         </a>
                     </li>
                     <li>
-                        <a href="/my/info">
+                        <a href="http://local.dev/member/ChangePassword">
                             <i class="fa-wrench"></i>
                             设置
                         </a>
                     </li>
                     <li>
-                        <a href="/my/help">
+                        <a href="Support/Help">
                             <i class="fa-info"></i>
                             帮助
                         </a>
                     </li>
                     <li class="last">
-                        <a href="member/logout">
+                        <a href="Sign/logout">
                             <i class="fa-lock"></i>
                             登出
                         </a>

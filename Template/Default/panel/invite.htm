@@ -1,16 +1,16 @@
-
-
+<import template="/panel/_header" />
+<import template="/panel/_content" />
 <div class="page-title">
 
     <div class="title-env">
         <h1 class="title">邀请码</h1>
-        <p class="description"><?php if($U->InviteNum()==0) {?>查看自己的邀请码<?php } else {?>当前您可以生成<code><?php   echo $U->InviteNum();  ?></code>个邀请码。<?php }?></p>
+        <p class="description"><if condition="$user->invite_num == 0">查看自己的邀请码<else>当前您可以生成<code>{$user->invite_num}</code>个邀请码。</if></p>
     </div>
 
     <div class="breadcrumb-env">
         <ol class="breadcrumb bc-1">
             <li>
-                <a href="/my"><i class="fa-home"></i>主页</a>
+                <a href="/member"><i class="fa-home"></i>主页</a>
             </li>
             <li class="active">
                 <strong>邀请码</strong>
@@ -22,14 +22,19 @@
 
 <div class="panel panel-default">
     <div class="panel-heading">
-        <h3 class="panel-title"><?php if($U->InviteNum()!=0) {?> <a class="btn btn-danger btn-sm invitec" href="javascript:;" style="color:#FFF;">生成邀请码</a><?php }?>&nbsp;<a class="btn btn-danger btn-sm inviteFlow" href="javascript:;" style="color:#FFF;">用流量购买邀请码</a></h3>
-        <?php if($U->InviteNum()!=0) {?>
-        <div class="panel-options">
-            <a href="javascript:;" id="invite" class="invitec" data-toggle="panel">
-                <span class="collapse-icon" title="生成邀请码">+</span>
-            </a>
-        </div>
-        <?php }?>
+        <if condition="$user->invite_num != 0">
+            <h3 class="panel-title">
+                <a class="btn btn-danger btn-sm invitec" href="javascript:;" style="color:#FFF;">生成邀请码</a>&nbsp;<a class="btn btn-danger btn-sm inviteFlow" href="javascript:;" style="color:#FFF;">用流量购买邀请码</a></h3>
+            <div class="panel-options">
+                <a href="javascript:;" id="invite" class="invitec" data-toggle="panel">
+                    <span class="collapse-icon" title="生成邀请码">+</span>
+                </a>
+            </div>
+            <else>
+                <h3 class="panel-title">
+                    <a class="btn btn-danger btn-sm inviteFlow" href="javascript:;" style="color:#FFF;">用流量购买邀请码</a>
+                </h3>
+        </if>
     </div>
     <div class="panel-body">
 
@@ -42,28 +47,27 @@
             </tr>
             </thead>
             <tbody>
-            <?php
-						        if(count($code) > 0) {
-            $a = 0;
-            foreach($code as $data ){
-            ?>
+            <if condition="$inviteList.length > 0">
+            <loop variable="$$inviteList" key="$key" value="$invite">
             <tr>
                 <td>
-                    <?php echo $a;$a++; ?>
+                    {$key}
                 </td>
                 <td>
-                    <?php echo $data['code'];?>
+                    {$invite->invite}
                 </td>
                 <td>
                     <a href="javascript:;" class="btn btn-sm btn-secondary" data-set-skin="">可用</a>
                 </td>
             </tr>
-            <?php }} else { ?>
+            </loop>
+            <else>
             <tr>
                 <td colspan="3" align="center">您没有邀请码</td>
             </tr>
-            <?php }?>
+
             </tbody>
+            </if>
         </table>
 
         <hr>
@@ -84,7 +88,7 @@
             showToastr("生成邀请码中..", 0, 2000);
             $.ajax({
                 type:"GET",
-                url:"/action/invite",
+                url:"/member/CreateInvite",
                 dataType:"json",
                 success:function(data){
                     if(data.status){
@@ -123,17 +127,4 @@
         });
     })
 </script>
-<script src="{TPL_PATH}js/bootstrap.min.js"></script>
-<script src="{TPL_PATH}js/TweenMax.min.js"></script>
-<script src="{TPL_PATH}js/resizeable.js"></script>
-<script src="{TPL_PATH}js/joinable.js"></script>
-<script src="{TPL_PATH}js/xenon-api.js"></script>
-<script src="{TPL_PATH}js/xenon-toggles.js"></script>
-<script src="{TPL_PATH}js/jquery-validate/jquery.validate.min.js"></script>
-<script src="{TPL_PATH}js/toastr/toastr.min.js"></script>
-
-<!-- JavaScripts initializations and stuff -->
-<script src="{TPL_PATH}js/xenon-custom.js"></script>
-<script>function showReg(){$("#login").hide(),$(".external-login").hide(),$("#register").show()}function hideReg(){$("#login").show(),$(".external-login").show(),$("#register").hide()}</script>
-</body>
-</html>
+<import template="/panel/_footer" />

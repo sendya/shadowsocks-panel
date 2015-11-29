@@ -1,7 +1,7 @@
 <?php
 /**
- * KK Forum
- * A simple bulletin board system
+ * SS-Panel
+ * A simple Shadowsocks management system
  * Author: kookxiang <r18@ikk.me>
  */
 namespace Model;
@@ -194,6 +194,9 @@ class User
         return $this->password;
     }
 
+    public function getGravatar() {
+        return \Helper\Util::GetGravatar($this->email, 128);
+    }
 
     public static function getSSPwd($userId) {
         $statement = Database::prepare("SELECT * FROM member WHERE uid=?");
@@ -202,6 +205,8 @@ class User
         $statement->setFetchMode(\PDO::FETCH_CLASS, '\\Model\\User');
         return $statement->fetch(\PDO::FETCH_CLASS);
     }
+
+
 
 
 }

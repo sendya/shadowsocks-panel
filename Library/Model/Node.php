@@ -1,10 +1,9 @@
 <?php
 /**
  * SS-Panel
- * A simple bulletin board system
- * Author: Sendya <18x@mloli.com>
+ * A simple Shadowsocks management system
+ * Author: Sendya <18x@loacg.com>
  */
-
 namespace Model;
 
 use Core\Database;
