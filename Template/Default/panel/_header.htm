@@ -35,10 +35,10 @@
                             <!-- Available statuses: is-online, is-idle, is-busy and is-offline -->
                             <span class="user-status is-online"></span>
                         </h3>
-                        <p class="user-title">加入时间：{$regTime}</p>
+                        <p class="user-title">加入时间：{$user->getRegTime()}</p>
                         <div class="user-links">
                             <a href="/member/info" class="btn btn-primary">个人资料</a>
-                            <a href="/Sign/logout" class="btn btn-success">退出</a>
+                            <a href="/auth/Logout" class="btn btn-success">退出</a>
                         </div>
                     </div>
                 </div>

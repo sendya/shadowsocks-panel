@@ -12,7 +12,7 @@ if(!defined('ROOT_PATH'))
 /**
  * Site Name
  */
-define('SITE_NAME', 'Suki.im');
+define('SITE_NAME', 'SS Cat');
 /**
  * Template Name
  */

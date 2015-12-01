@@ -30,7 +30,7 @@ class Member extends Listener {
         $all_transfer = Util::FlowAutoShow($user->transfer);//共有流量
         $flow = round($flow / Util::GetMB(), 2);
         $checkin = false;//是否可以签到
-        $checkinTime = date("Y-m-d h:i", $user->lastCheckinTime);
+        $checkinTime = date("m-d h:i", $user->lastCheckinTime);
         if((time() - 3600*24) < $user->lastCheckinTime) $checkin = true;
 
         include Template::load("panel/member");

@@ -13,7 +13,7 @@ use Helper\Listener;
 use Model\Invite;
 use Model\User as UserModel;
 
-class Sign {
+class Auth {
 
     public function index()
     {
@@ -96,8 +96,9 @@ class Sign {
             $user->invite = $inviteCode;
             $user->regDateLine = time();
             $user->sspwd = Util::GetRandomPwd();
-            $user->port = 10000;
             $user->insertToDB();
+            $user->port = $user->uid;
+            $user->updateUser();
             $user->savePassword($passwd);
 
             if (null != $user->uid && 0 != $user->uid) {

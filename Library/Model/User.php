@@ -29,10 +29,10 @@ class User
     public $invite = '';//注册所用的邀请码
     public $invite_num = 0;//用户拥有的邀请码
     public $regDateLine = 0;//注册时间
-    public $lastConnTime;//上次使用时间
-    public $lastCheckinTime;//上次签到时间
-    public $lastFindPasswdTime;//上次找回密码时间 (找回密码时间和次数仅用作限制3次或?次后禁止找回)
-    public $lastFindPasswdCount;//找回密码次数
+    public $lastConnTime =0;//上次使用时间
+    public $lastCheckinTime =0;//上次签到时间
+    public $lastFindPasswdTime =0;//上次找回密码时间 (找回密码时间和次数仅用作限制3次或?次后禁止找回)
+    public $lastFindPasswdCount =0;//找回密码次数
 
     public static $instance;
 
@@ -192,6 +192,10 @@ class User
      */
     public function getPassword() {
         return $this->password;
+    }
+
+    public function getRegTime() {
+        return date("Y-m-d H:i:s", $this->regDateLine);
     }
 
     public function getGravatar() {

@@ -146,7 +146,7 @@ class Util
 
     public static function GetRandomPwd()
     {
-        return htmlspecialchars(GetRandomChar(8), ENT_QUOTES, 'UTF-8');
+        return htmlspecialchars(Util::GetRandomChar(8), ENT_QUOTES, 'UTF-8');
     }
 
     //Gravatar
