@@ -77,8 +77,8 @@ class Auth {
         $passwd = $_POST['r_passwd'];
         $repasswd = $_POST['r_passwd2'];
         $inviteCode = $_POST['r_invite'];
-        $invite = Invite::GetInviteByInvite($inviteCode); //校验 invite 是否可用
-        if ($invite->status != 0) {
+        $invite = Invite::GetInviteByInviteCode($inviteCode); //校验 invite 是否可用
+        if ($invite->status != 0 || $invite == null || empty($invite)) {
             $result['message'] = '邀请码不可用';
         } else if ($repasswd != $passwd) {
             $result['message'] = '两次密码输入不一致';
@@ -94,10 +94,17 @@ class Auth {
             $user->nickname = $userName;
             $user->transfer = Util::GetGB() * TRANSFER; // 流量大小
             $user->invite = $inviteCode;
+            $user->plan = $invite->plan;//将邀请码的账户类型设定到注册用户上.
             $user->regDateLine = time();
+            $user->lastConnTime = $user->regDateLine;
             $user->sspwd = Util::GetRandomPwd();
             $user->insertToDB();
             $user->port = $user->uid;
+            $invite->reguid = $user->uid;
+            $invite->regDateLine = $user->regDateLine;
+            $invite->status = 1; //-1过期 0-未使用 1-已用
+            $invite->inviteIp = Util::GetUserIP();
+            $invite->updateInvite();
             $user->updateUser();
             $user->savePassword($passwd);
 
@@ -110,6 +117,5 @@ class Auth {
         echo json_encode($result);
         exit();
     }
-
 
 }

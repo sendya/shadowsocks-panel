@@ -43,6 +43,7 @@ jQuery(document).ready(function($) {
 					remember_me: document.getElementById('remember_me').checked==true ? 'week' : ''
 				},
 				success: function(resp) {
+					console.log(resp);
 					show_loading_bar({
 						delay: .5,
 						pct: 100,

@@ -114,7 +114,7 @@
                 端口：<code>{$user->port}</code><br />
                 密码：<span id="showpwd"><b>点击显示密码</b></span><br />
                 套餐： <span class="label label-info">{$user->plan}</span>   &nbsp;<span class="btn btn-sm btn-secondary" id="updatePlan" style="padding: 1px;margin-bottom: 0px;"> 升级套餐 </span>   &nbsp;<span class="btn btn-sm btn-secondary" id="planList" style="padding: 1px;margin-bottom: 0px;"> 套餐详情 </span></span><br /><br />
-                最后使用时间：<code>{date('Y-m-d H:i:s', time())}</code>
+                最后使用时间：<code>{$lastConnTime}</code>
 
             </div>
             <div class="chart-right-legend">

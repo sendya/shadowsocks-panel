@@ -44,10 +44,10 @@ class Invite
      * @param $invite string Invite code
      * @return Invite
      */
-    public static function GetInviteByInvite($invite)
+    public static function GetInviteByInviteCode($invite)
     {
-        $statement = Database::prepare("SELECT * FROM invite WHERE ivite=?");
-        $statement->bindValue(1, $invite);
+        $statement = Database::prepare("SELECT * FROM invite AS t1 WHERE t1.invite=?");
+        $statement->bindValue(1, $invite, \PDO::PARAM_STR);
         $statement->execute();
         $statement->setFetchMode(\PDO::FETCH_CLASS, '\\Model\\Invite');
         return $statement->fetch(\PDO::FETCH_CLASS);
@@ -59,7 +59,6 @@ class Invite
      */
     public static function GetInvitesCount()
     {
-        $inviteCount = 0;
         $statement = Database::prepare("SELECT count(*) FROM invite");
         $statement->execute();
         $inviteCount = $statement->fetch(\PDO::FETCH_NUM);
@@ -97,15 +96,21 @@ class Invite
 
     public function updateInvite()
     {
-        $statement = null;
+        $inTransaction = Database::inTransaction();
+        if (!$inTransaction) {
+            Database::beginTransaction();
+        }
         $statement = Database::prepare("UPDATE invite SET expiration=:expiration,
-			`reguid`=:reguid, `regDateLine`=:regDateLine, `status`=:status WHERE invite=:invite");
+			`reguid`=:reguid, `regDateLine`=:regDateLine, `status`=:status, `inviteIp`=:inviteIp WHERE invite=:invite");
         $statement->bindValue(':expiration', $this->expiration, \PDO::PARAM_INT);
         $statement->bindValue(':reguid', $this->reguid, \PDO::PARAM_INT);
         $statement->bindValue(':regDateLine', $this->regDateLine, \PDO::PARAM_INT);
         $statement->bindValue(':status', $this->status, \PDO::PARAM_INT);
+        $statement->bindValue(':inviteIp', $this->inviteIp, \PDO::PARAM_STR);
         $statement->bindValue(':invite', $this->invite, \PDO::PARAM_STR);
         $statement->execute();
-        Database::commit();
+        if (!$inTransaction) {
+            Database::commit();
+        }
     }
 }

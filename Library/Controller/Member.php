@@ -31,8 +31,8 @@ class Member extends Listener {
         $flow = round($flow / Util::GetMB(), 2);
         $checkin = false;//是否可以签到
         $checkinTime = date("m-d h:i", $user->lastCheckinTime);
+        $lastConnTime = date("Y-m-d h:i:s", $user->lastConnTime);
         if((time() - 3600*24) < $user->lastCheckinTime) $checkin = true;
-
         include Template::load("panel/member");
     }
     //2015.11.10 start
