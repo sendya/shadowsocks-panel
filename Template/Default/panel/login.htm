@@ -17,6 +17,7 @@ jQuery(document).ready(function($) {
 			email: {required: "请输入用户名."},
 			passwd: {required: "请输入密码."}},
 		submitHandler: function(form) {
+			$('button[type="submit"]').attr('disabled',"true");
 			show_loading_bar(70);
 			var opts = {
 				closeButton: true,
@@ -32,6 +33,7 @@ jQuery(document).ready(function($) {
 				showMethod: "fadeIn",
 				hideMethod: "fadeOut"
 			};
+
 			$.ajax({
 				url: "/auth/Login",
 				method: "POST",
@@ -43,7 +45,7 @@ jQuery(document).ready(function($) {
 					remember_me: document.getElementById('remember_me').checked==true ? 'week' : ''
 				},
 				success: function(resp) {
-					console.log(resp);
+					$('button[type="submit"]').removeAttr("disabled");
 					show_loading_bar({
 						delay: .5,
 						pct: 100,
@@ -100,6 +102,7 @@ jQuery(document).ready(function($) {
 			}
 		},
 		submitHandler: function(form) {
+			$('button[type="submit"]').attr('disabled',"true");
 			show_loading_bar(70);
 			var opts = {
 				closeButton: true,
@@ -132,6 +135,7 @@ jQuery(document).ready(function($) {
 					r_invite: $(form).find("#r_invite").val()
 				},
 				success: function(resp) {
+					$('button[type="submit"]').removeAttr("disabled");
 					show_loading_bar({
 						delay: .5,
 						pct: 100,
@@ -188,9 +192,9 @@ jQuery(document).ready(function($) {
 					</div>
 					<div class="login-footer">
 					    <a href="/invite">获取获取邀请码</a>&nbsp;
-						<a href="/forgePwd">找回密码?</a>
+						<a href="/Auth/forgePwd">找回密码?</a>
 						<div class="info-links">
-							<a href="/tos">Tos</a>
+							<a href="/Support/tos">Tos</a>
 						</div>
 					</div>
 				</form>
@@ -216,7 +220,7 @@ jQuery(document).ready(function($) {
 						<input type="password" class="form-control input-dark" name="r_passwd2" id="r_passwd2" autocomplete="off" placeholder="重复密码" />
 					</div>
 					<div class="form-group">
-						<input type="text" class="form-control input-dark" name="r_invite" id="r_invite" autocomplete="off" placeholder="邀请码" />
+						<input type="text" class="form-control input-dark" name="r_invite" id="r_invite" value="{($_GET['invite'])}" autocomplete="off" placeholder="邀请码" />
 					</div>
 					<div class="form-group">
 						<button type="submit" class="btn btn-dark  btn-block text-left">
@@ -242,24 +246,9 @@ jQuery(document).ready(function($) {
 	</div>
 	<script>
 		jQuery(document).ready(function($) {
-
-			$(".register-button").click(function(){
-				$("#login").hide(); $(".external-login").hide(); $("#register").show();
-			});
-			$(".login-button").click(function(){
-				$("#login").show(); $(".external-login").show(); $("#register").hide();
-			});
-
-			var localhash = location.hash;
-			console.log(location.href.substring(0, location.href.lastIndexOf('#')));
-			if (localhash == '#register') {
-				console.log("in register");
-				$(".register-button").click();
-
-			} else {
-				console.log("in login");
-				$(".login-button").click();
-			}
+			$(".register-button").click(function(){$("#login").hide(); $(".external-login").hide(); $("#register").show();});
+			$(".login-button").click(function(){$("#login").show(); $(".external-login").show(); $("#register").hide();});
+			if (location.hash == '#register') {$(".register-button").click();} else {$(".login-button").click();}
 		});
 	</script>
-	<import template="/panel/_footer" />
+		<import template="/panel/_footer" />

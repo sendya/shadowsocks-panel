@@ -21,11 +21,18 @@ class Listener {
     }
 
     public function __construct() {
-        global $user;
+        global $user, $tokenOut;
         $user = User::getInstance();
         if(!$user->uid) {
             Response::redirect('/Auth/login');
         }
+        $tokenOut = (time() - Encrypt::decode(base64_decode(@$_COOKIE['token'])));
+        if($tokenOut > 3600 && strstr(\Core\Request::getRequestPath(),'lockscreen') == false) {
+            $token = Encrypt::encode(time(), COOKIE_KEY);
+            setcookie("token",base64_encode($token), time()+3600*24*7, "/");
+            Response::redirect('/Auth/lockscreen');
+        }
+
         $user = $user->GetUserByEmail($user->email);
     }
 

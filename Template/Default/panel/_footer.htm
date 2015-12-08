@@ -1,4 +1,4 @@
-<if condition="$controller != 'Login' && $controller != 'lockscreen'">
+<if condition="$controllerName != 'Login' && $controllerName != 'Lockscreen' && $controllerName != 'Invite' && $controllerName != 'Tos' ">
 <footer class="main-footer sticky footer-type-1">
 
     <div class="footer-inner">
@@ -26,7 +26,9 @@
 <script src="{TPL_PATH}js/xenon-toggles.js"></script>
 <script src="{TPL_PATH}js/jquery-validate/jquery.validate.min.js"></script>
 <script src="{TPL_PATH}js/toastr/toastr.min.js"></script>
-
+<script src="{TPL_PATH}js/xenon-widgets.js"></script>
+<script src="{TPL_PATH}js/devexpress-web-14.1/js/globalize.min.js"></script>
+<script src="{TPL_PATH}js/devexpress-web-14.1/js/dx.chartjs.js"></script>
 <!-- JavaScripts initializations and stuff -->
 <script src="{TPL_PATH}js/xenon-custom.js"></script>
 </body>

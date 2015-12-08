@@ -170,6 +170,16 @@ class Util
         return $url;
     }
 
+    public static function Lockscreen() {
+        $tokenOut = (time() - Encrypt::decode(base64_decode(@$_COOKIE['token'])));
+        if($tokenOut > 3600 && strstr(\Core\Request::getRequestPath(),'lockscreen') == false) {
+            $token = Encrypt::encode(time(), COOKIE_KEY);
+            setcookie("token",base64_encode($token), time()+3600*24*7, "/");
+            return true;
+        }
+        return false;
+    }
+
     // ----- get value
     public static function GetKB() {return self::KB;}
     public static function GetMB() {return self::MB;}

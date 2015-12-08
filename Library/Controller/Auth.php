@@ -9,7 +9,6 @@ namespace Controller;
 use Core\Template;
 use Helper\Util;
 use Helper\Encrypt;
-use Helper\Listener;
 use Model\Invite;
 use Model\User as UserModel;
 
@@ -29,8 +28,8 @@ class Auth {
          * 2. 加载登陆页面模板,进入登陆页面.
          */
         //throw new Error("Check Login :" . Listener::checkLogin(), 505);
-
-        if (Listener::checkLogin()) {
+        $user = UserModel::getInstance();
+        if (!$user->uid) {
             header("Location:/Member");
         } else if (isset($_REQUEST['email']) && isset($_REQUEST['passwd'])) {
             $result = array('error' => 1, 'message' => '账户不存在啊喂!');
@@ -46,9 +45,11 @@ class Auth {
                     $result['error'] = 0;
                     $result['message'] = '登陆成功,即将跳转到 &gt;仪表盘';
 
+                    $remember_me == 'week' ? $ext = 3600 * 24 * 7 : $ext = 3600;
                     $token = $user->uid . "\t" . $user->email . "\t" . $user->nickname;
                     $token = Encrypt::encode($token, COOKIE_KEY);
-                    $remember_me == 'week' ? $ext = 3600 * 24 * 7 : $ext = 3600;
+                    $tokenOutTime = Encrypt::encode(time(), COOKIE_KEY);
+                    setcookie("token",base64_encode($tokenOutTime), time() + $ext*7, "/");
                     setcookie("auth", base64_encode($token), time() + $ext, "/");
                 } else {
                   $result['message'] = "账户名或密码错误, 请检查后再试!";
@@ -62,9 +63,20 @@ class Auth {
         }
     }
 
+    public function Lockscreen() {
+        global $user;
+        if(!\Helper\Listener::checkLogin()) {
+            \Core\Response::redirect('/Auth/login');
+            exit();
+        }
+        include Template::load('/panel/lockscreen');
+
+    }
+
     public function logout()
     {
         setcookie("auth", '', time() - 3600, "/");
+        setcookie("token", '', time() - 3600, "/");
         header("Location:/");
     }
 
@@ -116,6 +128,10 @@ class Auth {
 
         echo json_encode($result);
         exit();
+    }
+
+    public function forgePwd() {
+
     }
 
 }

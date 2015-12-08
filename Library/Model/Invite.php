@@ -26,11 +26,11 @@ class Invite
      *  @param $uid int, user id
      *  @param $status int, invite code status (0-Available, 1-unavailable, -1Expired)
      */
-    public static function GetInvitesByUid($uid, $status)
+    public static function GetInvitesByUid($uid = -1, $status = "")
     {
         $inviteList = null;
         $selectSQL = "SELECT * FROM invite WHERE 1=1 ";
-        if (isset($uid) && "-1" != $uid) $selectSQL .= "AND uid={$uid} ";
+        if (isset($uid) && -1 != $uid) $selectSQL .= "AND uid={$uid} ";
         if (isset($status) && "" != $status) $selectSQL .= "AND status={$status} ";
         $selectSQL .= "ORDER BY dateLine DESC";
         $statement = Database::prepare($selectSQL);
