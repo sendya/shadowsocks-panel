@@ -8,6 +8,9 @@ Shadowsocks Panel
 						 Fix inviteCode check
 						 Fix inivte update info
 						 Fix member lastConnTime
+						 ...
+						 Add Message model & db sql
+						 Fix member node number count
 2015.11.29 : Add page invite, changepassword..
 2015.11.27 : Add page template.
 2015.11.05 : Add Invite model. 

@@ -48,9 +48,12 @@ class Node {
 	 * 取总节点数
 	 * @return mixed
 	 */
-	public static function GetNodeCount() {
+	public static function GetNodeCount($status = 0) {
+		$sql = "SELECT count(*) FROM node";
+		if($status == 1)
+			$sql .= " WHERE status={$status}";
 
-		$statement = Database::prepare("SELECT count(*) FROM node");
+		$statement = Database::prepare($sql);
 		$statement->execute();
 		$nodeCount = $statement->fetch(\PDO::FETCH_NUM);
 
@@ -87,10 +90,12 @@ class Node {
 	 * @param $nodeId  Int
 	 */
 	public static function deleteNode($nodeId) {
-
+		$inTransaction = Database::inTransaction();
+		if(!$inTransaction) Database::beginTransaction();
 		$statement = Database::prepare("DELETE * FROM node WHERE id=:id");
 		$statement->bindValue(':id', $nodeId, \PDO::PARAM_INT);
-		Database::commit();
+		$statement->execute();
+		if(!$inTransaction) Database::commit();
 	}
 
 	/**
@@ -98,8 +103,6 @@ class Node {
 	 * @param $node
 	 */
 	public function UpdateNode() {
-		$statement = null;
-
 		$statement = Database::prepare("UPDATE node SET `name`=:name, `type`=:type,
 			`server`=:server, `method`=:method, `info`=:info, `status`:=status, `order`=:order WHERE id=:id");
 		$statement->bindValue(':name', $this->name, \PDO::PARAM_STR);
