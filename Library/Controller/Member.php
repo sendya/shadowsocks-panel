@@ -17,7 +17,6 @@ class Member extends Listener {
     
     public function Index() {
         global $user;
-        $controller = __FUNCTION__;
         $serverCount = \Model\Node::GetNodeCount();
 
         $flow = $user->flow_up + $user->flow_down;//已用
@@ -38,7 +37,6 @@ class Member extends Listener {
     //2015.11.10 start
     public function Node() {
         global $user;
-        $controller = __FUNCTION__;
 
         $nodes = Node::GetNodeArray(0);
         $nodeVip = Node::GetNodeArray(1);
@@ -53,7 +51,6 @@ class Member extends Listener {
      */
     public function Invite() {
         global $user;
-        $controller = __FUNCTION__;
         $inviteList = Invite::GetInvitesByUid($user->id, 0);
         include Template::load("panel/invite");
 
@@ -66,35 +63,29 @@ class Member extends Listener {
      */
     public function Info() {
         global $user;
-        $controller = __FUNCTION__;
 
         include Template::load("panel/info");
     }
 
     public function ChangePassword() {
         global $user;
-        $controller = __FUNCTION__;
 
         include Template::load("panel/changePassword");
     }
 
     public function ChangeSSPassword() {
         global $user;
-        $controller = __FUNCTION__;
-
         include Template::load("panel/changeSSPassword");
     }
 
     public function ChangeNickname() {
         global $user;
-        $controller = __FUNCTION__;
 
         include Template::load("panel/changeNickname");
     }
 
     public function ChangePlanLevel() {
         global $user;
-        $controller = __FUNCTION__;
 
         include Template::load("panel/changePlanLevel");
     }

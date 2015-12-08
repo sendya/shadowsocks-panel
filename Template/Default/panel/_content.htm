@@ -1,3 +1,8 @@
+<php>
+    global $user;
+    $messageList = \Model\Message::GetPushMsgByUserId($user->uid);
+    $messageCount = count($messageList);
+</php>
 <div class="main-content">
     <nav class="navbar user-info-navbar" role="navigation">
         <ul class="user-info-menu left-links list-inline list-unstyled">
@@ -18,29 +23,25 @@
                     <li class="top">
                         <p class="small">
                             <a href="javascript:;" class="pull-right">全部标记已读</a>
-                            你有 <strong>0</strong> 条新的消息.
+                            你有 <strong>{$messageCount}</strong> 条新的消息.
                         </p>
                     </li>
 
                     <li>
                         <ul class="dropdown-menu-list list-unstyled ps-scrollbar">
-                            <li class="active notification-success">
+                            <loop variable="$messageList" key="$key" value="$message">
+                            <li class="active notification-success" id="id-{$message->id}">
+                                <!-- active notification-secondary -->
                                 <a href="javascript:;">
                                     <i class="fa-user"></i>
+                                    <!-- fa-lock -->
 											<span class="line">
-												<strong>即日实行收费服务制</strong>
+												<strong>{$message->content}</strong>
 											</span>
-                                    <span class="line small time">09/02 PM08:00</span>
+                                    <span class="line small time">{(date("Y-m-d H:i:s", $message->pushTime))}</span>
                                 </a>
                             </li>
-
-                            <li class="active notification-secondary">
-                                <a href="javascript:;">
-                                    <i class="fa-lock"></i>
-                                    <span class="line"><strong>Suki-S6 停止公告</strong></span>
-                                    <span class="line small time">09/06 AM10:20</span>
-                                </a>
-                            </li>
+                            </loop>
                         </ul>
                     </li>
                     <li class="external">

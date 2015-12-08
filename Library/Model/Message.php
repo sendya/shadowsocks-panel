@@ -11,13 +11,13 @@ use Core\Database;
 class Message
 {
     public $id;
-    public $content; //ÄÚÈÝ
-    public $pushTime; //ÍÆËÍÊ±¼ä
-    public $addTime; //Ìí¼ÓÊ±¼ä
-    public $pushUsers; //ÍÆËÍÓÃ»§ Îª¿Õ»ò-1ÖµÍÆËÍ¸øËùÓÐÓÃ»§ Ö¸¶¨ÓÃ»§£¬Ê¹ÓÃjson¸ñÊ½,Àý×Ó{1,3,4,5,6,7,10,11}
-    public $type; //ÏûÏ¢ÀàÐÍ£º 0 Õý³£ÏûÏ¢(ÍÆËÍÒ»´Îºó½«²»»áÔÙ´ÎÌáÊ¾) 1 ÖØ¸´ÍÆËÍÏûÏ¢
-    public $pushEndTime; //½áÊøÍÆËÍÊ±¼ä
-    public $order;
+    public $content; //å†…å®¹
+    public $pushTime; //æŽ¨é€æ—¶é—´
+    public $addTime; //æ·»åŠ æ—¶é—´
+    public $pushUsers; //æŽ¨é€ç”¨æˆ· ä¸ºç©ºæˆ–-1å€¼æŽ¨é€ç»™æ‰€æœ‰ç”¨æˆ· æŒ‡å®šç”¨æˆ·ï¼Œä½¿ç”¨jsonæ ¼å¼,ä¾‹å­{1,3,4,5,6,7,10,11}
+    public $type = 0; //æ¶ˆæ¯ç±»åž‹ï¼š 0 æ­£å¸¸æ¶ˆæ¯(æŽ¨é€ä¸€æ¬¡åŽå°†ä¸ä¼šå†æ¬¡æç¤º) 1 é‡å¤æŽ¨é€æ¶ˆæ¯
+    public $pushEndTime; //ç»“æŸæŽ¨é€æ—¶é—´
+    public $order = 0;
 
     /**
      * Get message by Id
@@ -47,6 +47,20 @@ class Message
     }
 
     /**
+     * Get push message by userId
+     * @param $userId
+     * @return message list
+     */
+    public static function GetPushMsgByUserId($userId) {
+        $statement = Database::prepare("SELECT * FROM message WHERE LOCATE(?, pushUsers)>0 AND pushEndTime>?");
+        $statement->bindValue(1, "\"".$userId."\"", \PDO::PARAM_STR);
+        $statement->bindValue(2, time(), \PDO::PARAM_INT);
+        $statement->execute();
+        $list = $statement->fetchAll(\PDO::FETCH_CLASS, '\\Model\\Message');
+        return $list;
+    }
+
+    /**
      * Delete push time out message
      */
     public static function DeleteOutTimeMsg() {
@@ -67,13 +81,13 @@ class Message
         $inTransaction = Database::inTransaction();
         if(!$inTransaction) Database::beginTransaction();
         $statement = Database::prepare("INSERT INTO message SET `content`=:content, `pushTime`=:pushTime,
-			`addTime`=:addTime, `pushUsers`=:pushUsers, `type`=:type, `pushEndTime`:=pushEndTime, `order`=:order");
-        $statement->bindValue(':content', $this->name, \PDO::PARAM_STR);
-        $statement->bindValue(':pushTime', $this->type, \PDO::PARAM_INT);
-        $statement->bindValue(':addTime', $this->server, \PDO::PARAM_INT);
-        $statement->bindValue(':pushUsers', $this->method, \PDO::PARAM_STR);
-        $statement->bindValue(':type', $this->info, \PDO::PARAM_INT);
-        $statement->bindValue(':pushEndTime', $this->status, \PDO::PARAM_INT);
+			`addTime`=:addTime, `pushUsers`=:pushUsers, `type`=:type, `pushEndTime`=:pushEndTime, `order`=:order");
+        $statement->bindValue(':content', $this->content, \PDO::PARAM_STR);
+        $statement->bindValue(':pushTime', $this->pushTime, \PDO::PARAM_INT);
+        $statement->bindValue(':addTime', $this->addTime, \PDO::PARAM_INT);
+        $statement->bindValue(':pushUsers', $this->pushUsers, \PDO::PARAM_STR);
+        $statement->bindValue(':type', $this->type, \PDO::PARAM_INT);
+        $statement->bindValue(':pushEndTime', $this->pushEndTime, \PDO::PARAM_INT);
         $statement->bindValue(':order', $this->order, \PDO::PARAM_INT);
         $statement->execute();
         $this->id = Database::lastInsertId();
