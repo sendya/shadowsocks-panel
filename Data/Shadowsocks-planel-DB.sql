@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50538
 File Encoding         : 65001
 
-Date: 2015-12-08 14:08:45
+Date: 2015-12-08 17:56:20
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -56,7 +56,7 @@ CREATE TABLE `member` (
   `lastFindPasswdTime` int(11) NOT NULL DEFAULT '0' COMMENT '找回密码时间(临时记录用而已)',
   `lastFindPasswdCount` tinyint(255) NOT NULL DEFAULT '0' COMMENT '找回密码次数(临时记录用而已)',
   PRIMARY KEY (`uid`)
-) ENGINE=InnoDB AUTO_INCREMENT=10000 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for message
@@ -67,12 +67,12 @@ CREATE TABLE `message` (
   `content` varchar(500) DEFAULT NULL COMMENT '内容',
   `pushTime` int(11) NOT NULL DEFAULT '0' COMMENT '推送时间',
   `addTime` int(11) NOT NULL DEFAULT '0' COMMENT '添加时间',
-  `pushUsers` varchar(255) DEFAULT NULL COMMENT '消息推送给用户，空或 -1将推送给所有用户',
-  `type` tinyint(3) NOT NULL DEFAULT '0' COMMENT '消息类型：0 正常消息，1 重复推送',
+  `pushUsers` varchar(1000) DEFAULT NULL COMMENT '消息推送给用户，空或 -1将推送给所有用户',
+  `type` int(3) NOT NULL DEFAULT '0' COMMENT '消息类型：-1 重复推送，0 正常消息，大于0 推送次数',
   `pushEndTime` int(11) NOT NULL DEFAULT '0' COMMENT '结束推送时间',
-  `order` int(3) DEFAULT NULL,
+  `order` int(3) DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1008 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for node
