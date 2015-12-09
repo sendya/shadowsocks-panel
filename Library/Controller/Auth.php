@@ -104,11 +104,11 @@ class Auth {
     public function register()
     {
         $result = array('error' => 1, 'message' => '注册失败');
-        $email = strtolower($_POST['r_email']);
-        $userName = $_POST['r_user_name'];
-        $passwd = $_POST['r_passwd'];
-        $repasswd = $_POST['r_passwd2'];
-        $inviteCode = $_POST['r_invite'];
+        $email = strtolower(trim($_POST['r_email']));
+        $userName = trim($_POST['r_user_name']);
+        $passwd = trim($_POST['r_passwd']);
+        $repasswd = trim($_POST['r_passwd2']);
+        $inviteCode = trim($_POST['r_invite']);
         $invite = Invite::GetInviteByInviteCode($inviteCode); //校验 invite 是否可用
         if ($invite->status != 0 || $invite == null || empty($invite)) {
             $result['message'] = '邀请码不可用';
