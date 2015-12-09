@@ -114,60 +114,60 @@
                 </div>
             </header>
             <ul id="main-menu" class="main-menu">
-                <li class="opened <php>if($controller==ucfirst('index')) echo 'active'</php>">
-                <a href="/member">
+                <li class="{(\Helper\Util::CheckAction('member', 'opened'))}">
+                <a href="/member" class="pjax">
                     <i class="linecons-cog"></i>
                     <span class="title">仪表盘</span>
                 </a>
                 </li>
-                <li class="<php>if($controller==ucfirst('node')) echo 'active'</php>">
-                <a href="/member/node">
+                <li class="{(\Helper\Util::CheckAction('node'))}">
+                <a href="/member/node" class="pjax">
                     <i class="linecons-params "></i>
                     <span class="title">节点列表</span>
                     <span class="label label-success pull-right">{$openNode}/{$allNode}</span>
                 </a>
                 </li>
-                <li class="<php>if($controller==ucfirst('info')) echo 'active'</php>">
-                <a href="/member/info">
+                <li class="{(\Helper\Util::CheckAction('info'))}">
+                <a href="/member/info" class="pjax">
                     <i class="linecons-user "></i>
                     <span class="title">个人资料</span>
                 </a>
                 </li>
-                <li class="<php>if(strstr($controller,ucfirst('Change'))!='') echo 'active has-sub expanded'</php>">
+                <li class="{(\Helper\Util::CheckAction('Change', ' opened expanded'))} has-sub">
                 <a href="javascript:;">
                     <i class="linecons-user"></i>
                     <span class="title">资料修改</span>
                 </a>
-                <ul style="<php>if(strstr($controller,ucfirst('Change'))!='') echo 'display: block;'</php>">
-                    <li class="<php>if(strstr($controller,ucfirst('ChangePassword'))!='') echo 'active'</php>">
-                    <a href="/member/ChangePassword">
+                <ul>
+                    <li class="{(\Helper\Util::CheckAction('ChangePassword'))}">
+                    <a href="/member/ChangePassword" class="pjax">
                         <span class="title">修改网站登陆密码</span>
                     </a>
                     </li>
-                    <li class="<php>if(strstr($controller,ucfirst('ChangeSSPassword'))!='') echo 'active'</php>">
-                    <a href="/member/ChangeSSPassword">
+                    <li class="{(\Helper\Util::CheckAction('ChangeSSPassword'))}">
+                    <a href="/member/ChangeSSPassword" class="pjax">
                         <span class="title">修改SS连接密码</span>
                     </a>
                     </li>
-                    <li class="<php>if(strstr($controller,ucfirst('ChangeNickname'))!='') echo 'active'</php>">
-                    <a href="/member/ChangeNickname">
+                    <li class="{(\Helper\Util::CheckAction('ChangeNickname'))}">
+                    <a href="/member/ChangeNickname" class="pjax">
                         <span class="title">修改用户昵称</span>
                     </a>
                     </li>
-                    <li class="<php>if(strstr($controller,ucfirst('ChangePlanLevel'))!='') echo 'active'</php>">
-                    <a href="/member/ChangePlanLevel">
+                    <li class="{(\Helper\Util::CheckAction('ChangePlanLevel'))}">
+                    <a href="/member/ChangePlanLevel" class="pjax">
                         <span class="title">升级账户</span>
                     </a>
                     </li>
                 </ul>
                 </li>
-                <li class="<php>if($controller==ucfirst('invite')) echo 'active'</php>">
-                <a href="/member/invite">
+                <li class="{(\Helper\Util::CheckAction('invite'))}">
+                <a href="/member/invite" class="pjax">
                     <i class="linecons-heart "></i>
                     <span class="title">邀请好友</span>
                 </a>
                 </li>
-                <li>
+                <li class="has-sub">
                     <a href="javascript:;">
                         <i class="linecons-paper-plane"></i>
                         <span class="title">SS服务</span>

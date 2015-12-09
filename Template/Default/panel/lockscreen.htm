@@ -4,71 +4,7 @@
 <div class="login-container">
     <div class="row">
         <div class="col-sm-7">
-            <script type="text/javascript">
-                jQuery(document).ready(function($) {
-                    setTimeout(function() {
-                        $(".fade-in-effect").addClass("in");
-                    }, 1);
-                    $(".user-thumb a").on("click", function(ev) {
-                        ev.preventDefault();
-                        $("#passwd").focus();
-                    });
-                    $(".lockcreen-form").validate({
-                        rules:{
-                            passwd:{
-                                required:true
-                            }
-                        },
-                        messages:{
-                            passwd:{
-                                required:"Please enter your password."
-                            }
-                        },
-                        submitHandler:function(form) {
-                            show_loading_bar(70);
-                            var passwd_k = $(form).find("#passwd"), opts = {
-                                closeButton:true,
-                                debug:false,
-                                positionClass:"toast-top-full-width",
-                                onclick:null,
-                                showDuration:"300",
-                                hideDuration:"1000",
-                                timeOut:"5000",
-                                extendedTimeOut:"1000",
-                                showEasing:"swing",
-                                hideEasing:"linear",
-                                showMethod:"fadeIn",
-                                hideMethod:"fadeOut"
-                            };
-                            $.ajax({
-                                url:"/action/lockCheck",
-                                method:"POST",
-                                dataType:"json",
-                                data:{
-                                    do_login:true,
-                                    email:$("#email").val(),
-                                    passwd:passwd_k.val()
-                                },
-                                success:function(resp) {
-                                    show_loading_bar({
-                                        delay:.5,
-                                        pct:100,
-                                        finish:function() {
-                                            if (resp.status) {
-                                                window.location.href = "/my";
-                                            } else {
-                                                toastr.error(resp.msg, "Invalid Login!", opts);
-                                                passwd_k.select();
-                                            }
-                                        }
-                                    });
-                                }
-                            });
-                        }
-                    });
-                    $("form#lockscreen .form-group:has(.form-control):first .form-control").focus();
-                });
-            </script>
+            <script type="text/javascript">jQuery(document).ready(function($){setTimeout(function(){$(".fade-in-effect").addClass("in");},1);$(".user-thumb a").on("click",function(ev){ev.preventDefault();$("#passwd").focus();});$(".lockcreen-form").validate({rules:{passwd:{required:true}},messages:{passwd:{required:"喂喂喂..你不输入密码吗?"}},submitHandler:function(form){show_loading_bar(70);var passwd_k=$(form).find("#passwd"),opts={closeButton:true,debug:false,positionClass:"toast-top-full-width",onclick:null,showDuration:"300",hideDuration:"1000",timeOut:"5000",extendedTimeOut:"1000",showEasing:"swing",hideEasing:"linear",showMethod:"fadeIn",hideMethod:"fadeOut"};$.ajax({url:"/Auth/lockscreen",method:"POST",dataType:"json",data:{do_login:true,email:$("#email").val(),passwd:passwd_k.val()},success:function(resp){show_loading_bar({delay:.5,pct:100,finish:function(){if(resp.status){toastr.success(resp.message,"提示",opts);setTimeout("window.location.href = '/member'",2000);}else{toastr.error(resp.message,"警告",opts);passwd_k.select();}}});}});}});$("form#lockscreen .form-group:has(.form-control):first .form-control").focus();});</script>
             <form role="form" id="lockscreen" class="lockcreen-form fade-in-effect">
                 <div class="user-thumb">
                     <a href="#">

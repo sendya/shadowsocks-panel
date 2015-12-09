@@ -7,10 +7,11 @@
 namespace Controller;
 
 use Core\Template;
+use Helper\Listener;
 use Helper\Util;
 use Helper\Encrypt;
 use Model\Invite;
-use Model\User as UserModel;
+use Model\User;
 
 class Auth {
 
@@ -28,8 +29,8 @@ class Auth {
          * 2. 加载登陆页面模板,进入登陆页面.
          */
         //throw new Error("Check Login :" . Listener::checkLogin(), 505);
-        $user = UserModel::getInstance();
-        if (!$user->uid) {
+        $user = User::getInstance();
+        if ($user->uid) {
             header("Location:/Member");
         } else if (isset($_REQUEST['email']) && isset($_REQUEST['passwd'])) {
             $result = array('error' => 1, 'message' => '账户不存在啊喂!');
@@ -37,7 +38,7 @@ class Auth {
             $passwd = htmlspecialchars($_REQUEST['passwd']);
             $remember_me = htmlspecialchars($_REQUEST['remember_me']);
 
-            $user = UserModel::getInstance();
+            $user = User::getInstance();
             $user = $user->GetUserByEmail($email);
 
             if ($user) {
@@ -49,7 +50,7 @@ class Auth {
                     $token = $user->uid . "\t" . $user->email . "\t" . $user->nickname;
                     $token = Encrypt::encode($token, COOKIE_KEY);
                     $tokenOutTime = Encrypt::encode(time(), COOKIE_KEY);
-                    setcookie("token",base64_encode($tokenOutTime), time() + $ext*7, "/");
+                    setcookie("token",base64_encode($tokenOutTime), time() + $ext, "/");
                     setcookie("auth", base64_encode($token), time() + $ext, "/");
                 } else {
                   $result['message'] = "账户名或密码错误, 请检查后再试!";
@@ -65,12 +66,31 @@ class Auth {
 
     public function Lockscreen() {
         global $user;
-        if(!\Helper\Listener::checkLogin()) {
-            \Core\Response::redirect('/Auth/login');
-            exit();
-        }
-        include Template::load('/panel/lockscreen');
+        if(isset($_POST['email']) && isset($_POST['passwd'])) {
+            $result = array("status" => 0, "message" => "验证失败");
+            $passwd = htmlspecialchars($_POST['passwd']);
+            $result['passwd'] = $passwd;
+            $user = User::getInstance();
+            $user = $user->GetUserByEmail($user->email);
+            $result['obj'] = $user;
+            if($user->verifyPassword($passwd)) {
+                Util::setToken();
+                $result['status'] = 1;
+                $result['message'] = "验证成功, 将跳转到 >> 仪表盘";
+            } else {
+                $result['message'] = "我跟你讲, 你密码错的在试2遍就给你锁了.";
+            }
 
+            echo json_encode($result);
+            exit();
+        } else {
+            if(!\Helper\Listener::checkLogin()) {
+                \Core\Response::redirect('/Auth/login');
+                exit();
+            }
+            include Template::load('/panel/lockscreen');
+        }
+        exit();
     }
 
     public function logout()

@@ -33,10 +33,10 @@
                 <button class="btn btn-orange">可用</button>
                 <button class="btn btn-turquoise">{$node->method}</button>
                 <br>
-                <p>info</p>
+                <p>{$node->info}</p>
             </div>
         </div>
-    </div><!-- /.box-end -->
+    </div>
 </loop>
     <!-- /.pro-box-begin -->
     <loop variable="$nodeVip" key="$key" value="$node">
@@ -44,7 +44,7 @@
     <div class="col-sm-6">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <i class="fa fa-code"></i> Pro节点 - name
+                <i class="fa fa-code"></i> Pro节点 - {$node->name}
                 <div class="dropdown">
 
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">
@@ -62,18 +62,16 @@
                 <button class="btn btn-orange">可用</button>
                 <button class="btn btn-turquoise">aes-128-cfb</button>
                 <br>
-                <p>info</p>
+                <p>{$node->info}</p>
             </div>
         </div>
-    </div><!-- /.pro-box-end -->
+    </div>
     <else>
     <div class="col-sm-6">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <i class="fa fa-code"></i> Pro节点 - name
-                <div class="dropdown">
-                    你不是VIP
-                </div>
+                <i class="fa fa-code"></i> Pro节点 - {$node->name}
+                <div class="dropdown"></div>
             </div>
             <div class="panel-body">
                 <button class="btn btn-primary">地址:</button>
@@ -81,10 +79,10 @@
                 <button class="btn btn-orange">可用</button>
                 <button class="btn btn-turquoise">aes-128-cfb</button>
                 <br>
-                <p>info</p>
+                <p>{$node->info} *非VIP不能使用</p>
             </div>
         </div>
-    </div><!-- /.pro-box-end -->
+    </div>
     </if>
     </loop>
 </div>

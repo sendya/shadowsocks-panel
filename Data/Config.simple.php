@@ -20,6 +20,11 @@ define('TEMPLATE_NAME', 'Default');
 define('TPL_PATH', 'Resource/'.TEMPLATE_NAME.'/');
 
 /**
+ * Lockscreen service switch
+ */
+define('LOCKSCREEN', true);
+
+/**
  * Flow default value
  */
 define('TRANSFER', 10);// Default flow 10GB

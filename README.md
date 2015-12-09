@@ -8,6 +8,8 @@ Shadowsocks Panel
 	exp: http://local.dev/Auth/login?invite=9973C1D6A6557CCF#register
 	(?invite=your invite code)
 	Fix login/register page Button disabled check
+	----------------
+	body on ajax load
 
 2015.12.08 : 
 	upport PHP7.

@@ -185,18 +185,13 @@ class Util
     public static function GetMB() {return self::MB;}
     public static function GetGB() {return self::GB;}
 
-    public static function CheckAction($link = ''){
-        global $controller;
-        $self = strtolower($_SERVER['PHP_SELF']);
-        echo 'c:' . $controller . '   -> ' . $self;
-        exit();
-        if($link == '')
-            $link = strtolower($controller);
-
-        if(strstr($self, $link)!=false){
-            echo 'active';
+    public static function CheckAction($link = '', $args = ''){
+        $requestPath = \Core\Request::getRequestPath();
+        $controllerName = ucfirst(substr($requestPath, strrpos($requestPath, "/")));
+        if(stripos($controllerName, $link)!==false){
+            return 'active ' . $args;
         } else {
-            echo '';
+            return '';
         }
     }
 
@@ -211,6 +206,20 @@ class Util
         else
             $ip = "127.0.0.1";
         return $ip;
+    }
+
+    /* Action Utility */
+    /**
+     *
+     */
+    public static function setToken($tokenName = "token") {
+        $token = Encrypt::encode(time(), COOKIE_KEY);
+        setcookie($tokenName,base64_encode($token), time()+3600*24*7, "/");
+    }
+
+    public static function getToken($tokenName = "token") {
+        $token = (time() - Encrypt::decode(base64_decode(@$_COOKIE[$tokenName]), COOKIE_KEY));
+        return $token;
     }
 
 }
