@@ -23,7 +23,9 @@
                 <tr>
                     <td>{(date('Y-m-d H:i:s', $invite->dateLine))}</td>
                     <td>{$invite->invite}</td>
-                    <td><if condition="$invite->status == 0">未使用<elseif condition="$invite->status == 1">已用</elseif><else>过期</if></td>
+                    <td><if condition="$invite->status == 0">
+                        <a href="/Auth/login?invite={$invite->invite}#register" target="_blank">未使用</a>
+                        <elseif condition="$invite->status == 1">已用</elseif><else>过期</if></td>
                 </tr>
                 </loop>
                 <else>
