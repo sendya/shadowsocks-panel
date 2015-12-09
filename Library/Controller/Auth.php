@@ -121,7 +121,7 @@ class Auth {
         } else if ($chkEmail = Util::MailFormatCheck($email)) {
             $result['message'] = $chkEmail;
         } else {
-            $user = new UserModel();
+            $user = new User();
             $user->email = $email;
             $user->nickname = $userName;
             $user->transfer = Util::GetGB() * TRANSFER; // 流量大小

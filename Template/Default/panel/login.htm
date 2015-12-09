@@ -152,6 +152,14 @@ jQuery(document).ready(function($) {
 							}
 						}
 					});
+				},
+				error:function(jqXHR){
+					$('button[type="submit"]').removeAttr("disabled");
+					show_loading_bar({
+						delay: .5,pct: 100,finish: function() {
+							toastr.error("发生错误：与服务器的请求失败", "哈哈哈哈哈错误了!", opts);
+						}
+					});
 				}
 			});
 		}
