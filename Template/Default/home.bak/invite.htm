@@ -1,0 +1,40 @@
+<import template="/panel/_head" />
+<body class="page-body invite-page">
+<style>.row {margin-left: 0;margin-right: 0;}</style>
+<div class="invite-container">
+
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="row center">
+                <h1>邀请码</h1>
+                <h5>如遇到无邀请码请找已经注册的用户获取。</h5>
+            </div>
+            <table class="table" style="color:#FFF;">
+                <thead>
+                <tr>
+                    <th style="color:#FFF;" width="180">添加时间</th>
+                    <th style="color:#FFF;">邀请码</th>
+                    <th style="color:#FFF;" width="100">状态</th>
+                </tr>
+                </thead>
+                <tbody>
+                <if condition="count($inviteList) > 0">
+                <loop variable="$inviteList" key="$key" value="$invite">
+                <tr>
+                    <td>{(date('Y-m-d H:i:s', $invite->dateLine))}</td>
+                    <td>{$invite->invite}</td>
+                    <td><if condition="$invite->status == 0">未使用<elseif condition="$invite->status == 1">已用</elseif><else>过期</if></td>
+                </tr>
+                </loop>
+                <else>
+                <tr><td colspan="3" align="center" style="text-align:center;">木有邀请码~ ٩( \'ω\' )و </td></tr>
+                </if>
+                </tbody>
+            </table>
+            <div class="row center">
+                <h4><a href="/Auth/login" class="btn btn-black btn-icon"><span>&nbsp;回到登陆&nbsp;</span><i class="fa-mail-reply-all"></i></a></h4>
+            </div>
+        </div>
+    </div>
+</div>
+<import template="/panel/_footer" />
