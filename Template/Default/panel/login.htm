@@ -142,7 +142,7 @@ jQuery(document).ready(function($) {
 						finish: function() {
 							if (resp.error == '0') {
 								toastr.success(resp.message, "提示!", opts);
-								$(".login-button").click();
+								setTimeout('$(".login-button").click()', 2000);
 							} else if (resp.error == '1') {
 								toastr.error(resp.message, "提示!", opts);
 								$('#email').select();
