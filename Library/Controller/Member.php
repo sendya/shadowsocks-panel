@@ -31,6 +31,11 @@ class Member extends Listener {
         $checkin = false;//是否可以签到
         $checkinTime = date("m-d h:i", $user->lastCheckinTime);
         $lastConnTime = date("Y-m-d h:i:s", $user->lastConnTime);
+        $nowUserIp = Util::GetUserIP();
+        $data = \Helper\Ana::getAnaCount();
+        $userCount = $data['userCount'];
+        $checkCount = $data['checkCount'];
+        $connCount = $data['connCount'];
         if((time() - 3600*24) < $user->lastCheckinTime) $checkin = true;
         include Template::load("panel/member");
     }
