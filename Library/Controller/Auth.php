@@ -152,6 +152,7 @@ class Auth {
 
     public function forgePwd() {
 
+
     }
 
 }
