@@ -124,8 +124,59 @@
         </div>
     </div>
 </div>
-<script>$(document).ready(function(){$("#checkin").click(function(){$("#checkin").val("请稍等");showToastr("正在请求签到..请稍等",0,1500);$("#checkin").addClass("disabled");$.ajax({type:"GET",url:"/action/checkin",dataType:"json",success:function(result){showToastr(result.msg,0);$("#checkin").hide();$("#checkin-tag").hide();$("#checkinoff").show();$("#checkinoff-tag").show();},error:function(jqXHR){showToastr("发生错误："+jqXHR.status,0);}})});$("#updatePlan").click(function(){$.ajax({type:"GET",url:"/action/plan_update",dataType:"json",success:function(data){if(data.error){showToastr(data.msg,0);}else{showToastr(data.msg,0);}},error:function(jqXHR){showToastr("发生错误："+jqXHR.status,0);}})});$("#showpwd").click(function(){if($(this).html()=="<b>点击显示密码</b>"){$(this).html("{$user->sspwd}");}else{$(this).html("<b>点击显示密码</b>");}});showToastr("当前服务节点正常运行中，如果您觉得本站做的不错，可以<a href='https://shenghuo.alipay.com/send/payment/fill.htm?optEmail=18x@loacg.com' target='_blank'>向我捐赠</a>",800);$("#planList").click(function(){
-    jQuery('#modal-1 .modal-body').html('套餐等级如下：<br /><br />套餐A： 5GB(免费) (体验服务)<br />套餐B： 100GB(13RMB)<br />套餐C： 200GB(20RMB)<br />套餐D： 500GB(35RMB)<br /><br />套餐VIP： 无限制流量,优先端口转发(仅内部开放)(目前VIP 6 人)');jQuery('#modal-1').modal('show', {backdrop: 'fade'});
-}); });
+<script type="text/javascript">
+    $(document).ready(function() {
+        $("#checkin").click(function() {
+            $("#checkin").val("请稍等");
+            showToastr("正在请求签到..请稍等", 0, 1500);
+            $("#checkin").addClass("disabled");
+            $.ajax({
+                type:"GET",
+                url:"/Form/CheckIn",
+                dataType:"json",
+                success:function(result) {
+                    showToastr(result.msg, 0);
+                    $("#checkin").hide();
+                    $("#checkin-tag").hide();
+                    $("#checkinoff").show();
+                    $("#checkinoff-tag").show();
+                },
+                error:function(jqXHR) {
+                    showToastr("出现未知错误，请重试或联系管理员", 0);
+                }
+            });
+        });
+        $("#updatePlan").click(function() {
+            $.ajax({
+                type:"GET",
+                url:"/Form/UpdatePlan",
+                dataType:"json",
+                success:function(data) {
+                    if (data.error) {
+                        showToastr(data.msg, 0);
+                    } else {
+                        showToastr(data.msg, 0);
+                    }
+                },
+                error:function(jqXHR) {
+                    showToastr("发生错误：" + jqXHR.status, 0);
+                }
+            });
+        });
+        $("#showpwd").click(function() {
+            if ($(this).html() == "<b>点击显示密码</b>") {
+                $(this).html("{$user->sspwd}");
+            } else {
+                $(this).html("<b>点击显示密码</b>");
+            }
+        });
+        showToastr("当前服务节点正常运行中，如果您觉得本站做的不错，可以<a href='https://shenghuo.alipay.com/send/payment/fill.htm?optEmail=18x@loacg.com' target='_blank'>向我捐赠</a>", 800);
+        $("#planList").click(function() {
+            jQuery("#modal-1 .modal-body").html("套餐等级如下：<br /><br />套餐A： 5GB(免费) (体验服务)<br />套餐B： 100GB(13RMB)<br />套餐C： 200GB(20RMB)<br />套餐D： 500GB(35RMB)<br /><br />套餐VIP： 无限制流量,优先端口转发(仅内部开放)(目前VIP 6 人)");
+            jQuery("#modal-1").modal("show", {
+                backdrop:"fade"
+            });
+        });
+    });
 </script>
 <import template="/panel/_footer" />

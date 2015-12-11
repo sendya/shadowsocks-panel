@@ -7,18 +7,22 @@
 namespace Controller;
 
 
-class Form
+use Helper\Listener;
+use Helper\Util;
+use Model\User;
+
+class Form extends Listener
 {
+    const PLAN_A = 'A', PLAN_B = 'B', PLAN_C = 'C', PLAN_D = 'D', PLAN_VIP = 'VIP';
 
     public function ChangeNickname()
     {
+        global $user;
         $result = array('error' => 1, 'message' => '修改失败');
-        $uid = trim($_POST['uid']);
-        $user_cookie = explode('\t', Encrypt::decode(base64_decode($_COOKIE['auth']), COOKIE_KEY));
         $nickname = trim($_POST['nickname']);
 
-        if ('' != $nickname && $uid == $user_cookie[0] && $nickname == $user_cookie[2]) {
-            $user = UserModel::GetUserByUserId($uid);
+        if ('' != $nickname) {
+            $user = User::GetUserByUserId($user->uid);
             $user->nickname = $nickname;
             $user->updateUser();
             $result = array('error' => 0, 'message' => '修改成功');
@@ -30,18 +34,91 @@ class Form
 
     public function ChangeSSPwd()
     {
+        global $user;
         $result = array('error' => 1, 'message' => '修改失败');
-        $uid = trim($_GET['uid']);
-        $user_cookie = explode('\t', Encrypt::decode(base64_decode($_COOKIE['auth']), COOKIE_KEY));
         $sspwd = trim(($_GET['sspwd']));
-        if ('' == $sspwd || null == $sspwd) $sspwd = Util::GetRandomPwd();
-        if ($uid == $user_cookie[0]) {
-            $user = UserModel::GetUserByUserId($uid);
-            $user->sspwd = $sspwd;
-            $user->updateUser();
-            $result = array('error' => 1, 'message' => '修改SS连接密码成功');
+        if ('' == $sspwd || $sspwd == null)
+            $sspwd = Util::GetRandomPwd();
+
+        $user = User::GetUserByUserId($user->uid);
+        $user->sspwd = $sspwd;
+        $user->updateUser();
+        $result = array('error' => 1, 'message' => '修改SS连接密码成功');
+
+        echo json_encode($result);
+        exit();
+    }
+
+    public function UpdatePlan()
+    {
+        global $user;
+        $result = array('error' => 1, 'message' => '升级账户类型失败.');
+
+        switch($user->plan)
+        {
+            case self::PLAN_A:
+
+                if($user->money >= 15) {
+                    $user->money = $user->money-15;//扣除15 升级到B套餐
+                    $user->plan = self::PLAN_B;
+                    $user->transfer = Util::GetGB() * 100;
+                    $user->updateUser();
+                    $result['error'] = 0;
+                    $result['message'] = '升级成功，您的当前等级为';
+                } else {
+                    $result['message'] = '升级失败，您的余额不足';
+                }
+                break;
+            case self::PLAN_B:
+                if($user->money >= 25) {
+                    $user->money = $user->money-25;//扣除15 升级到B套餐
+                    $user->plan = self::PLAN_C;
+                    $user->transfer = Util::GetGB() * 200;
+                    $user->updateUser();
+                    $result['error'] = 0;
+                    $result['message'] = '升级成功，您的当前等级为';
+                } else {
+                    $result['message'] = '升级失败，您的余额不足';
+                }
+                break;
+            case self::PLAN_C:
+                if($user->money >= 40) {
+                    $user->money = $user->money-40;//扣除15 升级到B套餐
+                    $user->plan = self::PLAN_D;
+                    $user->transfer = Util::GetGB() * 500;
+                    $user->updateUser();
+                    $result['error'] = 0;
+                    $result['message'] = '升级成功，您的当前等级为';
+                } else {
+                    $result['message'] = '升级失败，您的余额不足';
+                }
+                break;
+            case self::PLAN_VIP:
+                $result['error'] = 0;
+                $result['message'] = '卧槽，你不给肛凭什么给你VIP';
+                break;
+            default:
+                $result['message'] = '不知道服务器娘哪里出问题了喵.请求失败';
+                break;
         }
 
+        echo json_encode($result);
+        exit();
+    }
+
+    public function CheckIn()
+    {
+        global $user;
+        $result = array('error' => 1, 'message' => '');
+        if($user->lastCheckinTime >= 3600*24) //一天
+        {
+            $checkinTransfer = rand(5, 25) * Util::GetMB();
+            $user->lastCheckinTime = time();
+            $user->transfer = $user->transfer + $checkinTransfer;
+            $result['message'] = '签到成功, 获得'.$checkinTransfer.'MB 流量';
+        } else {
+            $result['message'] = '你已经在 ' . date('Y-m-d H:i:s') . " 时签到过.";
+        }
         echo json_encode($result);
         exit();
     }
