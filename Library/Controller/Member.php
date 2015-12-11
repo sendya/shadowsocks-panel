@@ -29,14 +29,15 @@ class Member extends Listener {
         $all_transfer = Util::FlowAutoShow($user->transfer);//共有流量
         $flow = round($flow / Util::GetMB(), 2);
         $checkin = false;//是否可以签到
-        $checkinTime = date("m-d h:i", $user->lastCheckinTime);
+        $checkinTime = date("m-d h:i:s", $user->lastCheckinTime);
         $lastConnTime = date("Y-m-d h:i:s", $user->lastConnTime);
         $nowUserIp = Util::GetUserIP();
-        $data = \Helper\Ana::getAnaCount();
-        $userCount = $data['userCount'];
-        $checkCount = $data['checkCount'];
-        $connCount = $data['connCount'];
-        if((time() - 3600*24) < $user->lastCheckinTime) $checkin = true;
+        $userCount = \Helper\Ana::GetUserCount();
+        $checkCount = \Helper\Ana::GetCheckUserCount();
+        $connCount = \Helper\Ana::GetConnCount();
+        $useUser = \Helper\Ana::GetUseUserCount();
+        $transferAllFlow = round(\Helper\Ana::GetTransfer4All()/Util::GetGB(), 2); //取得服务器共产生的流量
+        if((time() - 3600*24) > $user->lastCheckinTime) $checkin = true;
         include Template::load("panel/member");
     }
     //2015.11.10 start

@@ -210,6 +210,13 @@ class User
         return $statement->fetch(\PDO::FETCH_CLASS);
     }
 
+    public static function getUserCheckIn($uid) {
+        $statement = Database::prepare("SELECT count(*) FROM member WHERE lastCheckinTime > ". date('Y-m-d 00:00:00', time()) . " AND uid=?");
+        $statement->bindValue(1, $uid, \PDO::PARAM_INT);
+        $checkIn = $statement->fetch(\PDO::PARAM_INT)[0];
+        return $checkIn==null ? 0 : $checkIn;
+    }
+
 
 
 

@@ -40,7 +40,7 @@ class Util
         return $value / self::GB;
     }
 
-    public static function FlowAutoShow($value)
+    public static function FlowAutoShow($value, $type = 1)
     {
         /*
         if ($value > self::KB) {
@@ -60,13 +60,16 @@ class Util
         $str = "";
         if ($value > self::GB) {
             $str = round($value / self::GB, 2);
-            $str.= "GB";
+            if($type)
+                $str.= "GB";
         } else if ($value > self::MB) {
             $str = round($value / self::MB, 2);
-            $str.= "MB";
+            if($type)
+                $str.= "MB";
         } else if ($value > self::KB) {
             $str = round($value / self::KB, 2);
-            $str.= "KB";
+            if($type)
+                $str.= "KB";
         } else {
             $str = round($value, 2);
             $str.= "";

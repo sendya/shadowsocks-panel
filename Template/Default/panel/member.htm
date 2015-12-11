@@ -32,7 +32,7 @@
             </div>
         </div>
 
-        <div class="xe-widget xe-counter xe-counter-info" data-count=".num" data-from="1" data-to="80" data-duration="1" data-easing="true">
+        <div class="xe-widget xe-counter xe-counter-info" data-count=".num" data-from="1" data-to="{$serverCount}" data-duration="1" data-easing="true">
             <div class="xe-icon">
                 <i class="linecons-desktop"></i>
             </div>
@@ -65,7 +65,7 @@
 
         <div class="chart-item-bg">
             <div class="chart-label chart-label-small">
-                <div class="h4 text-purple text-bold" data-count="this" data-from="0.00" data-to="50" data-suffix="%" data-duration="1.5">0.00%</div>
+                <div class="h4 text-purple text-bold" data-count="this" data-from="0.00" data-to="" data-suffix="%" data-duration="1.5">0.00%</div>
                 <span class="text-small text-upper text-muted">在线人数百分比</span><br />
                 <span class="text-small text-upper text-muted">注册用户：<code> {$userCount} </code><br/>签到人数：<code> {$checkCount} </code><br /></span>
 							<span class="text-small text-upper text-muted">实时在线：<code> {$connCount} </code><br />
@@ -76,9 +76,9 @@
 
         <div class="chart-item-bg">
             <div class="chart-label chart-label-small">
-                <div class="h4 text-secondary text-bold" data-count="this" data-from="0.00" data-to="570" data-suffix="GB" data-decimal="." data-duration="2">0</div>
-                <span class="text-small text-upper text-muted">{SITE_NAME} 已经产生流量<code>7731</code>GB</span><br />
-                <span class="text-small text-upper text-muted">{SITE_NAME} 已经有<code>999</code>人使用</span>
+                <div class="h4 text-secondary text-bold" data-count="this" data-from="0.00" data-to="{$transferAllFlow}" data-suffix="GB" data-decimal="." data-duration="2">0</div>
+                <span class="text-small text-upper text-muted">{SITE_NAME} 已经产生流量<code>{$transferAllFlow}</code>GB</span><br />
+                <span class="text-small text-upper text-muted">{SITE_NAME} 已经有<code>{$useUser}</code>人使用</span>
             </div>
 
             <div id="sales-avg-chart" style="height: 134px; position: relative;">
