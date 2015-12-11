@@ -7,6 +7,7 @@
 namespace Controller;
 
 
+use Core\Error;
 use Helper\Listener;
 use Helper\Util;
 use Model\User;
@@ -15,17 +16,22 @@ class Form extends Listener
 {
     const PLAN_A = 'A', PLAN_B = 'B', PLAN_C = 'C', PLAN_D = 'D', PLAN_VIP = 'VIP';
 
+    public function index()
+    {
+        throw new Error("This is an empty page", 404);
+    }
+
     public function ChangeNickname()
     {
         global $user;
-        $result = array('error' => 1, 'message' => 'ÐÞ¸ÄÊ§°Ü');
+        $result = array('error' => 1, 'message' => 'ä¿®æ”¹å¤±è´¥');
         $nickname = trim($_POST['nickname']);
 
         if ('' != $nickname) {
             $user = User::GetUserByUserId($user->uid);
             $user->nickname = $nickname;
             $user->updateUser();
-            $result = array('error' => 0, 'message' => 'ÐÞ¸Ä³É¹¦');
+            $result = array('error' => 0, 'message' => 'ä¿®æ”¹æˆåŠŸ');
         }
 
         echo json_encode($result);
@@ -35,7 +41,7 @@ class Form extends Listener
     public function ChangeSSPwd()
     {
         global $user;
-        $result = array('error' => 1, 'message' => 'ÐÞ¸ÄÊ§°Ü');
+        $result = array('error' => 1, 'message' => 'ä¿®æ”¹å¤±è´¥');
         $sspwd = trim(($_GET['sspwd']));
         if ('' == $sspwd || $sspwd == null)
             $sspwd = Util::GetRandomPwd();
@@ -43,7 +49,7 @@ class Form extends Listener
         $user = User::GetUserByUserId($user->uid);
         $user->sspwd = $sspwd;
         $user->updateUser();
-        $result = array('error' => 1, 'message' => 'ÐÞ¸ÄSSÁ¬½ÓÃÜÂë³É¹¦');
+        $result = array('error' => 1, 'message' => 'ä¿®æ”¹SSè¿žæŽ¥å¯†ç æˆåŠŸ');
 
         echo json_encode($result);
         exit();
@@ -52,53 +58,53 @@ class Form extends Listener
     public function UpdatePlan()
     {
         global $user;
-        $result = array('error' => 1, 'message' => 'Éý¼¶ÕË»§ÀàÐÍÊ§°Ü.');
+        $result = array('error' => 1, 'message' => 'å‡çº§è´¦æˆ·ç±»åž‹å¤±è´¥.');
 
         switch($user->plan)
         {
             case self::PLAN_A:
 
                 if($user->money >= 15) {
-                    $user->money = $user->money-15;//¿Û³ý15 Éý¼¶µ½BÌ×²Í
+                    $user->money = $user->money-15;//æ‰£é™¤15 å‡çº§åˆ°Bå¥—é¤
                     $user->plan = self::PLAN_B;
                     $user->transfer = Util::GetGB() * 100;
                     $user->updateUser();
                     $result['error'] = 0;
-                    $result['message'] = 'Éý¼¶³É¹¦£¬ÄúµÄµ±Ç°µÈ¼¶Îª';
+                    $result['message'] = 'å‡çº§æˆåŠŸï¼Œæ‚¨çš„å½“å‰ç­‰çº§ä¸º';
                 } else {
-                    $result['message'] = 'Éý¼¶Ê§°Ü£¬ÄúµÄÓà¶î²»×ã';
+                    $result['message'] = 'å‡çº§å¤±è´¥ï¼Œæ‚¨çš„ä½™é¢ä¸è¶³';
                 }
                 break;
             case self::PLAN_B:
                 if($user->money >= 25) {
-                    $user->money = $user->money-25;//¿Û³ý15 Éý¼¶µ½BÌ×²Í
+                    $user->money = $user->money-25;//æ‰£é™¤15 å‡çº§åˆ°Bå¥—é¤
                     $user->plan = self::PLAN_C;
                     $user->transfer = Util::GetGB() * 200;
                     $user->updateUser();
                     $result['error'] = 0;
-                    $result['message'] = 'Éý¼¶³É¹¦£¬ÄúµÄµ±Ç°µÈ¼¶Îª';
+                    $result['message'] = 'å‡çº§æˆåŠŸï¼Œæ‚¨çš„å½“å‰ç­‰çº§ä¸º';
                 } else {
-                    $result['message'] = 'Éý¼¶Ê§°Ü£¬ÄúµÄÓà¶î²»×ã';
+                    $result['message'] = 'å‡çº§å¤±è´¥ï¼Œæ‚¨çš„ä½™é¢ä¸è¶³';
                 }
                 break;
             case self::PLAN_C:
                 if($user->money >= 40) {
-                    $user->money = $user->money-40;//¿Û³ý15 Éý¼¶µ½BÌ×²Í
+                    $user->money = $user->money-40;//æ‰£é™¤15 å‡çº§åˆ°Bå¥—é¤
                     $user->plan = self::PLAN_D;
                     $user->transfer = Util::GetGB() * 500;
                     $user->updateUser();
                     $result['error'] = 0;
-                    $result['message'] = 'Éý¼¶³É¹¦£¬ÄúµÄµ±Ç°µÈ¼¶Îª';
+                    $result['message'] = 'å‡çº§æˆåŠŸï¼Œæ‚¨çš„å½“å‰ç­‰çº§ä¸º';
                 } else {
-                    $result['message'] = 'Éý¼¶Ê§°Ü£¬ÄúµÄÓà¶î²»×ã';
+                    $result['message'] = 'å‡çº§å¤±è´¥ï¼Œæ‚¨çš„ä½™é¢ä¸è¶³';
                 }
                 break;
             case self::PLAN_VIP:
                 $result['error'] = 0;
-                $result['message'] = 'ÎÔ²Û£¬Äã²»¸ø¸ØÆ¾Ê²Ã´¸øÄãVIP';
+                $result['message'] = 'å§æ§½ï¼Œä½ ä¸ç»™è‚›å‡­ä»€ä¹ˆç»™ä½ VIP';
                 break;
             default:
-                $result['message'] = '²»ÖªµÀ·þÎñÆ÷ÄïÄÄÀï³öÎÊÌâÁËß÷.ÇëÇóÊ§°Ü';
+                $result['message'] = 'ä¸çŸ¥é“æœåŠ¡å™¨å¨˜å“ªé‡Œå‡ºé—®é¢˜äº†å–µ.è¯·æ±‚å¤±è´¥';
                 break;
         }
 
@@ -110,14 +116,14 @@ class Form extends Listener
     {
         global $user;
         $result = array('error' => 1, 'message' => '');
-        if($user->lastCheckinTime >= 3600*24) //Ò»Ìì
+        if($user->lastCheckinTime >= 3600*24) //ä¸€å¤©
         {
             $checkinTransfer = rand(5, 25) * Util::GetMB();
             $user->lastCheckinTime = time();
             $user->transfer = $user->transfer + $checkinTransfer;
-            $result['message'] = 'Ç©µ½³É¹¦, »ñµÃ'.$checkinTransfer.'MB Á÷Á¿';
+            $result['message'] = 'ç­¾åˆ°æˆåŠŸ, èŽ·å¾—'.$checkinTransfer.'MB æµé‡';
         } else {
-            $result['message'] = 'ÄãÒÑ¾­ÔÚ ' . date('Y-m-d H:i:s') . " Ê±Ç©µ½¹ý.";
+            $result['message'] = 'ä½ å·²ç»åœ¨ ' . date('Y-m-d H:i:s', $user->lastCheckinTime) . " æ—¶ç­¾åˆ°è¿‡.";
         }
         echo json_encode($result);
         exit();
