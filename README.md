@@ -37,13 +37,21 @@ Shadowsocks Panel
 	Add Invite model. 
 ```
 
-### Nginx config
+### Rewrite 路由
+nginx
+```
+if (!-e $request_filename) {
+    rewrite (.*) /index.php last;
+}
+```
+apache
+```
+RewriteEngine On
 
-    if (!-e $request_filename) {
-        rewrite (.*) /index.php last;
-    }
-
-
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^ index.php [L]
+```
 
 
 Based KK-Framework :
