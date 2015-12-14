@@ -9,11 +9,9 @@ namespace Helper;
 use Model\User;
 use Core\Response;
 
-class Listener
-{
+class Listener {
 
-    public function __construct()
-    {
+    public function __construct() {
         global $user;
         $user = User::getInstance();
         if (!$user->uid) {
@@ -33,8 +31,7 @@ class Listener
         $user = $user->GetUserByEmail($user->email);
     }
 
-    public static function checkLogin()
-    {
+    public static function checkLogin() {
         global $user;
         $user = User::getInstance();
         if (!$user->uid) {

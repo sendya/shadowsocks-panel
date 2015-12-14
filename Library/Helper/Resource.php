@@ -6,12 +6,10 @@
  */
 namespace Helper;
 
-class Resource
-{
+class Resource {
     private static $currentDir = '';
 
-    public static function CompressJs($file)
-    {
+    public static function CompressJs($file) {
         if (defined('ENABLE_UGLIFYJS') && function_exists('shell_exec') && ENABLE_UGLIFYJS) {
             $contents = shell_exec('uglifyjs ' . escapeshellarg($file) . ' -c -m');
             if (stripos('error', $contents) !== false) {
@@ -33,12 +31,12 @@ class Resource
         }
     }
 
-    public static function CompressCSS($file)
-    {
+    public static function CompressCSS($file) {
         if (defined('ENABLE_CLEANCSS') && function_exists('shell_exec') && ENABLE_CLEANCSS) {
             self::$currentDir = dirname($file);
             $contents = shell_exec('cleancss ' . escapeshellarg($file));
-            $contents = preg_replace_callback('/url\([\'"]?([^\)]+?)[\'"]?\)/s', array('Helper\\Resource', '_FixCSSURL'), $contents);
+            $contents = preg_replace_callback('/url\([\'"]?([^\)]+?)[\'"]?\)/s',
+                array('Helper\\Resource', '_FixCSSURL'), $contents);
             $contents = trim($contents);
             return self::addComment($contents, 'Clean-CSS');
         } else {
@@ -49,8 +47,10 @@ class Resource
             $contents = str_replace(PHP_EOL, '', $contents);
             $contents = preg_replace('/\/\*.*?\*\//s', '', $contents);
             $contents = preg_replace('/^[ \t]*(.+)[ \t]*$/m', '$1', $contents);
-            $contents = preg_replace_callback('/{([^{}]+)}/s', array('Helper\\Resource', '_ClearCSSInBracket'), $contents);
-            $contents = preg_replace_callback('/url\([\'"]?([^\)]+?)[\'"]?\)/s', array('Helper\\Resource', '_FixCSSURL'), $contents);
+            $contents = preg_replace_callback('/{([^{}]+)}/s', array('Helper\\Resource', '_ClearCSSInBracket'),
+                $contents);
+            $contents = preg_replace_callback('/url\([\'"]?([^\)]+?)[\'"]?\)/s',
+                array('Helper\\Resource', '_FixCSSURL'), $contents);
             $contents = str_replace(' {', '{', $contents);
             $contents = str_replace(array(' > ', ' >', '> '), '>', $contents);
             $contents = str_replace(', ', ',', $contents);
@@ -62,8 +62,7 @@ class Resource
         }
     }
 
-    public static function _ClearCSSInBracket($match)
-    {
+    public static function _ClearCSSInBracket($match) {
         $contents = $match[0];
         $contents = str_replace(array("\r", "\n"), ' ', $contents);
         $contents = preg_replace('/[ ]+/s', ' ', $contents);
@@ -72,8 +71,7 @@ class Resource
         return $contents;
     }
 
-    public static function _FixCSSURL($match)
-    {
+    public static function _FixCSSURL($match) {
         $link = $match[1];
         $return = "url('{$link}')";
         if (strpos($link, '//') !== false) {
@@ -89,8 +87,7 @@ class Resource
         return "url('{$path}')";
     }
 
-    private static function getRelativePath($fromDir, $toDir)
-    {
+    private static function getRelativePath($fromDir, $toDir) {
         $prefix = $tailing = array();
         $from = explode('/', $fromDir);
         $to = explode('/', $toDir);
@@ -106,8 +103,7 @@ class Resource
         return implode('/', $tmp);
     }
 
-    private function addComment($contents, $tool = '')
-    {
+    private function addComment($contents, $tool = '') {
         $hash = substr(sha1($contents), 8, 10);
         $header = '/*' . PHP_EOL;
         $header .= ' * Automatically compressed by KK Framework' . ($tool ? " via {$tool}" : '') . PHP_EOL;

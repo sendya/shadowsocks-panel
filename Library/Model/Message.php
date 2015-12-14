@@ -8,8 +8,7 @@ namespace Model;
 
 use Core\Database;
 
-class Message
-{
+class Message {
     public $id;
     public $content; //内容
     public $pushTime; //推送时间
@@ -38,7 +37,7 @@ class Message
      * @return message[]
      */
     public static function GetPushMsg($pushEndTime = 0) {
-        if($pushEndTime == 0) $pushEndTime = time();
+        if ($pushEndTime == 0) $pushEndTime = time();
         $statement = Database::prepare("SELECT * FROM message WHERE pushEndTime=?");
         $statement->bindValue(1, $pushEndTime);
         $statement->execute();
@@ -53,7 +52,7 @@ class Message
      */
     public static function GetPushMsgByUserId($userId) {
         $statement = Database::prepare("SELECT * FROM message WHERE LOCATE(?, pushUsers)>0 AND pushEndTime>?");
-        $statement->bindValue(1, "\"".$userId."\"", \PDO::PARAM_STR);
+        $statement->bindValue(1, "\"" . $userId . "\"", \PDO::PARAM_STR);
         $statement->bindValue(2, time(), \PDO::PARAM_INT);
         $statement->execute();
         $list = $statement->fetchAll(\PDO::FETCH_CLASS, '\\Model\\Message');
@@ -65,10 +64,10 @@ class Message
      */
     public static function DeleteOutTimeMsg() {
         $inTransaction = Database::inTransaction();
-        if(!$inTransaction) Database::beginTransaction();
-        $statement = Database::prepare("DELETE * FROM node WHERE pushEndTime=".time());
+        if (!$inTransaction) Database::beginTransaction();
+        $statement = Database::prepare("DELETE * FROM node WHERE pushEndTime=" . time());
         $statement->execute();
-        if(!$inTransaction) Database::commit();
+        if (!$inTransaction) Database::commit();
     }
 
     /**
@@ -79,7 +78,7 @@ class Message
         $statement = null;
 
         $inTransaction = Database::inTransaction();
-        if(!$inTransaction) Database::beginTransaction();
+        if (!$inTransaction) Database::beginTransaction();
         $statement = Database::prepare("INSERT INTO message SET `content`=:content, `pushTime`=:pushTime,
 			`addTime`=:addTime, `pushUsers`=:pushUsers, `type`=:type, `pushEndTime`=:pushEndTime, `order`=:order");
         $statement->bindValue(':content', $this->content, \PDO::PARAM_STR);
@@ -91,7 +90,7 @@ class Message
         $statement->bindValue(':order', $this->order, \PDO::PARAM_INT);
         $statement->execute();
         $this->id = Database::lastInsertId();
-        if(!$inTransaction) Database::commit();
+        if (!$inTransaction) Database::commit();
 
         return $this->id;
     }
@@ -101,7 +100,7 @@ class Message
      */
     public function update() {
         $inTransaction = Database::inTransaction();
-        if(!$inTransaction) Database::beginTransaction();
+        if (!$inTransaction) Database::beginTransaction();
         $statement = Database::prepare("UPDATE message SET `content`=:content, `pushTime`=:pushTime,
 			`addTime`=:addTime, `pushUsers`=:pushUsers, `type`=:type, `pushEndTime`:=pushEndTime,
 			 `order`=:order WHERE id=:id");
@@ -114,7 +113,7 @@ class Message
         $statement->bindValue(':order', $this->order, \PDO::PARAM_INT);
         $statement->bindValue(':id', $this->order, \PDO::PARAM_INT);
         $statement->execute();
-        if(!$inTransaction) Database::commit();
+        if (!$inTransaction) Database::commit();
     }
 
 }

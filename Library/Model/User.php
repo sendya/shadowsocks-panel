@@ -9,8 +9,7 @@ namespace Model;
 use Core\Database;
 use Helper\Encrypt;
 
-class User
-{
+class User {
     const ENCRYPT_TYPE_DEFAULT = 0;
     const ENCRYPT_TYPE_ENHANCE = 1;
 
@@ -29,10 +28,10 @@ class User
     public $invite = '';//注册所用的邀请码
     public $invite_num = 0;//用户拥有的邀请码
     public $regDateLine = 0;//注册时间
-    public $lastConnTime =0;//上次使用时间
-    public $lastCheckinTime =0;//上次签到时间
-    public $lastFindPasswdTime =0;//上次找回密码时间 (找回密码时间和次数仅用作限制3次或?次后禁止找回)
-    public $lastFindPasswdCount =0;//找回密码次数
+    public $lastConnTime = 0;//上次使用时间
+    public $lastCheckinTime = 0;//上次签到时间
+    public $lastFindPasswdTime = 0;//上次找回密码时间 (找回密码时间和次数仅用作限制3次或?次后禁止找回)
+    public $lastFindPasswdCount = 0;//找回密码次数
 
     public static $instance;
 
@@ -40,18 +39,16 @@ class User
      * Get current user object
      * @return User
      */
-    public static function getInstance()
-    {
+    public static function getInstance() {
         if (!self::$instance) {
             self::$instance = new self();
         }
         return self::$instance;
     }
 
-    public function __construct()
-    {
+    public function __construct() {
         $cookie = Encrypt::decode(base64_decode($_COOKIE['auth']), COOKIE_KEY);
-        if($cookie) {
+        if ($cookie) {
             list($this->uid, $this->email, $this->nickname) = explode("\t", $cookie);
         }
     }
@@ -61,8 +58,7 @@ class User
      * @param $email string Email address
      * @return User
      */
-    public static function GetUserByEmail($email)
-    {
+    public static function GetUserByEmail($email) {
         $statement = Database::prepare("SELECT * FROM member WHERE email=?");
         $statement->bindValue(1, $email);
         $statement->execute();
@@ -75,8 +71,7 @@ class User
      * @param $userId int UserID
      * @return User
      */
-    public static function GetUserByUserId($userId)
-    {
+    public static function GetUserByUserId($userId) {
         $statement = Database::prepare("SELECT * FROM member WHERE uid=?");
         $statement->bindValue(1, $userId, \PDO::PARAM_INT);
         $statement->execute();
@@ -88,8 +83,7 @@ class User
      * Insert current user into database
      * @return int Auto-generated UserID for this user
      */
-    public function insertToDB()
-    {
+    public function insertToDB() {
         $inTransaction = Database::inTransaction();
         if (!$inTransaction) {
             Database::beginTransaction();
@@ -122,8 +116,7 @@ class User
      * @param string $password Password needs to verify
      * @return bool Whether the password is correct
      */
-    public function verifyPassword($password)
-    {
+    public function verifyPassword($password) {
         list($hashedPassword, $encryptType) = explode('T', $this->password);
         if ($encryptType == self::ENCRYPT_TYPE_DEFAULT) {
             return $hashedPassword == md5(ENCRYPT_KEY . md5($password) . ENCRYPT_KEY);
@@ -138,8 +131,7 @@ class User
      * Save new password
      * @param string $password New password
      */
-    public function savePassword($password)
-    {
+    public function savePassword($password) {
         $salt = substr(md5($this->uid . $this->email . ENCRYPT_KEY), 8, 16);
         $this->password = substr(md5(md5($password) . $salt), 0, 30) . 'T' . self::ENCRYPT_TYPE_ENHANCE;
         $inTransaction = Database::inTransaction();
@@ -211,13 +203,12 @@ class User
     }
 
     public static function getUserCheckIn($uid) {
-        $statement = Database::prepare("SELECT count(*) FROM member WHERE lastCheckinTime > ". date('Y-m-d 00:00:00', time()) . " AND uid=?");
+        $statement = Database::prepare("SELECT count(*) FROM member WHERE lastCheckinTime > " . date('Y-m-d 00:00:00',
+                time()) . " AND uid=?");
         $statement->bindValue(1, $uid, \PDO::PARAM_INT);
         $checkIn = $statement->fetch(\PDO::PARAM_INT)[0];
-        return $checkIn==null ? 0 : $checkIn;
+        return $checkIn == null ? 0 : $checkIn;
     }
-
-
 
 
 }

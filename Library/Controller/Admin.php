@@ -10,8 +10,7 @@ namespace Controller;
 
 use Core\Response;
 
-class Admin
-{
+class Admin {
     public function index() {
         Response::redirect("/Admin/user");
     }

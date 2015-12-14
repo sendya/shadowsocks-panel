@@ -8,8 +8,7 @@
 namespace Controller\Admin;
 
 
-class Index
-{
+class Index {
     public function index() {
         echo "hello admin";
         exit();

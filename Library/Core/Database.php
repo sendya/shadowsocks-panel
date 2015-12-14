@@ -6,8 +6,7 @@
  */
 namespace Core;
 
-class Database
-{
+class Database {
     const MASTER = 'MASTER';
     const SLAVE = 'SLAVE';
     private static $inTransaction = false;
@@ -22,8 +21,13 @@ class Database
      * @param array $options A key=>value array of driver-specific connection options.
      * @param string $type Connection type (MASTER / SLAVE)
      */
-    public static function register($dsn, $username = null, $password = null, $options = array(), $type = self::MASTER)
-    {
+    public static function register(
+        $dsn,
+        $username = null,
+        $password = null,
+        $options = array(),
+        $type = self::MASTER
+    ) {
         self::$ConnectionPool[$type][] = array(
             'dsn' => $dsn,
             'username' => $username,
@@ -39,8 +43,7 @@ class Database
      * @param array $driver_options Please refer to the document of PDO prepare method
      * @return \PDOStatement
      */
-    public static function prepare($statement, array $driver_options = array())
-    {
+    public static function prepare($statement, array $driver_options = array()) {
         $connection = self::AutoDecideServer($statement);
         return $connection->prepare($statement, $driver_options);
     }
@@ -51,8 +54,7 @@ class Database
      * @return \PDO PDO Connection
      * @throws Error
      */
-    public static function AutoDecideServer($statement)
-    {
+    public static function AutoDecideServer($statement) {
         if (self::$inTransaction) {
             return self::GetServer(self::MASTER);
         }
@@ -71,8 +73,7 @@ class Database
      * @return \PDO PDO Connection
      * @throws Error
      */
-    public static function GetServer($type = self::MASTER)
-    {
+    public static function GetServer($type = self::MASTER) {
         static $SelectedConnection = array();
         if (empty(self::$ConnectionPool[self::SLAVE])) {
             $type = self::MASTER;
@@ -96,8 +97,7 @@ class Database
      * @return int <b>PDO::exec</b> returns the number of rows that were modified or deleted by the SQL statement
      * you issued. If no rows were affected, <b>PDO::exec</b> returns 0.
      */
-    public static function exec($statement)
-    {
+    public static function exec($statement) {
         $connection = self::AutoDecideServer($statement);
         return $connection->exec($statement);
     }
@@ -108,8 +108,7 @@ class Database
      * @param string $statement The SQL statement to prepare and execute.
      * @return \PDOStatement <b>PDO::query</b> returns a PDOStatement object, or <b>FALSE</b> on failure.
      */
-    public static function query($statement)
-    {
+    public static function query($statement) {
         $connection = self::AutoDecideServer($statement);
         return $connection->query($statement);
     }
@@ -123,8 +122,7 @@ class Database
      * a sequence name was specified for the <i>name</i> parameter, <b>PDO::lastInsertId</b> returns a string
      * representing the last value retrieved from the specified sequence object.</p>
      */
-    public static function lastInsertId($name = null)
-    {
+    public static function lastInsertId($name = null) {
         $connection = self::GetServer(self::MASTER);
         return $connection->lastInsertId($name);
     }
@@ -134,8 +132,7 @@ class Database
      * @link http://php.net/manual/pdo.begintransaction.php
      * @return bool <b>TRUE</b> on success or <b>FALSE</b> on failure.
      */
-    public static function beginTransaction()
-    {
+    public static function beginTransaction() {
         $connection = self::GetServer(self::MASTER);
         $result = $connection->beginTransaction();
         if ($result) {
@@ -149,8 +146,7 @@ class Database
      * @link http://php.net/manual/pdo.commit.php
      * @return bool <b>TRUE</b> on success or <b>FALSE</b> on failure.
      */
-    public static function commit()
-    {
+    public static function commit() {
         $connection = self::GetServer(self::MASTER);
         $result = $connection->commit();
         if ($result) {
@@ -164,8 +160,7 @@ class Database
      * @link http://php.net/manual/pdo.rollback.php
      * @return bool <b>TRUE</b> on success or <b>FALSE</b> on failure.
      */
-    public static function rollBack()
-    {
+    public static function rollBack() {
         $connection = self::GetServer(self::MASTER);
         $result = $connection->rollBack();
         if ($result) {
@@ -179,8 +174,7 @@ class Database
      * @link http://php.net/manual/pdo.intransaction.php
      * @return bool <b>TRUE</b> if a transaction is currently active, and <b>FALSE</b> if not.
      */
-    public static function inTransaction()
-    {
+    public static function inTransaction() {
         return self::$inTransaction;
     }
 }

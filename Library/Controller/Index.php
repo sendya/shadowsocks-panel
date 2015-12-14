@@ -13,7 +13,7 @@ use Helper\Encrypt;
 use Helper\Key;
 
 class Index {
-    
+
     /**
      * 进入首页
      */

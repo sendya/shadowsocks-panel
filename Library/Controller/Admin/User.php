@@ -8,8 +8,7 @@
 namespace Controller\Admin;
 
 
-class User
-{
+class User {
     public function index() {
         throw new \Core\Error("user list", 505);
     }

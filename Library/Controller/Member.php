@@ -14,7 +14,7 @@ use Model\Invite;
 use Model\Node;
 
 class Member extends Listener {
-    
+
     public function Index() {
         global $user;
         $serverCount = \Model\Node::GetNodeCount();
@@ -22,10 +22,10 @@ class Member extends Listener {
         $flow = $user->flow_up + $user->flow_down;//已用
         $usedflow = Util::FlowAutoShow($user->transfer - $flow);//剩余可用
         $user_100 = 0;
-        if(!Member::fuckInt($flow) || !Member::fuckInt($user->transfer)){
-            $user_100 = round($flow / $user->transfer, 2)*100;
+        if (!Member::fuckInt($flow) || !Member::fuckInt($user->transfer)) {
+            $user_100 = round($flow / $user->transfer, 2) * 100;
         }
-        if($user_100 == 0) $user_100 = 1;
+        if ($user_100 == 0) $user_100 = 1;
         $all_transfer = Util::FlowAutoShow($user->transfer);//共有流量
         $flow = round($flow / Util::GetMB(), 2);
         $checkin = false;//是否可以签到
@@ -36,12 +36,13 @@ class Member extends Listener {
         $checkCount = \Helper\Ana::GetCheckUserCount();
         $connCount = \Helper\Ana::GetConnCount();
         $useUser = \Helper\Ana::GetUseUserCount();
-        $transferAllFlow = round(\Helper\Ana::GetTransfer4All()/Util::GetGB(), 2); //取得服务器共产生的流量
+        $transferAllFlow = round(\Helper\Ana::GetTransfer4All() / Util::GetGB(), 2); //取得服务器共产生的流量
 
 
-        if((time() - 3600*24) > $user->lastCheckinTime) $checkin = true;
+        if ((time() - 3600 * 24) > $user->lastCheckinTime) $checkin = true;
         include Template::load("panel/member");
     }
+
     //2015.11.10 start
     public function Node() {
         global $user;
@@ -50,24 +51,24 @@ class Member extends Listener {
         $nodeVip = Node::GetNodeArray(1);
 
         include Template::load("panel/node");
-    	//throw new Error("This page is not available" , 404);
+        //throw new Error("This page is not available" , 404);
     }
 
     /**
-     *	Invite list 
-     *	2015.11.11 start
+     *    Invite list
+     *    2015.11.11 start
      */
     public function Invite() {
         global $user;
         $inviteList = Invite::GetInvitesByUid($user->id, 0);
         include Template::load("panel/invite");
 
-    	//throw new Error("This page is not available", 404);
+        //throw new Error("This page is not available", 404);
     }
 
     /**
-     *	User info page,
-     *	2015.11.12 start
+     *    User info page,
+     *    2015.11.12 start
      */
     public function Info() {
         global $user;
@@ -99,10 +100,8 @@ class Member extends Listener {
     }
 
 
-
-
     private static function fuckInt($number) {
-        if($number == null || $number == 0) return true;
+        if ($number == null || $number == 0) return true;
         return false;
     }
 }

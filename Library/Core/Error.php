@@ -6,8 +6,7 @@
  */
 namespace Core;
 
-class Error extends \Exception
-{
+class Error extends \Exception {
     private $trace;
 
     /**
@@ -17,8 +16,7 @@ class Error extends \Exception
      * @param \Throwable $previous Previous exception
      * @param array $trace Backtrace information
      */
-    function __construct($message = '', $code = 0, \Throwable $previous = null, $trace = array())
-    {
+    function __construct($message = '', $code = 0, \Throwable $previous = null, $trace = array()) {
         parent::__construct($message, $code, $previous);
         $this->trace = $trace;
         if (!$trace) {
@@ -29,14 +27,12 @@ class Error extends \Exception
     /**
      * Register custom handler for uncaught exception and errors
      */
-    public static function registerHandler()
-    {
+    public static function registerHandler() {
         set_exception_handler(array('\\Core\\Error', 'handleUncaughtException'));
         set_error_handler(array('\\Core\\Error', 'handlePHPError'), E_ALL);
     }
 
-    public static function handlePHPError($errNo, $errStr, $errFile, $errLine)
-    {
+    public static function handlePHPError($errNo, $errStr, $errFile, $errLine) {
         if ($errNo == E_STRICT) {
             return;
         }
@@ -50,8 +46,7 @@ class Error extends \Exception
         self::handleUncaughtException($exception);
     }
 
-    public static function handleUncaughtException(\Throwable $instance)
-    {
+    public static function handleUncaughtException(\Throwable $instance) {
         @ob_end_clean();
         if (Database::inTransaction()) {
             Database::rollBack();
@@ -68,8 +63,7 @@ class Error extends \Exception
      * Format backtrace information
      * @return string Formatted backtrace information
      */
-    public function formatBackTrace()
-    {
+    public function formatBackTrace() {
         $backtrace = $this->trace;
         krsort($backtrace);
         $trace = '';

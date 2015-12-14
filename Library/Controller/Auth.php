@@ -15,13 +15,11 @@ use Model\User;
 
 class Auth {
 
-    public function index()
-    {
+    public function index() {
 
     }
 
-    public function Login()
-    {
+    public function Login() {
         $controller = "Login";
         /**
          * 1. 判断用户是否已经登陆,
@@ -50,10 +48,10 @@ class Auth {
                     $token = $user->uid . "\t" . $user->email . "\t" . $user->nickname;
                     $token = Encrypt::encode($token, COOKIE_KEY);
                     $tokenOutTime = Encrypt::encode(time(), COOKIE_KEY);
-                    setcookie("token",base64_encode($tokenOutTime), time() + $ext, "/");
+                    setcookie("token", base64_encode($tokenOutTime), time() + $ext, "/");
                     setcookie("auth", base64_encode($token), time() + $ext, "/");
                 } else {
-                  $result['message'] = "账户名或密码错误, 请检查后再试!";
+                    $result['message'] = "账户名或密码错误, 请检查后再试!";
                 }
             }
 
@@ -66,14 +64,14 @@ class Auth {
 
     public function Lockscreen() {
         global $user;
-        if(isset($_POST['email']) && isset($_POST['passwd'])) {
+        if (isset($_POST['email']) && isset($_POST['passwd'])) {
             $result = array("status" => 0, "message" => "验证失败");
             $passwd = htmlspecialchars($_POST['passwd']);
             $result['passwd'] = $passwd;
             $user = User::getInstance();
             $user = $user->GetUserByEmail($user->email);
             $result['obj'] = $user;
-            if($user->verifyPassword($passwd)) {
+            if ($user->verifyPassword($passwd)) {
                 Util::setToken();
                 $result['status'] = 1;
                 $result['message'] = "验证成功, 将跳转到 >> 仪表盘";
@@ -84,7 +82,7 @@ class Auth {
             echo json_encode($result);
             exit();
         } else {
-            if(!\Helper\Listener::checkLogin()) {
+            if (!\Helper\Listener::checkLogin()) {
                 \Core\Response::redirect('/Auth/login');
                 exit();
             }
@@ -93,16 +91,14 @@ class Auth {
         exit();
     }
 
-    public function logout()
-    {
+    public function logout() {
         setcookie("auth", '', time() - 3600, "/");
         setcookie("token", '', time() - 3600, "/");
         header("Location:/");
     }
 
 
-    public function register()
-    {
+    public function register() {
         $result = array('error' => 1, 'message' => '注册失败');
         $email = strtolower(trim($_POST['r_email']));
         $userName = trim($_POST['r_user_name']);

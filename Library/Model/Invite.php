@@ -8,8 +8,7 @@ namespace Model;
 
 use Core\Database;
 
-class Invite
-{
+class Invite {
 
     public $uid; //邀请码归属用户uid   -1代表公共邀请码
     public $dateLine;//创建该 invite 时间 mysql:datetime
@@ -23,11 +22,10 @@ class Invite
 
     /**
      *  Get invites by uid
-     *  @param $uid int, user id
-     *  @param $status int, invite code status (0-Available, 1-unavailable, -1Expired)
+     * @param $uid int, user id
+     * @param $status int, invite code status (0-Available, 1-unavailable, -1Expired)
      */
-    public static function GetInvitesByUid($uid = -1, $status = "")
-    {
+    public static function GetInvitesByUid($uid = -1, $status = "") {
         $inviteList = null;
         $selectSQL = "SELECT * FROM invite WHERE 1=1 ";
         if (isset($uid) && -1 != $uid) $selectSQL .= "AND uid={$uid} ";
@@ -44,8 +42,7 @@ class Invite
      * @param $invite string Invite code
      * @return Invite
      */
-    public static function GetInviteByInviteCode($invite)
-    {
+    public static function GetInviteByInviteCode($invite) {
         $statement = Database::prepare("SELECT * FROM invite AS t1 WHERE t1.invite=?");
         $statement->bindValue(1, $invite, \PDO::PARAM_STR);
         $statement->execute();
@@ -57,16 +54,14 @@ class Invite
      * 取总邀请码数
      * @return mixed
      */
-    public static function GetInvitesCount()
-    {
+    public static function GetInvitesCount() {
         $statement = Database::prepare("SELECT count(*) FROM invite");
         $statement->execute();
         $inviteCount = $statement->fetch(\PDO::FETCH_NUM);
         return $inviteCount[0];
     }
 
-    public function insertToDB()
-    {
+    public function insertToDB() {
         $inTransaction = Database::inTransaction();
         if (!$inTransaction) {
             Database::beginTransaction();
@@ -87,15 +82,13 @@ class Invite
         return $this->invite;
     }
 
-    public static function deleteInvite($invite)
-    {
+    public static function deleteInvite($invite) {
         $statement = Database::prepare("DELETE * FROM invite WHERE invite=:invite");
         $statement->bindValue(':invite', $invite, \PDO::PARAM_STR);
         Database::commit();
     }
 
-    public function updateInvite()
-    {
+    public function updateInvite() {
         $inTransaction = Database::inTransaction();
         if (!$inTransaction) {
             Database::beginTransaction();

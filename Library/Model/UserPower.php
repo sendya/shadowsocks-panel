@@ -8,8 +8,7 @@ namespace Model;
 
 use Core\Database;
 
-class UserPower
-{
+class UserPower {
     public $id;
     public $uid;// user id
 

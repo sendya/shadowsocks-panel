@@ -6,8 +6,7 @@
  */
 namespace Helper;
 
-class Encrypt
-{
+class Encrypt {
     const OPERATION_ENCODE = 1;
     const OPERATION_DECODE = 2;
 
@@ -17,13 +16,11 @@ class Encrypt
      * @param string $key Password
      * @return string Encrypted string
      */
-    public static function encode($string, $key = ENCRYPT_KEY)
-    {
+    public static function encode($string, $key = ENCRYPT_KEY) {
         return self::_encrypt($string, self::OPERATION_ENCODE, $key);
     }
 
-    private static function _encrypt($string, $operation, $key, $expiry = 0)
-    {
+    private static function _encrypt($string, $operation, $key, $expiry = 0) {
         $cKeyLength = 4;
         $key = md5($key);
         $keyA = md5(substr($key, 0, 16));
@@ -74,8 +71,7 @@ class Encrypt
      * @param string $key Password
      * @return string Decrypted string
      */
-    public static function decode($string, $key = ENCRYPT_KEY)
-    {
+    public static function decode($string, $key = ENCRYPT_KEY) {
         return self::_encrypt($string, self::OPERATION_DECODE, $key);
     }
 }

@@ -9,8 +9,7 @@ namespace Controller;
 
 use \Core\Template;
 
-class Invite
-{
+class Invite {
 
     public function index() {
         $inviteList = \Model\Invite::GetInvitesByUid(-1);

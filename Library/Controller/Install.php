@@ -11,11 +11,11 @@ use Helper\Key;
 
 class Install {
 //GetConfig
-    
+
     public function index() {
         // Default router
     }
-    
+
     public function initSalt() {
         $lockFile = ROOT_PATH . 'install.lock';
         $configFile = DATA_PATH . 'Config.php';
@@ -23,10 +23,10 @@ class Install {
         //Migrations
 
         //判断是否已经安装.
-        if(!file_exists($configFile)) {
+        if (!file_exists($configFile)) {
             copy(DATA_PATH . 'Config.simple.php', $configFile);
         }
-        if(!file_exists($lockFile)) {
+        if (!file_exists($lockFile)) {
             Key::SetConfig("ENCRYPT_KEY", Key::CreateKey());
             Key::SetConfig("COOKIE_KEY", Key::CreateKey());
             file_put_contents($lockFile, "");
