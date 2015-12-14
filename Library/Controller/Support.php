@@ -10,15 +10,18 @@ use Core\Template;
 
 class Support
 {
-    public function index() {
+    public function index()
+    {
         exit();
     }
 
-    public function Tos() {
+    public function Tos()
+    {
         include Template::load('/home/tos');
     }
 
-    public function Help() {
+    public function Help()
+    {
         include Template::load('/home/help');
     }
 

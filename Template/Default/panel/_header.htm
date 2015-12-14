@@ -2,6 +2,7 @@
 <php>
     $allNode = \Model\Node::GetNodeCount();
     $openNode = \Model\Node::GetNodeCount(1);
+    $userPower = \Model\UserPower::verifyPower($user->uid);
 </php>
 <body class="page-body">
 <div class="modal fade" id="modal-1" style="display: none;" aria-hidden="true">
@@ -179,21 +180,21 @@
                                 <span class="title">修改头像</span>
                             </a>
                         </li>
-                        <li><a href="Support/Tos">
+                        <li><a href="support/Tos">
                             <i class="entypo-flow-line"></i>
                             <span class="title">关于{$SITE_NAME}</span>
                         </a>
                         </li>
                     </ul>
                 </li>
-                <!-- php if -->
+                <if condition="$userPower != 0">
                 <li>
-                    <a href="/console">
+                    <a href="/admin/">
                         <i class="linecons-cog"></i>
                         <span class="title">管理员后台</span>
                     </a>
                 </li>
-
+                </if>
             </ul>
         </div>
     </div>
