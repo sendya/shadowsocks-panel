@@ -3,6 +3,11 @@ Shadowsocks Panel
 
 ### update
 ```
+2015.12.14 : 
+	Fix admin/ router
+	Add user power(admin table)
+	Update sql
+
 2015.12.09 : 
 	Add register page auto value func
 	exp: http://local.dev/Auth/login?invite=9973C1D6A6557CCF#register
