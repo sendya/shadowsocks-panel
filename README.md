@@ -56,3 +56,8 @@ RewriteRule ^ index.php [L]
 
 Based KK-Framework :
 https://github.com/kookxiang/KK-Framework
+
+shadowsocks-manyuser ：
+```
+https://github.com/sendya/shadowsocks-rm/tree/manyuser
+```
