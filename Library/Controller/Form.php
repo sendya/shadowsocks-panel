@@ -108,13 +108,17 @@ class Form extends Listener {
 
     public function CheckIn() {
         global $user;
+        $user = User::GetUserByUserId($user->uid);
         $result = array('error' => 1, 'message' => '');
-        if ($user->lastCheckinTime >= 3600 * 24) //一天
+        if ($user->lastCheckinTime <= time() - 3600 * 24) //一天
         {
             $checkinTransfer = rand(5, 25) * Util::GetMB();
             $user->lastCheckinTime = time();
             $user->transfer = $user->transfer + $checkinTransfer;
-            $result['message'] = '签到成功, 获得' . $checkinTransfer . 'MB 流量';
+            $user->updateUser();
+            $result['user'] = $user;
+            $result['time'] = time();
+            $result['message'] = '签到成功, 获得' . Util::FlowAutoShow($checkinTransfer) . ' 流量';
         } else {
             $result['message'] = '你已经在 ' . date('Y-m-d H:i:s', $user->lastCheckinTime) . " 时签到过.";
         }

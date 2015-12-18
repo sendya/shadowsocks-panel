@@ -39,7 +39,7 @@ class Member extends Listener {
         $transferAllFlow = round(\Helper\Ana::GetTransfer4All() / Util::GetGB(), 2); //取得服务器共产生的流量
 
 
-        if ((time() - 3600 * 24) > $user->lastCheckinTime) $checkin = true;
+        if ((time() - 3600 * 24) >= $user->lastCheckinTime) $checkin = true;
         include Template::load("panel/member");
     }
 
