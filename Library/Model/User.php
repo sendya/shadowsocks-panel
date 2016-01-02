@@ -159,8 +159,8 @@ class User {
         }
         $statement = Database::prepare("UPDATE member SET email=:email, `password`=:pwd, sspwd=:sspwd, `port`=:port, nickname=:nickname,
             `flow_up`=:flow_up, `flow_down`=:flow_down, transfer=:transfer, plan=:plan, `enable`=:enable, invite=:invite, regDateLine=:regDateLine,
-            lastConnTime=:lastConnTime,lastCheckinTime=:lastCheckinTime,lastFindPasswordTime=:lastFindPasswordTime,
-            lastFindPasswordCount=:lastFindPasswordCount WHERE uid=:userId");
+            lastConnTime=:lastConnTime,lastCheckinTime=:lastCheckinTime,lastFindPasswdTime=:lastFindPasswdTime,
+            lastFindPasswdCount=:lastFindPasswdCount WHERE uid=:userId");
         $statement->bindValue(':email', $this->email, \PDO::PARAM_STR);
         $statement->bindValue(':pwd', $this->password, \PDO::PARAM_STR);
         $statement->bindValue(':sspwd', $this->sspwd, \PDO::PARAM_STR);
@@ -175,10 +175,10 @@ class User {
         $statement->bindValue(':regDateLine', $this->regDateLine, \PDO::PARAM_INT);
         $statement->bindValue(':lastConnTime', $this->lastConnTime, \PDO::PARAM_INT);
         $statement->bindValue(':lastCheckinTime', $this->lastCheckinTime, \PDO::PARAM_INT);
-        $statement->bindValue(':lastFindPasswordTime', $this->lastFindPasswordTime, \PDO::PARAM_INT);
-        $statement->bindValue(':lastFindPasswordCount', $this->lastFindPasswordCount, \PDO::PARAM_INT);
+        $statement->bindValue(':lastFindPasswdTime', $this->lastFindPasswordTime, \PDO::PARAM_INT);
+        $statement->bindValue(':lastFindPasswdCount', $this->lastFindPasswordCount, \PDO::PARAM_INT);
         $statement->bindValue(':userId', $this->uid, \PDO::PARAM_INT);
-        $statement->execute();
+        $flag = $statement->execute();
         if (!$inTransaction) {
             Database::commit();
         }

@@ -10,6 +10,7 @@ namespace Controller;
 use Core\Error;
 use Helper\Listener;
 use Helper\Util;
+use Model\Invite;
 use Model\User;
 
 class Form extends Listener {
@@ -123,6 +124,15 @@ class Form extends Listener {
             $result['message'] = '你已经在 ' . date('Y-m-d H:i:s', $user->lastCheckinTime) . " 时签到过.";
         }
         echo json_encode($result);
+        exit();
+    }
+
+    public function addInvite() {
+        global $user;
+        $user = User::GetUserByUserId($user->uid);
+
+        Invite::addInvite($user->uid, 'VIP');
+        echo 'add ok';
         exit();
     }
 

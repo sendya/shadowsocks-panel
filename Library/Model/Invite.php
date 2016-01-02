@@ -7,6 +7,7 @@
 namespace Model;
 
 use Core\Database;
+use Helper\Util;
 
 class Invite {
 
@@ -105,5 +106,21 @@ class Invite {
         if (!$inTransaction) {
             Database::commit();
         }
+    }
+
+    public static function addInvite($uid, $plan = 'A') {
+
+        $iv = $uid . hash("sha256", $uid . Util::GetRandomChar(10));
+        $invite = new Invite();
+        $invite->uid = $uid;
+        $invite->dateLine = time();
+        $invite->expiration = 10;
+        $invite->inviteIp = Util::GetUserIP();
+        $invite->invite = $iv; //invite code.
+        $invite->reguid = 0;
+        $invite->regDateLine= 0;
+        $invite->plan = $plan;
+        $invite->status = 0;
+        $invite->insertToDB();
     }
 }

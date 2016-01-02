@@ -1,5 +1,8 @@
 <import template="/panel/_header" />
 <import template="/panel/_content" />
+<php>
+    echo $user->lastCheckinTime;
+</php>
 <div class="row">
     <div class="col-sm-3">
 
@@ -18,17 +21,20 @@
                 <i class="fa-calendar"></i>
             </div>
             <div class="xe-label">
-                <if condition="$checkin">
-                <strong>
-                    <a id="checkin" href="javascript:;" style="color:#000;">点击签到</a>
-                </strong>
-                <span id="checkin-tag">签到送流量</span>
-                <else>
-                <strong>
-                    <div id="checkinoff">您已签到</div>
-                </strong>
-                <span  id="checkinoff-tag" >{$checkinTime}</span>
-                </if>
+                <!-- reset -->
+
+                <div id="checkin-on" <if condition="!$checkin">style="display:none;"</if>>
+                    <strong>
+                        <a id="checkin" href="javascript:;" style="color:#000;">点击签到</a>
+                    </strong>
+                    <span id="checkin-tag">签到送流量</span>
+                </div>
+                <div id="checkin-off" <if condition="$checkin">style="display:none;"</if>>
+                    <strong>
+                        <div id="checkinoff">您已签到</div>
+                    </strong>
+                    <span  id="checkinoff-tag" >{$checkinTime}</span>
+                </div>
             </div>
         </div>
 
@@ -135,10 +141,8 @@
                 dataType:"json",
                 success:function(result) {
                     showToastr(result.message, 0);
-                    $("#checkin").hide();
-                    $("#checkin-tag").hide();
-                    $("#checkinoff").show();
-                    $("#checkinoff-tag").show();
+                    $("#checkin-on").hide();
+                    $("#checkin-off").show();
                 },
                 error:function(jqXHR) {
                     showToastr("出现未知错误，请重试或联系管理员", 0);
