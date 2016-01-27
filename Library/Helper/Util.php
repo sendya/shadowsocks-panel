@@ -212,6 +212,13 @@ class Util {
         return $ip;
     }
 
+    public static function IsInstall() {
+        if(!(file_exists(DATA_PATH.'install.lock'))) {
+            // ss panel not install
+            
+        }
+    }
+
     /* Action Utility */
     /**
      *

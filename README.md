@@ -37,6 +37,25 @@ Shadowsocks Panel
 	Add Invite model. 
 ```
 
+Install Shadowsocks-panel
+```
+git clone https://github.com/sendya/shadowsocks-panel.git
+cd shadowsocks-panel
+composer install
+
+```
+
+if your in china , please edit `composer.json` content, add content to composer config
+```
+		,
+    "repositories": {
+        "packagist": {
+            "type": "composer",
+            "url": "http://packagist.phpcomposer.com"
+        }
+    }
+```
+
 ### Rewrite 路由
 nginx
 ```

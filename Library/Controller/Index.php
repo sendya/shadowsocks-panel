@@ -19,8 +19,8 @@ class Index {
      */
     public function index() {
 
+    		
         include Template::load('/home/index');
-        //throw new \Core\Error("Coming Soon..<br/>", 233);
     }
 
 }

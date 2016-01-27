@@ -45,6 +45,7 @@ jQuery(document).ready(function($) {
 					remember_me: document.getElementById('remember_me').checked==true ? 'week' : ''
 				},
 				success: function(resp) {
+					console.log("in success");
 					$('button[type="submit"]').removeAttr("disabled");
 					show_loading_bar({
 						delay: .5,
@@ -60,6 +61,16 @@ jQuery(document).ready(function($) {
 								toastr.error("请求服务器失败，请稍后重试", "无效登陆!", opts);
 								$('#email').select();
 							}
+						}
+					});
+				},
+				error: function(jqXHR) {
+					show_loading_bar({
+						delay: .5,
+						pct: 100,
+						finish: function() {
+							toastr.error('程序出现致命错误，无法连接到登录服务器<br/>可能的问题：<br/>&nbsp;&nbsp;1.数据库连接失败<br/>&nbsp;&nbsp;2.请求地址API错误', "错误!", opts);
+							$('button[type="submit"]').removeAttr("disabled");
 						}
 					});
 				}
@@ -231,13 +242,13 @@ jQuery(document).ready(function($) {
 						<input type="text" class="form-control input-dark" name="r_invite" id="r_invite" value="{($_GET['invite'])}" autocomplete="off" placeholder="邀请码" />
 					</div>
 					<div class="form-group">
-						<button type="submit" class="btn btn-dark  btn-block text-left">
+						<button type="submit" class="btn btn-info btn-block text-left">
 							<i class="fa-user"></i>
 							注 册
 						</button>
 					</div>
 					<div class="form-group">
-						<button type="button" class="btn btn-dark  btn-block text-left login-button" onclick="location.href = '{$requestPath}#login'">
+						<button type="button" class="btn btn-dark btn-block text-left login-button" onclick="location.href = '{$requestPath}#login'">
 							<i class="fa-lock"></i>
 							返 回 登 陆
 						</button>
@@ -254,8 +265,8 @@ jQuery(document).ready(function($) {
 	</div>
 	<script>
 		jQuery(document).ready(function($) {
-			$(".register-button").click(function(){$("#login").hide(); $(".external-login").hide(); $("#register").show();});
-			$(".login-button").click(function(){$("#login").show(); $(".external-login").show(); $("#register").hide();});
+			$(".register-button").click(function(){$("#login").hide(); $(".external-login").hide(); $("#register").show(); document.title = document.title.replace('Login', 'Register');});
+			$(".login-button").click(function(){$("#login").show(); $(".external-login").show(); $("#register").hide();document.title = document.title.replace('Register', 'Login');});
 			if (location.hash == '#register') {$(".register-button").click();} else {$(".login-button").click();}
 		});
 	</script>

@@ -13,6 +13,7 @@ define('DATA_PATH', ROOT_PATH.'Data/');
 @ini_set('expose_php', false);
 @ini_set('date.timezone','Asia/Shanghai');
 
+if (!file_exists(ROOT_PATH.'Package/autoload.php')) die('Please Run "<b>composer install</b>" init Shadowsocks-panel');
 // Register autoloader
 require ROOT_PATH.'Package/autoload.php';
 
