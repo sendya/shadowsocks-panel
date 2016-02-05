@@ -99,3 +99,11 @@ CREATE TABLE `user_power` (
   `uid` int(11) NOT NULL DEFAULT '0' COMMENT '用户id',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='管理员表';
+
+
+-- ----------------------------
+-- Insert default db
+-- ----------------------------
+INSERT INTO `user_power` (`id`, `uid`) VALUES ('1', '1000');
+
+INSERT INTO `invite` (`uid`, `dateLine`, `expiration`, `inviteIp`, `invite`, `reguid`, `regDateLine`, `plan`, `status`) VALUES ('-1', '1454638687', '999', '127.0.0.1', '334ab1a9fbc19b4c688ca7fd5f8f9ffa', NULL, '0', 'VIP', '0');
