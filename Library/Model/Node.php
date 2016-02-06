@@ -95,8 +95,9 @@ class Node {
         if (!$inTransaction) Database::beginTransaction();
         $statement = Database::prepare("DELETE * FROM node WHERE id=:id");
         $statement->bindValue(':id', $nodeId, \PDO::PARAM_INT);
-        $statement->execute();
+        $result = $statement->execute();
         if (!$inTransaction) Database::commit();
+        return $result;
     }
 
     /**

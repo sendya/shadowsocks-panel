@@ -7,11 +7,17 @@
 
 namespace Controller\Admin;
 
+use \Core\Template;
+use \Model\User;
+use \Model\Node;
+use \Helper\Util;
 
-class Index {
+class Index extends AdminListener {
     public function index() {
-        echo "hello admin";
-        exit();
+    	global $user;
+    	
+
+			include Template::load('/admin/index');
     }
 
 }

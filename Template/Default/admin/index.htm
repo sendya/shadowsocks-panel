@@ -1,0 +1,136 @@
+<import template="/admin/_header" />
+<import template="/admin/_content" />
+
+			<div class="row">
+				<div class="col-sm-12">
+					
+					<div class="chart-item-bg-2">
+						<div class="chart-item-num" data-count="this" data-from="0" data-to="98" data-suffix="%" data-duration="2">0%</div>
+						<div class="chart-item-desc">
+							<p class="col-lg-7">账户使用率.<br/>由每日在线进行统计站点账户的使用率，用于判断活跃度。</p>
+						</div>
+						<div class="chart-item-env">
+							<div id="doughnut-1" style="width: 200px;"></div>
+						</div>
+					</div>
+					
+				</div>
+			</div>
+			
+			<div class="row">
+				<div class="col-sm-6">
+					
+					<div class="panel panel-default">
+						<div class="panel-heading">用户在线时间</div>
+						<table class="table">
+							<thead>
+								<tr>
+									<th>区间</th>
+									<th width="20%">人数</th>
+									<th width="30%">占比</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>AM 00~06</td>
+									<td>23,670</td>
+									<td>
+										<div class="sparkline line2010"></div>
+									</td>
+								</tr>
+								<tr>
+									<td>AM 07~12</td>
+									<td>37,5</td>
+									<td>
+										<div class="sparkline spline2010"></div>
+									</td>
+								</tr>
+								<tr>
+									<td>PM 13~18</td>
+									<td>107,221</td>
+									<td>
+										<div class="sparkline stepline2010"></div>
+									</td>
+								</tr>
+								<tr>
+									<td>PM 19~24</td>
+									<td>107,221</td>
+									<td>
+										<div class="sparkline stepline2010"></div>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					
+				</div>
+				<div class="col-sm-6">
+					
+					<div class="panel panel-default">
+						<div class="panel-heading">流量消耗</div>
+						<table class="table">
+							<thead>
+								<tr>
+									<th>区间(单位:GB)</th>
+									<th width="20%">人数</th>
+									<th width="20%">占比</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>0~10 GB</td>
+									<td>43</td>
+									<td>43%</td>
+									<td>
+										<div id="age-group-1" class="sparkline"></div>
+									</td>
+								</tr>
+								<tr>
+									<td>11~30 GB</td>
+									<td>29</td>
+									<td>29%</td>
+									<td>
+										<div id="age-group-2" class="sparkline"></div>
+									</td>
+								</tr>
+								<tr>
+									<td>31~100 GB</td>
+									<td>28</td>
+									<td>28%</td>
+									<td>
+										<div id="age-group-3" class="sparkline"></div>
+									</td>
+								</tr>
+								<tr>
+									<td>100~N GB</td>
+									<td>28</td>
+									<td>28%</td>
+									<td>
+										<div id="age-group-3" class="sparkline"></div>
+									</td>
+								</tr>
+
+							</tbody>
+						</table>
+					</div>
+					
+				</div>
+			</div>
+			
+			
+			<div class="row">
+				<div class="col-sm-12">
+					
+					<div class="chart-item-bg-2">
+						<div class="chart-item-num num-sm" style="width: 370px;" data-count="this" data-from="0" data-to="112.34" data-decimal="," data-suffix="$" data-duration="3">0</div>
+						<div class="chart-item-env no-padding">
+							<div id="area-2" style="height: 150px; margin: 0"></div>
+						</div>
+					</div>
+					
+				</div>
+			</div>
+<script type="text/javascript">
+
+</script>
+<import template="/panel/_footer" />

@@ -33,6 +33,8 @@ class User {
     public $lastFindPasswdTime = 0;//上次找回密码时间 (找回密码时间和次数仅用作限制3次或?次后禁止找回)
     public $lastFindPasswdCount = 0;//找回密码次数
 
+    public $gravatar;
+
     public static $instance;
 
     /**
