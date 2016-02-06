@@ -3,6 +3,21 @@ Shadowsocks Panel
 
 ### update
 ```
+2016.02.05~02.06 :
+	Update sql(default db insert.)
+	Add admin page
+	Add nodeList/nodeAdd/nodeModify/nodeDelete
+
+2016.01.13~01.27 :
+	Fix bug
+	Login diff
+	Add migr
+	create Alpha.01 version.
+
+2016.01.02 :
+	Create install setp
+	Fix bug
+
 2015.12.14 : 
 	Fix admin/ router
 	Add user power(admin table)
