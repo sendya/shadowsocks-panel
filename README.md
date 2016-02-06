@@ -1,7 +1,55 @@
 Shadowsocks Panel
 ===================
 
-### update
+一个比较简单的 ss panel
+采用全页面的 Ajax请求
+支持PHP7
+
+### 程序截图
+![后台](https://static-2.loacg.com/open/static/ss-panel-github/Admin.png)
+![前台](https://static-2.loacg.com/open/static/ss-panel-github/member.png)
+![前台](https://static-2.loacg.com/open/static/ss-panel-github/member2.png)
+![前台](https://static-2.loacg.com/open/static/ss-panel-github/member3.png)
+
+### 配置 Rewrite 路由
+nginx
+```
+if (!-e $request_filename) {
+    rewrite (.*) /index.php last;
+}
+```
+apache
+```
+RewriteEngine On
+
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^ index.php [L]
+```
+
+### Composer libs
+if your in china , please edit `composer.json` content, add content to composer config
+```
+		,
+    "repositories": {
+        "packagist": {
+            "type": "composer",
+            "url": "http://packagist.phpcomposer.com"
+        }
+    }
+```
+and run comm `php composer install`
+
+
+Based KK-Framework :
+https://github.com/kookxiang/KK-Framework
+
+shadowsocks-manyuser ：
+```
+https://github.com/sendya/shadowsocks-rm/tree/manyuser
+```
+
+### update logs
 ```
 2016.02.05~02.06 :
 	Update sql(default db insert.)
@@ -58,40 +106,4 @@ git clone https://github.com/sendya/shadowsocks-panel.git
 cd shadowsocks-panel
 composer install
 
-```
-
-if your in china , please edit `composer.json` content, add content to composer config
-```
-		,
-    "repositories": {
-        "packagist": {
-            "type": "composer",
-            "url": "http://packagist.phpcomposer.com"
-        }
-    }
-```
-
-### Rewrite 路由
-nginx
-```
-if (!-e $request_filename) {
-    rewrite (.*) /index.php last;
-}
-```
-apache
-```
-RewriteEngine On
-
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteRule ^ index.php [L]
-```
-
-
-Based KK-Framework :
-https://github.com/kookxiang/KK-Framework
-
-shadowsocks-manyuser ：
-```
-https://github.com/sendya/shadowsocks-rm/tree/manyuser
 ```
