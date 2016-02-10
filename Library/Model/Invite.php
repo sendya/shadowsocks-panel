@@ -29,7 +29,7 @@ class Invite {
     public static function GetInvitesByUid($uid = -1, $status = "") {
         $inviteList = null;
         $selectSQL = "SELECT * FROM invite WHERE 1=1 ";
-        if (isset($uid) && -1 != $uid) $selectSQL .= "AND uid={$uid} ";
+        $selectSQL .= "AND uid={$uid} ";
         if (isset($status) && "" != $status) $selectSQL .= "AND status={$status} ";
         $selectSQL .= "ORDER BY dateLine DESC";
         $statement = Database::prepare($selectSQL);
@@ -110,7 +110,7 @@ class Invite {
 
     public static function addInvite($uid, $plan = 'A') {
 
-        $iv = $uid . hash("sha256", $uid . Util::GetRandomChar(10));
+        $iv = $uid . substr(hash("sha256", $uid . Util::GetRandomChar(10)),0, 26);
         $invite = new Invite();
         $invite->uid = $uid;
         $invite->dateLine = time();
@@ -121,6 +121,11 @@ class Invite {
         $invite->regDateLine= 0;
         $invite->plan = $plan;
         $invite->status = 0;
-        $invite->insertToDB();
+
+        $user = User::GetUserByUserId($uid);
+        $user->transfer = $user->transfer - Util::GetGB()*10;
+        $user->updateUser();
+
+        return $invite->insertToDB();
     }
 }

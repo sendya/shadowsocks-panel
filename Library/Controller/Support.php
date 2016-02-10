@@ -14,7 +14,7 @@ class Support {
     }
 
     public function Tos() {
-        include Template::load('/home/tos');
+        include Template::load('/home/Tos');
     }
 
     public function Help() {

@@ -202,6 +202,10 @@ class User {
         return \Helper\Util::GetGravatar($this->email, 128);
     }
 
+    public function getFlow() {
+        return \Helper\Util::ToGB($this->transfer);
+    }
+
     public static function getSSPwd($userId) {
         $statement = Database::prepare("SELECT * FROM member WHERE uid=?");
         $statement->bindValue(1, $userId, \PDO::PARAM_INT);

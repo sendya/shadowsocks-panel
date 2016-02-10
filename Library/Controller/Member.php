@@ -60,7 +60,8 @@ class Member extends Listener {
      */
     public function Invite() {
         global $user;
-        $inviteList = Invite::GetInvitesByUid($user->id, 0);
+        $inviteList = Invite::GetInvitesByUid($user->uid, 0);
+
         include Template::load("panel/invite");
 
         //throw new Error("This page is not available", 404);

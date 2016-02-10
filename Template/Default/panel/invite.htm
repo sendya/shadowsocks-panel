@@ -47,8 +47,9 @@
             </tr>
             </thead>
             <tbody>
-            <if condition="$inviteList.length > 0">
-            <loop variable="$$inviteList" key="$key" value="$invite">
+
+            <if condition="count($inviteList) > 0">
+            <loop variable="$inviteList" key="$key" value="$invite">
             <tr>
                 <td>
                     {$key}
@@ -88,15 +89,16 @@
             showToastr("生成邀请码中..", 0, 2000);
             $.ajax({
                 type:"GET",
-                url:"/member/CreateInvite",
+                url:"/Form/CreateInvite",
                 dataType:"json",
                 success:function(data){
-                    if(data.status){
-                        window.location.reload();
+                    if(data.error == 0){
+                        showToastr(data.message, 0, 5000);
+
                     }else{
                         //$("#msg-error").show();
                         //$("#msg-error-p").html(data.msg);
-                        showToastr("邀请码生成成功", 0, 5000);
+                        showToastr(data.message, 0, 5000);
                     }
                 },
                 error:function(jqXHR){
@@ -108,16 +110,16 @@
             showToastr("正在校验信息..", 0, 2000);
             $.ajax({
                 type:"GET",
-                url:"/action/inviteFlow",
+                url:"/invite/userAddInvite",
                 dataType:"json",
                 success:function(data){
-                    if(data.status){
-                        showToastr(data.msg, 0, 5000);
+                    if(data.error == 0){
+                        showToastr(data.message, 0, 5000);
                         window.location.reload();
                     }else{
                         //$("#msg-error").show();
                         //$("#msg-error-p").html(data.msg);
-                        showToastr(data.msg, 0, 5000);
+                        showToastr(data.message, 0, 5000);
                     }
                 },
                 error:function(jqXHR){
