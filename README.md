@@ -107,3 +107,29 @@ cd shadowsocks-panel
 composer install
 
 ```
+
+Shadowsocks manyuser
+```
+git clone -b manyuser https://github.com/sendya/shadowsocks.git
+cd shadowsocks/shadowsocks
+```
+### CentOS:
+```
+yum install m2crypto python-setuptools
+easy_install pip
+```
+### Debian / Ubuntu:
+```
+apt-get install python-pip python-m2crypto
+```
+
+```
+pip install cymysql
+```
+
+Edit config
+```
+vim ./Config.py
+vim ./config.json
+```
+
