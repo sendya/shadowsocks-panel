@@ -23,7 +23,7 @@ class Message {
      * @param $msgId
      * @return message
      */
-    public static function GetNodeById($msgId) {
+    public static function GetMessageById($msgId) {
         $statement = Database::prepare("SELECT * FROM message WHERE id=?");
         $statement->bindValue(1, $msgId);
         $statement->execute();
