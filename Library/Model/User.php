@@ -82,6 +82,20 @@ class User {
     }
 
     /**
+     * Get User array
+     * @param $type
+     * @return User[]
+     */
+    public static function GetUserArray() {
+        $userList = null;
+        $selectSQL = "SELECT * FROM member ORDER BY uid";
+        $statement = Database::prepare($selectSQL);
+        $statement->execute();
+        $userList = $statement->fetchAll(\PDO::FETCH_CLASS, '\\Model\\User');
+        return $userList;
+    }
+
+    /**
      * Insert current user into database
      * @return int Auto-generated UserID for this user
      */

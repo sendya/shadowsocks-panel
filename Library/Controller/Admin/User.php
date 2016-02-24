@@ -7,9 +7,15 @@
 
 namespace Controller\Admin;
 
+use \Core\Template;
 
-class User {
+use \Model\User as UserModel;
+
+class User extends AdminListener {
     public function index() {
-        throw new \Core\Error("user list", 505);
+        //throw new \Core\Error("user list", 505);
+        global $user;
+        $users = UserModel::GetUserArray();
+        include Template::load('/admin/user');
     }
 }

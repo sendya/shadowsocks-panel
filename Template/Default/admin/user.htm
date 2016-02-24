@@ -1,0 +1,59 @@
+<import template="/admin/_header" />
+<import template="/admin/_content" />
+
+<div class="page-title">
+    <div class="title-env">
+        <h1 class="title" onclick="jQuery('#modal-6').modal('show', {backdrop: 'static'});">用户管理
+	<a class="btn btn-success btn-sm" href="javascript:;" onclick="">添加</a></h1>
+        <p class="description">用户列表！</p>
+    </div>
+    <div class="breadcrumb-env">
+        <ol class="breadcrumb bc-1"><li><a href="/admin"><i class="fa-home"></i>管理端</a></li><li><a href="/admin/user">用户管理</a></li></ol>
+    </div>
+</div>
+<section class="content">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="box">
+                        <div class="box-body table-responsive no-padding">
+                            <table class="table table-hover">
+                                <tbody>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>用户名</th>
+                                    <th>邮箱</th>
+                                    <th>套餐</th>
+                                    <th>流量</th>
+                                    <th>到期时间</th>
+                                    <th>操作</th>
+                                </tr>
+                                <if condition="count($users) > 0">
+                                <loop variable="$users" key="$key" value="$user">
+                                <tr>
+                                    <td>#{$user->uid}</td>
+                                    <td>{$user->nickname}</td>
+                                    <td>{$user->email}</td>
+                                    <td>{$user->plan}</td>
+                                    <td>{$user->transfer}</td>
+                                    <td>-</td>
+                                    <td>
+                                        <a class="btn btn-info btn-sm" href="">编辑</a>
+                                        <a class="btn btn-danger btn-sm" href="">删除</a>
+                                    </td>
+                                </tr>
+                                </loop>
+                                <else>
+                                <tr>
+                                    <td>#</td>
+                                    <td colspan="5">没有节点</td>
+                                </tr>
+                                </if>
+                                </tbody>
+                            </table>
+                        </div><!-- /.box-body -->
+                    </div><!-- /.box -->
+                </div>
+            </div>
+        </section>
+
+<import template="/admin/_footer" />
