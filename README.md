@@ -3,7 +3,7 @@ Shadowsocks Panel
 
 一个比较简单的 ss panel
 采用全页面的 Ajax请求
-支持PHP7
+支持PHP5.2+ ~ PHP7 (需要 PDO支持模块, nginx url重写)
 
 ### 程序截图
 ![后台](https://static-2.loacg.com/open/static/ss-panel-github/Admin.png)
@@ -11,23 +11,73 @@ Shadowsocks Panel
 ![前台](https://static-2.loacg.com/open/static/ss-panel-github/member2.png)
 ![前台](https://static-2.loacg.com/open/static/ss-panel-github/member3.png)
 
-### 配置 Rewrite 路由
-nginx
+### 1. 安装
+```bash
+$ git clone https://github.com/sendya/shadowsocks-panel.git
+$ cd shadowsocks-panel
+$ composer install
 ```
+
+### 2. 更改面板程序配置/导入MySQL数据  
+(暂无法支持phinx自动导入MySQL数据库)
+```bash
+$ cp ./Data/Config.simple.php ./Data/Config.php
+$ vim ./Data/Config.php
+$ chmod -R 777 ./Data/
+$ mysql -uroot -p
+```
+```mysql
+create table sspanel;
+use sspanel;
+source /你的sspanel目录/Data/Shadowsocks-planel-DB.sql
+```
+
+### 3. 配置程序路由
+(不配置只能访问 首页,其余页面全部404！注)
+#### 2.1 NGINX
+```nginx
 if (!-e $request_filename) {
     rewrite (.*) /index.php last;
 }
 ```
-apache
-```
+#### 2.2 APACHE
+```apache
 RewriteEngine On
 
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteRule ^ index.php [L]
 ```
+----------
 
-### Composer libs
+
+### 4. 安装Shadowsocks-manyuser服务端
+```bash
+$ git clone -b manyuser https://github.com/sendya/shadowsocks.git
+$ cd shadowsocks/shadowsocks
+```
+#### 4.1 CentOS:
+```bash
+$ yum install m2crypto python-setuptools
+$ easy_install pip
+```
+#### 4.2 Debian / Ubuntu:
+```bash
+$ apt-get install python-pip python-m2crypto
+```
+#### 4.3 安装 cymysql支持
+```bash
+pip install cymysql
+```
+
+#### 4.4 编辑多用户版配置文件
+```bash
+$ vim ./Config.py
+$ vim ./config.json
+```
+
+
+### *. 可选更换composer中国地区同步源
 if your in china , please edit `composer.json` content, add content to composer config
 ```
 		,
@@ -38,12 +88,10 @@ if your in china , please edit `composer.json` content, add content to composer 
         }
     }
 ```
-and run comm `php composer install`
 
 
-Based KK-Framework :
-https://github.com/kookxiang/KK-Framework
-
+框架基于 [KK-Framework](https://github.com/kookxiang/KK-Framework)。
+使用SS服务端：`shadowsocks-manyuser`
 shadowsocks-manyuser ：
 ```
 https://github.com/sendya/shadowsocks-rm/tree/manyuser
@@ -99,37 +147,3 @@ https://github.com/sendya/shadowsocks-rm/tree/manyuser
 
 	Add Invite model. 
 ```
-
-Install Shadowsocks-panel
-```
-git clone https://github.com/sendya/shadowsocks-panel.git
-cd shadowsocks-panel
-composer install
-
-```
-
-Shadowsocks manyuser
-```
-git clone -b manyuser https://github.com/sendya/shadowsocks.git
-cd shadowsocks/shadowsocks
-```
-### CentOS:
-```
-yum install m2crypto python-setuptools
-easy_install pip
-```
-### Debian / Ubuntu:
-```
-apt-get install python-pip python-m2crypto
-```
-
-```
-pip install cymysql
-```
-
-Edit config
-```
-vim ./Config.py
-vim ./config.json
-```
-
