@@ -36,9 +36,14 @@ class Node {
      * @param $type
      * @return Node[]
      */
-    public static function GetNodeArray($type = 0) {
+    public static function GetNodeArray($type = -1) {
         $nodeList = null;
-        $statement = Database::prepare("SELECT * FROM node WHERE type=? ORDER BY `order`");
+        $selectSQL = "SELECT * FROM node ";
+        if($type != -1) {
+            $selectSQL .= " WHERE type=?";
+        }
+        $selectSQL .= "  ORDER BY `order`";
+        $statement = Database::prepare($selectSQL);
         $statement->bindValue(1, $type);
         $statement->execute();
         $nodeList = $statement->fetchAll(\PDO::FETCH_CLASS, '\\Model\\Node');

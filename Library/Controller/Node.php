@@ -13,12 +13,15 @@ use Helper\Node as NodeUtil;
 use Model\Node as Nodem;
 use Model\User;
 
-class Node extends Listener {
-    public function Index() {
+class Node extends Listener
+{
+    public function Index()
+    {
         throw new Error("无知的人类啊", 555);
     }
 
-    public function QRCode() {
+    public function QRCode()
+    {
         global $user;
         $id = trim($_REQUEST['id']);
         $user = User::GetUserByUserId($user->uid);
@@ -32,7 +35,8 @@ class Node extends Listener {
         exit();
     }
 
-    public function Json() {
+    public function Json()
+    {
         global $user;
         $id = trim($_REQUEST['id']);
         $user = User::GetUserByUserId($user->uid);
@@ -46,7 +50,8 @@ class Node extends Listener {
         exit();
     }
 
-    public function JsonList() {
+    public function JsonList()
+    {
         global $user;
         $id = trim($_REQUEST['id']);
         $nodeList = Nodem::GetNodeArray();
@@ -58,7 +63,8 @@ class Node extends Listener {
         exit();
     }
 
-    private static function CheckPlan($plan, $nodeType) {
+    private static function CheckPlan($plan, $nodeType)
+    {
         if ($nodeType == 1) {
             if ($plan == 'VIP') {
                 return true;

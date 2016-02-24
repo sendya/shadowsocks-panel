@@ -7,16 +7,21 @@
 
 namespace Controller\Admin;
 
+use \Core\Template;
+
 use \Model\Node as NodeModel;
 
 
 class Node extends AdminListener {
 	
 	public function index() {
-		throw new \Core\Error('node page', 525);
+		//throw new \Core\Error('node page', 525);
+		global $user;
 
-		//include Template::load('/admin/node');
-		exit();
+		$nodes = NodeModel::GetNodeArray();
+
+		include Template::load('/admin/node');
+		//exit();
 	}
 
 	public function add() {

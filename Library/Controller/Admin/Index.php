@@ -17,7 +17,7 @@ class Index extends AdminListener {
     	global $user;
     	
 
-			include Template::load('/admin/index');
+	include Template::load('/admin/index');
     }
 
 }

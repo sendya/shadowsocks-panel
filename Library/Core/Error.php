@@ -10,13 +10,13 @@ class Error extends \Exception {
     private $trace;
 
     /**
-     * Create a Exception
+     * Create a Throwable
      * @param string $message Error message
      * @param int $code Error code
-     * @param \Exception $previous Previous exception
+     * @param \Throwable $previous Previous exception
      * @param array $trace Backtrace information
      */
-    function __construct($message = '', $code = 0, \Exception $previous = null, $trace = array()) {
+    function __construct($message = '', $code = 0, \Throwable $previous = null, $trace = array()) {
         parent::__construct($message, $code, $previous);
         $this->trace = $trace;
         if (!$trace) {
@@ -46,7 +46,7 @@ class Error extends \Exception {
         self::handleUncaughtException($exception);
     }
 
-    public static function handleUncaughtException(\Exception $instance) {
+    public static function handleUncaughtException(\Throwable $instance) {
         @ob_end_clean();
         if (Database::inTransaction()) {
             Database::rollBack();

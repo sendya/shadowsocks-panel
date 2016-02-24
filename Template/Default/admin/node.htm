@@ -1,0 +1,57 @@
+<import template="/admin/_header" />
+<import template="/admin/_content" />
+
+<div class="page-title">
+    <div class="title-env">
+        <h1 class="title" onclick="jQuery('#modal-6').modal('show', {backdrop: 'static'});">节点管理
+	<a class="btn btn-success btn-sm" href="javascript:;" onclick="">添加</a></h1>
+        <p class="description">请注意节点分类！</p>
+    </div>
+    <div class="breadcrumb-env">
+        <ol class="breadcrumb bc-1"><li><a href="/admin"><i class="fa-home"></i>管理端</a></li><li><a href="/admin/node">节点管理</a></li></ol>
+    </div>
+</div>
+<section class="content">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="box">
+                        <div class="box-body table-responsive no-padding">
+                            <table class="table table-hover">
+                                <tbody>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>节点</th>
+                                    <th>加密</th>
+                                    <th>描述</th>
+                                    <th>排序</th>
+                                    <th>操作</th>
+                                </tr>
+                                <if condition="count($nodes) > 0">
+                                <loop variable="$nodes" key="$key" value="$node">
+                                <tr>
+                                    <td>#{$node->id}</td>
+                                    <td> {$node->name}</td>
+                                    <td> {$node->method}</td>
+                                    <td>{$node->info}</td>
+                                    <td>{$node->order}</td>
+                                    <td>
+                                        <a class="btn btn-info btn-sm" href="/cpanel/node_edit?id=1">编辑</a>
+                                        <a class="btn btn-danger btn-sm" href="/cpanel/node_del?id=1">删除</a>
+                                    </td>
+                                </tr>
+                                </loop>
+                                <else>
+                                <tr>
+                                    <td>#</td>
+                                    <td colspan="5">没有节点</td>
+                                </tr>
+                                </if>
+                                </tbody>
+                            </table>
+                        </div><!-- /.box-body -->
+                    </div><!-- /.box -->
+                </div>
+            </div>
+        </section>
+
+<import template="/admin/_footer" />

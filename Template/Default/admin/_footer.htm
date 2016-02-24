@@ -26,7 +26,106 @@
     }
 </script>
 </div>
+<!-- Modal 6 (Long Modal)-->
+<div class="modal fade" id="modal-6">
+    <div class="modal-dialog">
+        <div class="modal-content">
 
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">新增节点</h4>
+            </div>
+            <form role="form" id="form1" method="post" class="validate">
+            <div class="modal-body">
+
+                <div class="row">
+                    <div class="col-md-6">
+
+                        <div class="form-group">
+                            <label for="field-1" class="control-label">节点名称</label>
+
+                            <input type="text" class="form-control" id="field-1" placeholder="" data-validate="required" data-message-required="节点名称必须填写.">
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-6">
+
+                        <div class="form-group">
+                            <label for="field-2" class="control-label">节点地址</label>
+
+                            <input type="text" class="form-control" id="field-2" placeholder="127.0.0.1" data-validate="required" data-message-required="服务器地址必须填写.">
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+
+                        <div class="form-group">
+                            <label for="field-3" class="control-label">加密方式</label>
+
+                            <input type="text" class="form-control" id="field-3" placeholder="aes-128-cfb" data-validate="required" data-message-required="加密方式必须填写.">
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-6">
+
+                        <div class="form-group">
+                            <label for="field-4" class="control-label">节点分类(0 普通 1 vip)</label>
+
+                            <input type="text" class="form-control" id="field-4" value="0" placeholder="0">
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+
+                        <div class="form-group">
+                            <label for="field-5" class="control-label">节点状态</label>
+
+                            <input type="text" class="form-control" id="field-5" placeholder="可用 / 不可用">
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-6">
+
+                        <div class="form-group">
+                            <label for="field-6" class="control-label">排序</label>
+
+                            <input type="text" class="form-control" id="field-6" value="0" placeholder="0">
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+
+                        <div class="form-group no-margin">
+                            <label for="field-7" class="control-label">备注信息</label>
+
+                            <textarea class="form-control autogrow" id="field-7" placeholder="Write something about server info"></textarea>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+                </form>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-info">保存新增</button>
+            </div>
+        </div>
+    </div>
+</div>
 <script src="{TPL_PATH}js/bootstrap.min.js"></script>
 <script src="{TPL_PATH}js/TweenMax.min.js"></script>
 <script src="{TPL_PATH}js/resizeable.js"></script>
