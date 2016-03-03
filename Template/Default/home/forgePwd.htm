@@ -8,6 +8,12 @@
                     setTimeout(function() {
                         $(".fade-in-effect").addClass("in");
                     }, 1);
+                    $("#email").on("change", function(){
+                        var reg = /\w+[@]{1}\w+[.]\w+/;
+                        if(reg.test($("#email").val())) {
+                            $("#gravatar_img").attr("src", "https://gravatar.lug.ustc.edu.cn/avatar/" + $.md5($("#email").val()) + "?s=128&r=G&d=");
+                        }
+                    });
                     $(".user-thumb a").on("click", function(ev) {
                         ev.preventDefault();
                         $("#email").focus();
@@ -16,16 +22,22 @@
                         rules:{
                             email:{
                                 required:true
+                            },
+                            code:{
+                                required:true
                             }
                         },
                         messages:{
                             email:{
                                 required:"请输入注册时的邮件地址."
+                            },
+                            code:{
+                                required:"请输出邮箱接收到的重置验证码"
                             }
                         },
                         submitHandler:function(form) {
                             show_loading_bar(70);
-                            var passwd = $(form).find("#passwd"), opts = {
+                            var opts = {
                                 closeButton:true,
                                 debug:false,
                                 positionClass:"toast-top-full-width",
@@ -40,7 +52,7 @@
                                 hideMethod:"fadeOut"
                             };
                             $("#resetButton").attr("disabled", "true").html("请稍等");
-                            if ($("#code").val() == null || $("#code").val() == "" || $("#uid").val() == "") {
+                            if($("#email").attr("name") == "name") {
                                 $.ajax({
                                     url:"/Auth/forgePwd",
                                     method:"POST",
@@ -53,14 +65,15 @@
                                             delay:.5,
                                             pct:100,
                                             finish:function() {
-                                                $("#resetButton").removeAttr("disabled").html("重置");
-                                                if (resp.status == "1") {
-                                                    toastr.success(resp.msg, "系统消息!", opts);
-                                                    setTimeout("window.location.href = '/Auth/login';", 3e3);
-                                                } else if (resp.status == "2") {
-                                                    toastr.error(resp.msg, "错误!", opts);
+                                                $("#resetButton").removeAttr("disabled").html("确定重置");
+                                                if (resp.error == 0) {
+                                                    toastr.success(resp.message, "系统消息!", opts);
+                                                    $("#email").attr("name", "code").attr("placeholder", "请填写邮件验证代码").val("");
+                                                    //setTimeout("window.location.href = '/Auth/login';", 3e3);
+                                                } else if (resp.error == 1) {
+                                                    toastr.error(resp.message, "错误!", opts);
                                                 } else {
-                                                    toastr.error(resp.msg, "Invalid find pwd!", opts);
+                                                    toastr.error(resp.message, "Invalid find pwd!", opts);
                                                     $("#email").select();
                                                 }
                                             }
@@ -69,28 +82,25 @@
                                 });
                             } else {
                                 $.ajax({
-                                    url:"/Form/resetpwdtwo",
+                                    url:"/Auth/forgePwd",
                                     method:"POST",
                                     dataType:"json",
                                     data:{
-                                        email:$("#email").val(),
-                                        code:$("#code").val(),
-                                        uid:$("#uid").val()
+                                        code:$("#email").val()
                                     },
                                     success:function(resp) {
                                         show_loading_bar({
                                             delay:.5,
                                             pct:100,
                                             finish:function() {
-                                                $("#resetButton").removeAttr("disabled").html("确定重置");
-                                                if (resp.status == "1") {
-                                                    toastr.success(resp.msg, "系统消息!", opts);
+                                                $("#resetButton").removeAttr("disabled").html("重置");
+                                                if (resp.error == 0) {
+                                                    toastr.success(resp.message, "系统消息!", opts);
                                                     setTimeout("window.location.href = '/Auth/login';", 3e3);
-                                                } else if (resp.status == "2") {
-                                                    2;
-                                                    toastr.error(resp.msg, "错误!", opts);
+                                                } else if (resp.error == 1) {
+                                                    toastr.error(resp.message, "错误!", opts);
                                                 } else {
-                                                    toastr.error(resp.msg, "Invalid find pwd!", opts);
+                                                    toastr.error(resp.message, "Invalid find pwd!", opts);
                                                     $("#email").select();
                                                 }
                                             }
@@ -106,7 +116,7 @@
             <form role="form" id="resetpwd" class="lockcreen-form fade-in-effect">
                 <div class="user-thumb">
                     <a href="#">
-                        <img src="https://avatars3.githubusercontent.com/u/5404542?v=3&s=128" class="img-responsive img-circle" />
+                        <img src="Resource/Default/images/user-5.png" width="120" height="120" id="gravatar_img" class="img-responsive img-circle" />
                     </a>
                 </div>
                 <div class="form-group">

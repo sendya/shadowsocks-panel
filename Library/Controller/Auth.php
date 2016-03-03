@@ -17,8 +17,7 @@ use Helper\Mail;
 class Auth {
 
     public function index() {
-        Mail::mail_send("yladmxa@qq.com", "SMTP邮件测试", "<h1>这是h1标题</h1><br/><h2>这是h2标题</h2><a href='#'>这是a link</a>");
-        echo 'ok';
+
     }
 
     public function Login() {
@@ -149,13 +148,49 @@ class Auth {
     }
 
     public function forgePwd() {
+        $result = array('error' => 1, 'message' => '请求找回密码失败');
 
         if(isset($_POST['email']) && $_POST['email'] != '') {
 
-        } else include Template::load('/home/forgePwd');
+            $user = User::GetUserByEmail($_POST['email']);
+            if(!$user) {
+                echo json_encode($result);
+                exit();
+            }
+            $user->lastFindPasswdTime = time();
+            if($user->lastFindPasswdCount != 0 && $user->lastFindPasswdCount > 2) {
+                $result['message'] = '找回密码重试次数已达上限!';
+                echo json_encode($result);
+                exit();
+            }
+
+            $code = Util::GetRandomChar(10);
+
+            $siteName = SITE_NAME;
+
+            $content = <<<EOF
+Dear {$user->nickname}:<br/>
+Use this code to disable your password and access your {$siteName} account:<br/>
+<br/>
+Code: {$code}
+<br/>
+<br/>
+Yours,
+The {$siteName} Team
+EOF;
 
 
+            $mailResult = Mail::mail_send("yladmxa@qq.com",  "[". SITE_NAME ."] Password Recovery", $content);
+            $result['message'] = '验证代码已经发送到该注册邮件地址，请注意查收!';
+            $result['error'] = 0;
 
+        } else {
+            include Template::load('/home/forgePwd');
+            exit();
+        }
+
+        echo json_encode($result);
+        exit();
     }
 
 }
