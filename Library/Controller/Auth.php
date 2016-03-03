@@ -180,7 +180,7 @@ The {$siteName} Team
 EOF;
 
 
-            $mailResult = Mail::mail_send("yladmxa@qq.com",  "[". SITE_NAME ."] Password Recovery", $content);
+            $mailResult = Mail::mail_send($user->email,  "[". SITE_NAME ."] Password Recovery", $content);
             $result['message'] = '验证代码已经发送到该注册邮件地址，请注意查收!';
             $result['error'] = 0;
 
