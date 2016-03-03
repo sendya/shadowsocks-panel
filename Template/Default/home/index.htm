@@ -21,13 +21,15 @@
         html{font-size:16px;color:#FFF;}
         a{text-decoration:none;color:#FFF}
         a:hover{color:#8CC9F5}
-        p{transition:all 1s;font-size:1.5rem;text-align:center}
-        .title{transition:all 1s;font-size:3rem;line-height:5px}
-        p span{transition:all 1s;font-size:1.4rem}
-        .main{color:#FFF;transition:all 1s;position:absolute;left:50%;top:30%;width:600px;height:40px;margin-left:-300px;margin-top:-20px;text-align:center;text-shadow:0 0 10px #F00;font-size:1.4em}
+        p{transition:all 0.5s;font-size:1.5rem;text-align:center}
+        .title{transition:all 0.5s;font-size:3rem;line-height:5px}
+        p span{transition:all 0.5s;font-size:1.4rem}
+        .main{color:#FFF;transition:all 0.5s;position:absolute;left:50%;top:30%;width:600px;height:40px;margin-left:-300px;margin-top:-20px;text-align:center;text-shadow:0 0 10px #F00;font-size:1.4em}
+        .main:hover{margin-top: 0}
         .console{position:fixed;right:5px;top:5px;width:50px;height:20px}
         .footer{position:fixed;bottom:5px;right:5px;font-size:1.2rem}
         .console {position: fixed;right: 5px;top: 5px;width: 50px;height: 20px}
+        #flowMessage {position: absolute;width:250px;height: 40px;text-align: center;left:50%;margin-left: -125px;bottom: 40px;margin-bottom: -20px;transition: margin-bottom .7s;text-shadow:0 0 10px #F00;}
         @media screen and (max-height:300px){
             .footer{display:none}
         }
@@ -46,15 +48,15 @@
     <p><a href="javascript:;" onClick="location.href='/Auth/login'">Let's go!</a></p>
 </div>
 <div class="console"><a href="javascript:;" id="aconsole">OFF BGM</a></div>
-<audio src="//static-2.loacg.com/open/static/music/5688873162188206.mp3" id="bgmusic" autoplay="true" style="display:none;"></audio>
+<div id="flowMessage">Tips:键盘方向可以调整声音</div>
+<audio src="//static-2.loacg.com/open/static/music/2924700931132787.mp3" id="bgmusic" autoplay="true" style="display:none;"></audio>
 <div class="footer">Powered by <a href="https://www.loacg.com/" target="_blank">Sendya</a></div>
 <script src="//static-2.loacg.com/open/static/javascript/jQuery/jquery.min.js"></script>
 <script src="//static-2.loacg.com/open/static/javascript/jQuery/plugins/mainv.js"></script>
 <script type="text/javascript">
-    var bgm = $("#bgmusic")[0];
-    bgm.volume = 0.1;
-    var BASEDIR = "https://static-2.loacg.com/open/static/l4d/img/",IMGNUM = 20;
-    var imgs = [],rds = Math.random();
+    setInterval("flowMessage()", 1500);
+    function flowMessage() {var height = $("#flowMessage").css("margin-bottom");if(height == "-20px") {$("#flowMessage").css("margin-bottom", "0px");} else {$("#flowMessage").css("margin-bottom", "-20px");}}
+    var bgm = $("#bgmusic")[0];bgm.volume = 0.1;var BASEDIR = "https://static-2.loacg.com/open/static/l4d/img/",IMGNUM = 20;var imgs = [],rds = Math.random();
     for (var i = 1; i < IMGNUM; i++) {imgs.push({src: BASEDIR + i + '.jpg',fade: 1000});console.log(BASEDIR + i + '.jpg');}
     $("body").vegas({delay:6000,shuffle:true,transitionDuration:2000,slides:imgs});$("#aconsole").click(function(){if(!bgm.paused){bgm.pause();$(this).html("ON BGM")}else{bgm.play();$(this).html("OFF BGM")}});$(document).keydown(function(event){if(event.keyCode==37){if(bgm.volume>0)bgm.volume=bgm.volume-0.1}else if(event.keyCode==39){if(bgm.volume<1)bgm.volume=bgm.volume+0.1}});
 </script>

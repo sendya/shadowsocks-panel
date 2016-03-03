@@ -148,7 +148,7 @@ class Auth {
 
     public function forgePwd() {
 
-
+        include Template::load('/home/forgePwd');
     }
 
 }
