@@ -42,7 +42,7 @@
                             $("#resetButton").attr("disabled", "true").html("请稍等");
                             if ($("#code").val() == null || $("#code").val() == "" || $("#uid").val() == "") {
                                 $.ajax({
-                                    url:"/Form/resetpwd",
+                                    url:"/Auth/forgePwd",
                                     method:"POST",
                                     dataType:"json",
                                     data:{

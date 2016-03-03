@@ -25,6 +25,17 @@ define('TPL_PATH', 'Resource/'.TEMPLATE_NAME.'/');
 define('LOCKSCREEN', true);
 
 /**
+ * Mailer config
+ */
+$MAIL = array(
+	'host' => 'smtp.exmail.qq.com',
+	'username' => 'h@loacg.com',
+	'password' => 'password',
+	'from'     => '某科学的h本 <h@loacg.com>',
+	'secure' => ''
+);
+
+/**
  * Flow default value
  */
 define('TRANSFER', 10);// Default flow 10GB

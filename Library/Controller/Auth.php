@@ -12,11 +12,13 @@ use Helper\Util;
 use Helper\Encrypt;
 use Model\Invite;
 use Model\User;
+use Helper\Mail;
 
 class Auth {
 
     public function index() {
-
+        Mail::mail_send("yladmxa@qq.com", "SMTP邮件测试", "<h1>这是h1标题</h1><br/><h2>这是h2标题</h2><a href='#'>这是a link</a>");
+        echo 'ok';
     }
 
     public function Login() {
@@ -148,7 +150,12 @@ class Auth {
 
     public function forgePwd() {
 
-        include Template::load('/home/forgePwd');
+        if(isset($_POST['email']) && $_POST['email'] != '') {
+
+        } else include Template::load('/home/forgePwd');
+
+
+
     }
 
 }

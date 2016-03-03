@@ -8,7 +8,8 @@
         }
     ],
     "require": {
-        "robmorgan/phinx": "^0.4.5"
+        "robmorgan/phinx": "^0.4.5",
+        "nette/mail": "*"
     },
     "config": {
         "vendor-dir": "Package"
@@ -16,4 +17,5 @@
     "autoload": {
         "psr-4": { "": "Library/" }
     }
+
 }
