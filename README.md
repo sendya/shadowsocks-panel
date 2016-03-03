@@ -34,13 +34,13 @@ source /你的sspanel目录/Data/Shadowsocks-planel-DB.sql
 
 ### 3. 配置程序路由
 (不配置只能访问 首页,其余页面全部404！注)
-#### 2.1 NGINX
+#### 3.1 NGINX
 ```nginx
 if (!-e $request_filename) {
     rewrite (.*) /index.php last;
 }
 ```
-#### 2.2 APACHE
+#### 3.2 APACHE
 ```apache
 RewriteEngine On
 
@@ -99,6 +99,11 @@ https://github.com/sendya/shadowsocks-rm/tree/manyuser
 
 ### update logs
 ```
+2016.02.11~03.03 :
+    Added Mailer
+    ForgePassword is available
+    Node info send to Mail
+
 2016.02.05~02.06 :
 	Update sql(default db insert.)
 	Add admin page
