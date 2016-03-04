@@ -152,9 +152,10 @@ class Util {
             '//www.gravatar.com/avatar/',
             'https://gravatar.css.network/avatar/',
             'http://ruby-china.org/',
-            'http://gravatar.duoshuo.com/'
+            'http://gravatar.duoshuo.com/',
+            'https://gravatar.lug.ustc.edu.cn/avatar/'
         ); // 前三个支持https
-        $url = $host[2];
+        $url = $host[5];
         $url .= md5(strtolower(trim($email)));
         $url .= "?s=$s&d=$d&r=$r";
         if ($img) {
