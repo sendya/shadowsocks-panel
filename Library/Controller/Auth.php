@@ -128,7 +128,8 @@ class Auth {
             $user->lastConnTime = $user->regDateLine;
             $user->sspwd = Util::GetRandomPwd();
             $user->insertToDB();
-            $user->port = $user->uid;
+            if($invite->plan != 'A')
+                $user->port = $user->uid;
             $invite->reguid = $user->uid;
             $invite->regDateLine = $user->regDateLine;
             $invite->status = 1; //-1过期 0-未使用 1-已用
