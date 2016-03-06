@@ -100,6 +100,16 @@ CREATE TABLE `user_power` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='管理员表';
 
+-- ----------------------------
+-- Table structure for setting
+-- ----------------------------
+DROP TABLE IF EXISTS `setting`;
+CREATE TABLE `setting` (
+  `k` varchar(32) NOT NULL,
+  `v` varchar(256) DEFAULT NULL,
+  PRIMARY KEY (`k`),
+  KEY `setting_key` (`k`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Insert default db
