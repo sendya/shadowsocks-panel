@@ -19,6 +19,29 @@
 <script src="{TPL_PATH}js/devexpress-web-14.1/js/dx.chartjs.js"></script>
 <!-- JavaScripts initializations and stuff -->
 <script src="{TPL_PATH}js/xenon-custom.js"></script>
+<!-- 后台禁止pjax
 <script src="{TPL_PATH}js/pjax.js"></script>
+-->
+<script type="text/javascript">
+    jQuery(document).ready(function($){
+        $("#form1").validate();
+    });
+    function postJSON(formId, action, callback) {
+        $.ajax({
+            url: action,
+            method: "POST",
+            dataType: "json",
+            data: $("#"+formId).serialize(),
+            success: function(data){
+                showToastr(data.message, 0);
+                window.location.reload();
+            },
+            error: function(Xhr){
+                showToastr("出现未知错误，请重试或联系管理员", 0);
+            }
+        });
+        return false;
+    }
+</script>
 </body>
 </html>

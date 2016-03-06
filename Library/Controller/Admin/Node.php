@@ -25,69 +25,69 @@ class Node extends AdminListener {
 	}
 
 	public function add() {
+		$result = array('error' => -1, 'message' => '添加失败');
 		if(isset($_POST['form_add']) || $_POST['form_add']!=null) {
-			$result = array('error' => -1, 'message' => '添加失败');
-
 			$node = new NodeModel();
-			if(isset($_POST['name'])) $node->name = $_POST['name'];
-			if(isset($_POST['type'])) $node->type = $_POST['type'];
-			if(isset($_POST['server'])) $node->server = $_POST['server'];
-			if(isset($_POST['method'])) $node->method = $_POST['method'];
-			if(isset($_POST['info'])) $node->info = $_POST['info'];
-			if(isset($_POST['status'])) $node->status = $_POST['status'];
-			if(isset($_POST['order'])) $node->order = $_POST['order'];
+			if($_POST['node_name'] != null) $node->name = $_POST['node_name'];
+			if($_POST['node_type'] != null) $node->type = $_POST['node_type'];
+			if($_POST['node_server'] != null) $node->server = $_POST['node_server'];
+			if($_POST['node_method'] != null) $node->method = $_POST['node_method'];
+			if($_POST['node_info'] != null) $node->info = $_POST['node_info'];
+			if($_POST['node_status'] != null) $node->status = $_POST['node_status'];
+			if($_POST['node_order'] != null) $node->order = $_POST['node_order'];
 
-			/*
 			if($node->insertToDB() > 0) {
 				$result = array('error' => 0, 'message' => '添加成功');
 			}
-			*/
-
-	    echo json_encode($result);
-	    exit();
-		} else {
-			include Template::load('/admin/nodeAdd');
 		}
 
+		echo json_encode($result);
+		exit();
+	}
 
+	public function nodeInfo() {
+		$result = array('error' => -1, 'message' => '获取节点信息失败');
+		if($_GET['node_id']!=null) {
+			$result['data'] = NodeModel::GetNodeById($_GET['node_id']);
+			$result['error'] = 0;
+		}
+		echo json_encode($result);
+		exit();
 	}
 
 	public function modify() {
-		if(isset($_POST['id']) || $_POST['id']!=null) {
-			$result = array('error' => -1, 'message' => '修改失败');
+		$result = array('error' => -1, 'message' => '修改失败');
+		if(isset($_POST['node_id']) || $_POST['node_id']!=null) {
 
 			$node = new NodeModel();
-			if(isset($_POST['name'])) $node->name = $_POST['name'];
-			if(isset($_POST['type'])) $node->type = $_POST['type'];
-			if(isset($_POST['server'])) $node->server = $_POST['server'];
-			if(isset($_POST['method'])) $node->method = $_POST['method'];
-			if(isset($_POST['info'])) $node->info = $_POST['info'];
-			if(isset($_POST['status'])) $node->status = $_POST['status'];
-			if(isset($_POST['order'])) $node->order = $_POST['order'];
+			$node->id = $_POST['node_id'];
+			if($_POST['node_name'] != null) $node->name = $_POST['node_name'];
+			if($_POST['node_type'] != null) $node->type = $_POST['node_type'];
+			if($_POST['node_server'] != null) $node->server = $_POST['node_server'];
+			if($_POST['node_method'] != null) $node->method = $_POST['node_method'];
+			if($_POST['node_info'] != null) $node->info = $_POST['node_info'];
+			if($_POST['node_status'] != null) $node->status = $_POST['node_status'];
+			if($_POST['node_order'] != null) $node->order = $_POST['node_order'];
 
-			/*
-			$node->UpdateNode()
+
+			$node->UpdateNode();
 			$result = array('error' => 0, 'message' => '修改成功');
-			
-			*/
-	    echo json_encode($result);
-	    exit();
-	  } else {
-	  	include Template::load('/admin/nodeModify');
-	  }
+	  	}
+		echo json_encode($result);
+		exit();
 	}
 
 	public function delete() {
 		$result = array('error' => -1, 'message' => '删除失败');
-		if(isset($_POST['id']) || $_POST['id']!=null) {
+		if( $_POST['node_id'] != null) {
 
-			if(NodeModel::deleteNode($_POST['id']) > 0) {
+			if(NodeModel::deleteNode($_POST['node_id']) > 0) {
 				$result = array('error' => 0, 'message' => '删除成功');
 			}
 
 		}
-    echo json_encode($result);
-    exit();
+		echo json_encode($result);
+		exit();
 	}
 
 }

@@ -3,7 +3,7 @@
 
 <div class="page-title">
     <div class="title-env">
-        <h1 class="title" onclick="jQuery('#modal-6').modal('show', {backdrop: 'static'});">节点管理
+        <h1 class="title" onclick="nodeAdd();">节点管理
 	<a class="btn btn-success btn-sm" href="javascript:;" onclick="">添加</a></h1>
         <p class="description">请注意节点分类！</p>
     </div>
@@ -28,15 +28,15 @@
                                 </tr>
                                 <if condition="count($nodes) > 0">
                                 <loop variable="$nodes" key="$key" value="$node">
-                                <tr>
+                                <tr id="node-{$node->id}">
                                     <td>#{$node->id}</td>
                                     <td> {$node->name}</td>
                                     <td> {$node->method}</td>
                                     <td>{$node->info}</td>
                                     <td>{$node->order}</td>
                                     <td>
-                                        <a class="btn btn-info btn-sm" href="/cpanel/node_edit?id=1">编辑</a>
-                                        <a class="btn btn-danger btn-sm" href="/cpanel/node_del?id=1">删除</a>
+                                        <a class="btn btn-info btn-sm" href="javascript:;" onclick="nodeModify({$node->id});">编辑</a>
+                                        <a class="btn btn-danger btn-sm" href="javascript:;" onclick="nodeRemove({$node->id});">删除</a>
                                     </td>
                                 </tr>
                                 </loop>
@@ -54,6 +54,7 @@
             </div>
         </section>
 </div>
+</div>
 <!-- Modal 6 (Long Modal)-->
 <div class="modal fade" id="modal-6">
     <div class="modal-dialog">
@@ -63,95 +64,144 @@
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 <h4 class="modal-title">新增节点</h4>
             </div>
-            <form role="form" id="form1" method="post" class="validate">
-                <div class="modal-body">
+            <form role="form" id="form1" method="post" action="/admin/node/add" class="validate" onsubmit="return postJSON(this.id, this.action);">
+            <input type="hidden" name="form_add" value="{(time())}"/>
+            <input type="hidden" name="node.id" id="node_id" value=""/>
+            <div class="modal-body">
 
-                    <div class="row">
-                        <div class="col-md-6">
+                <div class="row">
+                    <div class="col-md-6">
 
-                            <div class="form-group">
-                                <label for="field-1" class="control-label">节点名称</label>
+                        <div class="form-group">
+                            <label for="field-1" class="control-label">节点名称</label>
 
-                                <input type="text" class="form-control" id="field-1" placeholder="" data-validate="required" data-message-required="节点名称必须填写.">
-                            </div>
-
+                            <input type="text" class="form-control" name="node.name" id="field-1" value="" data-validate="required" data-message-required="节点名称必须填写.">
                         </div>
 
-                        <div class="col-md-6">
-
-                            <div class="form-group">
-                                <label for="field-2" class="control-label">节点地址</label>
-
-                                <input type="text" class="form-control" id="field-2" placeholder="127.0.0.1" data-validate="required" data-message-required="服务器地址必须填写.">
-                            </div>
-
-                        </div>
                     </div>
 
-                    <div class="row">
-                        <div class="col-md-6">
+                    <div class="col-md-6">
 
-                            <div class="form-group">
-                                <label for="field-3" class="control-label">加密方式</label>
+                        <div class="form-group">
+                            <label for="field-2" class="control-label">节点地址</label>
 
-                                <input type="text" class="form-control" id="field-3" placeholder="aes-128-cfb" data-validate="required" data-message-required="加密方式必须填写.">
-                            </div>
-
+                            <input type="text" class="form-control" name="node.server" id="field-2" placeholder="127.0.0.1" data-validate="required" data-message-required="服务器地址必须填写.">
                         </div>
 
-                        <div class="col-md-6">
-
-                            <div class="form-group">
-                                <label for="field-4" class="control-label">节点分类(0 普通 1 vip)</label>
-
-                                <input type="text" class="form-control" id="field-4" value="0" placeholder="0">
-                            </div>
-
-                        </div>
                     </div>
-
-                    <div class="row">
-                        <div class="col-md-6">
-
-                            <div class="form-group">
-                                <label for="field-5" class="control-label">节点状态</label>
-
-                                <input type="text" class="form-control" id="field-5" placeholder="可用 / 不可用">
-                            </div>
-
-                        </div>
-
-                        <div class="col-md-6">
-
-                            <div class="form-group">
-                                <label for="field-6" class="control-label">排序</label>
-
-                                <input type="text" class="form-control" id="field-6" value="0" placeholder="0">
-                            </div>
-
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-12">
-
-                            <div class="form-group no-margin">
-                                <label for="field-7" class="control-label">备注信息</label>
-
-                                <textarea class="form-control autogrow" id="field-7" placeholder="Write something about server info"></textarea>
-                            </div>
-
-                        </div>
-                    </div>
-
                 </div>
-            </form>
 
+                <div class="row">
+                    <div class="col-md-6">
+
+                        <div class="form-group">
+                            <label for="field-3" class="control-label">加密方式</label>
+
+                            <input type="text" class="form-control" name="node.method" id="field-3" placeholder="aes-128-cfb" data-validate="required" data-message-required="加密方式必须填写.">
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-6">
+
+                        <div class="form-group">
+                            <label for="field-4" class="control-label">节点分类(0 普通 1 vip)</label>
+
+                            <input type="text" class="form-control" name="node.type" id="field-4" value="0" placeholder="0" data-validate="required" data-message-required="This is custom message for required field.">
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="field-5" class="control-label">节点状态</label>
+                            <input type="text" class="form-control" name="node.status" id="field-5" placeholder="可用 / 不可用" data-validate="required" data-message-required="This is custom message for required field.">
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="field-6" class="control-label">排序</label>
+                            <input type="text" class="form-control" name="node.order" id="field-6" value="0" placeholder="0" data-validate="required" data-message-required="This is custom message for required field.">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group no-margin">
+                            <label for="field-7" class="control-label">备注信息</label>
+                            <textarea class="form-control autogrow" name="node.info" id="field-7" placeholder="Write something about server info" ></textarea>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
-                <button type="button" class="btn btn-info">保存新增</button>
+                <button type="submit" class="btn btn-success">立即保存</button>
             </div>
+            </form>
         </div>
+
     </div>
 </div>
+<script type="text/javascript">
+    function nodeRemove(nodeId){
+        $.ajax({
+            url: "/admin/node/delete",
+            method: "POST",
+            dataType: "json",
+            data: {node_id: nodeId},
+            success: function(data){
+                if(data.error == 0){
+                    showToastr(data.message, 0);
+                    $("#node-" + nodeId).remove();
+                } else {
+                    showToastr(data.message, 0);
+                }
+            },
+            error: function(Xhr){
+                showToastr("出现未知错误，请重试或联系管理员", 0);
+            }
+        });
+    }
+    function nodeModify(nodeId){
+        $.ajax({
+            url: "/admin/node/nodeInfo",
+            method: "GET",
+            dataType: "json",
+            data: {node_id: nodeId},
+            success: function(result){
+                if(result.error == 0){
+                    if(result.data != false && result.data != null) {
+                        var node = result.data;
+                        $("input[name='node.id']").val(node.id);
+                        $("input[name='node.name']").val(node.name);
+                        $("input[name='node.type']").val(node.type);
+                        $("input[name='node.server']").val(node.server);
+                        $("input[name='node.method']").val(node.method);
+                        $("textarea[name='node.info']").val(node.info);
+                        $("input[name='node.status']").val(node.status);
+                        $("input[name='node.order']").val(node.order);
+                        $("#form1").attr("action", "/admin/node/modify");
+                        jQuery('#modal-6').modal('show', {backdrop: 'static'});
+                    }
+                } else {
+                    showToastr(result.message, 0);
+                }
+            },
+            error: function(Xhr){
+                showToastr("出现未知错误，请重试或联系管理员", 0);
+            }
+        });
+        jQuery('#modal-6').modal('show', {backdrop: 'static'});
+    }
+    function nodeAdd(){
+        $("#form1").attr("action", "/admin/node/add");
+        jQuery('#modal-6').modal('show', {backdrop: 'static'});
+    }
+</script>
 <import template="/admin/_footer" />

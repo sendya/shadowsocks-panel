@@ -20,4 +20,10 @@ class Index extends AdminListener {
 	include Template::load('/admin/index');
     }
 
+    public function test() {
+        global $user;
+
+        include Template::load('/admin/test');
+    }
+
 }

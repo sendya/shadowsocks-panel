@@ -76,7 +76,7 @@ class Node {
         $inTransaction = Database::inTransaction();
         if (!$inTransaction) Database::beginTransaction();
         $statement = Database::prepare("INSERT INTO node SET `name`=:name, `type`=:type,
-			`server`=:server, `method`=:method, `info`=:info, `status`:=status, `order`=:order");
+			`server`=:server, `method`=:method, `info`=:info, `status`=:status, `order`=:order");
         $statement->bindValue(':name', $this->name, \PDO::PARAM_STR);
         $statement->bindValue(':type', $this->type, \PDO::PARAM_INT);
         $statement->bindValue(':server', $this->server, \PDO::PARAM_STR);
@@ -98,7 +98,7 @@ class Node {
     public static function deleteNode($nodeId) {
         $inTransaction = Database::inTransaction();
         if (!$inTransaction) Database::beginTransaction();
-        $statement = Database::prepare("DELETE * FROM node WHERE id=:id");
+        $statement = Database::prepare("DELETE FROM node WHERE id=:id");
         $statement->bindValue(':id', $nodeId, \PDO::PARAM_INT);
         $result = $statement->execute();
         if (!$inTransaction) Database::commit();
@@ -110,8 +110,12 @@ class Node {
      * @param $node
      */
     public function UpdateNode() {
+        $statement = null;
+
+        $inTransaction = Database::inTransaction();
+        if (!$inTransaction) Database::beginTransaction();
         $statement = Database::prepare("UPDATE node SET `name`=:name, `type`=:type,
-			`server`=:server, `method`=:method, `info`=:info, `status`:=status, `order`=:order WHERE id=:id");
+			`server`=:server, `method`=:method, `info`=:info, `status`=:status, `order`=:order WHERE id=:id");
         $statement->bindValue(':name', $this->name, \PDO::PARAM_STR);
         $statement->bindValue(':type', $this->type, \PDO::PARAM_INT);
         $statement->bindValue(':server', $this->server, \PDO::PARAM_STR);
@@ -121,6 +125,7 @@ class Node {
         $statement->bindValue(':order', $this->order, \PDO::PARAM_INT);
         $statement->bindValue(':id', $this->id, \PDO::PARAM_INT);
         $statement->execute();
-        Database::commit();
+        if (!$inTransaction) Database::commit();
+
     }
 }

@@ -22,6 +22,8 @@ class Listener {
                 $token = Util::getToken();
                 if ($token > 3600 && stristr(\Core\Request::getRequestPath(), 'lockscreen') == false) {
                     Response::redirect('/Auth/lockscreen');
+                } else {
+                    Util::setToken();
                 }
             } else {
                 Response::redirect('/Auth/lockscreen');
