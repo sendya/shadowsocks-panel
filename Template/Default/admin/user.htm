@@ -3,8 +3,7 @@
 
 <div class="page-title">
     <div class="title-env">
-        <h1 class="title" onclick="jQuery('#modal-6').modal('show', {backdrop: 'static'});">用户管理
-	<a class="btn btn-success btn-sm" href="javascript:;" onclick="">添加</a></h1>
+        <h1 class="title">用户管理</h1>
         <p class="description">用户列表！</p>
     </div>
     <div class="breadcrumb-env">
@@ -34,10 +33,10 @@
                                     <td>{$user->nickname}</td>
                                     <td>{$user->email}</td>
                                     <td>{$user->plan}</td>
-                                    <td>{$user->transfer}</td>
+                                    <td>{(\Helper\Util::FlowAutoShow($user->transfer))}</td>
                                     <td>-</td>
                                     <td>
-                                        <a class="btn btn-info btn-sm" href="">编辑</a>
+                                        <a class="btn btn-info btn-sm" href="javascript:;" onclick="jQuery('#modal-6').modal('show', {backdrop: 'static'});">编辑</a>
                                         <a class="btn btn-danger btn-sm" href="">删除</a>
                                     </td>
                                 </tr>
@@ -55,5 +54,127 @@
                 </div>
             </div>
         </section>
+</div>
+</div>
+<!-- Modal 6 (Long Modal)-->
+<div class="modal fade" id="modal-6">
+    <div class="modal-dialog">
+        <div class="modal-content">
 
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">修改用户资料</h4>
+            </div>
+            <form role="form" id="form1" method="post" class="validate">
+                <div class="modal-body">
+
+                    <div class="row">
+                        <div class="col-md-6">
+
+                            <div class="form-group">
+                                <label for="field-1" class="control-label">用户名</label>
+
+                                <input type="text" class="form-control" id="field-1" placeholder="" data-validate="required" data-message-required="用户名.">
+                            </div>
+
+                        </div>
+
+                        <div class="col-md-6">
+
+                            <div class="form-group">
+                                <label for="field-2" class="control-label">密码</label>
+
+                                <input type="text" class="form-control" id="field-2" placeholder="" data-validate="required" data-message-required="密码">
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+
+                            <div class="form-group">
+                                <label for="field-3" class="control-label">端口</label>
+
+                                <input type="text" class="form-control" id="field-3" placeholder="" data-validate="required" data-message-required="">
+                            </div>
+
+                        </div>
+
+                        <div class="col-md-6">
+
+                            <div class="form-group">
+                                <label for="field-4" class="control-label">SS连接密码</label>
+
+                                <input type="text" class="form-control" id="field-4" value="" placeholder="">
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+
+                            <div class="form-group">
+                                <label for="field-5" class="control-label">账户等级</label>
+
+                                <input type="text" class="form-control" id="field-5" placeholder="VIP">
+                            </div>
+
+                        </div>
+
+                        <div class="col-md-6">
+
+                            <div class="form-group">
+                                <label for="field-6" class="control-label">邀请码</label>
+
+                                <input type="text" class="form-control" id="field-6" value="" placeholder="0 个">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+
+                            <div class="form-group">
+                                <label for="field-7" class="control-label">总流量</label>
+
+                                <input type="text" class="form-control" id="field-7" value="" placeholder="100 GB">
+                            </div>
+
+                        </div>
+
+                        <div class="col-md-6">
+
+                            <div class="form-group">
+                                <label for="field-8" class="control-label">可用流量</label>
+
+                                <input type="text" class="form-control" id="field-8" value="" placeholder="99 GB">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="field-9" class="control-label">账户到期时间<label>
+                                <input type="text" id="field-9" class="form-control daterange" data-time-picker="true" data-time-picker-increment="5" data-format="MM/DD/YYYY h:mm A" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-info">保存修改</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<link rel="stylesheet" href="{TPL_PATH}js/daterangepicker/daterangepicker-bs3.css">
+<script src="{TPL_PATH}js/daterangepicker/daterangepicker.js"></script>
+<script src="{TPL_PATH}js/datepicker/bootstrap-datepicker.js"></script>
+<script src="{TPL_PATH}js/timepicker/bootstrap-timepicker.min.js"></script>
 <import template="/admin/_footer" />

@@ -50,9 +50,9 @@ class Message {
      * @param $userId
      * @return message list
      */
-    public static function GetPushMsgByUserId($userId) {
+    public static function GetPushMsgByUserId($userId = "-1") {
         $statement = Database::prepare("SELECT * FROM message WHERE LOCATE(?, pushUsers)>0 AND pushEndTime>?");
-        $statement->bindValue(1, "\"" . $userId . "\"", \PDO::PARAM_STR);
+        $statement->bindValue(1, $userId, \PDO::PARAM_STR);
         $statement->bindValue(2, time(), \PDO::PARAM_INT);
         $statement->execute();
         $list = $statement->fetchAll(\PDO::FETCH_CLASS, '\\Model\\Message');

@@ -2,6 +2,7 @@
     global $user;
     $messageList = \Model\Message::GetPushMsgByUserId($user->uid);
     $messageCount = count($messageList);
+    $globalMessage = \Model\Message::GetPushMsgByUserId();
 </php>
 <div class="main-content">
     <nav class="navbar user-info-navbar" role="navigation">
