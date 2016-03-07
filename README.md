@@ -27,7 +27,7 @@ $ chmod -R 777 ./Data/
 $ mysql -uroot -p
 ```
 ```mysql
-create table sspanel;
+create database sspanel;
 use sspanel;
 source /你的sspanel目录/Data/Shadowsocks-planel-DB.sql
 ```
@@ -53,8 +53,8 @@ RewriteRule ^ index.php [L]
 
 ### 4. 安装Shadowsocks-manyuser服务端
 ```bash
-$ git clone -b manyuser https://github.com/sendya/shadowsocks.git
-$ cd shadowsocks/shadowsocks
+$ git clone -b manyuser https://github.com/sendya/shadowsocks-rm.git
+$ cd shadowsocks-rm/shadowsocks
 ```
 #### 4.1 CentOS:
 ```bash
@@ -72,10 +72,10 @@ pip install cymysql
 
 #### 4.4 编辑多用户版配置文件
 ```bash
-$ vim ./Config.py
-$ vim ./config.json
+$ vim ./config.py
+$ python servers.py
 ```
-
+#### 4.5 本多用户版shadowsocks-py支持UDP,请注意开放端口
 
 ### *. 可选更换composer中国地区同步源
 if your in china , please edit `composer.json` content, add content to composer config
