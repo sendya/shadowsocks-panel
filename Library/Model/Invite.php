@@ -84,9 +84,15 @@ class Invite {
     }
 
     public static function deleteInvite($invite) {
+        $inTransaction = Database::inTransaction();
+        if (!$inTransaction) {
+            Database::beginTransaction();
+        }
         $statement = Database::prepare("DELETE * FROM invite WHERE invite=:invite");
         $statement->bindValue(':invite', $invite, \PDO::PARAM_STR);
-        Database::commit();
+        if (!$inTransaction) {
+            Database::commit();
+        }
     }
 
     public function updateInvite() {
