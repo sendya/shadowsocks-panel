@@ -51,6 +51,14 @@ class Invite {
         return $statement->fetch(\PDO::FETCH_CLASS);
     }
 
+    public static function GetInviteArray($plan = '') {
+        $sql = "SELECT * FROM invite";
+        $statement = Database::prepare($sql);
+        $statement->execute();
+        $inviteList = $statement->fetchAll(\PDO::FETCH_CLASS, '\\Model\\Invite');
+        return $inviteList;
+    }
+
     /**
      * 取总邀请码数
      * @return mixed
@@ -75,7 +83,7 @@ class Invite {
         $statement->bindValue(':invite', $this->invite, \PDO::PARAM_STR);
         $statement->bindValue(':reguid', $this->reguid, \PDO::PARAM_INT);
         $statement->bindValue(':regDateLine', $this->regDateLine, \PDO::PARAM_INT);
-        $statement->bindValue(':status', $this->status, \PDO::PARAM_INT);
+        $statement->bindValue(':status', $this->status, \PDO::PARAM_STR);
         $statement->execute();
         if (!$inTransaction) {
             Database::commit();
@@ -115,7 +123,6 @@ class Invite {
     }
 
     public static function addInvite($uid, $plan = 'A') {
-
         $iv = $uid . substr(hash("sha256", $uid . Util::GetRandomChar(10)),0, 26);
         $invite = new Invite();
         $invite->uid = $uid;
@@ -127,11 +134,11 @@ class Invite {
         $invite->regDateLine= 0;
         $invite->plan = $plan;
         $invite->status = 0;
-
-        $user = User::GetUserByUserId($uid);
-        $user->transfer = $user->transfer - Util::GetGB()*10;
-        $user->updateUser();
-
+        if($uid != -1) {
+            $user = User::GetUserByUserId($uid);
+            $user->transfer = $user->transfer - Util::GetGB()*10;
+            $user->updateUser();
+        }
         return $invite->insertToDB();
     }
 }

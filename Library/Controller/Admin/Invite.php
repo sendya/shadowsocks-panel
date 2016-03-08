@@ -19,9 +19,17 @@ class Invite extends AdminListener {
     public function index() {
         //throw new \Core\Error("user list", 505);
         global $user;
-        $users = UserModel::GetUserArray();
+
+		$inviteList = InviteModel::GetInviteArray();
+
         include Template::load('/admin/invite');
     }
+
+	public function inviteOldList() {
+		global $user;
+
+		include Template::load('/admin/invite');
+	}
 
     /**
      * 添加一个邀请码
@@ -42,8 +50,10 @@ class Invite extends AdminListener {
 						InviteModel::addInvite($user->uid, $plan);
 					}
 				} else {
-					InviteModel::addInvite($user->uid, $plan);
+					InviteModel::addInvite(-1, 'A');
 				}
+			$result['inviteNumber'] = $inviteNumber;
+			$result['plan'] = $plan;
     		
     		echo json_encode($result);
     		exit();
