@@ -44,16 +44,22 @@ class User {
     public static function getInstance() {
         if (!self::$instance) {
             self::$instance = new self();
+            $cookie = Encrypt::decode(base64_decode($_COOKIE['auth']), COOKIE_KEY);
+            if ($cookie) {
+                list(self::$instance->uid, self::$instance->email, self::$instance->nickname) = explode("\t", $cookie);
+            }
         }
         return self::$instance;
     }
 
+    /*
     public function __construct() {
         $cookie = Encrypt::decode(base64_decode($_COOKIE['auth']), COOKIE_KEY);
         if ($cookie) {
             list($this->uid, $this->email, $this->nickname) = explode("\t", $cookie);
         }
     }
+    */
 
     /**
      * Get a user by email
@@ -92,8 +98,6 @@ class User {
         $statement = Database::prepare($selectSQL);
         $statement->execute();
         $userList = $statement->fetchAll(\PDO::FETCH_CLASS, '\\Model\\User');
-        print_r($userList);
-        exit();
         return $userList;
     }
 
