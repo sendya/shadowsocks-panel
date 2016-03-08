@@ -27,13 +27,13 @@
                                     <th>操作</th>
                                 </tr>
                                 <if condition="count($users) > 0">
-                                <loop variable="$users" key="$key" value="$user">
+                                <loop variable="$users" key="$key" value="$us">
                                 <tr>
-                                    <td>#{$user->uid}</td>
-                                    <td>{$user->nickname}</td>
-                                    <td>{$user->email}</td>
-                                    <td>{$user->plan}</td>
-                                    <td>{(\Helper\Util::FlowAutoShow($user->transfer))}</td>
+                                    <td>#{$us->uid}</td>
+                                    <td>{$us->nickname}</td>
+                                    <td>{$us->email}</td>
+                                    <td>{$us->plan}</td>
+                                    <td>{(\Helper\Util::FlowAutoShow($us->transfer))}</td>
                                     <td>-</td>
                                     <td>
                                         <a class="btn btn-info btn-sm" href="javascript:;" onclick="jQuery('#modal-6').modal('show', {backdrop: 'static'});">编辑</a>

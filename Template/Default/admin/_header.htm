@@ -1,7 +1,7 @@
 <import template="/admin/_head" />
 <php>
     $allNode = \Model\Node::GetNodeCount();
-    $openNode = \Model\Node::GetNodeCount(1);
+    $openNode = \Model\Node::GetNodeCount("可用");
     $userPower = \Model\UserPower::verifyPower($user->uid);
 </php>
 <body class="page-body">

@@ -92,6 +92,8 @@ class User {
         $statement = Database::prepare($selectSQL);
         $statement->execute();
         $userList = $statement->fetchAll(\PDO::FETCH_CLASS, '\\Model\\User');
+        print_r($userList);
+        exit();
         return $userList;
     }
 
