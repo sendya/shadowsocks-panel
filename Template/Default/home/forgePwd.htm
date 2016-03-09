@@ -52,7 +52,7 @@
                                 hideMethod:"fadeOut"
                             };
                             $("#resetButton").attr("disabled", "true").html("请稍等");
-                            if($("#email").attr("name") == "name") {
+                            if($("#email").attr("name") == "email") {
                                 $.ajax({
                                     url:"/Auth/forgePwd",
                                     method:"POST",
@@ -68,6 +68,7 @@
                                                 $("#resetButton").removeAttr("disabled").html("确定重置");
                                                 if (resp.error == 0) {
                                                     toastr.success(resp.message, "系统消息!", opts);
+                                                    $("#uid").val(resp.uid);
                                                     $("#email").attr("name", "code").attr("placeholder", "请填写邮件验证代码").val("");
                                                     //setTimeout("window.location.href = '/Auth/login';", 3e3);
                                                 } else if (resp.error == 1) {
@@ -86,6 +87,7 @@
                                     method:"POST",
                                     dataType:"json",
                                     data:{
+                                        uid:$("#uid").val(),
                                         code:$("#email").val()
                                     },
                                     success:function(resp) {

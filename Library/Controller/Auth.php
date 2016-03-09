@@ -150,6 +150,7 @@ class Auth {
 
     public function forgePwd() {
         $result = array('error' => 1, 'message' => '请求找回密码失败');
+        $siteName = SITE_NAME;
 
         if(isset($_POST['email']) && $_POST['email'] != '') {
 
@@ -166,8 +167,7 @@ class Auth {
             }
 
             $code = Util::GetRandomChar(10);
-
-            $siteName = SITE_NAME;
+            $user->forgePwdCode = $code;
 
             $content = <<<EOF
 Dear {$user->nickname}:<br/>
@@ -182,8 +182,46 @@ EOF;
 
 
             $mailResult = Mail::mail_send($user->email,  "[". SITE_NAME ."] Password Recovery", $content);
+
+            $user->updateUser();
+
+            $result['uid'] = $user->uid;
             $result['message'] = '验证代码已经发送到该注册邮件地址，请注意查收!';
             $result['error'] = 0;
+
+        } else if($_POST['code'] != '' && $_POST['uid'] != '') {
+            $uid = $_POST['uid'];
+            $code = $_POST['code'];
+            $user = User::GetUserByUserId(trim($uid));
+            if($user->forgePwdCode == $code) {
+                $newPassword = Util::GetRandomChar(10);
+                $user->savePassword($newPassword);
+
+                $user->lastFindPasswdCount = 0;
+                $user->lastFindPasswdTime = 0;
+                $user->updateUser();
+
+                $content = <<<EOF
+Dear {$user->nickname}:<br/>
+嘿~ boy 下面这串文本是你的新密码:<br/>
+<br/>
+PassWord: {$newPassword}
+<br/>
+<br/>
+<b>请在登陆后立即修改密码！并且邮件不要保留 以防止账户丢失。</b>
+<br/>
+<br/>
+Yours,
+The {$siteName} Team
+EOF;
+
+
+                $mailResult = Mail::mail_send($user->email,  "[". SITE_NAME ."] Your new Password", $content);
+
+                $result['message'] = '新密码已经发送到该账户邮件地址，请注意查收!<br/> 并且请在登陆后修改密码！';
+                $result['error'] = 0;
+
+            }
 
         } else {
             include Template::load('/home/forgePwd');
