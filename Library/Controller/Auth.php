@@ -221,6 +221,9 @@ EOF;
                 $result['message'] = '新密码已经发送到该账户邮件地址，请注意查收!<br/> 并且请在登陆后修改密码！';
                 $result['error'] = 0;
 
+            } else {
+                $result['message'] = '验证码不正确。请确认';
+                $result['error'] = -1;
             }
 
         } else {
