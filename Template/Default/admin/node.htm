@@ -187,6 +187,7 @@
                         $("input[name='node.status']").val(node.status);
                         $("input[name='node.order']").val(node.order);
                         $("#form1").attr("action", "/admin/node/modify");
+                        jQuery('#modal-6 .modal-title').html('修改节点');
                         jQuery('#modal-6').modal('show', {backdrop: 'static'});
                     }
                 } else {
@@ -201,6 +202,7 @@
     }
     function nodeAdd(){
         $("#form1").attr("action", "/admin/node/add");
+        jQuery('#modal-6 .modal-title').html('新增节点');
         jQuery('#modal-6').modal('show', {backdrop: 'static'});
     }
 </script>

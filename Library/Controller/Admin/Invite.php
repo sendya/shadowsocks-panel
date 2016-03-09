@@ -16,11 +16,11 @@ use \Model\Invite as InviteModel;
  */
 class Invite extends AdminListener {
 
-    public function index() {
+    public function inviteList() {
         //throw new \Core\Error("user list", 505);
         global $user;
 
-		$inviteList = InviteModel::GetInviteArray();
+				$inviteList = InviteModel::GetInviteArray();
 
         include Template::load('/admin/invite');
     }

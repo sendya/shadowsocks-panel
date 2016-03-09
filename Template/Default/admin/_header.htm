@@ -57,7 +57,7 @@
                     </h4>
                     <ul class="list-unstyled">
                         <li>
-                            <a href="Support/Tos">
+                            <a href="/Support/Tos">
                                 <i class="fa-angle-right"></i>
                                 支持中心
                             </a>
@@ -69,13 +69,13 @@
                             </a>
                         </li>
                         <li>
-                            <a href="Support/Tos">
+                            <a href="/Support/Tos">
                                 <i class="fa-angle-right"></i>
                                 使用协议
                             </a>
                         </li>
                         <li>
-                            <a href="Support/Tos">
+                            <a href="/Support/Tos">
                                 <i class="fa-angle-right"></i>
                                 服务条款
                             </a>
@@ -115,7 +115,7 @@
                 </div>
             </header>
             <ul id="main-menu" class="main-menu">
-                <li class="{(\Helper\Util::CheckAction('member', 'opened'))}">
+                <li class="{(\Helper\Util::CheckAction('admin', 'opened'))}">
                 <a href="/Admin" class="pjax">
                     <i class="linecons-cog"></i>
                     <span class="title">仪表盘</span>
@@ -128,7 +128,7 @@
                     <span class="label label-success pull-right">{$openNode}/{$allNode}</span>
                 </a>
                 </li>
-                <li class="{(\Helper\Util::CheckAction('info'))}">
+                <li class="{(\Helper\Util::CheckAction('user'))}">
                 <a href="/admin/user" class="pjax">
                     <i class="linecons-user "></i>
                     <span class="title">用户管理</span>
@@ -140,8 +140,8 @@
                     <span class="title">邀请码管理</span>
                 </a>
                 <ul>
-                    <li class="{(\Helper\Util::CheckAction('invite'))}">
-                    <a href="/admin/invite" class="pjax">
+                    <li class="{(\Helper\Util::CheckAction('inviteList'))}">
+                    <a href="/admin/invite/inviteList" class="pjax">
                         <span class="title">邀请码列表</span>
                     </a>
                     </li>
