@@ -208,6 +208,26 @@ class User {
         }
     }
 
+    /**
+     * User delete
+     * @param $uid
+     * @return bool
+     */
+    public static function delete($uid) {
+        $inTransaction = Database::inTransaction();
+        if (!$inTransaction) {
+            Database::beginTransaction();
+        }
+        $statement = Database::prepare("DELETE FROM member WHERE uid=?");
+        $statement->bindValue(1, $uid, \PDO::PARAM_INT);
+        $statement->execute();
+        $result = false;
+        if(!$inTransaction) {
+            $result = Database::commit();
+        }
+        return $result;
+    }
+
 
     /**
      * Get password
