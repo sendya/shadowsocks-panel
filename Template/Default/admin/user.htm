@@ -36,8 +36,8 @@
                                     <td>{(\Helper\Util::FlowAutoShow($us->transfer))}</td>
                                     <td>-</td>
                                     <td>
-                                        <a class="btn btn-info btn-sm" href="javascript:;" onclick="jQuery('#modal-6').modal('show', {backdrop: 'static'});">编辑</a>
-                                        <a class="btn btn-danger btn-sm" href="">删除</a>
+                                        <a class="btn btn-info btn-sm" href="javascript:;" onclick="userModify({$us->uid});">编辑</a>
+                                        <a class="btn btn-danger btn-sm" href="javascript:;" onclick="userRemove({$us->uid})">删除</a>
                                     </td>
                                 </tr>
                                 </loop>
@@ -65,26 +65,27 @@
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 <h4 class="modal-title">修改用户资料</h4>
             </div>
-            <form role="form" id="form1" method="post" class="validate">
+            <form role="form" id="form1" method="post" action="/admin/user/add" class="validate" onsubmit="return postJSON(this.id, this.action);">
+                <input type="hidden" name="form_add" value="{(time())}"/>
+                <input type="hidden" name="user.uid" id="uid" value=""/>
                 <div class="modal-body">
 
                     <div class="row">
                         <div class="col-md-6">
 
                             <div class="form-group">
-                                <label for="field-1" class="control-label">用户名</label>
+                                <label for="field-1" class="control-label">昵称</label>
 
-                                <input type="text" class="form-control" id="field-1" placeholder="" data-validate="required" data-message-required="用户名.">
+                                <input type="text" class="form-control" name="user.nickname" id="field-1" placeholder="" data-validate="required" data-message-required="用户名.">
                             </div>
 
                         </div>
-
                         <div class="col-md-6">
 
                             <div class="form-group">
-                                <label for="field-2" class="control-label">密码</label>
+                                <label for="field-2" class="control-label">邮箱</label>
 
-                                <input type="text" class="form-control" id="field-2" placeholder="" data-validate="required" data-message-required="密码">
+                                <input type="text" class="form-control" name="user.email" id="field-2" placeholder="" data-validate="required" data-message-required="密码">
                             </div>
 
                         </div>
@@ -94,9 +95,9 @@
                         <div class="col-md-6">
 
                             <div class="form-group">
-                                <label for="field-3" class="control-label">端口</label>
+                                <label for="field-3" class="control-label">密码</label>
 
-                                <input type="text" class="form-control" id="field-3" placeholder="" data-validate="required" data-message-required="">
+                                <input type="text" class="form-control" name="user.password" id="field-3" placeholder="不修改请留空">
                             </div>
 
                         </div>
@@ -104,11 +105,31 @@
                         <div class="col-md-6">
 
                             <div class="form-group">
-                                <label for="field-4" class="control-label">SS连接密码</label>
+                                <label for="field-4" class="control-label">端口</label>
 
-                                <input type="text" class="form-control" id="field-4" value="" placeholder="">
+                                <input type="text" class="form-control" name="user.port" id="field-4" placeholder="" data-validate="required" data-message-required="">
                             </div>
 
+                        </div>
+
+                        <div class="col-md-6">
+
+                            <div class="form-group">
+                                <label for="field-5" class="control-label">SS连接密码</label>
+
+                                <input type="text" class="form-control" name="user.sspwd" id="field-5" value="" placeholder="">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+
+                            <div class="form-group">
+                                <label for="field-10" class="control-label">是否启用用户</label>
+
+                                <select name="user.enable" id="field-10" class="form-control">
+                                    <option value="0">停用</option>
+                                    <option value="1">启用</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
 
@@ -116,9 +137,9 @@
                         <div class="col-md-6">
 
                             <div class="form-group">
-                                <label for="field-5" class="control-label">账户等级</label>
+                                <label for="field-6" class="control-label">账户等级</label>
 
-                                <input type="text" class="form-control" id="field-5" placeholder="VIP">
+                                <input type="text" class="form-control" name="user.plan" id="field-6" placeholder="VIP">
                             </div>
 
                         </div>
@@ -126,9 +147,9 @@
                         <div class="col-md-6">
 
                             <div class="form-group">
-                                <label for="field-6" class="control-label">邀请码</label>
+                                <label for="field-7" class="control-label">邀请码</label>
 
-                                <input type="text" class="form-control" id="field-6" value="" placeholder="0 个">
+                                <input type="text" class="form-control" name="user.invite_num" id="field-7" value="" placeholder="0 个">
                             </div>
                         </div>
                     </div>
@@ -137,9 +158,9 @@
                         <div class="col-md-6">
 
                             <div class="form-group">
-                                <label for="field-7" class="control-label">总流量</label>
+                                <label for="field-8" class="control-label">总流量(GB)</label>
 
-                                <input type="text" class="form-control" id="field-7" value="" placeholder="100 GB">
+                                <input type="text" class="form-control" name="user.transfer" id="field-8" value="" placeholder="100 GB">
                             </div>
 
                         </div>
@@ -147,21 +168,34 @@
                         <div class="col-md-6">
 
                             <div class="form-group">
-                                <label for="field-8" class="control-label">可用流量</label>
+                                <label for="field-9" class="control-label">已流量(GB)</label>
 
-                                <input type="text" class="form-control" id="field-8" value="" placeholder="99 GB">
+                                <input type="text" class="form-control" name="user.flow_down" id="field-9" value="" placeholder="99 GB">
                             </div>
                         </div>
                     </div>
-
+                    <!--
                     <div class="row">
-                        <div class="col-md-12">
+                        <div class="col-md-6">
+
                             <div class="form-group">
-                                <label for="field-9" class="control-label">账户到期时间<label>
-                                <input type="text" id="field-9" class="form-control daterange" data-time-picker="true" data-time-picker-increment="5" data-format="MM/DD/YYYY h:mm A" />
+                                <label for="field-10" class="control-label">续费时间</label>
+
+                                <input type="text" class="form-control" id="field-10" value="" placeholder="">
+                            </div>
+
+                        </div>
+
+                        <div class="col-md-6">
+
+                            <div class="form-group">
+                                <label for="field-11" class="control-label">到期时间</label>
+
+                                <input type="text" class="form-control" id="field-11" value="" placeholder="">
                             </div>
                         </div>
                     </div>
+                    -->
                 </div>
             </form>
 
@@ -172,7 +206,47 @@
         </div>
     </div>
 </div>
+<script type="text/javascript">
+    function userRemove(userId) {
 
+    }
+    function userModify(userId) {
+        $.ajax({
+            url: "/admin/user/query",
+            method: "POST",
+            dataType: "json",
+            data: {uid: userId},
+            success: function(result){
+                if(result.error == 0){
+                    if(result.data != false && result.data != null) {
+                        var user = result.data;
+                        $("input[name='user.uid']").val(user.uid);
+                        $("input[name='user.nickname']").val(user.nickname);
+                        $("input[name='user.email']").val(user.email);
+                        $("input[name='user.password']").val('');
+                        $("input[name='user.port']").val(user.port);
+                        $("input[name='user.sspwd']").val(user.sspwd);
+                        $("input[name='user.plan']").val(user.plan);
+                        $("input[name='user.invite_num']").val(user.invite_num);
+                        $("input[name='user.transfer']").val(user.transfer);
+                        $("input[name='user.flow_down']").val(user.flow_down);
+                        $("select[name='user.enable']").val(user.enable);
+
+                        $("#form1").attr("action", "/admin/user/modify");
+                        jQuery('#modal-6 .modal-title').html('修改用户资料');
+                        jQuery('#modal-6').modal('show', {backdrop: 'static'});
+                    }
+                } else {
+                    showToastr(result.message, 0);
+                }
+            },
+            error: function(Xhr){
+                showToastr("出现未知错误，请重试或联系管理员", 0);
+            }
+        });
+        jQuery('#modal-6').modal('show', {backdrop: 'static'});
+    }
+</script>
 <link rel="stylesheet" href="{TPL_PATH}js/daterangepicker/daterangepicker-bs3.css">
 <script src="{TPL_PATH}js/daterangepicker/daterangepicker.js"></script>
 <script src="{TPL_PATH}js/datepicker/bootstrap-datepicker.js"></script>

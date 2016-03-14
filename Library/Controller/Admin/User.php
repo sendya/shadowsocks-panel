@@ -9,6 +9,7 @@ namespace Controller\Admin;
 
 use \Core\Template;
 
+use Helper\Util;
 use \Model\User as UserModel;
 
 class User extends AdminListener {
@@ -42,7 +43,11 @@ class User extends AdminListener {
         if($_POST['uid'] != null) {
             $us = UserModel::GetUserByUserId($_POST['uid']);
             if($us) {
+                // 手动处理一下流量单位
+                $us->transfer = $us->transfer / Util::GetGB();
+                $us->flow_down = $us->flow_down / Util::GetGB();
                 $result['error'] = 0;
+                $result['data'] = $us;
                 $result['message'] = 'Success';
             }
         }
@@ -63,9 +68,9 @@ class User extends AdminListener {
                 if($_POST['user_port'] != null) $us->port = $_POST['user_port'];
                 if($_POST['user_sspwd'] != null) $us->sspwd = $_POST['user_sspwd'];
                 if($_POST['user_plan'] != null) $us->plan = $_POST['user_plan'];
-                if($_POST['user_inviteNumber'] != null) $us->invite_num = $_POST['user_inviteNumber'];
-                if($_POST['user_transfer'] != null) $us->transfer = $_POST['user_transfer'];
-                if($_POST['user_flow_up'] != null) $us->flow_up = $_POST['user_flow_up'];
+                if($_POST['user_invite_num'] != null) $us->invite_num = $_POST['user_invite_num'];
+                if($_POST['user_transfer'] != null) $us->transfer = $_POST['user_transfer'] * Util::GetGB();
+                if($_POST['user_flow_up'] != null) $us->flow_up = $_POST['user_flow_up'] * Util::GetGB();
                 if($_POST['user_enable'] != null) $us->enable = $_POST['user_enable']; // 是否启用该用户。该字段会强制用户无法链接到所有服务器！
             }
         }
