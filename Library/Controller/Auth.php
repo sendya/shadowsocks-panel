@@ -191,7 +191,7 @@ EOF;
 
         } else if($_POST['code'] != '' && $_POST['uid'] != '') {
             $uid = $_POST['uid'];
-            $code = $_POST['code'];
+            $code = trim($_POST['code']);
             $user = User::GetUserByUserId(trim($uid));
             if($user->forgePwdCode == $code) {
                 $newPassword = Util::GetRandomChar(10);

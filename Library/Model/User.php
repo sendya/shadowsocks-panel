@@ -205,8 +205,8 @@ class User {
         $statement->bindValue(':forgePwdCode', $this->forgePwdCode, \PDO::PARAM_STR);
 
         $statement->bindValue(':userId', $this->uid, \PDO::PARAM_INT);
-
         $flag = $statement->execute();
+
         if (!$inTransaction) {
             Database::commit();
         }

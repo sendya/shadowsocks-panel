@@ -57,7 +57,7 @@ CREATE TABLE `member` (
   `lastFindPasswdCount` tinyint(255) NOT NULL DEFAULT '0' COMMENT '找回密码次数(临时记录用而已)',
   `forgePwdCode` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`uid`)
-) ENGINE=InnoDB AUTO_INCREMENT=1000 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5000 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for message
