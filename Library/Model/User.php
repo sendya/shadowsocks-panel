@@ -180,12 +180,13 @@ class User {
         if (!$inTransaction) {
             Database::beginTransaction();
         }
-        $statement = Database::prepare("UPDATE member SET email=:email, `password`=:pwd, sspwd=:sspwd, `port`=:port, nickname=:nickname,
-            `flow_up`=:flow_up, `flow_down`=:flow_down, transfer=:transfer, plan=:plan, `enable`=:enable, invite=:invite, regDateLine=:regDateLine,
-            lastConnTime=:lastConnTime,lastCheckinTime=:lastCheckinTime,lastFindPasswdTime=:lastFindPasswdTime,
-            lastFindPasswdCount=:lastFindPasswdCount,forgePwdCode=:forgePwdCode WHERE uid=:userId");
+        $sql = "UPDATE member SET email=:email, sspwd=:sspwd, `port`=:port, nickname=:nickname," .
+            "`flow_up`=:flow_up, `flow_down`=:flow_down, transfer=:transfer, plan=:plan, `enable`=:enable, invite=:invite, invite_num=:invite_num, regDateLine=:regDateLine,".
+            "lastConnTime=:lastConnTime,lastCheckinTime=:lastCheckinTime,lastFindPasswdTime=:lastFindPasswdTime,".
+            "lastFindPasswdCount=:lastFindPasswdCount,forgePwdCode=:forgePwdCode WHERE uid=:userId";
+
+        $statement = Database::prepare($sql);
         $statement->bindValue(':email', $this->email, \PDO::PARAM_STR);
-        $statement->bindValue(':pwd', $this->password, \PDO::PARAM_STR);
         $statement->bindValue(':sspwd', $this->sspwd, \PDO::PARAM_STR);
         $statement->bindValue(':port', $this->port, \PDO::PARAM_INT);
         $statement->bindValue(':nickname', $this->nickname, \PDO::PARAM_STR);
@@ -194,18 +195,22 @@ class User {
         $statement->bindValue(':transfer', $this->transfer, \PDO::PARAM_INT);
         $statement->bindValue(':plan', $this->plan, \PDO::PARAM_STR);
         $statement->bindValue(':enable', $this->enable, \PDO::PARAM_INT);
-        $statement->bindValue(':invite', $this->invite, \PDO::PARAM_INT);
+        $statement->bindValue(':invite', $this->invite, \PDO::PARAM_STR);
+        $statement->bindValue(':invite_num', $this->invite, \PDO::PARAM_INT);
         $statement->bindValue(':regDateLine', $this->regDateLine, \PDO::PARAM_INT);
         $statement->bindValue(':lastConnTime', $this->lastConnTime, \PDO::PARAM_INT);
         $statement->bindValue(':lastCheckinTime', $this->lastCheckinTime, \PDO::PARAM_INT);
         $statement->bindValue(':lastFindPasswdTime', $this->lastFindPasswordTime, \PDO::PARAM_INT);
         $statement->bindValue(':lastFindPasswdCount', $this->lastFindPasswordCount, \PDO::PARAM_INT);
         $statement->bindValue(':forgePwdCode', $this->forgePwdCode, \PDO::PARAM_STR);
+
         $statement->bindValue(':userId', $this->uid, \PDO::PARAM_INT);
+
         $flag = $statement->execute();
         if (!$inTransaction) {
             Database::commit();
         }
+        return $flag;
     }
 
     /**
@@ -226,6 +231,18 @@ class User {
             $result = Database::commit();
         }
         return $result;
+    }
+
+
+    public static function checkUserPortIsAvailable($port = 0, $uid) {
+        if($port != 0) {
+            $statement = Database::prepare("SELECT * FROM member WHERE port=? AND uid<>?");
+            $statement->bindValue(1, $port, \PDO::PARAM_INT);
+            $statement->bindValue(2, $uid, \PDO::PARAM_INT);
+            $statement->execute();
+            $statement->setFetchMode(\PDO::FETCH_CLASS, '\\Model\\User');
+            return $statement->fetch(\PDO::FETCH_CLASS);
+        }
     }
 
 

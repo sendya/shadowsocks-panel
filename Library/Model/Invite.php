@@ -51,8 +51,13 @@ class Invite {
         return $statement->fetch(\PDO::FETCH_CLASS);
     }
 
-    public static function GetInviteArray($plan = '') {
+    public static function GetInviteArray($status = -1) {
         $sql = "SELECT * FROM invite";
+        if($status == 0) {
+            $sql .= " WHERE status = 0";
+        } else if($status == 1) {
+            $sql .= " WHERE status = 1 OR status = -1 ";
+        }
         $statement = Database::prepare($sql);
         $statement->execute();
         $inviteList = $statement->fetchAll(\PDO::FETCH_CLASS, '\\Model\\Invite');
@@ -109,21 +114,23 @@ class Invite {
             Database::beginTransaction();
         }
         $statement = Database::prepare("UPDATE invite SET expiration=:expiration,
-			`reguid`=:reguid, `regDateLine`=:regDateLine, `status`=:status, `inviteIp`=:inviteIp WHERE invite=:invite");
+			`reguid`=:reguid, `plan`=:plan, `regDateLine`=:regDateLine, `status`=:status, `inviteIp`=:inviteIp WHERE `invite`=:invite");
         $statement->bindValue(':expiration', $this->expiration, \PDO::PARAM_INT);
         $statement->bindValue(':reguid', $this->reguid, \PDO::PARAM_INT);
         $statement->bindValue(':regDateLine', $this->regDateLine, \PDO::PARAM_INT);
         $statement->bindValue(':status', $this->status, \PDO::PARAM_INT);
+        $statement->bindValue(':plan', $this->plan, \PDO::PARAM_STR);
         $statement->bindValue(':inviteIp', $this->inviteIp, \PDO::PARAM_STR);
         $statement->bindValue(':invite', $this->invite, \PDO::PARAM_STR);
-        $statement->execute();
+        $rs = $statement->execute();
         if (!$inTransaction) {
             Database::commit();
         }
+        return $rs;
     }
 
     public static function addInvite($uid, $plan = 'A') {
-        $iv = $uid . substr(hash("sha256", $uid . Util::GetRandomChar(10)),0, 26);
+        $iv = substr(hash("sha256", $uid . Util::GetRandomChar(10)),0, 26) . $uid;
         $invite = new Invite();
         $invite->uid = $uid;
         $invite->dateLine = time();

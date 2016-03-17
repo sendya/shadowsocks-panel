@@ -28,7 +28,7 @@
                                 </tr>
                                 <if condition="count($users) > 0">
                                 <loop variable="$users" key="$key" value="$us">
-                                <tr>
+                                <tr id="user-{$us->uid}">
                                     <td>#{$us->uid}</td>
                                     <td>{$us->nickname}</td>
                                     <td>{$us->email}</td>
@@ -76,7 +76,7 @@
                             <div class="form-group">
                                 <label for="field-1" class="control-label">昵称</label>
 
-                                <input type="text" class="form-control" name="user.nickname" id="field-1" placeholder="" data-validate="required" data-message-required="用户名.">
+                                <input type="text" class="form-control" name="user.nickname" id="field-1" placeholder="">
                             </div>
 
                         </div>
@@ -85,7 +85,7 @@
                             <div class="form-group">
                                 <label for="field-2" class="control-label">邮箱</label>
 
-                                <input type="text" class="form-control" name="user.email" id="field-2" placeholder="" data-validate="required" data-message-required="密码">
+                                <input type="text" class="form-control" name="user.email" id="field-2" placeholder="" >
                             </div>
 
                         </div>
@@ -107,7 +107,7 @@
                             <div class="form-group">
                                 <label for="field-4" class="control-label">端口</label>
 
-                                <input type="text" class="form-control" name="user.port" id="field-4" placeholder="" data-validate="required" data-message-required="">
+                                <input type="text" class="form-control" name="user.port" id="field-4" placeholder=""> <!-- data-validate="required" data-message-required="" -->
                             </div>
 
                         </div>
@@ -197,18 +197,35 @@
                     </div>
                     -->
                 </div>
-            </form>
+
 
             <div class="modal-footer">
                 <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
-                <button type="button" class="btn btn-info">保存修改</button>
+                <button type="submit" class="btn btn-info">保存修改</button>
             </div>
+            </form>
         </div>
     </div>
 </div>
 <script type="text/javascript">
     function userRemove(userId) {
-
+        $.ajax({
+            url: "/admin/user/delete",
+            method: "POST",
+            dataType: "json",
+            data: {userId: userId},
+            success: function(data){
+                if(data.error == 0){
+                    showToastr(data.message, 0);
+                    $("#user-" + userId).remove();
+                } else {
+                    showToastr(data.message, 0);
+                }
+            },
+            error: function(Xhr){
+                showToastr("出现未知错误，请重试或联系管理员", 0);
+            }
+        });
     }
     function userModify(userId) {
         $.ajax({

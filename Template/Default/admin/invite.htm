@@ -35,8 +35,8 @@
                                     <td>{$invite->plan}</td>
                                     <td><if condition="$invite->status == 1">已用<else>未用</if></td>
                                     <td>
-                                        <a class="btn btn-info btn-sm" href="javascript:;" onclick="nodeModify({$invite->invite});">编辑</a>
-                                        <a class="btn btn-danger btn-sm" href="javascript:;" onclick="nodeRemove({$invite->invite});">删除</a>
+                                        <a class="btn btn-info btn-sm" href="javascript:;" onclick="inviteModify('{$invite->invite}');">编辑</a>
+                                        <a class="btn btn-danger btn-sm" href="javascript:;" onclick="nodeRemove('{$invite->invite}');">删除</a>
                                     </td>
                                 </tr>
                                 </loop>
@@ -64,18 +64,18 @@
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 <h4 class="modal-title">新增邀请码</h4>
             </div>
-            <form role="form" id="form1" method="post" action="/admin/node/add" class="validate" onsubmit="return postJSON(this.id, this.action);">
+            <form role="form" id="form1" method="post" action="/admin/invite/add" class="validate" onsubmit="return postJSON(this.id, this.action);">
             <input type="hidden" name="form_add" value="{(time())}"/>
-            <input type="hidden" name="node.id" id="node_id" value=""/>
+            <input type="hidden" name="invite" id="invite" value=""/>
             <div class="modal-body">
 
                 <div class="row">
                     <div class="col-md-6">
 
                         <div class="form-group">
-                            <label for="field-1" class="control-label">节点名称</label>
+                            <label for="field-1" class="control-label">邀请码（只允许系统生成）</label>
 
-                            <input type="text" class="form-control" name="node.name" id="field-1" value="" data-validate="required" data-message-required="节点名称必须填写.">
+                            <input type="text" class="form-control" name="invite_2" id="field-1" value="" readonly placeholder="只允许系统生成">
                         </div>
 
                     </div>
@@ -83,9 +83,16 @@
                     <div class="col-md-6">
 
                         <div class="form-group">
-                            <label for="field-2" class="control-label">节点地址</label>
+                            <label for="field-2" class="control-label">邀请码类型</label>
 
-                            <input type="text" class="form-control" name="node.server" id="field-2" placeholder="127.0.0.1" data-validate="required" data-message-required="服务器地址必须填写.">
+                            <select name="plan" id="plan" id="field-2" class="form-control">
+                                <option value="A">A</option>
+                                <option value="B">B</option>
+                                <option value="C">C</option>
+                                <option value="D">D</option>
+                                <option value="VIP">VIP</option>
+                                <option value="SVIP">SVIP</option>
+                            </select>
                         </div>
 
                     </div>
@@ -95,9 +102,9 @@
                     <div class="col-md-6">
 
                         <div class="form-group">
-                            <label for="field-3" class="control-label">加密方式</label>
+                            <label for="field-3" class="control-label">有效时间(天)</label>
 
-                            <input type="text" class="form-control" name="node.method" id="field-3" placeholder="aes-128-cfb" data-validate="required" data-message-required="加密方式必须填写.">
+                            <input type="number" class="form-control" name="expiration" id="field-3" value="10" placeholder="10" data-message-required="有效时间为整数.">
                         </div>
 
                     </div>
@@ -105,36 +112,14 @@
                     <div class="col-md-6">
 
                         <div class="form-group">
-                            <label for="field-4" class="control-label">节点分类(0 普通 1 vip)</label>
+                            <label for="field-4" class="control-label">添加时间</label>
 
-                            <input type="text" class="form-control" name="node.type" id="field-4" value="0" placeholder="0" data-validate="required" data-message-required="This is custom message for required field.">
+                            <div class="date-and-time">
+                                <input type="text" id="field-4" class="form-control datepicker" name="add_time1" data-format="yyyy-mm-dd">
+                                <input type="text" class="form-control timepicker" name="add_time2" data-template="dropdown" data-show-seconds="true" data-default-time="11:25" data-show-meridian="false" data-minute-step="5" data-second-step="5" />
+                            </div>
                         </div>
 
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="field-5" class="control-label">节点状态</label>
-                            <input type="text" class="form-control" name="node.status" id="field-5" placeholder="可用 / 不可用" data-validate="required" data-message-required="This is custom message for required field.">
-                        </div>
-                    </div>
-
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="field-6" class="control-label">排序</label>
-                            <input type="text" class="form-control" name="node.order" id="field-6" value="0" placeholder="0" data-validate="required" data-message-required="This is custom message for required field.">
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="form-group no-margin">
-                            <label for="field-7" class="control-label">备注信息</label>
-                            <textarea class="form-control autogrow" name="node.info" id="field-7" placeholder="Write something about server info" ></textarea>
-                        </div>
                     </div>
                 </div>
 
@@ -149,16 +134,16 @@
     </div>
 </div>
 <script type="text/javascript">
-    function nodeRemove(nodeId){
+    function inviteRemove(invite){
         $.ajax({
-            url: "/admin/node/delete",
+            url: "/admin/invite/delete",
             method: "POST",
             dataType: "json",
-            data: {node_id: nodeId},
+            data: {invite: invite},
             success: function(data){
                 if(data.error == 0){
                     showToastr(data.message, 0);
-                    $("#node-" + nodeId).remove();
+                    $("#invite-" + invite).remove();
                 } else {
                     showToastr(data.message, 0);
                 }
@@ -168,25 +153,23 @@
             }
         });
     }
-    function nodeModify(nodeId){
+    function inviteModify(invite){
         $.ajax({
-            url: "/admin/node/nodeInfo",
-            method: "GET",
+            url: "/admin/invite/query",
+            method: "POST",
             dataType: "json",
-            data: {node_id: nodeId},
+            data: {invite: invite},
             success: function(result){
                 if(result.error == 0){
                     if(result.data != false && result.data != null) {
-                        var node = result.data;
-                        $("input[name='node.id']").val(node.id);
-                        $("input[name='node.name']").val(node.name);
-                        $("input[name='node.type']").val(node.type);
-                        $("input[name='node.server']").val(node.server);
-                        $("input[name='node.method']").val(node.method);
-                        $("textarea[name='node.info']").val(node.info);
-                        $("input[name='node.status']").val(node.status);
-                        $("input[name='node.order']").val(node.order);
-                        $("#form1").attr("action", "/admin/node/modify");
+                        var invite = result.data;
+                        $("input[name='invite']").val(invite.invite);
+                        $("input[name='invite_2']").val(invite.invite);
+                        $("#plan").val(invite.plan);
+                        $("input[name='expiration']").val(invite.expiration);
+                        $("input[name='add_time1']").val(invite.dateLine);
+                        $("#form1").attr("action", "/admin/invite/update");
+                        jQuery('#modal-6 .modal-title').html('修改邀请码');
                         jQuery('#modal-6').modal('show', {backdrop: 'static'});
                     }
                 } else {
@@ -199,17 +182,19 @@
         });
         jQuery('#modal-6').modal('show', {backdrop: 'static'});
     }
-    function nodeAdd(){
-        $("#form1").attr("action", "/admin/node/add");
+    function inviteAdd(){
+        $("input[name='invite']").val('');
+        $("input[name='invite_2']").val('');
+        $("#plan").val('A');
+        $("input[name='expiration']").val('');
+        $("input[name='add_time1']").val('');
+        jQuery('#modal-6 .modal-title').html('新增邀请码');
         jQuery('#modal-6').modal('show', {backdrop: 'static'});
     }
-
-    function inviteAdd(){
-        $.get("/admin/invite/add", function(result){
-            if(result.error == '0') {
-                alert("添加成功!");
-            }
-        },'json');
-    }
 </script>
+<link rel="stylesheet" href="{TPL_PATH}js/daterangepicker/daterangepicker-bs3.css">
+<script src="{TPL_PATH}js/daterangepicker/daterangepicker.js"></script>
+<script src="{TPL_PATH}js/datepicker/bootstrap-datepicker.js"></script>
+<script src="{TPL_PATH}js/timepicker/bootstrap-timepicker.min.js"></script>
+
 <import template="/admin/_footer" />

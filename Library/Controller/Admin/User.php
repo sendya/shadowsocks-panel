@@ -25,8 +25,8 @@ class User extends AdminListener {
         global $user;
 
         $result = array("error" => 1, "message" => "Request failed");
-        if($_POST['uid'] != null) {
-            $rs = UserModel::delete($_POST['uid']);
+        if($_POST['userId'] != null) {
+            $rs = UserModel::delete($_POST['userId']);
             if($rs) {
                 $result['error'] = 0;
                 $result['message'] = '删除账户成功！';
@@ -60,8 +60,8 @@ class User extends AdminListener {
         global $user;
 
         $result = array("error" => 1, "message" => "Request failed");
-        if($_POST['uid'] != null) {
-            $us = UserModel::GetUserByUserId($_POST['uid']);
+        if($_POST['user_uid'] != null) {
+            $us = UserModel::GetUserByUserId($_POST['user_uid']);
             if($us) {
                 if($_POST['user_email'] != null) $us->email = $_POST['user_email'];
                 if($_POST['user_nickname'] != null) $us->nickname = $_POST['user_nickname'];
@@ -69,10 +69,37 @@ class User extends AdminListener {
                 if($_POST['user_sspwd'] != null) $us->sspwd = $_POST['user_sspwd'];
                 if($_POST['user_plan'] != null) $us->plan = $_POST['user_plan'];
                 if($_POST['user_invite_num'] != null) $us->invite_num = $_POST['user_invite_num'];
-                if($_POST['user_transfer'] != null) $us->transfer = $_POST['user_transfer'] * Util::GetGB();
+                if($_POST['user_transfer'] != null) $us->transfer = floatval($_POST['user_transfer']) * Util::GetGB();
                 if($_POST['user_flow_up'] != null) $us->flow_up = $_POST['user_flow_up'] * Util::GetGB();
                 if($_POST['user_enable'] != null) $us->enable = $_POST['user_enable']; // 是否启用该用户。该字段会强制用户无法链接到所有服务器！
+                $result['user'] =  $us;
+                if($us->enable != 0 && $us->enable != 1) $us->enable=0;
+                if($us->port!=null && $us->port!=0) {
+                    $rs = UserModel::checkUserPortIsAvailable($us->port, $us->uid);
+                    if($rs) {
+                        $result = array("error" => 1, "message" => "端口{$rs->port}已被占用，请更换");
+                        echo json_encode($result);
+                        exit();
+                    }
+                }
+                if(strlen($us->plan) > 4) {
+                    $result = array("error" => 1, "message" => "账户等级最大字符4位");
+                    echo json_encode($result);
+                    exit();
+                }
+                if($_POST['user_password']!=null && $_POST['user_password']!='') { // change password
+                    $us->savePassword(trim($_POST['user_password']));
+                }
+                $rs2 = $us->updateUser();
+                if($rs2) {
+                    $result['error'] = 0;
+                    $result['message'] = '更新信息成功';
+                } else {
+                    $result['message'] = '出现未知错误，修改失败';
+                }
             }
         }
+        echo json_encode($result);
+        exit();
     }
 }

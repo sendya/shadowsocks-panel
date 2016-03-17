@@ -57,4 +57,7 @@ a {
 a:hover {
   color: #bdbebe;
 }
+.bootstrap-timepicker-widget.dropdown-menu.open{
+    z-index: 9999;
+}
 :not([class*="icon"]):not(i):not([class*="fxfont"]){font-family: "Microsoft YaHei" !important}
