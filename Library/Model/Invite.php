@@ -80,12 +80,13 @@ class Invite {
         if (!$inTransaction) {
             Database::beginTransaction();
         }
-        $statement = Database::prepare("INSERT INTO invite SET uid=:uid, dateLine=:dateLine, expiration=:expiration, inviteIp=:inviteIp, invite=:invite, reguid=:reguid, regDateLine=:regDateLine, status=:status");
+        $statement = Database::prepare("INSERT INTO invite SET uid=:uid, dateLine=:dateLine, expiration=:expiration, plan=:plan, inviteIp=:inviteIp, invite=:invite, reguid=:reguid, regDateLine=:regDateLine, status=:status");
         $statement->bindValue(':uid', $this->uid, \PDO::PARAM_INT);
         $statement->bindValue(':dateLine', $this->dateLine, \PDO::PARAM_INT);
         $statement->bindValue(':expiration', $this->expiration, \PDO::PARAM_INT);
         $statement->bindValue(':inviteIp', $this->inviteIp, \PDO::PARAM_STR);
         $statement->bindValue(':invite', $this->invite, \PDO::PARAM_STR);
+        $statement->bindValue(':plan', $this->plan, \PDO::PARAM_STR);
         $statement->bindValue(':reguid', $this->reguid, \PDO::PARAM_INT);
         $statement->bindValue(':regDateLine', $this->regDateLine, \PDO::PARAM_INT);
         $statement->bindValue(':status', $this->status, \PDO::PARAM_STR);
