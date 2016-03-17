@@ -30,7 +30,12 @@ class Listener {
             }
         }
 
-        $user = $user->GetUserByEmail($user->email);
+        $user = $user->GetUserByUserId($user->uid);
+        if(!$user) {
+            setcookie("auth", '', time() - 3600, "/");
+            setcookie("token", '', time() - 3600, "/");
+            Response:redirect('/Auth/login');
+        }
     }
 
     public static function checkLogin() {
