@@ -1,9 +1,9 @@
 Shadowsocks Panel
 ===================
 
-一个比较简单的 ss panel
-采用全页面的 Ajax请求
-支持PHP5.2+ ~ PHP7 (需要 PDO支持模块, nginx url重写)
+一个比较简单的 ss panel  
+采用全页面的 Ajax请求  
+支持PHP5.2+ ~ PHP7 (需要 PDO支持模块, nginx url重写)  
 
 ### 程序截图
 ![后台](https://static-2.loacg.com/open/static/ss-panel-github/Admin.png)
@@ -52,9 +52,15 @@ RewriteRule ^ index.php [L]
 
 
 ### 4. 安装Shadowsocks-manyuser服务端
+
+有两个版本，请选其一，还有一个golang manyuser的。 其实也支持最初始的 manyuser版本，请自行修改sql查询字符串即可
 ```bash
+# 版本1 （支持udp， 有点小问题，基本上一天会炸一次线程导致连不上数据库无法同步）
 $ git clone -b manyuser https://github.com/sendya/shadowsocks-rm.git
 $ cd shadowsocks-rm/shadowsocks
+# 版本2 （原 shadowsocks py manyuser）
+$ gi clone -b manyuser https://github.com/sendya/shadowsocks.git
+$ cd shadowsocks/shadowsocks
 ```
 #### 4.1 CentOS:
 ```bash
@@ -89,6 +95,28 @@ if your in china , please edit `composer.json` content, add content to composer 
     }
 ```
 
+提供一个 `systemd` 服务脚本，写进 `/etc/systemd/system/shadowsocks-py.service` 即可，记得修改其中的运行组以及运行路径
+
+```systemd
+[Unit]
+Description=Shadowsocks Proxy Services(Py ManyUser)
+After=syslog.target
+After=network.target
+
+[Service]
+Type=simple
+User=shadowsocks
+Group=shadowsocks
+WorkingDirectory=/home/shadowsocks
+ExecStart=/usr/bin/python /home/shadowsocks/shadowsocks/server.py -c /home/shadowsocks/shadowsocks/config.json
+ExecReload=/bin/kill -s HUP $MAINPID
+ExecStop=/bin/kill -s QUIT $MAINPID
+Restart=always
+Environment="USER=shadowsocks","HOME=/home/shadowsocks"
+
+[Install]
+WantedBy=multi-user.target
+```
 
 框架基于 [KK-Framework](https://github.com/kookxiang/KK-Framework)。
 使用SS服务端：`shadowsocks-manyuser`
@@ -99,6 +127,9 @@ https://github.com/sendya/shadowsocks-rm/tree/manyuser
 
 ### update logs
 ```
+2016.03.17 :
+    测试版发布.
+    
 2016.02.11~03.03 :
     Added Mailer
     ForgePassword is available
