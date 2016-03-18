@@ -5,6 +5,7 @@ Shadowsocks Panel
 采用全页面的 Ajax请求  
 支持PHP5.2+ ~ PHP7 (需要 PDO支持模块, nginx url重写)  
 
+旧版本分支 [old-sspanel（原V2上改版）](https://github.com/sendya/shadowsocks-panel/tree/old-sspanel)  
 ### 程序截图
 ![后台](https://static-2.loacg.com/open/static/ss-panel-github/Admin.png)
 ![前台](https://static-2.loacg.com/open/static/ss-panel-github/member.png)
