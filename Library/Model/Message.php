@@ -38,7 +38,7 @@ class Message {
      */
     public static function GetPushMsg($pushEndTime = 0) {
         if ($pushEndTime == 0) $pushEndTime = time();
-        $statement = Database::prepare("SELECT * FROM message WHERE pushEndTime=?");
+        $statement = Database::prepare("SELECT * FROM message WHERE pushEndTime>?");
         $statement->bindValue(1, $pushEndTime);
         $statement->execute();
         $list = $statement->fetchAll(\PDO::FETCH_CLASS, '\\Model\\Message');
@@ -62,12 +62,28 @@ class Message {
     /**
      * Delete push time out message
      */
-    public static function DeleteOutTimeMsg() {
+    public static function deleteOutTimeMsg() {
         $inTransaction = Database::inTransaction();
         if (!$inTransaction) Database::beginTransaction();
-        $statement = Database::prepare("DELETE * FROM node WHERE pushEndTime=" . time());
+        $statement = Database::prepare("DELETE * FROM message WHERE pushEndTime< :pushEndTime");
+        $statement->bindValue(":pushEndTime", time(), \PDO::PARAM_INT);
         $statement->execute();
         if (!$inTransaction) Database::commit();
+    }
+
+    /**
+     * delete message by id
+     * @param $msgId
+     * @return bool
+     */
+    public static function deleteMsgById($msgId) {
+        $inTransaction = Database::inTransaction();
+        if (!$inTransaction) Database::beginTransaction();
+        $statement = Database::prepare("DELETE * FROM message WHERE id=:id");
+        $statement->bindValue(":id", $msgId, \PDO::PARAM_INT);
+        $rs = $statement->execute();
+        if (!$inTransaction) Database::commit();
+        return $rs;
     }
 
     /**
