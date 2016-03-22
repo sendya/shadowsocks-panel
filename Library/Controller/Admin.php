@@ -8,7 +8,7 @@
 namespace Controller;
 
 
-use Core\Response;
+use \Core\Response;
 
 class Admin {
     public function index() {
