@@ -15,7 +15,8 @@ use \Model\Invite as InviteModel;
 class Invite {
 
     public function index() {
-        $inviteList = \Model\Invite::GetInvitesByUid(-1);
+        // $inviteList = \Model\Invite::GetInvitesByUid(-1);
+        $inviteList = \Model\Invite::GetInviteArray(0);
 
         include Template::load('/home/invite');
     }
