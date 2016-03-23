@@ -183,17 +183,17 @@
         $.get("/Api/QueryCountry",{}, function(data){
             var counrty = "";
             // data.retData.province.country + " " + data.retData.province
-            if(data.retData.province.country != 'None'){
-                counrty += data.retData.province.country;
+            if(data.retData.country != 'None'){
+                counrty += data.retData.country;
             }
-            if(data.retData.province.province != 'None'){
-                counrty += " " + data.retData.province.province;
+            if(data.retData.province != 'None'){
+                counrty += " " + data.retData.province;
             }
-            if(data.retData.province.city != 'None'){
-                counrty += " " + data.retData.province.city;
+            if(data.retData.city != 'None'){
+                counrty += " " + data.retData.city;
             }
-            if(data.retData.province.carrier != '未知'){
-                counrty += " ISP:" + data.retData.province.carrier;
+            if(data.retData.carrier != '未知'){
+                counrty += " ISP:" + data.retData.carrier;
             }
             $("#country_id").html(counrty);
         },"json");
