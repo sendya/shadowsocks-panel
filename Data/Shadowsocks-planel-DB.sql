@@ -128,9 +128,9 @@ CREATE TABLE `user_power` (
 -- --------------------------
 INSERT INTO `user_power` (`id`, `uid`) VALUES ('1', '5000');
 INSERT INTO `invite` (`uid`, `dateLine`, `expiration`, `inviteIp`, `invite`, `reguid`, `regDateLine`, `plan`, `status`) VALUES ('-1', '1454638687', '999', '127.0.0.1', '334ab1a9fbc19b4c688ca7fd5f8f9ffa', NULL, '0', 'VIP', '0');
-INSERT INTO `sspanel`.`node` (`id`, `name`, `type`, `server`, `method`, `info`, `status`, `order`) VALUES ('1', 'Suki-S1', '0', 'server1.shadowsocks.org', 'aes-128-cfb', '节点说明', '可用', '1');
+INSERT INTO `node` (`id`, `name`, `type`, `server`, `method`, `info`, `status`, `order`) VALUES ('1', 'Suki-S1', '0', 'server1.shadowsocks.org', 'aes-128-cfb', '节点说明', '可用', '1');
 
 
-INSERT INTO `sspanel`.`message` (`id`, `content`, `pushTime`, `addTime`, `pushUsers`, `type`, `pushEndTime`, `order`) VALUES ('1000', '公告：<br/>由于服务器遭到攻击，为补偿用户。本月不计费。（悲剧的事情莫过于挂SS主站的服务器居然被封了25端口）<br/>', '1457320205', '1457320205', '-1', '-2', '1488856205', '0');
-INSERT INTO `sspanel`.`message` (`id`, `content`, `pushTime`, `addTime`, `pushUsers`, `type`, `pushEndTime`, `order`) VALUES ('1001', '套餐等级如下：<br /><br />套餐A： 5GB(免费) (体验服务)<br />套餐B： 100GB(13RMB)<br />套餐C： 200GB(20RMB)<br />套餐D： 500GB(35RMB)<br /><br />套餐VIP： 无限制流量,优先端口转发(仅内部开放)', '1457320205', '1457320205', '-1', '-3', '1488856205', '0');
-INSERT INTO `sspanel`.`message` (`id`, `content`, `pushTime`, `addTime`, `pushUsers`, `type`, `pushEndTime`, `order`) VALUES ('1002', '首页浮动提示公告测试。。', '0', '0', '-1', '-4', '0', '0');
+INSERT INTO `message` (`id`, `content`, `pushTime`, `addTime`, `pushUsers`, `type`, `pushEndTime`, `order`) VALUES ('1000', '公告：<br/>由于服务器遭到攻击，为补偿用户。本月不计费。（悲剧的事情莫过于挂SS主站的服务器居然被封了25端口）<br/>', '1457320205', '1457320205', '-1', '-2', '1488856205', '0');
+INSERT INTO `message` (`id`, `content`, `pushTime`, `addTime`, `pushUsers`, `type`, `pushEndTime`, `order`) VALUES ('1001', '套餐等级如下：<br /><br />套餐A： 5GB(免费) (体验服务)<br />套餐B： 100GB(13RMB)<br />套餐C： 200GB(20RMB)<br />套餐D： 500GB(35RMB)<br /><br />套餐VIP： 无限制流量,优先端口转发(仅内部开放)', '1457320205', '1457320205', '-1', '-3', '1488856205', '0');
+INSERT INTO `message` (`id`, `content`, `pushTime`, `addTime`, `pushUsers`, `type`, `pushEndTime`, `order`) VALUES ('1002', '首页浮动提示公告测试。。', '0', '0', '-1', '-4', '0', '0');
