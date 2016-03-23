@@ -47,7 +47,7 @@
                 url:"/Form/UpdatePlan",
                 dataType:"json",
                 success:function(data){
-                    showToastr(data.msg, 0);
+                    showToastr(data.message, 0);
                 },
                 error:function(jqXHR){
                     showToastr("发生错误："+jqXHR.status, 0);

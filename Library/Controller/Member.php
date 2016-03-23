@@ -12,6 +12,7 @@ use Helper\Listener;
 use Helper\Util;
 use Model\Invite;
 use Model\Node;
+use Model\User;
 
 class Member extends Listener {
 
@@ -79,8 +80,35 @@ class Member extends Listener {
 
     public function ChangePassword() {
         global $user;
+        $user = User::GetUserByUserId($user->uid);
+        if($_POST['nowpwd'] != null && $_POST['pwd'] != null) {
+            $result = array('error' => 1, 'message' => '密码修改失败.');
+            $nowpwd = $_POST['nowpwd'];
+            $pwd = $_POST['pwd'];
+            if(!$user->verifyPassword($nowpwd)) { // 密码不正确
+                $result['message'] = "旧密码错误！";
+                echo json_encode($result);
+                exit();
+            }
+            if($pwd == $nowpwd) {
+                $result['message'] = "新密码不能和旧密码相同！";
+                echo json_encode($result);
+                exit();
+            }
+            if(strlen($pwd) < 6) {
+                $result['message'] = "新密码不能少于6位！";
+                echo json_encode($result);
+                exit();
+            }
+            $user->savePassword($pwd);
 
-        include Template::load("panel/changePassword");
+            $result['error'] = 0;
+            $result['message'] = "修改密码成功！";
+            echo json_encode($result);
+            exit();
+        } else {
+            include Template::load("panel/changePassword");
+        }
     }
 
     public function ChangeSSPassword() {

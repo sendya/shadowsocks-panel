@@ -54,7 +54,7 @@
                 data:{nickname:$("#nickname-new").val()},
                 dataType:"json",
                 success:function(result){
-                    showToastr(result.msg, 0);
+                    showToastr(result.message, 0);
                     setTimeout(function(){
                         location.reload();
                     }, 3000);
