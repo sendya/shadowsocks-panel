@@ -23,12 +23,8 @@
 <div class="panel panel-default">
     <div class="panel-heading">
             <h3 class="panel-title">
-                <a class="btn btn-danger btn-sm invitec<if condition="$user->invite_num != 0"> hidden</if>" href="javascript:;" style="color:#FFF;">生成邀请码</a>&nbsp;<a class="btn btn-danger btn-sm inviteFlow" href="javascript:;" style="color:#FFF;">用流量购买邀请码</a></h3>
-            <div class="panel-options">
-                <a href="javascript:;" id="invite" class="invitec <if condition="$user->invite_num != 0"> hidden</if>" data-toggle="panel">
-                    <span class="collapse-icon" title="生成邀请码">+</span>
-                </a>
-            </div>
+                <a class="btn btn-danger btn-sm invitec<if condition="$user->invite_num != 0"> hidden</if>" href="javascript:;" style="color:#FFF;">生成邀请码</a>&nbsp;<a class="btn btn-danger btn-sm inviteFlow" href="javascript:;" style="color:#FFF;">用流量购买邀请码</a>
+            </h3>
     </div>
     <div class="panel-body">
 
@@ -84,7 +80,7 @@
             showToastr("生成邀请码中..", 0, 2000);
             $.ajax({
                 type:"GET",
-                url:"/Form/CreateInvite",
+                url:"/Form/addInvite",
                 dataType:"json",
                 success:function(data){
                     if(data.error == 0){
