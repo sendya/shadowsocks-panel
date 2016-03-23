@@ -37,7 +37,9 @@ class Message {
      * @return message[]
      */
     public static function GetPushMsg($pushEndTime = 0) {
-        if ($pushEndTime == 0) $pushEndTime = time();
+        if ($pushEndTime == 0)
+            $pushEndTime = time();
+
         $statement = Database::prepare("SELECT * FROM message WHERE pushEndTime>?");
         $statement->bindValue(1, $pushEndTime);
         $statement->execute();
@@ -64,7 +66,7 @@ class Message {
      * @return message list
      */
     public static function GetGlobalMessage() {
-        $statement = Database::prepare("SELECT * FROM message WHERE pushUsers=-1 AND type BETWEEN -5 AND -2 ORDER BY id ASC");
+        $statement = Database::prepare("SELECT * FROM message WHERE pushUsers=-2 AND type BETWEEN -5 AND -2 ORDER BY id ASC");
         $statement->execute();
         $list = $statement->fetchAll(\PDO::FETCH_CLASS, '\\Model\\Message');
         return $list;

@@ -4,7 +4,7 @@
 
     <div class="title-env">
         <h1 class="title">邀请码</h1>
-        <p class="description"><if condition="$user->invite_num == 0">查看自己的邀请码<else>当前您可以生成<code>{$user->invite_num}</code>个邀请码。</if></p>
+        <p class="description"><if condition="$user->invite_num == 0">查看自己的邀请码<else>当前您可以生成<code id="invitec_num2">{$user->invite_num}</code>个邀请码。</if></p>
     </div>
 
     <div class="breadcrumb-env">
@@ -23,7 +23,7 @@
 <div class="panel panel-default">
     <div class="panel-heading">
             <h3 class="panel-title">
-                <a class="btn btn-danger btn-sm invitec<if condition="$user->invite_num != 0"> hidden</if>" href="javascript:;" style="color:#FFF;">生成邀请码</a>&nbsp;<a class="btn btn-danger btn-sm inviteFlow" href="javascript:;" style="color:#FFF;">用流量购买邀请码</a>
+                <a class="btn btn-danger btn-sm invitec<if condition="$user->invite_num <= 0"> hidden</if>" href="javascript:;" style="color:#FFF;">生成邀请码(余 <span id="invitec_num">{$user->invite_num}</span> 次)</a>&nbsp;<a class="btn btn-danger btn-sm inviteFlow" href="javascript:;" style="color:#FFF;">用流量购买邀请码生成次数</a>
             </h3>
     </div>
     <div class="panel-body">
@@ -107,6 +107,8 @@
                     if(data.error == 0){
                         showToastr(data.message, 0, 5000);
                         $(".invitec").removeClass("hidden");
+                        $("#invitec_num").html(data.invite_num);
+                        $("#invitec_num2").html(data.invite_num);
                     }else{
                         //$("#msg-error").show();
                         //$("#msg-error-p").html(data.msg);

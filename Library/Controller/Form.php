@@ -136,7 +136,7 @@ class Form extends Listener {
             $user->transfer = $user->transfer - $tr;
             $user->invite_num = $user->invite_num + 1;
             $user->updateUser();
-            $result = array('error' => 0, 'message' => '购买成功，扣除手续费10GB流量');
+            $result = array('error' => 0, 'message' => '购买成功，扣除手续费10GB流量', 'invite_num' => $user->invite_num);
         }
         echo json_encode($result);
         exit();

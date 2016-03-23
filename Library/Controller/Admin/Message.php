@@ -20,7 +20,7 @@ class Message extends AdminListener {
     public function index() {
         global $user;
 
-        $lists = MessageModel::GetPushMsg();
+        $lists = MessageModel::GetPushMsg(-1);
 
         include Template::load('/admin/message');
     }
