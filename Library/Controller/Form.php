@@ -127,25 +127,46 @@ class Form extends Listener {
         exit();
     }
 
+    public function buyInvite() {
+        global $user;
+        $user = User::GetUserByUserId($user->uid);
+        $tr = 10 * Util::GetGB();
+        $result = array('error' => 1, 'message' => '购买失败，您的流量不足10G。');
+        if ($user->transfer > $tr) {
+            $user->transfer = $user->transfer - $tr;
+            $user->invite_num = $user->invite_num + 1;
+            $user->updateUser();
+            $result = array('error' => 0, 'message' => '购买成功，扣除手续费10GB流量');
+        }
+        echo json_encode($result);
+        exit();
+    }
+
     public function addInvite() {
         global $user;
         $user = User::GetUserByUserId($user->uid);
+        $result = array('error' => 1, 'message' => '创建邀请码失败，您没有再次创建邀请码的次数了。当然，你可以用流量购买次数。');
+        if ($user->invite_num > 0) {
+            $user->invite_num = $user->invite_num-1;
+            $user->updateUser();
+            Invite::addInvite($user->uid, 'A');
+            $result = array('error' => 0, 'message' => '创建邀请码成功，刷新后可见');
+        }
 
-        Invite::addInvite($user->uid, 'VIP');
-        echo 'add ok';
+        echo json_encode($result);
         exit();
     }
 
     public function userAddInvite() {
         global $user;
         $result = array('error' => 1, 'message' => '添加邀请码失败');
-        if(!$user) {
+        if (!$user) {
             $result = array('error' => 1, 'message' => '没有权限');
         }
-        if($user->getFlow() > 10) {
+        if ($user->getFlow() > 10) {
 
             $invite = InviteModel::addInvite($user->uid);
-            if($invite!=null) {
+            if ($invite != null) {
                 $result = array('error' => 0, 'message' => '添加成功，邀请码为：' . $invite . " ,您可以稍后在列表内查看到您新增的邀请码");
             }
         } else {

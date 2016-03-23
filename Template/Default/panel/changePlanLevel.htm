@@ -44,14 +44,10 @@
         $("#updatePlan").click(function(){
             $.ajax({
                 type:"GET",
-                url:"member/PanelUpdate",
+                url:"/Form/UpdatePlan",
                 dataType:"json",
                 success:function(data){
-                    if(data.error){
-                        showToastr(data.msg, 0);
-                    }else{
-                        showToastr(data.msg, 0);
-                    }
+                    showToastr(data.msg, 0);
                 },
                 error:function(jqXHR){
                     showToastr("发生错误："+jqXHR.status, 0);

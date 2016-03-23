@@ -22,19 +22,13 @@
 
 <div class="panel panel-default">
     <div class="panel-heading">
-        <if condition="$user->invite_num != 0">
             <h3 class="panel-title">
-                <a class="btn btn-danger btn-sm invitec" href="javascript:;" style="color:#FFF;">生成邀请码</a>&nbsp;<a class="btn btn-danger btn-sm inviteFlow" href="javascript:;" style="color:#FFF;">用流量购买邀请码</a></h3>
+                <a class="btn btn-danger btn-sm invitec<if condition="$user->invite_num != 0"> hidden</if>" href="javascript:;" style="color:#FFF;">生成邀请码</a>&nbsp;<a class="btn btn-danger btn-sm inviteFlow" href="javascript:;" style="color:#FFF;">用流量购买邀请码</a></h3>
             <div class="panel-options">
-                <a href="javascript:;" id="invite" class="invitec" data-toggle="panel">
+                <a href="javascript:;" id="invite" class="invitec <if condition="$user->invite_num != 0"> hidden</if>" data-toggle="panel">
                     <span class="collapse-icon" title="生成邀请码">+</span>
                 </a>
             </div>
-            <else>
-                <h3 class="panel-title">
-                    <a class="btn btn-danger btn-sm inviteFlow" href="javascript:;" style="color:#FFF;">用流量购买邀请码</a>
-                </h3>
-        </if>
     </div>
     <div class="panel-body">
 
@@ -85,6 +79,7 @@
 </div>
 <script>
     $(document).ready(function(){
+
         $(".invitec").click(function(){
             showToastr("生成邀请码中..", 0, 2000);
             $.ajax({
@@ -94,7 +89,7 @@
                 success:function(data){
                     if(data.error == 0){
                         showToastr(data.message, 0, 5000);
-
+                        setTimeout("window.location.reload()", 2000);
                     }else{
                         //$("#msg-error").show();
                         //$("#msg-error-p").html(data.msg);
@@ -110,12 +105,12 @@
             showToastr("正在校验信息..", 0, 2000);
             $.ajax({
                 type:"GET",
-                url:"/invite/userAddInvite",
+                url:"/Form/buyInvite",
                 dataType:"json",
                 success:function(data){
                     if(data.error == 0){
                         showToastr(data.message, 0, 5000);
-                        window.location.reload();
+                        $(".invitec").removeClass("hidden");
                     }else{
                         //$("#msg-error").show();
                         //$("#msg-error-p").html(data.msg);
