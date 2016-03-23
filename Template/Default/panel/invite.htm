@@ -86,6 +86,8 @@
                     if(data.error == 0){
                         showToastr(data.message, 0, 5000);
                         setTimeout("window.location.reload()", 2000);
+                        $("#invitec_num").html(data.invite_num);
+                        $("#invitec_num2").html(data.invite_num);
                     }else{
                         //$("#msg-error").show();
                         //$("#msg-error-p").html(data.msg);

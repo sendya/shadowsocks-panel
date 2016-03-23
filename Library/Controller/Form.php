@@ -150,7 +150,7 @@ class Form extends Listener {
             $user->invite_num = $user->invite_num-1;
             $user->updateUser();
             Invite::addInvite($user->uid, 'A');
-            $result = array('error' => 0, 'message' => '创建邀请码成功，刷新后可见');
+            $result = array('error' => 0, 'message' => '创建邀请码成功，刷新后可见', 'invite_num' => $user->invite_num);
         }
 
         echo json_encode($result);
