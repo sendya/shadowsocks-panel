@@ -39,14 +39,14 @@ class Form extends Listener {
     public function ChangeSSPwd() {
         global $user;
         $result = array('error' => 1, 'message' => '修改失败');
-        $sspwd = trim(($_GET['sspwd']));
+        $sspwd = trim(($_POST['sspwd']));
         if ('' == $sspwd || $sspwd == null)
             $sspwd = Util::GetRandomPwd();
 
         $user = User::GetUserByUserId($user->uid);
         $user->sspwd = $sspwd;
         $user->updateUser();
-        $result = array('error' => 1, 'message' => '修改SS连接密码成功');
+        $result = array('error' => 0, 'message' => '修改SS连接密码成功', 'sspwd' => $sspwd);
 
         echo json_encode($result);
         exit();
