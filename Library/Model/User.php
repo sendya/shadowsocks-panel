@@ -196,7 +196,7 @@ class User {
         $statement->bindValue(':plan', $this->plan, \PDO::PARAM_STR);
         $statement->bindValue(':enable', $this->enable, \PDO::PARAM_INT);
         $statement->bindValue(':invite', $this->invite, \PDO::PARAM_STR);
-        $statement->bindValue(':invite_num', $this->invite, \PDO::PARAM_INT);
+        $statement->bindValue(':invite_num', $this->invite_num, \PDO::PARAM_INT);
         $statement->bindValue(':regDateLine', $this->regDateLine, \PDO::PARAM_INT);
         $statement->bindValue(':lastConnTime', $this->lastConnTime, \PDO::PARAM_INT);
         $statement->bindValue(':lastCheckinTime', $this->lastCheckinTime, \PDO::PARAM_INT);
