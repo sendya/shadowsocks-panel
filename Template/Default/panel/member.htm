@@ -100,10 +100,10 @@
         <div class="chart-item-bg">
             <div class="chart-entry-view">
                 <div class="chart-entry-label">
-                    <loop variable="$globalMessage" key="$key" value="$message">
-                    <span>{$message->content}</span>
-                    </loop>
-                    <p>Win客户端：1.<a href="https://sscat.it/response/download/SS-CSharp_2.5.6.exe" target="_blank">SS-CSharp_2.5.6</a>&nbsp;&nbsp;&nbsp;2.<a href="https://sscat.it/response/download/ShadowsocksR.zip" target="_blank" title="ShadowsocksR 3.4.2">ShadowsocksR</a>&nbsp;&nbsp;&nbsp;<br>Android客户端：<a href="https://sscat.it/response/download/SS-Android_2.7.7.apk" target="_blank">SS-Android_2.7.7.apk</a></p>
+                    <span>{$globalMessage[0]->content}</span>
+                    <p>Win客户端：1.<a href="https://sscat.it/response/download/SS-CSharp_2.5.6.exe" target="_blank">SS-CSharp_2.5.6</a>&nbsp;&nbsp;&nbsp;
+                        2.<a href="https://sscat.it/response/download/ShadowsocksR.zip" target="_blank" title="ShadowsocksR 3.4.2">ShadowsocksR</a>&nbsp;&nbsp;&nbsp;
+                        <br>Android客户端：<a href="https://sscat.it/response/download/SS-Android_2.7.7.apk" target="_blank">SS-Android_2.7.7.apk</a></p>
                     更多平台客户端请前往 <a href="https://sscat.it/response/download/" target="_blank"> [下载中心] </a>
                 </div>
             </div>
@@ -116,13 +116,12 @@
             <div class="chart-label">
                 <div  class="h1 text-purple text-bold">连接信息</div>
                 端口：<code>{$user->port}</code><br />
-                密码：<span id="showpwd"><b>点击显示密码</b></span><br />
-                套餐： <span class="label label-info">{$user->plan}</span>   &nbsp;<span class="btn btn-sm btn-secondary" id="updatePlan" style="padding: 1px;margin-bottom: 0px;"> 升级套餐 </span>   &nbsp;<span class="btn btn-sm btn-secondary" id="planList" style="padding: 1px;margin-bottom: 0px;"> 套餐详情 </span></span><br /><br />
+                密码：<div id="showpwd" style="display: inline"><b>点击显示密码</b></div><br />
+                <button class="btn btn-sm btn-info">{$user->plan}</button>   &nbsp;
+                <button class="btn btn-sm btn-secondary" id="updatePlan"> 升级套餐 </button>   &nbsp;
+                <button class="btn btn-sm btn-secondary" id="planList"> 套餐详情 </button><br /><br />
                 最后使用时间：<code>{$lastConnTime}</code>
 
-            </div>
-            <div class="chart-right-legend">
-                <div style="width: 170px; height: 140px"></div>
             </div>
             <div style="height: 200px"></div>
         </div>
@@ -148,7 +147,7 @@
                 }
             });
         });
-        $("#updatePlan").click(function() {
+        $("#updatePlan").on('click', function(){
             $(this).val("请稍等");
             $(this).addClass("disabled");
             $.ajax({
@@ -161,21 +160,23 @@
                     showToastr(data.message, 0);
                 },
                 error:function(jqXHR) {
+                    $(this).removeClass("disabled");
+                    $(this).val("升级套餐");
                     showToastr("发生错误：" + jqXHR.status, 0);
                 }
             });
         });
-        $("#showpwd").click(function() {
+        $("#showpwd").on('click', function() {
             if ($(this).html() == "<b>点击显示密码</b>") {
                 $(this).html("{$user->sspwd}");
             } else {
                 $(this).html("<b>点击显示密码</b>");
             }
         });
-        showToastr("当前服务节点正常运行中，如果您觉得本站做的不错，可以<a href='https://shenghuo.alipay.com/send/payment/fill.htm?optEmail=18x@loacg.com' target='_blank'>向我捐赠</a>", 800);
-        $("#planList").click(function() {
-            jQuery("#modal-1 .modal-body").html("套餐等级如下：<br /><br />套餐A： 5GB(免费) (体验服务)<br />套餐B： 100GB(13RMB)<br />套餐C： 200GB(20RMB)<br />套餐D： 500GB(35RMB)<br /><br />套餐VIP： 无限制流量,优先端口转发(仅内部开放)");
-            jQuery("#modal-1").modal("show", {
+        showToastr("{$globalMessage[2]->content}", 800);
+        $("#planList").on('click', function(){
+            $("#modal-1 .modal-body").html("{$globalMessage[1]->content}");
+            $("#modal-1").modal("show", {
                 backdrop:"fade"
             });
         });

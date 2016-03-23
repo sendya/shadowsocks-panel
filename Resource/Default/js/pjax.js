@@ -27,12 +27,7 @@ function to_am(url) {
     anchor = window.location.hash.substring(anchor + 1);
     body_am(anchor);
 }
-// 主页地址，用于下面的提交函数
-var home_url = document.location.href.match(/http:\/\/([^\/]+)\//i)[0];
-// 函数： 替换url，用于评论ajax提交
-function replaceUrl(url, domain) {
-    return url.replace(/http:\/\/([^\/]+)\//i, domain);
-}
+
 // 函数：从封装的Json获取
 function getFormJson(frm) {
     var o = {};
@@ -90,7 +85,7 @@ function ajax(reqUrl, msg, method, dataTo) {
                 setTimeout("$(ajx_main).fadeTo('normal',1)", 500);
             }
             document.title = $(data).filter("title").text(); // 浏览器标题变更
-            if (msg != 'comment') { // —— 不为后退 也 不为评论回复时
+            if (msg != 'comment') { // —— 不为后退
                 var state = { // 设置state参数
                     url: reqUrl,
                     title: $(data).filter("title").text(),
@@ -125,12 +120,3 @@ $('body').on("click",ajx_a,
         ajax($(this).attr("href"), 'pagelink');
         return false;
     });
-
-function writeObj(obj){
-    var description = "";
-    for(var i in obj){
-        var property=obj[i];
-        description+=i+" = "+property+"\n";
-    }
-    alert(description);
-}

@@ -30,7 +30,7 @@ class Listener {
             }
         }
 
-        $user = $user->GetUserByUserId($user->uid);
+        $user = User::GetUserByUserId($user->uid);
         if(!$user) {
             setcookie("auth", '', time() - 3600, "/");
             setcookie("token", '', time() - 3600, "/");
