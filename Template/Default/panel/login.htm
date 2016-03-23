@@ -58,7 +58,7 @@ jQuery(document).ready(function($) {
 								toastr.error(resp.message, "提示!", opts);
 								$('#email').select();
 							} else {
-								toastr.error("请求服务器失败，请稍后重试", "无效登陆!", opts);
+								toastr.error("请求服务器失败，请稍后重试", "无效登录!", opts);
 								$('#email').select();
 							}
 						}
@@ -158,7 +158,7 @@ jQuery(document).ready(function($) {
 								toastr.error(resp.message, "提示!", opts);
 								$('#email').select();
 							} else {
-								toastr.error("请求服务器失败，请稍后重试", "无效登陆!", opts);
+								toastr.error("请求服务器失败，请稍后重试", "无效登录!", opts);
 								$('#email').select();
 							}
 						}
@@ -189,7 +189,7 @@ jQuery(document).ready(function($) {
 							<img src="{TPL_PATH}images/logo@2x.png" alt="" width="80" />
 							<span>log in</span>
 						</a>
-						<p>登陆，然后变成一只猫!</p>
+						<p>登录，然后变成一只猫!</p>
 					</div>
 					<div class="form-group">
 						<input type="text" class="form-control input-dark" name="email" id="email" autocomplete="off" placeholder="电子邮件" />
@@ -200,13 +200,13 @@ jQuery(document).ready(function($) {
                     <div class="form-group">
                         <label>
     						<input type="checkbox" class="cbr" id="remember_me" value="week" checked>
-    						保持登陆(7天内免登录)
+    						保持登录(7天内免登录)
     					</label>
                     </div>
 					<div class="form-group">
 						<button type="submit" class="btn btn-dark  btn-block text-left">
 							<i class="fa-lock"></i>
-							登 陆
+							登 录
 						</button>
 					</div>
 					<div class="login-footer">
@@ -250,7 +250,7 @@ jQuery(document).ready(function($) {
 					<div class="form-group">
 						<button type="button" class="btn btn-dark btn-block text-left login-button" onclick="location.href = '{$requestPath}#login'">
 							<i class="fa-lock"></i>
-							返 回 登 陆
+							返 回 登 录
 						</button>
 					</div>
 				</form>
