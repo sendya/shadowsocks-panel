@@ -84,7 +84,7 @@ class Ana {
                 $querySQL .= "AND flow_up+flow_down BETWEEN " . (Util::GetGB()*30+1) . " AND " . (Util::GetGB()*100); // 30GB ~ 100GB
                 break;
             case 3:
-                $querySQL .= "AND flow_up+flow_down < " . (Util::GetGB()*100+1); // 大于 100GB
+                $querySQL .= "AND flow_up+flow_down > " . (Util::GetGB()*100+1); // 大于 100GB
                 break;
             case 0:
             default:
