@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<base href="{BASE_URL}"/>
+<title>使用教程</title>
+<link rel="stylesheet" href="Resource/Default/help/css/page.css">
+<style>
+h3 {
+    display: block;
+    font-size: 1em;
+    -webkit-margin-before: 1em;
+    -webkit-margin-after: 1em;
+    -webkit-margin-start: 0px;
+    -webkit-margin-end: 0px;
+    font-weight: bold;
+}
+a {color: #666; text-shadow:0 0 5px #fff;}
+a:hover {color: #fff; text-shadow:0 0 5px #000;}
+.section a{color: #FFF; text-shadow:0 0 5px #666;text-decoration:none;}
+.section a:hover{color: #FFF; text-shadow:0 0 5px #000;text-decoration:none;}
+.section { text-align: center; font: 50px "Microsoft Yahei"; color: #fff;}
+.bg1{background-image:url(Resource/Default/help/images/background.jpg);filter:"progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='scale')";  -moz-background-size:100% 100%;  background-size:100% 100%;  }
+.bg2{background-image:url(Resource/Default/help/images/background2.jpg);filter:"progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='scale')";  -moz-background-size:100% 100%;  background-size:100% 100%;  }
+.bg3{background-image:url(Resource/Default/help/images/background3.jpg);filter:"progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='scale')";  -moz-background-size:100% 100%;  background-size:100% 100%;  }
+</style>
+</head>
+
+<body>
+<div id="page">
+    <div class="section bg1">
+        <h3>使用教程</h3>
+        <p>Shadowsocks Guide</p>
+    </div>
+    <div class="section bg2">
+        <h3>请先下载客户端<br/><br/></h3>
+		<a href="http://h.loacg.com/shadowsocks/SS-CSharp_2.5.8.exe" target="_blank">Windows</a>&nbsp;|&nbsp;<a href="http://h.loacg.com/shadowsocks/SS-Android_2.7.7.apk" target="_blank">Android</a>&nbsp;|&nbsp;<a href="//ss.suki.im/download/" target="_blank">Other</a>
+    </div>
+	<div class="section">
+	    <h5>接下来请运行你下载的客户端<br/>会在任务栏出现一个纸飞机图标。图例:</h5>
+		<h3><img src="Resource/Default/help/images/pic1.png"/></h3>
+	</div>
+	<div class="section">
+		<h3>右键单击图标可以进行设置<br/>打开服务器列表页,生成二维码<br/><img src="Resource/Default/help/images/pic4.gif"/></h3>
+	</div>
+	<div class="section">
+		<h3>接下来请 勾选[启用系统代理] 并<br/>点击[从GFWlist更新PAC]并骚等片刻<br/><img src="Resource/Default/help/images/pic5.png"/></h3>
+	</div>
+	<div class="section">
+		<h3>继续... <br/><br/>当弹出提示说明 更新PAC成功时<br/></h3>
+	</div>
+	<div class="section">
+		<h3>去吧骚年，你可以飞了<br/><img src="Resource/Default/help/images/14.png"/></h3>
+	</div>
+	<div class="section bg3">
+		<h3>恭喜你毕业了，更多详细教程<br/>
+		请 <a href="https://www.google.com/#newwindow=1&q=shadowsocks+%E4%BD%BF%E7%94%A8" title="伸手党自重" target="_blank">点击我&gt;&gt;</a>
+		</h3>
+		<br/>
+		<h6>言肆 敬上</h6>
+	</div>
+</div>
+<div id="sendya">
+    <p><a href="https://ss.suki.im/" rel="nofollow" title="这是一个神奇的地方">Ss.Suki.im &copy; 幻想乡ICP备88888888号</a></p>
+</div>
+<script src="Resource/Default/js/jquery-1.11.1.min.js"></script>
+<script src="Resource/Default/help/js/page.min.js"></script>
+<script>
+$(function(){$('#page').fullpage({sectionsColor:['#fff','#4BBFC3','#7BAABE','#5f8721','#7cb128','#2c78b2','#093659','#34116d','#6a4c9d','#f90'],'navigation':true,'resize':true,'navigationPosition':'bottom','navigationColor':'#FFF',loopBottom:true,continuousVertical:true});});
+</script>
+</body>
+</html>

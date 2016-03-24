@@ -22,6 +22,10 @@ class Router
         $requestPath = Request::getRequestPath();
         $requestPath = ltrim($requestPath, '/');
 
+        $exts = explode(',', EXTENSION);
+        foreach($exts as $ext)
+            $requestPath = str_replace($ext, '', $requestPath); // REWRITE_NAME
+
         if (!$requestPath) {
             $requestPath = 'Index';
         }

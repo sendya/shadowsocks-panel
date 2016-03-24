@@ -17,7 +17,7 @@ class Ana {
      */
     public static function GetUserCount() {
 
-        $selectSQL = "SELECT count(*) FROM member";
+        $selectSQL = "SELECT count(uid) FROM member";
         $statement = Database::prepare($selectSQL);
         $statement->execute();
         $userCount = $statement->fetch(\PDO::FETCH_NUM);
@@ -30,8 +30,7 @@ class Ana {
      */
     public static function GetCheckUserCount() {
 
-        $statement = Database::prepare("SELECT count(*) FROM member WHERE lastCheckinTime > " . date('Y-m-d 00:00:00',
-                time()));
+        $statement = Database::prepare("SELECT count(*) FROM member WHERE lastCheckinTime > " . strtotime(date('Y-m-d 00:00:00', time())));
         $statement->execute();
         $checkCount = $statement->fetch(\PDO::FETCH_NUM);
         return $checkCount[0] == null ? 0 : $checkCount[0];
@@ -43,7 +42,7 @@ class Ana {
      */
     public static function GetConnCount() {
 
-        $statement = Database::prepare("SELECT count(*) FROM member WHERE lastConnTime > " . time() - 600);
+        $statement = Database::prepare("SELECT count(*) FROM member WHERE lastConnTime > " . (time() - 1200));
         $statement->execute();
         $connCount = $statement->fetch(\PDO::FETCH_NUM);
         return $connCount[0] == null ? 0 : $connCount[0];
@@ -70,6 +69,29 @@ class Ana {
     public static function GetUseUserCount() {
 
         $statement = Database::prepare("SELECT count(*) FROM member WHERE lastConnTime > 0");
+        $statement->execute();
+        $count = $statement->fetch(\PDO::FETCH_NUM);
+        return $count[0] == null ? 0 : $count[0];
+    }
+
+    public static function dataUsage($type = 0) {
+        $querySQL = "SELECT count(1) FROM member WHERE 1=1 ";
+        switch($type) {
+            case 1:
+                $querySQL .= "AND flow_up+flow_down BETWEEN " . Util::GetGB()*10+1 . " AND " . Util::GetGB()*30; // 11GB ~ 30GB
+                break;
+            case 2:
+                $querySQL .= "AND flow_up+flow_down BETWEEN " . Util::GetGB()*30+1 . " AND " . Util::GetGB()*100; // 30GB ~ 100GB
+                break;
+            case 3:
+                $querySQL .= "AND flow_up+flow_down < " . Util::GetGB()*100+1; // 大于 100GB
+                break;
+            case 0:
+            default:
+                $querySQL .= "AND flow_up+flow_down < " . Util::GetGB()*10; // 大于10GB
+                break;
+        }
+        $statement = Database::prepare($querySQL);
         $statement->execute();
         $count = $statement->fetch(\PDO::FETCH_NUM);
         return $count[0] == null ? 0 : $count[0];

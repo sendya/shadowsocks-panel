@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>System Message - {SITE_NAME}</title>
+    <base href="{BASE_URL}"/>
+    <meta name="Robots" content="NOINDEX, NOFOLLOW, NOARCHIVE"/>
+    <meta name="ViewPort" content="initial-scale=1, minimum-scale=1, width=device-width"/>
+    <link rel="stylesheet" href="Resource/StyleSheet/Error.css">
+</head>
+<body>
+<p class="title">{SITE_NAME}</p>
+<div class="box">
+    <h2>System Message</h2>
+    <p class="main selectable">{$text}</p>
+    <if condition="$link !== null">
+        <p><a class="redirect" href="$link">If you didn't redirect in {$timeout} seconds, please click here</a></p>
+        <script type="text/javascript">
+            setTimeout(function(){ location.href = '{$link}'; }, $timeout * 1000);
+        </script>
+    </if>
+</div>
+<p class="foot">Powered by KK Framework</p>
+</body>
+</html>

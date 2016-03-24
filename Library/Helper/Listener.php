@@ -15,18 +15,18 @@ class Listener {
         global $user;
         $user = User::getInstance();
         if (!$user->uid) {
-            Response::redirect('/Auth/login');
+            Response::redirect('/auth/login');
         }
         if (LOCKSCREEN) { // check LOACKSCREEN define
             if (!empty(@$_COOKIE['token'])) {
                 $token = Util::getToken();
                 if ($token > 3600 && stristr(\Core\Request::getRequestPath(), 'lockscreen') == false) {
-                    Response::redirect('/Auth/lockscreen');
+                    Response::redirect('/auth/lockscreen');
                 } else {
                     Util::setToken();
                 }
             } else {
-                Response::redirect('/Auth/lockscreen');
+                Response::redirect('/auth/lockscreen');
             }
         }
 
@@ -34,7 +34,7 @@ class Listener {
         if(!$user) {
             setcookie("auth", '', time() - 3600, "/");
             setcookie("token", '', time() - 3600, "/");
-            Response:redirect('/Auth/login');
+            Response:redirect('/auth/login');
         }
     }
 

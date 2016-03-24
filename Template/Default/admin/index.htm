@@ -76,32 +76,32 @@
 							<tbody>
 								<tr>
 									<td>0~10 GB</td>
-									<td>43</td>
-									<td>43%</td>
+									<td>{$flow_num10}</td>
+									<td>{(round(($userCount/$flow_num10)*100,2))}%</td>
 									<td>
 										<div id="age-group-1" class="sparkline"></div>
 									</td>
 								</tr>
 								<tr>
 									<td>11~30 GB</td>
-									<td>29</td>
-									<td>29%</td>
+									<td>{$flow_num30}</td>
+									<td>{(round(($userCount/$flow_num30)*100,2))}%</td>
 									<td>
 										<div id="age-group-2" class="sparkline"></div>
 									</td>
 								</tr>
 								<tr>
 									<td>31~100 GB</td>
-									<td>28</td>
-									<td>28%</td>
+									<td>{$flow_num100}</td>
+									<td>{(round(($userCount/$flow_num100)*100,2))}%</td>
 									<td>
 										<div id="age-group-3" class="sparkline"></div>
 									</td>
 								</tr>
 								<tr>
 									<td>100~N GB</td>
-									<td>28</td>
-									<td>28%</td>
+									<td>{$flow_max}</td>
+									<td>{(round(($userCount/$flow_max)*100,2))}%</td>
 									<td>
 										<div id="age-group-3" class="sparkline"></div>
 									</td>

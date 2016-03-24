@@ -30,7 +30,7 @@ class Auth {
         //throw new Error("Check Login :" . Listener::checkLogin(), 505);
         $user = User::getInstance();
         if ($user->uid) {
-            header("Location:/Member");
+            header("Location:/member");
         } else if (isset($_REQUEST['email']) && isset($_REQUEST['passwd'])) {
             $result = array('error' => 1, 'message' => '账户不存在啊喂!');
             $email = htmlspecialchars($_REQUEST['email']);
@@ -84,7 +84,7 @@ class Auth {
             exit();
         } else {
             if (!\Helper\Listener::checkLogin()) {
-                \Core\Response::redirect('/Auth/login');
+                \Core\Response::redirect('/auth/login');
                 exit();
             }
             include Template::load('/panel/lockscreen');
