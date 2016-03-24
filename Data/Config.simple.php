@@ -60,6 +60,12 @@ define('COOKIE_KEY', 'Cookie Key');
 define('USE_REWRITE', true);
 
 /**
+ * Extension type:
+ * custom response suffix
+ */
+define('EXTENSION', '.html,.json');
+
+/**
  * HTTPS support:
  * Use HTTPS connection when necessary, needs to config apache/nginx manually
  */

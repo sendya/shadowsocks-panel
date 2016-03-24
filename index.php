@@ -23,5 +23,5 @@ Core\Error::registerHandler();
 // Initialize config
 @include DATA_PATH.'Config.php';
 
-$defaultRouter = new \Core\DefaultRouter();
+$defaultRouter = new \Core\Router();
 $defaultRouter->handleRequest();
