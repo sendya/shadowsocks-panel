@@ -77,7 +77,13 @@
 								<tr>
 									<td>0~10 GB</td>
 									<td>{$flow_num10}</td>
-									<td>{(round(($userCount/$flow_num10)*100,2))}%</td>
+									<td><php>
+										if($flow_num10>0){
+										echo round(($flow_num10/$userCount)*100,2);
+										} else {
+										echo "0.00";
+										}
+									</php>%</td>
 									<td>
 										<div id="age-group-1" class="sparkline"></div>
 									</td>
@@ -85,7 +91,13 @@
 								<tr>
 									<td>11~30 GB</td>
 									<td>{$flow_num30}</td>
-									<td>{(round(($userCount/$flow_num30)*100,2))}%</td>
+									<td><php>
+										if($flow_num30>0){
+										echo round(($flow_num30/$userCount)*100,2);
+										} else {
+										echo "0.00";
+										}
+									</php>%</td>
 									<td>
 										<div id="age-group-2" class="sparkline"></div>
 									</td>
@@ -93,7 +105,13 @@
 								<tr>
 									<td>31~100 GB</td>
 									<td>{$flow_num100}</td>
-									<td>{(round(($userCount/$flow_num100)*100,2))}%</td>
+									<td><php>
+										if($flow_num100>0){
+											echo round(($flow_num100/$userCount)*100,2);
+										} else {
+											echo "0.00";
+										}
+									</php>%</td>
 									<td>
 										<div id="age-group-3" class="sparkline"></div>
 									</td>
@@ -101,7 +119,13 @@
 								<tr>
 									<td>100~N GB</td>
 									<td>{$flow_max}</td>
-									<td>{(round(($userCount/$flow_max)*100,2))}%</td>
+									<td><php>
+										if($flow_max>0){
+										echo round(($flow_max/$userCount)*100,2);
+										} else {
+										echo "0.00";
+										}
+									</php>%</td>
 									<td>
 										<div id="age-group-3" class="sparkline"></div>
 									</td>
