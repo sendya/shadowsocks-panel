@@ -11,11 +11,11 @@ use Core\Database;
 class Message {
     public $id;
     public $content; //内容
-    public $pushTime; //推送时间
-    public $addTime; //添加时间
+    public $pushTime =0; //推送时间
+    public $addTime =0; //添加时间
     public $pushUsers; //推送用户 为空或-1值推送给所有用户 指定用户，使用json格式,例子{1,3,4,5,6,7,10,11}
     public $type = 0; //消息类型： 0 正常消息(推送一次后将不会再次提示) 1 重复推送消息
-    public $pushEndTime; //结束推送时间
+    public $pushEndTime =0; //结束推送时间
     public $order = 0;
 
     /**
@@ -130,16 +130,16 @@ class Message {
         $inTransaction = Database::inTransaction();
         if (!$inTransaction) Database::beginTransaction();
         $statement = Database::prepare("UPDATE message SET `content`=:content, `pushTime`=:pushTime,
-			`addTime`=:addTime, `pushUsers`=:pushUsers, `type`=:type, `pushEndTime`:=pushEndTime,
+			`addTime`=:addTime, `pushUsers`=:pushUsers, `type`=:type, `pushEndTime`=:pushEndTime,
 			 `order`=:order WHERE id=:id");
-        $statement->bindValue(':content', $this->name, \PDO::PARAM_STR);
-        $statement->bindValue(':pushTime', $this->type, \PDO::PARAM_INT);
-        $statement->bindValue(':addTime', $this->server, \PDO::PARAM_INT);
-        $statement->bindValue(':pushUsers', $this->method, \PDO::PARAM_STR);
-        $statement->bindValue(':type', $this->info, \PDO::PARAM_INT);
-        $statement->bindValue(':pushEndTime', $this->status, \PDO::PARAM_INT);
+        $statement->bindValue(':content', $this->content, \PDO::PARAM_STR);
+        $statement->bindValue(':pushTime', $this->pushTime, \PDO::PARAM_INT);
+        $statement->bindValue(':addTime', $this->addTime, \PDO::PARAM_INT);
+        $statement->bindValue(':pushUsers', $this->pushUsers, \PDO::PARAM_STR);
+        $statement->bindValue(':type', $this->type, \PDO::PARAM_INT);
+        $statement->bindValue(':pushEndTime', $this->pushEndTime, \PDO::PARAM_INT);
         $statement->bindValue(':order', $this->order, \PDO::PARAM_INT);
-        $statement->bindValue(':id', $this->order, \PDO::PARAM_INT);
+        $statement->bindValue(':id', $this->id, \PDO::PARAM_INT);
         $statement->execute();
         if (!$inTransaction) Database::commit();
     }

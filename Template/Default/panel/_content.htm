@@ -1,6 +1,8 @@
 <php>
     global $user;
     $messageList = \Model\Message::GetPushMsgByUserId($user->uid);
+    $messageList2 = \Model\Message::GetPushMsgByUserId();
+    $messageList = array_merge($messageList, $messageList2);
     $messageCount = count($messageList);
     $globalMessage = \Model\Message::GetGlobalMessage();
 </php>

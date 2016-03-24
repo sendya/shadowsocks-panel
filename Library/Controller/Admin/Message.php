@@ -34,13 +34,22 @@ class Message extends AdminListener {
             $msg = MessageModel::GetMessageById(trim($_POST['message_id']));
             if($msg) { // 修改
                 $msg->content = $_POST['message_content']==null ? "" : $_POST['message_content'];
-                $msg->pushTime = $_POST['message_pushTime']==null ? 0 : $_POST['message_pushTime'];
-                $msg->addTime = $_POST['message_addTime']==null ? 0 : $_POST['message_addTime'];
-                $msg->pushUsers = $_POST['message_pushUsers']==null ? 0 : $_POST['message_pushUsers'];
+                $msg->pushTime = $_POST['message_pushTime']==null ? 0 : strtotime($_POST['message_pushTime']);
+                $msg->pushUsers = $_POST['message_pushUsers']==null ? -1 : $_POST['message_pushUsers'];
                 $msg->type = $_POST['message_type']==null ? 0 : $_POST['message_type'];
-                $msg->pushEndTime = $_POST['message_pushEndTime']==null ? 0 : $_POST['message_pushEndTime'];
-                $msg->order = $_POST['message_order']==null ? 0 : $_POST['message_order'];
+                $msg->pushEndTime = $_POST['message_pushEndTime']==null ? 0 : strtotime($_POST['message_pushEndTime']);
+                $msg->update();
+                $result = array('error'=> 0, 'message'=> '更新成功');
             }
+        } else {
+            $msg = new MessageModel();
+            $msg->content = $_POST['message_content']==null ? "" : $_POST['message_content'];
+            $msg->pushTime = $_POST['message_pushTime']==null ? 0 : strtotime($_POST['message_pushTime']);
+            $msg->pushUsers = $_POST['message_pushUsers']==null ? 0 : $_POST['message_pushUsers'];
+            $msg->type = $_POST['message_type']==null ? 0 : $_POST['message_type'];
+            $msg->pushEndTime = $_POST['message_pushEndTime']==null ? 0 : strtotime($_POST['message_pushEndTime']);
+            $msg->insertToDB();
+            $result = array('error'=> 0, 'message'=> '添加新消息成功');
         }
         // $msg = new MessageModel(); // 新增
 
@@ -65,9 +74,12 @@ class Message extends AdminListener {
     public function query() {
         global  $user;
         $result = array('error'=> 1, 'message'=> 'Request failed');
-        if($_POST['message_id'] != null) {
+        $result['message_id'] = $_GET['message_id'];
+        if($_GET['message_id'] != null) {
 
-            $rs = MessageModel::GetMessageById(trim($_POST['message_id']));
+            $rs = MessageModel::GetMessageById(trim($_GET['message_id']));
+            $rs->pushTime = date('Y-m-d H:i:s', $rs->pushTime);
+            $rs->pushEndTime = date('Y-m-d H:i:s', $rs->pushEndTime);
             if($rs)
                 $result =  array('error'=> 0, 'message'=> 'success', 'data'=> $rs);
         }
