@@ -78,17 +78,17 @@ class Ana {
         $querySQL = "SELECT count(1) FROM member WHERE 1=1 ";
         switch($type) {
             case 1:
-                $querySQL .= "AND flow_up+flow_down BETWEEN " . Util::GetGB()*10+1 . " AND " . Util::GetGB()*30; // 11GB ~ 30GB
+                $querySQL .= "AND flow_up+flow_down BETWEEN " . (Util::GetGB()*10+1) . " AND " . (Util::GetGB()*30); // 11GB ~ 30GB
                 break;
             case 2:
-                $querySQL .= "AND flow_up+flow_down BETWEEN " . Util::GetGB()*30+1 . " AND " . Util::GetGB()*100; // 30GB ~ 100GB
+                $querySQL .= "AND flow_up+flow_down BETWEEN " . (Util::GetGB()*30+1) . " AND " . (Util::GetGB()*100); // 30GB ~ 100GB
                 break;
             case 3:
-                $querySQL .= "AND flow_up+flow_down < " . Util::GetGB()*100+1; // 大于 100GB
+                $querySQL .= "AND flow_up+flow_down < " . (Util::GetGB()*100+1); // 大于 100GB
                 break;
             case 0:
             default:
-                $querySQL .= "AND flow_up+flow_down < " . Util::GetGB()*10; // 大于10GB
+                $querySQL .= "AND flow_up+flow_down < " . (Util::GetGB()*10); // 大于10GB
                 break;
         }
         $statement = Database::prepare($querySQL);
