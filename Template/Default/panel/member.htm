@@ -65,10 +65,12 @@
         </div>
     </div>
     <div class="col-sm-3">
-
+        <php>
+            $onlineNum = round($connCount/$userCount,2)*100;
+        </php>
         <div class="chart-item-bg">
             <div class="chart-label chart-label-small">
-                <div class="h4 text-purple text-bold" data-count="this" data-from="0.00" data-to="" data-suffix="%" data-duration="1.5">0.00%</div>
+                <div class="h4 text-purple text-bold" data-count="this" data-from="0.00" data-to="{$onlineNum}" data-suffix="%" data-duration="1.5">{$onlineNum}%</div>
                 <span class="text-small text-upper text-muted">在线人数百分比</span><br />
                 <span class="text-small text-upper text-muted">注册用户：<code> {$userCount} </code><br/>签到人数：<code> {$checkCount} </code><br /></span>
 							<span class="text-small text-upper text-muted">实时在线：<code> {$connCount} </code><br />
