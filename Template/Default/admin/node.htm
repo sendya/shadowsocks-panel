@@ -3,8 +3,7 @@
 
 <div class="page-title">
     <div class="title-env">
-        <h1 class="title" onclick="nodeAdd();">节点管理
-	<a class="btn btn-success btn-sm" href="javascript:;" onclick="">添加</a></h1>
+        <h1 class="title">节点管理</h1>
         <p class="description">请注意节点分类！</p>
     </div>
     <div class="breadcrumb-env">
@@ -15,14 +14,27 @@
             <div class="row">
                 <div class="col-xs-12">
                     <div class="box">
-                        <div class="box-body table-responsive no-padding">
-                            <table class="table table-hover">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h3 class="panel-title"></h3>
+
+                                <div class="panel-options">
+                                    <a href="javascript:;" onclick="nodeAdd();"><span>+</span></a>
+                                    <a href="javascript:;" data-toggle="reload">
+                                        <i class="fa-rotate-right"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="panel-body">
+
+                            <table class="table responsive">
                                 <tbody>
                                 <tr>
                                     <th>ID</th>
                                     <th>节点</th>
                                     <th>加密</th>
                                     <th>描述</th>
+                                    <th>类型</th>
                                     <th>排序</th>
                                     <th>操作</th>
                                 </tr>
@@ -33,6 +45,7 @@
                                     <td> {$node->name}</td>
                                     <td> {$node->method}</td>
                                     <td>{$node->info}</td>
+                                    <td><if condition="$node->type == 0">普通节点<else>VIP节点</if></td>
                                     <td>{$node->order}</td>
                                     <td>
                                         <a class="btn btn-info btn-sm" href="javascript:;" onclick="nodeModify({$node->id});">编辑</a>
@@ -48,6 +61,7 @@
                                 </if>
                                 </tbody>
                             </table>
+                            </div>
                         </div><!-- /.box-body -->
                     </div><!-- /.box -->
                 </div>
@@ -107,7 +121,10 @@
                         <div class="form-group">
                             <label for="field-4" class="control-label">节点分类(0 普通 1 vip)</label>
 
-                            <input type="text" class="form-control" name="node.type" id="field-4" value="0" placeholder="0" data-validate="required" data-message-required="This is custom message for required field.">
+                            <select name="node.type" id="field-4" class="form-control">
+                                <option value="0">普通节点</option>
+                                <option value="1">Pro 节点</option>
+                            </select>
                         </div>
 
                     </div>
@@ -180,7 +197,7 @@
                         var node = result.data;
                         $("input[name='node.id']").val(node.id);
                         $("input[name='node.name']").val(node.name);
-                        $("input[name='node.type']").val(node.type);
+                        $("select[name='node.type']").val(node.type);
                         $("input[name='node.server']").val(node.server);
                         $("input[name='node.method']").val(node.method);
                         $("textarea[name='node.info']").val(node.info);

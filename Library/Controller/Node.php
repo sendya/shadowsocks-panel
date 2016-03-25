@@ -66,7 +66,7 @@ class Node extends Listener
     private static function CheckPlan($plan, $nodeType)
     {
         if ($nodeType == 1) {
-            if ($plan == 'VIP') {
+            if ($plan == 'VIP' || $plan == 'SVIP') {
                 return true;
             } else {
                 return false;

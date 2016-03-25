@@ -197,6 +197,8 @@
             if(data.retData.carrier != '未知'){
                 counrty += " ISP:" + data.retData.carrier;
             }
+            if(counrty == "")
+                counrty = "局域网";
             $("#country_id").html(counrty);
         },"json");
     });

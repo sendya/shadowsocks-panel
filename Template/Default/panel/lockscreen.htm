@@ -4,8 +4,10 @@
 <div class="login-container">
     <div class="row">
         <div class="col-sm-7">
-            <script type="text/javascript">jQuery(document).ready(function($){setTimeout(function(){$(".fade-in-effect").addClass("in");},1);$(".user-thumb a").on("click",function(ev){ev.preventDefault();$("#passwd").focus();});$(".lockcreen-form").validate({rules:{passwd:{required:true}},messages:{passwd:{required:"喂喂喂..你不输入密码吗?"}},submitHandler:function(form){show_loading_bar(70);var passwd_k=$(form).find("#passwd"),opts={closeButton:true,debug:false,positionClass:"toast-top-full-width",onclick:null,showDuration:"300",hideDuration:"1000",timeOut:"5000",extendedTimeOut:"1000",showEasing:"swing",hideEasing:"linear",showMethod:"fadeIn",hideMethod:"fadeOut"};$.ajax({url:"/auth/lockscreen.json",method:"POST",dataType:"json",data:{do_login:true,email:$("#email").val(),passwd:passwd_k.val()},success:function(resp){show_loading_bar({delay:.5,pct:100,finish:function(){if(resp.status){toastr.success(resp.message,"提示",opts);setTimeout("window.location.href = '/member'",2000);}else{toastr.error(resp.message,"警告",opts);passwd_k.select();}}});}});}});$("form#lockscreen .form-group:has(.form-control):first .form-control").focus();});</script>
-            <form role="form" id="lockscreen" class="lockcreen-form fade-in-effect">
+            <script type="text/javascript">
+                jQuery(document).ready(function($){setTimeout(function(){$(".fade-in-effect").addClass("in");},1);$(".user-thumb a").on("click",function(ev){ev.preventDefault();$("#passwd").focus();});$(".lockcreen-form").validate({rules:{passwd:{required:true}},messages:{passwd:{required:"喂喂喂..你不输入密码吗?"}},submitHandler:function(form){show_loading_bar(70);var passwd_k=$(form).find("#passwd"),opts={closeButton:true,debug:false,positionClass:"toast-top-full-width",onclick:null,showDuration:"300",hideDuration:"1000",timeOut:"5000",extendedTimeOut:"1000",showEasing:"swing",hideEasing:"linear",showMethod:"fadeIn",hideMethod:"fadeOut"};$.ajax({url:"/auth/lockscreen.json",method:"POST",dataType:"json",data:{do_login:true,email:$("#email").val(),passwd:passwd_k.val()},success:function(resp){show_loading_bar({delay:.5,pct:100,finish:function(){if(resp.status){toastr.success(resp.message,"提示",opts);setTimeout("window.location.href = '/member'",2000);}else{toastr.error(resp.message,"警告",opts);passwd_k.select();}}});}});}});$("form#lockscreen .form-group:has(.form-control):first .form-control").focus();});
+            </script>
+            <form role="form" id="lockscreen" class="lockcreen-form fade-in-effect" autocomplete="off">
                 <div class="user-thumb">
                     <a href="#">
                         <img src="{(\Helper\Util::GetGravatar($user->email, 128))}" class="img-responsive img-circle" />
@@ -16,7 +18,7 @@
                     <p>由于您长时间离开, 需要再次验证密码.</p>
                     <div class="input-group">
                         <input type="hidden" name="email" id="email" value="{$user->email}"/>
-                        <input type="password" class="form-control input-dark" name="passwd" id="passwd" placeholder="请输入您的密码" />
+                        <input type="password" class="form-control input-dark" name="passwd" id="passwd" autocomplete="off" placeholder="请输入您的密码" />
 							<span class="input-group-btn">
 								<button type="submit" class="btn btn-primary">确认</button>
 							</span>

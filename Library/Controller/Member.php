@@ -47,7 +47,7 @@ class Member extends Listener {
     //2015.11.10 start
     public function Node() {
         global $user;
-
+        $user = User::GetUserByUserId($user->uid);
         $nodes = Node::GetNodeArray(0);
         $nodeVip = Node::GetNodeArray(1);
 

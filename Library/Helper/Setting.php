@@ -15,7 +15,7 @@ class Setting
     public $v;
     public $__cache;
 
-    public static function Get($k) {
+    public static function get($k) {
 
         $querySQL = "SELECT k, v FROM setting WHERE k=?";
         $statement = Database::prepare($querySQL);
@@ -25,7 +25,7 @@ class Setting
         return $statement->fetch(\PDO::FETCH_CLASS);
     }
 
-    public static function Set($k, $v) {
+    public static function set($k, $v) {
 
         $sql = "UPDATE setting SET v=:v WHERE k=:k";
         if(Setting::Get($k) == null) {
