@@ -14,10 +14,10 @@ class Error extends \Exception
      * Create a Exception
      * @param string $message Error message
      * @param int $code Error code
-     * @param \Throwable $previous Previous exception
+     * @param \Exception $previous Previous exception
      * @param array $trace Backtrace information
      */
-    public function __construct($message = '', $code = 0, \Throwable $previous = null, $trace = array())
+    public function __construct($message = '', $code = 0, \Exception $previous = null, $trace = array())
     {
         parent::__construct($message, $code, $previous);
         $this->trace = $trace;
@@ -51,10 +51,10 @@ class Error extends \Exception
     }
 
     /**
-     * @param \Throwable $instance
+     * @param \Exception $instance
      * @throws Error
      */
-    public static function handleUncaughtException(\Throwable $instance)
+    public static function handleUncaughtException(\Exception $instance)
     {
         @ob_end_clean();
         if (Database::inTransaction()) {
