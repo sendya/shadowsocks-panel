@@ -128,6 +128,25 @@ class Member extends Listener {
         include Template::load("panel/changePlanLevel");
     }
 
+    public function deleteMe() {
+        global $user;
+
+        $flag = $_POST['delete'];
+        $result = array("code"=> 200, "hasError"=> true, "message"=> "请求错误");
+        if($flag != null && $flag == '1'){
+            $user = User::GetUserByUserId($user->uid);
+            $rs = $user->deleteMe();
+            if($rs) {
+                setcookie("auth", '', time() - 3600, "/");
+                setcookie("token", '', time() - 3600, "/");
+                $result = array("code"=> 200, "hasError"=> false, "message"=> "您已经从本站消除所有记忆，将在 3秒 后执行世界初始化...<br/>祝您过得愉快。");
+            }
+        }
+
+        echo json_encode($result);
+        exit();
+    }
+
 
     private static function fuckInt($number) {
         if ($number == null || $number == 0) return true;

@@ -225,12 +225,16 @@ class User {
         }
         $statement = Database::prepare("DELETE FROM member WHERE uid=?");
         $statement->bindValue(1, $uid, \PDO::PARAM_INT);
-        $statement->execute();
-        $result = false;
+        $result = $statement->execute();
+
         if(!$inTransaction) {
             $result = Database::commit();
         }
         return $result;
+    }
+
+    public function deleteMe() {
+        return self::delete($this->uid);
     }
 
 

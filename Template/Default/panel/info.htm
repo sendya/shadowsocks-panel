@@ -37,7 +37,7 @@
                         </if>
                     </p>
                     <p>账户余额：{$user->money} 元 </p>
-                    <p><a class="btn btn-danger btn-sm" href="javascript:;" onclick="alert('暂时无法执行此操作');">删除我的账户</a>&nbsp;&nbsp;</p>
+                    <p><a class="btn btn-danger btn-sm" href="javascript:;" id="deleteMe">删除我的账户</a>&nbsp;&nbsp;</p>
                     <div class="form-block">
                         <input type="checkbox" checked class="iswitch">
                     </div>
@@ -46,4 +46,31 @@
         </div>
     </div>
 </div>
+<script type="text/javascript">
+    $("#deleteMe").on('click', function(){
+        var flag = confirm("真的要删除吗？此操作一去不复返哦~");
+        $(".main-content").fadeTo('slow',0.6);
+        if(flag) {
+            $.ajax({
+                url: "/member/deleteMe.json",
+                type: "POST",
+                data: {"delete": 1},
+                dataType: "json",
+                success: function(result) {
+                    if(!result.hasError) {
+                        showToastr(result.message, 0);
+                        setTimeout('window.location.href="/auth/login#login"', 3000);
+                    } else {
+                        showToastr('不好意思，服务端妹纸好像舍不得你，不然你在试一次？（删除失败）', 0);
+                        $(".main-content").fadeTo('slow', 1);
+                    }
+                },
+                error: function(Xhr) {
+                    showToastr('请求服务器失败', 0);
+                    $(".main-content").fadeTo('slow', 1);
+                }
+            });
+        }
+    });
+</script>
 <import template="/panel/_footer" />
