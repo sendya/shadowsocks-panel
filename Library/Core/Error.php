@@ -19,10 +19,10 @@ class Error extends \Exception
      * Create a Exception
      * @param string $message Error message
      * @param int $code Error code
-     * @param \Exception $previous Previous exception
+     * @param \Throwable $previous Previous exception
      * @param array $trace Backtrace information
      */
-    public function __construct($message = '', $code = 0, \Exception $previous = null, $trace = array())
+    public function __construct($message = 'Internal Server Error', $code = 0, $previous = null, $trace = array())
     {
         parent::__construct($message, $code, $previous);
         $this->trace = $trace;
@@ -56,13 +56,13 @@ class Error extends \Exception
     }
 
     /**
-     * @param \Exception $instance
+     * @param \Throwable $instance Exception or Error instance
      * @throws Error
      */
-    public static function handleUncaughtException(\Exception $instance)
+    public static function handleUncaughtException($instance)
     {
         @ob_end_clean();
-        if (Database::inTransaction()) {
+        if (Database::inTransaction() && Database::getInstance()->inTransaction()) {
             Database::rollBack();
         }
         if (!($instance instanceof Error)) {

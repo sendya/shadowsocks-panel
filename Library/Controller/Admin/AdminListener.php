@@ -7,16 +7,18 @@
 
 namespace Controller\Admin;
 
-use \Model\User;
+use Core\Response;
+use Helper\Message;
+use Model\User;
+use Model\UserPower;
 
 class AdminListener extends \Helper\Listener {
-
 
     public function __construct() {
         global $user;
         $user = User::getInstance();
-        if (!$user->uid || !\Model\UserPower::verifyPower($user->uid)) {
-            Response::redirect('/Auth/login');
+        if (!$user->uid || !UserPower::verifyPower($user->uid)) {
+            Message::show("嘿~你没有权限来这个是非之地哟", '/auth/login', 3);
         }
 
         $user = $user->GetUserByEmail($user->email);
