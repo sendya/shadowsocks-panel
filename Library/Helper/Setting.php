@@ -13,7 +13,15 @@ class Setting
 {
     public $k;
     public $v;
-    public $__cache;
+    public static $__cache;
+
+    function __construct() {
+        if(!self::$__cache) {
+            
+            
+            self::$__cache = '';
+        }
+    }
 
     public static function get($k) {
 

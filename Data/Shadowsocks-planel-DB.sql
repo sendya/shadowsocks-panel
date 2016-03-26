@@ -125,6 +125,18 @@ CREATE TABLE `user_power` (
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='管理员表';
 
 
+-- ----------------------------
+-- Table structure for cron
+-- ----------------------------
+DROP TABLE IF EXISTS `cron`;
+CREATE TABLE `cron` (
+  `id` varchar(40) NOT NULL,
+  `enabled` tinyint(1) NOT NULL,
+  `nextrun` int(10) unsigned NOT NULL,
+  `order` tinyint(4) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 -- --------------------------
 -- Default db
 -- --------------------------
@@ -136,3 +148,12 @@ INSERT INTO `node` (`id`, `name`, `type`, `server`, `method`, `info`, `status`, 
 INSERT INTO `message` (`id`, `content`, `pushTime`, `addTime`, `pushUsers`, `type`, `pushEndTime`, `order`) VALUES ('1000', '公告：<br/>由于服务器遭到攻击，为补偿用户。本月不计费。（悲剧的事情莫过于挂SS主站的服务器居然被封了25端口）<br/>', '1457320205', '1457320205', '-2', '-2', '1488856205', '0');
 INSERT INTO `message` (`id`, `content`, `pushTime`, `addTime`, `pushUsers`, `type`, `pushEndTime`, `order`) VALUES ('1001', '套餐等级如下：<br /><br />套餐A： 5GB(免费) (体验服务)<br />套餐B： 100GB(13RMB)<br />套餐C： 200GB(20RMB)<br />套餐D： 500GB(35RMB)<br /><br />套餐VIP： 无限制流量,优先端口转发(仅内部开放)', '1457320205', '1457320205', '-2', '-3', '1488856205', '0');
 INSERT INTO `message` (`id`, `content`, `pushTime`, `addTime`, `pushUsers`, `type`, `pushEndTime`, `order`) VALUES ('1002', '首页浮动提示公告测试。。', '0', '0', '-2', '-4', '0', '0');
+
+-- ----------------------------
+-- Records of cron
+-- ----------------------------
+INSERT INTO `cron` VALUES ('clearInviteOld', '0', '1461690331', '110');
+INSERT INTO `cron` VALUES ('clearTransfer', '1', '1459025349', '10');
+INSERT INTO `cron` VALUES ('daily', '0', '1459094400', '100');
+INSERT INTO `cron` VALUES ('mail', '0', '1459011931', '80');
+INSERT INTO `cron` VALUES ('stopExpireUser', '1', '1459024168', '30');

@@ -32,7 +32,9 @@ class User {
     public $lastCheckinTime = 0;//上次签到时间
     public $lastFindPasswdTime = 0;//上次找回密码时间 (找回密码时间和次数仅用作限制3次或?次后禁止找回)
     public $lastFindPasswdCount = 0;//找回密码次数
-    public $forgePwdCode;
+    public $forgePwdCode; // 找回密码次数
+    public $payTime; // 上次支付时间
+    public $expireTime; // 到期时间
 
     public $gravatar;
 
@@ -90,13 +92,26 @@ class User {
 
     /**
      * Get User array
-     * @param $type
      * @return User[]
      */
     public static function GetUserArray() {
         $userList = null;
         $selectSQL = "SELECT * FROM member ORDER BY uid";
         $statement = Database::prepare($selectSQL);
+        $statement->execute();
+        $userList = $statement->fetchAll(\PDO::FETCH_CLASS, '\\Model\\User');
+        return $userList;
+    }
+
+    /**
+     * Get User array by expire
+     * @return User[]
+     */
+    public static function GetUserArrayByExpire() {
+        $userList = null;
+        $selectSQL = "SELECT * FROM member WHERE expireTime<:expireTime ORDER BY uid";
+        $statement = Database::prepare($selectSQL);
+        $statement->bindValue(":expireTime", time(), \PDO::PARAM_INT);
         $statement->execute();
         $userList = $statement->fetchAll(\PDO::FETCH_CLASS, '\\Model\\User');
         return $userList;
@@ -207,6 +222,21 @@ class User {
         $statement->bindValue(':userId', $this->uid, \PDO::PARAM_INT);
         $flag = $statement->execute();
 
+        if (!$inTransaction) {
+            Database::commit();
+        }
+        return $flag;
+    }
+
+    public function stop() {
+
+        $inTransaction = Database::inTransaction();
+        if (!$inTransaction) {
+            Database::beginTransaction();
+        }
+        $statement = Database::prepare("UPDATE member SET enable=0 WHERE uid=:uid");
+        $statement->bindValue(':uid', $this->uid, \PDO::PARAM_INT);
+        $flag = $statement->execute();
         if (!$inTransaction) {
             Database::commit();
         }
