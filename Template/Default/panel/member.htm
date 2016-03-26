@@ -137,12 +137,13 @@
             $(this).addClass("disabled");
             $.ajax({
                 type:"GET",
-                url:"/Form/CheckIn",
+                url:"/form/checkIn.json",
                 dataType:"json",
                 success:function(result) {
                     showToastr(result.message, 0);
                     $("#checkin-on").hide();
                     $("#checkin-off").show();
+                    $("#checkinoff-tag").html(result.time);
                 },
                 error:function(jqXHR) {
                     showToastr("出现未知错误，请重试或联系管理员", 0);
@@ -154,7 +155,7 @@
             $(this).addClass("disabled");
             $.ajax({
                 type:"GET",
-                url:"/Form/UpdatePlan",
+                url:"/form/updatePlan.json",
                 dataType:"json",
                 success:function(data) {
                     $(this).removeClass("disabled");
@@ -182,7 +183,7 @@
                 backdrop:"fade"
             });
         });
-        $.get("/Api/QueryCountry",{}, function(data){
+        $.get("/api/queryCountry.json",{}, function(data){
             var counrty = "";
             // data.retData.province.country + " " + data.retData.province
             if(data.retData.country != 'None'){

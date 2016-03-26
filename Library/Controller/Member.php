@@ -30,8 +30,8 @@ class Member extends Listener {
         $all_transfer = Util::FlowAutoShow($user->transfer);//共有流量
         $flow = round($flow / Util::GetMB(), 2);
         $checkin = false;//是否可以签到
-        $checkinTime = date("m-d h:i:s", $user->lastCheckinTime);
-        $lastConnTime = date("Y-m-d h:i:s", $user->lastConnTime);
+        $checkinTime = date("m-d H:i:s", $user->lastCheckinTime);
+        $lastConnTime = date("Y-m-d H:i:s", $user->lastConnTime);
         $nowUserIp = Util::GetUserIP();
         $userCount = \Helper\Ana::GetUserCount();
         $checkCount = \Helper\Ana::GetCheckUserCount();

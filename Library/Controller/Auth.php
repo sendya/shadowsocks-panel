@@ -121,15 +121,43 @@ class Auth {
             $user = new User();
             $user->email = $email;
             $user->nickname = $userName;
-            $user->transfer = Util::GetGB() * TRANSFER; // 流量大小
+
+            // 定义邀请码套餐与流量单位
+            $transferNew = Util::GetGB();
+
+            switch($invite->plan) {
+                case 'B':
+                    $transferNew = $transferNew*50;
+                    break;
+                case 'C':
+                    $transferNew = $transferNew*150;
+                    break;
+                case 'D':
+                    $transferNew = $transferNew*300;
+                    break;
+                case 'VIP':
+                    $transferNew = $transferNew*500;
+                    break;
+                case 'SVIP':
+                    $transferNew = $transferNew*5200;
+                    break;
+                case 'A':
+                default:
+                    $transferNew = $transferNew*10;
+                    break;
+            }
+
+            $user->transfer = $transferNew;
             $user->invite = $inviteCode;
             $user->plan = $invite->plan;//将邀请码的账户类型设定到注册用户上.
             $user->regDateLine = time();
             $user->lastConnTime = $user->regDateLine;
             $user->sspwd = Util::GetRandomPwd();
             $user->insertToDB();
-            if($invite->plan != 'A')
+
+            if(!ENABLE_PLAN_A || $invite->plan != 'A')
                 $user->port = $user->uid;
+
             $invite->reguid = $user->uid;
             $invite->regDateLine = $user->regDateLine;
             $invite->status = 1; //-1过期 0-未使用 1-已用

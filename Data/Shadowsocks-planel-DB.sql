@@ -57,6 +57,8 @@ CREATE TABLE `member` (
   `lastFindPasswdTime` int(11) NOT NULL DEFAULT '0' COMMENT '找回密码时间(临时记录用而已)',
   `lastFindPasswdCount` tinyint(255) NOT NULL DEFAULT '0' COMMENT '找回密码次数(临时记录用而已)',
   `forgePwdCode` varchar(50) DEFAULT NULL,
+  `payTime` int(11) DEFAULT '0' COMMENT '上次支付时间',
+  `expireTime` int(11) DEFAULT '0' COMMENT '到期时间',
   PRIMARY KEY (`uid`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5000 DEFAULT CHARSET=utf8;
 

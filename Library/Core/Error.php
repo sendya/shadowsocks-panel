@@ -4,6 +4,11 @@
  * A simple bulletin board system
  * Author: kookxiang <r18@ikk.me>
  */
+
+/**
+ * PHP7+ => Throwable 
+ * PHP5+ PHP7- => Exception
+ */
 namespace Core;
 
 class Error extends \Exception

@@ -33,7 +33,7 @@
                     <p>邮箱：{$user->email}</p>
                     <p>套餐：<span class="label label-info">{$user->plan}</span>
                         <if condition="$user->plan == 'A'">
-                            &nbsp;&nbsp;您为免费体验账户，流量将不会每月重置，升级到会员账户即可提升流量限额。
+                            &nbsp;&nbsp;您为免费体验账户，流量将不会每月重置，升级到会员账户即可提升流量限额。 <if condition="!ENABLE_PLAN_A">$nbsp;* 管理员关闭了A套餐的使用权, 请您升级</if>
                         </if>
                     </p>
                     <p>账户余额：{$user->money} 元 </p>
@@ -49,8 +49,8 @@
 <script type="text/javascript">
     $("#deleteMe").on('click', function(){
         var flag = confirm("真的要删除吗？此操作一去不复返哦~");
-        $(".main-content").fadeTo('slow',0.6);
         if(flag) {
+            $(".main-content").fadeTo('slow',0.6);
             $.ajax({
                 url: "/member/deleteMe.json",
                 type: "POST",

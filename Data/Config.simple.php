@@ -38,7 +38,14 @@ $MAIL = array(
 /**
  * Flow default value
  */
-define('TRANSFER', 10);// Default flow 10GB
+define('TRANSFER', 10);// Default flow 10GB . A port
+
+/**
+ * Plan 'A' enable
+ * boolean false disable plan 'A' port!!!
+ */
+define('ENABLE_PLAN_A', false);
+
 /**
  * Encrypt Key:
  * This key is used to encrypt password and other information.

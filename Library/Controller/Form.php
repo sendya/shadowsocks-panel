@@ -107,7 +107,7 @@ class Form extends Listener {
         exit();
     }
 
-    public function CheckIn() {
+    public function checkIn() {
         global $user;
         $user = User::GetUserByUserId($user->uid);
         $result = array('error' => 1, 'message' => '');
@@ -118,7 +118,7 @@ class Form extends Listener {
             $user->transfer = $user->transfer + $checkinTransfer;
             $user->updateUser();
             $result['user'] = $user;
-            $result['time'] = time();
+            $result['time'] = date("m-d H:i:s", $user->lastCheckinTime);
             $result['message'] = '签到成功, 获得' . Util::FlowAutoShow($checkinTransfer) . ' 流量';
         } else {
             $result['message'] = '你已经在 ' . date('Y-m-d H:i:s', $user->lastCheckinTime) . " 时签到过.";
