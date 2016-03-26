@@ -27,6 +27,16 @@ $ vim ./Data/Config.php
 $ chmod -R 777 ./Data/
 $ mysql -uroot -p
 ```
+
+#### 2.1 线上环境时请关闭配置文件中的几项配置  
+```php
+define('DEBUG_ENABLE', false);
+define('TEMPLATE_UPDATE', false);
+
+// 数据库连接
+Core\Database::register('mysql:dbname=sspanel;host=localhost;charset=UTF8', 'user', 'password');
+```
+
 ```mysql
 create database sspanel;
 use sspanel;
@@ -54,13 +64,18 @@ RewriteRule ^ index.php [L]
 
 ### 4. 安装Shadowsocks-manyuser服务端
 
-有两个版本，请选其一，还有一个golang manyuser的。 其实也支持最初始的 manyuser版本，请自行修改sql查询字符串即可
+目前支持版本：  原版 `manyuser` , `UDP support manyuser` , `manyuser-rss`
+请选其一，还有一个golang manyuser的。   
+其实也支持最初始的 manyuser版本，请自行修改sql查询字符串即可  
 ```bash
 # 版本1 （支持udp， 有点小问题，基本上一天会炸一次线程导致连不上数据库无法同步）
 $ git clone -b manyuser https://github.com/sendya/shadowsocks-rm.git
 $ cd shadowsocks-rm/shadowsocks
 # 版本2 （原 shadowsocks py manyuser）
-$ gi clone -b manyuser https://github.com/sendya/shadowsocks.git
+$ git clone -b manyuser https://github.com/sendya/shadowsocks.git
+$ cd shadowsocks/shadowsocks
+# 版本3 （*版 shadowsocks-R manyuser）
+$ git clone -b manyuser-rss https://github.com/sendya/shadowsocks.git
 $ cd shadowsocks/shadowsocks
 ```
 #### 4.1 CentOS:
@@ -79,10 +94,11 @@ pip install cymysql
 
 #### 4.4 编辑多用户版配置文件
 ```bash
-$ vim ./config.py
-$ python servers.py
+$ vim ./Config.py
+$ python server.py
 ```
-#### 4.5 本多用户版shadowsocks-py支持UDP,请注意开放端口
+#### 4.5 多用户版`UDP support manyuser``支持UDP,请注意开放端口  
+#### 4.6 多用户版`shadowsocks-R manyuser` 启动不需要带config.json配置文件，原本需要  
 
 ### *. 可选更换composer中国地区同步源
 if your in china , please edit `composer.json` content, add content to composer config
