@@ -11,7 +11,7 @@ class Util {
     const KB = 1024, MB = 1048576, GB = 1073741824;
 
     public static function MailFormatCheck($chkMailAddress) {
-        $pattern = "/^[A-Za-z0-9-_.+%]+@[A-Za-z0-9-.]+\ \.[A-Za-z]{2,4}$/";
+        $pattern = "/^[A-Za-z0-9-_.+%]+@[A-Za-z0-9-.]+\\.[A-Za-z]{2,4}$/";
         if (!preg_match($pattern, $chkMailAddress))
             return "邮箱地址格式不正确";
         /*
