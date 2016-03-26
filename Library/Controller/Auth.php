@@ -13,11 +13,13 @@ use Helper\Encrypt;
 use Model\Invite;
 use Model\User;
 use Helper\Mail;
+use Helper\Message;
 
 class Auth {
 
     public function index() {
-
+        Message::show("你走错地方啦，3秒后给你开启传送点", '/auth/login', 3);
+        exit();
     }
 
     public function Login() {
@@ -111,15 +113,18 @@ class Auth {
             $result['message'] = '邀请码不可用';
         } else if ($repasswd != $passwd) {
             $result['message'] = '两次密码输入不一致';
-        } else if (strlen($passwd) < 8) {
+        } else if (strlen($passwd) < 6) {
             $result['message'] = '密码太短,至少8字符';
-        } else if (strlen($userName) < 4) {
+        } /* else if (strlen($userName) < 4) {
             $result['message'] = '昵称太短,至少2中文字符或6个英文字符';
-        } else if ($chkEmail = Util::MailFormatCheck($email)) {
+        }*/ else if ($chkEmail = Util::MailFormatCheck($email)) {
             $result['message'] = $chkEmail;
         } else {
             $user = new User();
             $user->email = $email;
+            if($userName == null) // 如果用户名没填写，则使用email当用户名
+                $userName = $email;
+
             $user->nickname = $userName;
 
             // 定义邀请码套餐与流量单位
