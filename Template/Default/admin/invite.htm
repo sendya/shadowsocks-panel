@@ -36,7 +36,7 @@
                                     <td><if condition="$invite->status == 1">已用<else>未用</if></td>
                                     <td>
                                         <a class="btn btn-info btn-sm" href="javascript:;" onclick="inviteModify('{$invite->invite}');">编辑</a>
-                                        <a class="btn btn-danger btn-sm" href="javascript:;" onclick="nodeRemove('{$invite->invite}');">删除</a>
+                                        <a class="btn btn-danger btn-sm" href="javascript:;" onclick="inviteRemove('{$invite->invite}');">删除</a>
                                     </td>
                                 </tr>
                                 </loop>
@@ -64,7 +64,7 @@
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 <h4 class="modal-title">新增邀请码</h4>
             </div>
-            <form role="form" id="form1" method="post" action="/admin/invite/add" class="validate" onsubmit="return postJSON(this.id, this.action);">
+            <form role="form" id="form1" method="post" action="/admin/invite/add.json" class="validate" onsubmit="return postJSON(this.id, this.action);">
             <input type="hidden" name="form_add" value="{(time())}"/>
             <input type="hidden" name="invite" id="invite" value=""/>
             <div class="modal-body">
@@ -136,7 +136,7 @@
 <script type="text/javascript">
     function inviteRemove(invite){
         $.ajax({
-            url: "/admin/invite/delete",
+            url: "/admin/invite/delete.json",
             method: "POST",
             dataType: "json",
             data: {invite: invite},
@@ -155,7 +155,7 @@
     }
     function inviteModify(invite){
         $.ajax({
-            url: "/admin/invite/query",
+            url: "/admin/invite/query.json",
             method: "POST",
             dataType: "json",
             data: {invite: invite},
@@ -168,7 +168,7 @@
                         $("#plan").val(invite.plan);
                         $("input[name='expiration']").val(invite.expiration);
                         $("input[name='add_time1']").val(invite.dateLine);
-                        $("#form1").attr("action", "/admin/invite/update");
+                        $("#form1").attr("action", "/admin/invite/update.json");
                         jQuery('#modal-6 .modal-title').html('修改邀请码');
                         jQuery('#modal-6').modal('show', {backdrop: 'static'});
                     }
@@ -188,7 +188,7 @@
         $("#plan").val('A');
         $("input[name='expiration']").val('');
         $("input[name='add_time1']").val('');
-        $("#form1").attr("action", "/admin/invite/add");
+        $("#form1").attr("action", "/admin/invite/add.json");
         jQuery('#modal-6 .modal-title').html('新增邀请码');
         jQuery('#modal-6').modal('show', {backdrop: 'static'});
     }
