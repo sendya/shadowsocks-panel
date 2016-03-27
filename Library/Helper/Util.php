@@ -175,4 +175,23 @@ class Util {
         return $token;
     }
 
+    public static function cronStatus($enabled, $nextrun) {
+        if($enabled) { // 1
+            if($nextrun < (time()-60)) {
+                echo '运行完毕';
+            }
+            else if($nextrun < (time()+60) && $nextrun > time()) {
+                echo '即将运行';
+            }
+            else if($nextrun < (time()+600) && $nextrun > time()) {
+                echo '等待运行';
+            }
+            else {
+                echo '尚未运行';
+            }
+        } else {
+            echo '停用';
+        }
+    }
+
 }
