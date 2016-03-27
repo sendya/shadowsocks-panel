@@ -102,8 +102,9 @@ class Invite {
         if (!$inTransaction) {
             Database::beginTransaction();
         }
-        $statement = Database::prepare("DELETE * FROM invite WHERE invite=:invite");
+        $statement = Database::prepare("DELETE FROM invite WHERE invite=:invite");
         $statement->bindValue(':invite', $invite, \PDO::PARAM_STR);
+        $statement->execute();
         if (!$inTransaction) {
             Database::commit();
         }
