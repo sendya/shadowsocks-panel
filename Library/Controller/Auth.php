@@ -73,6 +73,13 @@ class Auth {
             $result['passwd'] = $passwd;
             $user = User::getInstance();
             $user = $user->GetUserByEmail($user->email);
+            if(!$user) {
+                setcookie("auth", '', time() - 3600, "/");
+                setcookie("token", '', time() - 3600, "/");
+                $result['message'] = "账户不存在. 请手动退回到登录页";
+                echo json_encode($result);
+                exit();
+            }
             $result['obj'] = $user;
             if ($user->verifyPassword($passwd)) {
                 Util::setToken();
@@ -160,12 +167,12 @@ class Auth {
             $user->sspwd = Util::GetRandomPwd();
             $user->insertToDB();
 
-            if(!ENABLE_PLAN_A || $invite->plan != 'A')
-                $user->port = $user->uid;
+            // if(!ENABLE_PLAN_A || $invite->plan != 'A')
+            $user->port = $user->uid; // 将用户uid设定为 port
 
             $invite->reguid = $user->uid;
             $invite->regDateLine = $user->regDateLine;
-            $invite->status = 1; //-1过期 0-未使用 1-已用
+            $invite->status = 1; // -1过期 0-未使用 1-已用
             $invite->inviteIp = Util::GetUserIP();
             $invite->updateInvite();
             $user->updateUser();
