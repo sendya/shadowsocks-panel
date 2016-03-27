@@ -8,6 +8,7 @@ Shadowsocks Panel
 旧版本分支 [old-sspanel（原V2上改版）](https://github.com/sendya/shadowsocks-panel/tree/old-sspanel)  
 ### 程序截图
 ![后台](https://static-2.loacg.com/open/static/ss-panel-github/Admin.png)
+![后台_cron](https://static-2.loacg.com/open/static/ss-panel-github/admin_cron.png)
 ![前台](https://static-2.loacg.com/open/static/ss-panel-github/member.png)
 ![前台](https://static-2.loacg.com/open/static/ss-panel-github/member2.png)
 ![前台](https://static-2.loacg.com/open/static/ss-panel-github/member3.png)
@@ -134,6 +135,16 @@ Environment="USER=shadowsocks","HOME=/home/shadowsocks"
 [Install]
 WantedBy=multi-user.target
 ```
+
+### 配置计划任务
+
+**linux**  
+```bash
+$ crontab -l
+$ * * * * * /usr/bin/curl https://domain.com/cron.html
+# 保存退出
+```
+或者使用网上提供的 `HTTP` 监控服务，设定1分钟监控一次 路径为： 你的域名 + `/cron.html`
 
 框架基于 [KK-Framework](https://github.com/kookxiang/KK-Framework)。
 使用SS服务端：`shadowsocks-manyuser`
