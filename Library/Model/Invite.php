@@ -55,6 +55,8 @@ class Invite {
         $sql = "SELECT * FROM invite";
         if($status == 0) {
             $sql .= " WHERE status = 0";
+        } else if($status == -1) {
+            $sql .= " WHERE status = 0 AND uid=-1";
         } else if($status == 1) {
             $sql .= " WHERE status = 1 OR status = -1 ";
         }
