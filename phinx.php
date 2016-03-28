@@ -15,7 +15,7 @@ Core\Error::registerHandler();
 @include DATA_PATH . 'Config.php';
 return array(
     'paths' => array(
-        'migrations' => ROOT_PATH . 'migrations',
+        'migrations' => ROOT_PATH . 'Migrations',
     ),
     'environments' => array(
         'default_database' => 'default',
