@@ -41,6 +41,7 @@ CREATE TABLE `invite` (
   `status` tinyint(1) DEFAULT '0' COMMENT '-1过期 0-未使用 1-已用',
   PRIMARY KEY (`invite`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+INSERT INTO `invite` (`uid`, `dateLine`, `expiration`, `inviteIp`, `invite`, `reguid`, `regDateLine`, `plan`, `status`) VALUES ('-1', '1454638687', '999', '127.0.0.1', '334ab1a9fbc19b4c688ca7fd5f8f9ffa', NULL, '0', 'VIP', '0');
 EOF;
 
         $this->execute($sql);

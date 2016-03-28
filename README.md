@@ -38,11 +38,11 @@ define('TEMPLATE_UPDATE', false);
 Core\Database::register('mysql:dbname=sspanel;host=localhost;charset=UTF8', 'user', 'password');
 ```
 
-```mysql
-create database sspanel;
-use sspanel;
-source /你的sspanel目录/Data/Shadowsocks-planel-DB.sql
+**修改完毕后，在`shadowsocks-panel`根目录执行**
+```bash
+php Package/bin/phinx migrate
 ```
+则自动创建数据库表
 
 ### 3. 配置程序路由
 (不配置只能访问 首页,其余页面全部404！注)

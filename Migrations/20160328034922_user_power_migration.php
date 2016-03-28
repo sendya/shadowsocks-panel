@@ -34,6 +34,7 @@ CREATE TABLE `user_power` (
   `uid` int(11) NOT NULL DEFAULT '0' COMMENT '用户id',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='管理员表';
+INSERT INTO `user_power` (`id`, `uid`) VALUES ('1', '5000');
 EOF;
 
         $this->execute($sql);

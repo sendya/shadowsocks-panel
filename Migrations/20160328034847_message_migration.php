@@ -40,6 +40,10 @@ CREATE TABLE `message` (
   `order` int(3) DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1000 DEFAULT CHARSET=utf8;
+
+INSERT INTO `message` (`id`, `content`, `pushTime`, `addTime`, `pushUsers`, `type`, `pushEndTime`, `order`) VALUES ('1000', '公告：<br/>由于服务器遭到攻击，为补偿用户。本月不计费。（悲剧的事情莫过于挂SS主站的服务器居然被封了25端口）<br/>', '1457320205', '1457320205', '-2', '-2', '1488856205', '0');
+INSERT INTO `message` (`id`, `content`, `pushTime`, `addTime`, `pushUsers`, `type`, `pushEndTime`, `order`) VALUES ('1001', '套餐等级如下：<br /><br />套餐A： 5GB(免费) (体验服务)<br />套餐B： 100GB(13RMB)<br />套餐C： 200GB(20RMB)<br />套餐D： 500GB(35RMB)<br /><br />套餐VIP： 无限制流量,优先端口转发(仅内部开放)', '1457320205', '1457320205', '-2', '-3', '1488856205', '0');
+INSERT INTO `message` (`id`, `content`, `pushTime`, `addTime`, `pushUsers`, `type`, `pushEndTime`, `order`) VALUES ('1002', '首页浮动提示公告测试。。', '0', '0', '-2', '-4', '0', '0');
 EOF;
 
         $this->execute($sql);

@@ -40,6 +40,7 @@ CREATE TABLE `node` (
   `order` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+INSERT INTO `node` (`id`, `name`, `type`, `server`, `method`, `info`, `status`, `order`) VALUES ('1', 'Suki-S1', '0', 'server1.shadowsocks.org', 'aes-128-cfb', '节点说明', '可用', '1');
 EOF;
         $this->execute($sql);
     }
