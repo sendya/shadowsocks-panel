@@ -54,7 +54,7 @@
                             $("#resetButton").attr("disabled", "true").html("请稍等");
                             if($("#email").attr("name") == "email") {
                                 $.ajax({
-                                    url:"/Auth/forgePwd",
+                                    url:"/auth/forgePwd.json",
                                     method:"POST",
                                     dataType:"json",
                                     data:{
@@ -83,7 +83,7 @@
                                 });
                             } else {
                                 $.ajax({
-                                    url:"/Auth/forgePwd",
+                                    url:"/auth/forgePwd.json",
                                     method:"POST",
                                     dataType:"json",
                                     data:{
@@ -98,7 +98,7 @@
                                                 $("#resetButton").removeAttr("disabled").html("重置");
                                                 if (resp.error == 0) {
                                                     toastr.success(resp.message, "系统消息!", opts);
-                                                    setTimeout("window.location.href = '/Auth/login';", 3e3);
+                                                    setTimeout("window.location.href = '/auth/login#login';", 3e3);
                                                 } else if (resp.error == 1) {
                                                     toastr.error(resp.message, "错误!", opts);
                                                 } else {

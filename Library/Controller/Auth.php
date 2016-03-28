@@ -243,16 +243,15 @@ EOF;
 
                 $content = <<<EOF
 Dear {$user->nickname}:<br/>
-嘿~ boy 下面这串文本是你的新密码:<br/>
+Here's your new password<br/>
 <br/>
-PassWord: {$newPassword}
-<br/>
-<br/>
-<b>请在登陆后立即修改密码！并且邮件不要保留 以防止账户丢失。</b>
+Password: {$newPassword}
 <br/>
 <br/>
-Yours,
-The {$siteName} Team
+<b>ATTENTION: PLEASE CHANGE THE PASSWORD AND DELETE THIS EMAIL IMMEDIATELY ALTER LOG IN YOUR ACCOUNT FOR SECURITY PURPOSES.</b>
+<br/>
+<br/>
+Yours, The {$siteName} Team
 EOF;
 
 

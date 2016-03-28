@@ -12,6 +12,8 @@ use \Model\User;
 use \Model\Node;
 use \Helper\Util;
 use \Helper\Ana;
+use Helper\Mail;
+use Helper\Message;
 
 class Index extends AdminListener {
     public function index() {
@@ -26,10 +28,21 @@ class Index extends AdminListener {
         include Template::load('/admin/index');
     }
 
+    public function mailTest() {
+        global $user;
+        $content = <<<EOF
+Hey guy, here's test mail
+EOF;
+
+        Mail::mail_send($user->email,  "[". SITE_NAME ."] Mail test", $content);
+        Message::show("测试邮件已经发送到你的邮箱", '/admin', 6);
+    }
+
     public function test() {
         global $user;
 
         include Template::load('/admin/test');
     }
+
 
 }
