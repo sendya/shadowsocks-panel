@@ -15,12 +15,39 @@ class Setting
     public $v;
     public static $__cache;
 
+    const CONFIG_FILE = DATA_PATH . "Config.php";
+    const CACHE_FILE = DATA_PATH . "_CACHE.php";
+
     function __construct() {
         if(!self::$__cache) {
-            
-            
             self::$__cache = '';
         }
+    }
+
+    public static function initSetting() {
+        $querySQL = "SELECT k, v FROM setting";
+        $statement = Database::prepare($querySQL);
+        $statement->execute();
+        $statement->setFetchMode(\PDO::FETCH_CLASS, '\\Helper\\Setting');
+        $settings = $statement->fetchAll(\PDO::FETCH_CLASS);
+
+        $json = json_encode($settings);
+        $str = <<<EOF
+<?php
+/**
+ * SS-Panel
+ * A simple Shadowsocks management system
+ * Author: Sendya <18x@loacg.com>
+ */
+
+if(!defined('ROOT_PATH'))
+	exit('This file could not be access directly.');
+
+\$__cache_config = json_decode('{$json}');
+EOF;
+
+        file_put_contents(self::CACHE_FILE, $str);
+        exit();
     }
 
     public static function get($k) {
@@ -50,6 +77,31 @@ class Setting
         if (!$inTransaction) {
             Database::commit();
         }
+    }
+
+
+    public static function CreateKey() {
+        $iv = mcrypt_create_iv(
+            mcrypt_get_iv_size(MCRYPT_CAST_256, MCRYPT_MODE_CFB),
+            MCRYPT_DEV_RANDOM);
+        return $iv;
+    }
+
+    public static function GetConfig($k) {
+        if (!file_exists(self::CONFIG_FILE)) return false;
+        $str = file_get_contents(self::CONFIG_FILE);
+        $config = preg_match("/define\\('" . preg_quote($k) . "', '(.*)'\\);/", $str, $res);
+        return $res[1];
+    }
+
+    public static function SetConfig($k, $v) {
+        if (!file_exists(self::CONFIG_FILE)) return false;
+        $str = file_get_contents(self::CONFIG_FILE);
+
+        $str2 = preg_replace("/define\\('" . preg_quote($k) . "', '(.*)'\\);/",
+            "define('" . preg_quote($k) . "', '" . $v . "');", $str);
+
+        file_put_contents(self::CONFIG_FILE, $str2);
     }
 
 }

@@ -9,11 +9,15 @@
 namespace Controller;
 
 
+use Helper\Setting;
+
 class Test {
 
     public function index() {
-        $plan = 'B';
-        if(!ENABLE_PLAN_A || $plan != 'A')
-            echo '执行端口设定';
+        // Setting::initSetting();
+    }
+
+    public function get() {
+
     }
 }
