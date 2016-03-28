@@ -27,11 +27,6 @@ class MemberMigration extends AbstractMigration
      */
     public function change()
     {
-
-    }
-
-    public function up()
-    {
         $sql = <<<EOF
 DROP TABLE IF EXISTS `member`;
 CREATE TABLE `member` (
@@ -62,6 +57,10 @@ CREATE TABLE `member` (
 EOF;
 
         $this->execute($sql);
+    }
+
+    public function up()
+    {
 
     }
 }

@@ -27,11 +27,6 @@ class CronMigration extends AbstractMigration
      */
     public function change()
     {
-
-    }
-
-    public function up()
-    {
         $sql = <<<EOF
 DROP TABLE IF EXISTS `cron`;
 CREATE TABLE `cron` (
@@ -44,5 +39,10 @@ CREATE TABLE `cron` (
 EOF;
 
         $this->execute($sql);
+    }
+
+    public function up()
+    {
+
     }
 }

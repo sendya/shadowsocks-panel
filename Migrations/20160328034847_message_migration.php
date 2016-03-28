@@ -27,11 +27,6 @@ class MessageMigration extends AbstractMigration
      */
     public function change()
     {
-
-    }
-
-    public function up()
-    {
         $sql = <<<EOF
 DROP TABLE IF EXISTS `message`;
 CREATE TABLE `message` (
@@ -48,6 +43,10 @@ CREATE TABLE `message` (
 EOF;
 
         $this->execute($sql);
+    }
+
+    public function up()
+    {
 
     }
 }

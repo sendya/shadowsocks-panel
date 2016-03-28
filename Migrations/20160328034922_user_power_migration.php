@@ -27,11 +27,6 @@ class UserPowerMigration extends AbstractMigration
      */
     public function change()
     {
-
-    }
-
-    public function up()
-    {
         $sql = <<<EOF
 DROP TABLE IF EXISTS `user_power`;
 CREATE TABLE `user_power` (
@@ -42,5 +37,10 @@ CREATE TABLE `user_power` (
 EOF;
 
         $this->execute($sql);
+    }
+
+    public function up()
+    {
+
     }
 }

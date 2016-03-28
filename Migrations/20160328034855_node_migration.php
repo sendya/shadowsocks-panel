@@ -27,11 +27,6 @@ class NodeMigration extends AbstractMigration
      */
     public function change()
     {
-
-    }
-
-    public function up()
-    {
         $sql = <<<EOF
 DROP TABLE IF EXISTS `node`;
 CREATE TABLE `node` (
@@ -47,6 +42,10 @@ CREATE TABLE `node` (
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 EOF;
         $this->execute($sql);
+    }
+
+    public function up()
+    {
 
     }
 }

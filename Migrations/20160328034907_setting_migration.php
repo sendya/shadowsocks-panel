@@ -27,11 +27,6 @@ class SettingMigration extends AbstractMigration
      */
     public function change()
     {
-
-    }
-
-    public function up()
-    {
         $sql = <<<EOF
 DROP TABLE IF EXISTS `setting`;
 CREATE TABLE `setting` (
@@ -43,7 +38,10 @@ CREATE TABLE `setting` (
 EOF;
 
         $this->execute($sql);
+    }
 
+    public function up()
+    {
 
     }
 }

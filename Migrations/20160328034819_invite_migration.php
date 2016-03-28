@@ -27,11 +27,6 @@ class InviteMigration extends AbstractMigration
      */
     public function change()
     {
-
-    }
-
-    public function up()
-    {
         $sql = <<<EOF
 DROP TABLE IF EXISTS `invite`;
 CREATE TABLE `invite` (
@@ -49,5 +44,10 @@ CREATE TABLE `invite` (
 EOF;
 
         $this->execute($sql);
+    }
+
+    public function up()
+    {
+
     }
 }
