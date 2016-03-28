@@ -109,7 +109,7 @@ class User {
      */
     public static function GetUserArrayByExpire() {
         $userList = null;
-        $selectSQL = "SELECT * FROM member WHERE expireTime<:expireTime ORDER BY uid";
+        $selectSQL = "SELECT * FROM member WHERE expireTime<:expireTime OR (flow_up+flow_down)>transfer ORDER BY uid";
         $statement = Database::prepare($selectSQL);
         $statement->bindValue(":expireTime", time(), \PDO::PARAM_INT);
         $statement->execute();
@@ -127,7 +127,7 @@ class User {
             Database::beginTransaction();
         }
         $statement = Database::prepare("INSERT INTO member SET email=:email, `password`=:pwd, sspwd=:sspwd, `port`=:port, nickname=:nickname,
-            `flow_up`=:flow_up, `flow_down`=:flow_down, transfer=:transfer, plan=:plan, `enable`=:enable, invite=:invite, regDateLine=:regDateLine");
+            `flow_up`=:flow_up, `flow_down`=:flow_down, transfer=:transfer, plan=:plan, `enable`=:enable, invite=:invite, regDateLine=:regDateLine, payTime=:payTime, expireTime=:expireTime");
         $statement->bindValue(':email', $this->email, \PDO::PARAM_STR);
         $statement->bindValue(':pwd', $this->password, \PDO::PARAM_STR);
         $statement->bindValue(':sspwd', $this->sspwd, \PDO::PARAM_STR);
@@ -140,6 +140,8 @@ class User {
         $statement->bindValue(':enable', $this->enable, \PDO::PARAM_INT);
         $statement->bindValue(':invite', $this->invite, \PDO::PARAM_INT);
         $statement->bindValue(':regDateLine', $this->regDateLine, \PDO::PARAM_INT);
+        $statement->bindValue(":payTime", $this->payTime, \PDO::PARAM_INT);
+        $statement->bindValue(":expireTime", $this->expireTime, \PDO::PARAM_INT);
 
         $statement->execute();
         $this->uid = Database::lastInsertId();
@@ -198,7 +200,7 @@ class User {
         $sql = "UPDATE member SET email=:email, sspwd=:sspwd, `port`=:port, nickname=:nickname," .
             "`flow_up`=:flow_up, `flow_down`=:flow_down, transfer=:transfer, plan=:plan, `enable`=:enable, invite=:invite, invite_num=:invite_num, regDateLine=:regDateLine,".
             "lastConnTime=:lastConnTime,lastCheckinTime=:lastCheckinTime,lastFindPasswdTime=:lastFindPasswdTime,".
-            "lastFindPasswdCount=:lastFindPasswdCount,forgePwdCode=:forgePwdCode WHERE uid=:userId";
+            "lastFindPasswdCount=:lastFindPasswdCount,forgePwdCode=:forgePwdCode,payTime=:payTime, expireTime=:expireTime WHERE uid=:userId";
 
         $statement = Database::prepare($sql);
         $statement->bindValue(':email', $this->email, \PDO::PARAM_STR);
@@ -218,6 +220,8 @@ class User {
         $statement->bindValue(':lastFindPasswdTime', $this->lastFindPasswordTime, \PDO::PARAM_INT);
         $statement->bindValue(':lastFindPasswdCount', $this->lastFindPasswordCount, \PDO::PARAM_INT);
         $statement->bindValue(':forgePwdCode', $this->forgePwdCode, \PDO::PARAM_STR);
+        $statement->bindValue(":payTime", $this->payTime, \PDO::PARAM_INT);
+        $statement->bindValue(":expireTime", $this->expireTime, \PDO::PARAM_INT);
 
         $statement->bindValue(':userId', $this->uid, \PDO::PARAM_INT);
         $flag = $statement->execute();

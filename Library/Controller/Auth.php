@@ -165,6 +165,10 @@ class Auth {
             $user->regDateLine = time();
             $user->lastConnTime = $user->regDateLine;
             $user->sspwd = Util::GetRandomPwd();
+            $user->payTime = time(); // 注册时支付时间
+            if(!defined('TEST_USER_DAY'))
+                defined('TEST_USER_DAY', 7);
+            $user->expireTime = time() + (3600 * 24 * TEST_USER_DAY); // 到期时间
             $user->insertToDB();
 
             // if(!ENABLE_PLAN_A || $invite->plan != 'A')

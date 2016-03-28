@@ -46,6 +46,8 @@ class User extends AdminListener {
                 // 手动处理一下流量单位
                 $us->transfer = $us->transfer / Util::GetGB();
                 $us->flow_down = $us->flow_down / Util::GetGB();
+                $us->payTime = date('Y-m-d H:i:s', $us->payTime);
+                $us->expireTime = date('Y-m-d H:i:s', $us->expireTime);
                 $result['error'] = 0;
                 $result['data'] = $us;
                 $result['message'] = 'Success';
@@ -72,6 +74,8 @@ class User extends AdminListener {
                 if($_POST['user_transfer'] != null) $us->transfer = floatval($_POST['user_transfer']) * Util::GetGB();
                 if($_POST['user_flow_up'] != null) $us->flow_up = $_POST['user_flow_up'] * Util::GetGB();
                 if($_POST['user_enable'] != null) $us->enable = $_POST['user_enable']; // 是否启用该用户。该字段会强制用户无法链接到所有服务器！
+                if($_POST['user_payTime'] != null) $us->payTime = strtotime($_POST['user_payTime']);
+                if($_POST['user_expireTime'] != null) $us->expireTime = strtotime($_POST['user_expireTime']);
                 $result['user'] =  $us;
                 if($us->enable != 0 && $us->enable != 1) $us->enable=0;
                 if($us->port!=null && $us->port!=0) {

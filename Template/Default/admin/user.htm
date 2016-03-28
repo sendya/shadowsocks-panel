@@ -18,7 +18,7 @@
                             <table class="table table-hover">
                                 <tbody>
                                 <tr>
-                                    <th>ID</th>
+                                    <th width="90px">端口</th>
                                     <th>用户名</th>
                                     <th>邮箱</th>
                                     <th>套餐</th>
@@ -34,7 +34,7 @@
                                     <td>{$us->email}</td>
                                     <td>{$us->plan}</td>
                                     <td>{(\Helper\Util::FlowAutoShow($us->transfer))}</td>
-                                    <td>-</td>
+                                    <td>{(date('Y-m-d H:i:s', $us->expireTime))}</td>
                                     <td>
                                         <a class="btn btn-info btn-sm" href="javascript:;" onclick="userModify({$us->uid});">编辑</a>
                                         <a class="btn btn-danger btn-sm" href="javascript:;" onclick="userRemove({$us->uid})">删除</a>
@@ -123,9 +123,9 @@
                         <div class="col-md-6">
 
                             <div class="form-group">
-                                <label for="field-10" class="control-label">是否启用用户</label>
+                                <label for="field-6" class="control-label">是否启用用户</label>
 
-                                <select name="user.enable" id="field-10" class="form-control">
+                                <select name="user.enable" id="field-6" class="form-control">
                                     <option value="0">停用</option>
                                     <option value="1">启用</option>
                                 </select>
@@ -137,9 +137,9 @@
                         <div class="col-md-6">
 
                             <div class="form-group">
-                                <label for="field-6" class="control-label">账户等级</label>
+                                <label for="field-7" class="control-label">账户等级</label>
 
-                                <input type="text" class="form-control" name="user.plan" id="field-6" placeholder="VIP">
+                                <input type="text" class="form-control" name="user.plan" id="field-7" placeholder="VIP">
                             </div>
 
                         </div>
@@ -147,9 +147,9 @@
                         <div class="col-md-6">
 
                             <div class="form-group">
-                                <label for="field-7" class="control-label">邀请码</label>
+                                <label for="field-8" class="control-label">邀请码</label>
 
-                                <input type="text" class="form-control" name="user.invite_num" id="field-7" value="" placeholder="0 个">
+                                <input type="text" class="form-control" name="user.invite_num" id="field-8" value="" placeholder="0 个">
                             </div>
                         </div>
                     </div>
@@ -158,9 +158,9 @@
                         <div class="col-md-6">
 
                             <div class="form-group">
-                                <label for="field-8" class="control-label">总流量(GB)</label>
+                                <label for="field-9" class="control-label">总流量(GB)</label>
 
-                                <input type="text" class="form-control" name="user.transfer" id="field-8" value="" placeholder="100 GB">
+                                <input type="text" class="form-control" name="user.transfer" id="field-9" value="" placeholder="100 GB">
                             </div>
 
                         </div>
@@ -168,20 +168,20 @@
                         <div class="col-md-6">
 
                             <div class="form-group">
-                                <label for="field-9" class="control-label">已流量(GB)</label>
+                                <label for="field-10" class="control-label">已流量(GB)</label>
 
-                                <input type="text" class="form-control" name="user.flow_down" id="field-9" value="" placeholder="99 GB">
+                                <input type="text" class="form-control" name="user.flow_down" id="field-10" value="" placeholder="99 GB">
                             </div>
                         </div>
                     </div>
-                    <!--
+
                     <div class="row">
                         <div class="col-md-6">
 
                             <div class="form-group">
-                                <label for="field-10" class="control-label">续费时间</label>
+                                <label for="field-11" class="control-label">续费时间</label>
 
-                                <input type="text" class="form-control" id="field-10" value="" placeholder="">
+                                <input type="text" class="form-control" name="user.payTime" id="field-11" value="" placeholder="">
                             </div>
 
                         </div>
@@ -189,13 +189,13 @@
                         <div class="col-md-6">
 
                             <div class="form-group">
-                                <label for="field-11" class="control-label">到期时间</label>
+                                <label for="field-12" class="control-label">到期时间</label>
 
-                                <input type="text" class="form-control" id="field-11" value="" placeholder="">
+                                <input type="text" class="form-control" name="user.expireTime" id="field-12" value="" placeholder="">
                             </div>
                         </div>
                     </div>
-                    -->
+
                 </div>
 
 
@@ -248,8 +248,11 @@
                         $("input[name='user.transfer']").val(user.transfer);
                         $("input[name='user.flow_down']").val(user.flow_down);
                         $("select[name='user.enable']").val(user.enable);
+                        $("input[name='user.payTime']").val(user.payTime);
+                        $("input[name='user.expireTime']").val(user.expireTime);
 
                         $("#form1").attr("action", "/admin/user/modify");
+
                         jQuery('#modal-6 .modal-title').html('修改用户资料');
                         jQuery('#modal-6').modal('show', {backdrop: 'static'});
                     }

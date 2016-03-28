@@ -24,32 +24,6 @@ class Setting
         }
     }
 
-    public static function initSetting() {
-        $querySQL = "SELECT k, v FROM setting";
-        $statement = Database::prepare($querySQL);
-        $statement->execute();
-        $statement->setFetchMode(\PDO::FETCH_CLASS, '\\Helper\\Setting');
-        $settings = $statement->fetchAll(\PDO::FETCH_CLASS);
-
-        $json = json_encode($settings);
-        $str = <<<EOF
-<?php
-/**
- * SS-Panel
- * A simple Shadowsocks management system
- * Author: Sendya <18x@loacg.com>
- */
-
-if(!defined('ROOT_PATH'))
-	exit('This file could not be access directly.');
-
-\$__cache_config = json_decode('{$json}');
-EOF;
-
-        file_put_contents(self::CACHE_FILE, $str);
-        exit();
-    }
-
     public static function get($k) {
 
         $querySQL = "SELECT k, v FROM setting WHERE k=?";

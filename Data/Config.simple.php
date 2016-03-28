@@ -36,9 +36,9 @@ $MAIL = array(
 );
 
 /**
- * Flow default value
+ * Default user test time
  */
-define('TRANSFER', 10);// Default flow 10GB . A port
+define('TEST_USER_DAY', 7);// 默认的测试时间，默认或不设定则为7天
 
 /**
  * Plan 'A' enable
