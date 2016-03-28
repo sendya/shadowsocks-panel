@@ -137,6 +137,23 @@ CREATE TABLE `cron` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+
+-- ----------------------------
+-- Table structure for card
+-- ----------------------------
+DROP TABLE IF EXISTS `card`;
+CREATE TABLE `card` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `card` varchar(60) NOT NULL,
+  `addTime` int(11) NOT NULL COMMENT '添加时间',
+  `plan` varchar(4) NOT NULL,
+  `type` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '0 月卡，1 季度卡，2 半年卡 ，5 流量卡（20GB），6 流量卡（50GB），7 流量卡（100GB）, 8 流量卡（200GB）',
+  `status` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '0 失效 1 有效',
+  PRIMARY KEY (`id`),
+  KEY `p_id` (`id`,`card`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
 -- --------------------------
 -- Default db
 -- --------------------------
