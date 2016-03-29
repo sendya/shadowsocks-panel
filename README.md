@@ -6,12 +6,9 @@ Shadowsocks Panel
 支持PHP5.2+ ~ PHP7 (需要 PDO支持模块, nginx url重写)  
 
 旧版本分支 [old-sspanel（原V2上改版）](https://github.com/sendya/shadowsocks-panel/tree/old-sspanel)  
-### 程序截图
-![后台](https://static-2.loacg.com/open/static/ss-panel-github/Admin.png)
-![后台_cron](https://static-2.loacg.com/open/static/ss-panel-github/admin_cron.png)
-![前台](https://static-2.loacg.com/open/static/ss-panel-github/member.png)
-![前台](https://static-2.loacg.com/open/static/ss-panel-github/member2.png)
-![前台](https://static-2.loacg.com/open/static/ss-panel-github/member3.png)
+### 程序截图 （提供主题引擎，可自定义主题样式）
+![主页](https://static-2.loacg.com/open/static/ss-panel-github/20160329101455.png)
+![节点](https://static-2.loacg.com/open/static/ss-panel-github/20160329110445.png)
 
 ### 1. 安装
 ```bash
@@ -25,9 +22,10 @@ $ composer install
 ```bash
 $ cp ./Data/Config.simple.php ./Data/Config.php
 $ vim ./Data/Config.php
-$ chmod -R 777 ./Data/
+$ chmod -R 777 ./Data/Template/
 $ mysql -uroot -p
 ```
+注：主题模板缓存目录需要开放权限，给`php`权限或者懒惰直接给`777`即可，目录内文件是无法直接访问到的~无需担心代码安全。
 
 #### 2.1 线上环境时请关闭配置文件中的几项配置  
 ```php
