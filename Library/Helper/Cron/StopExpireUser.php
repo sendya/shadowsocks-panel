@@ -8,10 +8,12 @@
 
 namespace Helper\Cron;
 
+use Contactable\ICron;
+
 use Helper\Setting;
 use Model\User;
 
-class StopExpireUser implements ICron{
+class StopExpireUser implements ICron {
 
     const STEP = 300;
 

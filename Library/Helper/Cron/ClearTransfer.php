@@ -8,6 +8,8 @@
 
 namespace Helper\Cron;
 
+use Contactable\ICron;
+
 use Core\Database;
 
 class ClearTransfer implements ICron {

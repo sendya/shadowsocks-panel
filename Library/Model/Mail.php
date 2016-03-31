@@ -18,6 +18,4 @@ class Mail {
     public $subject;
     public $content;
 
-
-
 }
