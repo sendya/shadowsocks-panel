@@ -21,10 +21,10 @@ class StopExpireUser implements ICron {
 
         $users = User::GetUserArrayByExpire();
         $mailPost = false;
-        if (Setting::get('status_mail')) {
-            $mailPost = true;
-            $mailContent = '';
-        }
+//        if (Setting::get('status_mail')) {
+//            $mailPost = true;
+//            $mailContent = '';
+//        }
 
         foreach ($users as $user) {
             $user->stop();
