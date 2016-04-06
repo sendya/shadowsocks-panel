@@ -48,7 +48,7 @@ class Invite extends AdminListener {
 		}
 		if($inviteNumber > 1) {
 			for($i=0; $i<$inviteNumber;$i++){
-				InviteModel::addInvite($user->uid, $plan);
+				InviteModel::addInvite(-1, $plan);
 			}
 		} else {
 			InviteModel::addInvite(-1, $plan);

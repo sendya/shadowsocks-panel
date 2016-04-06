@@ -115,9 +115,21 @@
                             <label for="field-4" class="control-label">添加时间</label>
 
                             <div class="date-and-time">
-                                <input type="text" id="field-4" class="form-control datepicker" name="add_time1" data-format="yyyy-mm-dd">
+                                <input type="text" id="field-4" class="form-control datepicker" placeholder="{(date('Y-m-d', time()))}" name="add_time1" data-format="yyyy-mm-dd">
                                 <input type="text" class="form-control timepicker" name="add_time2" data-template="dropdown" data-show-seconds="true" data-default-time="11:25" data-show-meridian="false" data-minute-step="5" data-second-step="5" />
                             </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+
+                        <div class="form-group">
+                            <label for="field-5" class="control-label">添加邀请码个数</label>
+
+                            <input type="number" class="form-control" name="number" id="field-5" value="1" placeholder="1" data-message-required="邀请码个数.">
                         </div>
 
                     </div>
@@ -168,6 +180,7 @@
                         $("#plan").val(invite.plan);
                         $("input[name='expiration']").val(invite.expiration);
                         $("input[name='add_time1']").val(invite.dateLine);
+                        $("input[name='number']").hide().val('');
                         $("#form1").attr("action", "/admin/invite/update.json");
                         jQuery('#modal-6 .modal-title').html('修改邀请码');
                         jQuery('#modal-6').modal('show', {backdrop: 'static'});
@@ -183,6 +196,7 @@
         jQuery('#modal-6').modal('show', {backdrop: 'static'});
     }
     function inviteAdd(){
+        $("input[name='number']").show().val('');
         $("input[name='invite']").val('');
         $("input[name='invite_2']").val('');
         $("#plan").val('A');
