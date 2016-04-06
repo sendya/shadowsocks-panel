@@ -131,8 +131,8 @@ class Form extends Listener {
         global $user;
         $user = User::GetUserByUserId($user->uid);
         $tr = 10 * Util::GetGB();
-        $result = array('error' => 1, 'message' => '购买失败，您的流量不足10G。');
-        if ($user->transfer > $tr) {
+        $result = array('error' => 1, 'message' => '购买失败，至少需要20GB流量才能购买邀请码。');
+        if ($user->transfer > ($tr*2)) {
             $user->transfer = $user->transfer - $tr;
             $user->invite_num = $user->invite_num + 1;
             $user->updateUser();
@@ -145,7 +145,7 @@ class Form extends Listener {
     public function addInvite() {
         global $user;
         $user = User::GetUserByUserId($user->uid);
-        $result = array('error' => 1, 'message' => '创建邀请码失败，您没有再次创建邀请码的次数了。当然，你可以用流量购买次数。');
+        $result = array('error' => 1, 'message' => '创建邀请码失败，您没有再次创建邀请码的次数了。当然，你可以用流量购买次数。(10GB/个)');
         if ($user->invite_num > 0) {
             $user->invite_num = $user->invite_num-1;
             $user->updateUser();

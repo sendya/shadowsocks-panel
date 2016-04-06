@@ -48,13 +48,17 @@
                     {$invite->invite}
                 </td>
                 <td>
-                    <a href="javascript:;" class="btn btn-sm btn-secondary" data-set-skin="">可用</a>
+                    <if condition="$invite->status == 0">
+                        <a href="javascript:;" class="btn btn-sm btn-secondary" data-set-skin="">可用</a>
+                    <else>
+                        <a href="javascript:;" class="btn btn-sm btn-red" data-set-skin="">已用</a>
+                    </if>
                 </td>
             </tr>
             </loop>
             <else>
             <tr>
-                <td colspan="3" align="center">您没有邀请码</td>
+                <td colspan="3" align="center">您没有可用的邀请码</td>
             </tr>
 
             </tbody>
@@ -69,7 +73,7 @@
 
         <br>
 
-        <pre>邀请码这种东西，若无力生成,请找管理员索要吧。e-Mail: 18x@mloli.com</pre>
+        <pre>邀请码这种东西，若无力生成,请找管理员索要吧。</pre>
 
     </div>
 </div>

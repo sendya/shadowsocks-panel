@@ -13,9 +13,15 @@ use Contactable\ICron;
 use Helper\Setting;
 use Model\User;
 
+/**
+ * 计划任务 - StopExpireUser
+ * 自动停止 超流量/使用时间到期 用户
+ *
+ * @package Helper\Cron
+ */
 class StopExpireUser implements ICron {
 
-    const STEP = 300;
+    const STEP = 300; // 5分钟执行一次
 
     public function run() {
 

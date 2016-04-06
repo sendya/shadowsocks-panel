@@ -30,7 +30,9 @@ class Invite {
         $inviteList = null;
         $selectSQL = "SELECT * FROM invite WHERE 1=1 ";
         $selectSQL .= "AND uid={$uid} ";
-        if (isset($status) && "" != $status) $selectSQL .= "AND status={$status} ";
+        if ($status != "")
+            $selectSQL .= "AND status={$status} ";
+
         $selectSQL .= "ORDER BY dateLine DESC";
         $statement = Database::prepare($selectSQL);
         $statement->execute();

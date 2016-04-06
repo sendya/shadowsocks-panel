@@ -12,6 +12,12 @@ use Contactable\ICron;
 
 use Core\Database;
 
+/**
+ * 计划任务 - ClearTransfer
+ * 每月 1号 重置所有用户流量
+ *
+ * @package Helper\Cron
+ */
 class ClearTransfer implements ICron {
     
     public function run() {
