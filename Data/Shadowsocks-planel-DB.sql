@@ -173,3 +173,5 @@ INSERT INTO `cron` VALUES ('clearTransfer', '1', '1459025349', '10');
 INSERT INTO `cron` VALUES ('daily', '0', '1459094400', '100');
 INSERT INTO `cron` VALUES ('mail', '0', '1459011931', '80');
 INSERT INTO `cron` VALUES ('stopExpireUser', '1', '1459024168', '30');
+
+INSERT INTO `setting` (`k`, `v`) VALUES ('version', 'v0.41');

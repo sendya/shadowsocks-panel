@@ -58,9 +58,4 @@ EOF;
 
         $this->execute($sql);
     }
-
-    public function up()
-    {
-
-    }
 }
