@@ -1,14 +1,9 @@
 <?php
 /**
- * KK Forum
- * A simple bulletin board system
+ * KK-Framework
  * Author: kookxiang <r18@ikk.me>
  */
 
-/**
- * PHP7+ => Throwable 
- * PHP5+ PHP7- => Exception
- */
 namespace Core;
 
 class Error extends \Exception
@@ -36,8 +31,8 @@ class Error extends \Exception
      */
     public static function registerHandler()
     {
-        set_exception_handler(array('\\Core\\Error', 'handleUncaughtException'));
-        set_error_handler(array('\\Core\\Error', 'handlePHPError'), E_ALL);
+        set_exception_handler(array(__CLASS__, 'handleUncaughtException'));
+        set_error_handler(array(__CLASS__, 'handlePHPError'), E_ALL);
     }
 
     public static function handlePHPError($errNo, $errStr, $errFile, $errLine)
@@ -55,6 +50,7 @@ class Error extends \Exception
         self::handleUncaughtException($exception);
     }
 
+
     /**
      * @param \Throwable $instance Exception or Error instance
      * @throws Error
@@ -62,20 +58,18 @@ class Error extends \Exception
     public static function handleUncaughtException($instance)
     {
         @ob_end_clean();
-        if (Database::inTransaction() && Database::getInstance()->inTransaction()) {
-            Database::rollBack();
+        if (Database::getInstance() && Database::getInstance()->inTransaction()) {
+            Database::getInstance()->rollBack();
         }
         if (!($instance instanceof Error)) {
             $instance = new self($instance->getMessage(), intval($instance->getCode()), $instance,
                 $instance->getTrace());
         }
-
-        if(Router::extension() == '.json') {
-            header("Content-Type: application/json;charset=UTF-8");
-            echo json_encode( array("code" => intval($instance->getCode()), "hasError" => true, "message" => $instance->getMessage()));
-            exit();
-        }
-        include Template::load('Misc/Error');
+        Template::setView('Misc/Error');
+        Template::putContext('instance', $instance);
+        Filter::preRender();
+        Template::render();
+        Filter::afterRender();
         exit();
     }
 
@@ -93,6 +87,12 @@ class Error extends \Exception
                 continue;
             }
             if ($error['function'] == 'getBackTrace') {
+                continue;
+            }
+            if ($error['function'] == 'handlePHPError') {
+                continue;
+            }
+            if ($error['function'] == 'handleUncaughtException') {
                 continue;
             }
             $error['line'] = $error['line'] ? ":{$error['line']}" : '';

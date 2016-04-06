@@ -7,30 +7,28 @@
 namespace Controller;
 
 use Core\Template;
-use Helper\Listener;
-use Helper\Util;
-use Helper\Encrypt;
-use Model\Invite;
-use Model\User;
-use Helper\Mail;
 use Helper\Message;
+use Model\User;
 
 class Auth {
 
     public function index() {
-        Message::show("你走错地方啦，3秒后给你开启传送点", '/auth/login', 3);
+
+        var_dump(strpos("Default/Misc/Error", "Misc")==false);
+        exit();
+
+
+        Message::show("你走错地方啦，3秒后给你开启传送点", 'auth/login', 3);
         exit();
     }
 
-    public function Login() {
-        $controller = "Login";
+    public function login() {
         /**
          * 1. 判断用户是否已经登陆,
          *      若已经登陆,则直接跳转到控制面板(仪表盘)中.
          * 2. 加载登陆页面模板,进入登陆页面.
          */
-        //throw new Error("Check Login :" . Listener::checkLogin(), 505);
-        $user = User::getInstance();
+        $user = User::getCurrent();
         if ($user->uid) {
             header("Location:/member");
         } else if (isset($_REQUEST['email']) && isset($_REQUEST['passwd'])) {
@@ -39,7 +37,6 @@ class Auth {
             $passwd = htmlspecialchars($_REQUEST['passwd']);
             $remember_me = htmlspecialchars($_REQUEST['remember_me']);
 
-            $user = User::getInstance();
             $user = $user->GetUserByEmail($email);
 
             if ($user) {
@@ -48,11 +45,8 @@ class Auth {
                     $result['message'] = '登陆成功,即将跳转到 &gt;仪表盘';
 
                     $remember_me == 'week' ? $ext = 3600 * 24 * 7 : $ext = 3600;
-                    $token = $user->uid . "\t" . $user->email . "\t" . $user->nickname;
-                    $token = Encrypt::encode($token, COOKIE_KEY);
-                    $tokenOutTime = Encrypt::encode(time(), COOKIE_KEY);
-                    setcookie("token", base64_encode($tokenOutTime), time() + $ext, "/");
-                    setcookie("auth", base64_encode($token), time() + $ext, "/");
+
+                    $_SESSION['currentUser'] = $user;
                 } else {
                     $result['message'] = "账户名或密码错误, 请检查后再试!";
                 }
@@ -61,7 +55,7 @@ class Auth {
             echo json_encode($result);
             exit();
         } else {
-            include Template::load('/panel/login');
+            Template::setView('panel/login');
         }
     }
 

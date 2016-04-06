@@ -1,12 +1,15 @@
 <?php
 /**
- * KK Offline Downloader
- * System Message Class
+ * KK-Framework
  * Author: kookxiang <r18@ikk.me>
  */
+
 namespace Helper;
+
+use Core\Filter;
 use Core\Response;
 use Core\Template;
+
 class Message
 {
     /**
@@ -17,8 +20,13 @@ class Message
      */
     public static function show($text, $link = null, $timeout = 3)
     {
-        $link = Response::generateURL($link);
-        include Template::load('Misc/Redirect');
+        Template::setView('Misc/Redirect');
+        Template::putContext('text', $text);
+        Template::putContext('timeout', $timeout);
+        Template::putContext('link', $link === null ? null : Response::generateURL($link));
+        Filter::preRender();
+        Template::render();
+        Filter::afterRender();
         exit();
     }
 }

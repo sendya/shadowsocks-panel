@@ -6,13 +6,19 @@ class OptionsDefaultDb extends AbstractMigration
 {
     public function up()
     {
-        $columns = ['k', 'v'];
         $options = [
-            ['update_notification', '1'],
-            ['version', 'v0.41']
+            [
+                'k'     =>  'update_notification',
+                'v'     =>  '1'
+            ],[
+                'k'     =>  'version',
+                'v'     =>  'v0.41'
+            ],[
+                'k'     =>  'current_port',
+                'v'     =>  '5000'
+            ]
         ];
-        $table = $this->table("options");
-        $table->insert($columns, $options);
-        $table->saveData();
+
+        $this->insert('options', $options);
     }
 }

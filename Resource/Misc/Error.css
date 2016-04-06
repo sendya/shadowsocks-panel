@@ -1,3 +1,8 @@
+/*
+ * KK-Framework
+ * Author: kookxiang <r18@ikk.me>
+ */
+
 ::selection {
     background: rgba(78, 176, 248, 0.3);
 }
@@ -17,9 +22,6 @@ body {
     background: #2980B9;
     text-align: center;
     user-select: none;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
 }
 
 html {

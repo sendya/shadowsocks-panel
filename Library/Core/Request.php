@@ -1,17 +1,19 @@
 <?php
 /**
- * KK Forum
- * A simple bulletin board system
+ * KK-Framework
  * Author: kookxiang <r18@ikk.me>
  */
+
 namespace Core;
 
-class Request {
+class Request
+{
     /**
      * Detect base url whether it is not defined
      * @return string Base URL of this forum
      */
-    public static function autoDetectBaseURL() {
+    public static function autoDetectBaseURL()
+    {
         if (!defined('BASE_URL')) {
             $protocol = self::isSecureRequest() ? 'https' : 'http';
             $host = $_SERVER['SERVER_NAME'];
@@ -25,7 +27,8 @@ class Request {
      * Check whether this is a request via HTTPS
      * @return bool True if is HTTPS request
      */
-    public static function isSecureRequest() {
+    public static function isSecureRequest()
+    {
         if (!defined('IS_HTTPS_REQUEST')) {
             define('IS_HTTPS_REQUEST', ($_SERVER['HTTPS'] && $_SERVER['HTTPS'] != 'off'));
         }
@@ -36,7 +39,8 @@ class Request {
      * Get request path from server header
      * @return string Path
      */
-    public static function getRequestPath() {
+    public static function getRequestPath()
+    {
         if ($_SERVER['PATH_INFO']) {
             $path = trim($_SERVER['PATH_INFO'], '/');
         } else {

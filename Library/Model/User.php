@@ -1,22 +1,33 @@
 <?php
 /**
- * SS-Panel
- * A simple Shadowsocks management system
- * Author: kookxiang <r18@ikk.me>
+ * Project: shadowsocks-panel
+ * Author: Sendya <18x@loacg.com>
+ * Time: 2016/4/6 22:32
  */
+
+
 namespace Model;
 
-use Core\Database;
-use Helper\Encrypt;
+use Core\Database as DB;
+use Core\Error;
+use Core\Model;
 
-class User {
+/**
+ * Class User
+ * @table member
+ * @package Model
+ */
+class User extends Model {
+
     const ENCRYPT_TYPE_DEFAULT = 0;
     const ENCRYPT_TYPE_ENHANCE = 1;
 
-    public $uid; //user id (主键)
-    public $email;//电子邮件  (主键)
+    private $primaryKey = 'uid';// 定义主键
+
+    public $uid;// (主键)
+    public $email;//电子邮件
     public $nickname;//昵称,没卵用
-    private $password = 'default';//Fuck password
+    protected $password = 'default';//Fuck password
     public $sspwd;// ss连接密码
     public $port;// ss端口
     public $flow_up = 0;//上传流量
@@ -35,288 +46,68 @@ class User {
     public $forgePwdCode; // 找回密码次数
     public $payTime; // 上次支付时间
     public $expireTime; // 到期时间
-
-    public $gravatar;
-
-    public static $instance;
+    /** @ignore */
+    public $lastActive = TIMESTAMP;
 
     /**
      * Get current user object
      * @return User
      */
-    public static function getInstance() {
-        if (!self::$instance) {
-            self::$instance = new self();
-            $cookie = Encrypt::decode(base64_decode($_COOKIE['auth']), COOKIE_KEY);
-            if ($cookie) {
-                list(self::$instance->uid, self::$instance->email, self::$instance->nickname) = explode("\t", $cookie);
+    public static function getCurrent() {
+        /** @var User $user */
+        $user = $_SESSION['currentUser'];
+        if ($user && TIMESTAMP - $user->lastActive > 600) {
+            $userObj = self::getUserByUserId($user->uid);
+            if (!$userObj) {
+                $user = null;
+            } elseif ($user->password != $userObj->password) {
+                // Password changed
+                $user = null;
+            } else {
+                $userObj->lastActive = TIMESTAMP;
+                $user = $userObj;
             }
+            $_SESSION['currentUser'] = $user;
         }
-        return self::$instance;
+        return $user;
     }
-
-    /*
-    public function __construct() {
-        $cookie = Encrypt::decode(base64_decode($_COOKIE['auth']), COOKIE_KEY);
-        if ($cookie) {
-            list($this->uid, $this->email, $this->nickname) = explode("\t", $cookie);
-        }
-    }
-    */
 
     /**
-     * Get a user by email
-     * @param $email string Email address
+     * @param $email
      * @return User
      */
-    public static function GetUserByEmail($email) {
-        $statement = Database::prepare("SELECT * FROM member WHERE email=?");
+    public static function getUserByEmail($email) {
+        $statement = DB::getInstance()->prepare('SELECT * FROM `member` WHERE email = ?');
         $statement->bindValue(1, $email);
         $statement->execute();
-        $statement->setFetchMode(\PDO::FETCH_CLASS, '\\Model\\User');
-        return $statement->fetch(\PDO::FETCH_CLASS);
+        return $statement->fetchObject(__CLASS__);
     }
 
     /**
-     * Get a user by UserId
-     * @param $userId int UserID
+     * @param $userId
      * @return User
      */
-    public static function GetUserByUserId($userId) {
-        $statement = Database::prepare("SELECT * FROM member WHERE uid=?");
-        $statement->bindValue(1, $userId, \PDO::PARAM_INT);
+    public static function getUserByUserId($userId) {
+        $statement = DB::getInstance()->prepare('SELECT * FROM `member` WHERE uid = ?');
+        $statement->bindValue(1, $userId, DB::PARAM_INT);
         $statement->execute();
-        $statement->setFetchMode(\PDO::FETCH_CLASS, '\\Model\\User');
-        return $statement->fetch(\PDO::FETCH_CLASS);
+        return $statement->fetchObject(__CLASS__);
     }
 
-    /**
-     * Get User array
-     * @return User[]
-     */
-    public static function GetUserArray() {
-        $userList = null;
-        $selectSQL = "SELECT * FROM member ORDER BY uid";
-        $statement = Database::prepare($selectSQL);
+    public static function getUserList() {
+        $statement = DB::getInstance()->prepare('SELECT * FROM `member` ORDER BY uid');
         $statement->execute();
-        $userList = $statement->fetchAll(\PDO::FETCH_CLASS, '\\Model\\User');
-        return $userList;
+        return $statement->fetchAll(DB::FETCH_CLASS, __CLASS__);
     }
 
-    /**
-     * Get User array by expire
-     * @return User[]
-     */
-    public static function GetUserArrayByExpire() {
-        $userList = null;
-        $selectSQL = "SELECT * FROM member WHERE expireTime<:expireTime OR (flow_up+flow_down)>transfer ORDER BY uid";
-        $statement = Database::prepare($selectSQL);
-        $statement->bindValue(":expireTime", time(), \PDO::PARAM_INT);
-        $statement->execute();
-        $userList = $statement->fetchAll(\PDO::FETCH_CLASS, '\\Model\\User');
-        return $userList;
+    public function verifyPassword($password)
+    {
+        return password_verify($password, $this->password);
     }
 
-    /**
-     * Insert current user into database
-     * @return int Auto-generated UserID for this user
-     */
-    public function insertToDB() {
-        $inTransaction = Database::inTransaction();
-        if (!$inTransaction) {
-            Database::beginTransaction();
-        }
-        $statement = Database::prepare("INSERT INTO member SET email=:email, `password`=:pwd, sspwd=:sspwd, `port`=:port, nickname=:nickname,
-            `flow_up`=:flow_up, `flow_down`=:flow_down, transfer=:transfer, plan=:plan, `enable`=:enable, invite=:invite, regDateLine=:regDateLine, payTime=:payTime, expireTime=:expireTime");
-        $statement->bindValue(':email', $this->email, \PDO::PARAM_STR);
-        $statement->bindValue(':pwd', $this->password, \PDO::PARAM_STR);
-        $statement->bindValue(':sspwd', $this->sspwd, \PDO::PARAM_STR);
-        $statement->bindValue(':port', $this->port, \PDO::PARAM_INT);
-        $statement->bindValue(':nickname', $this->nickname, \PDO::PARAM_STR);
-        $statement->bindValue(':flow_up', $this->flow_up, \PDO::PARAM_INT);
-        $statement->bindValue(':flow_down', $this->flow_down, \PDO::PARAM_INT);
-        $statement->bindValue(':transfer', $this->transfer, \PDO::PARAM_INT);
-        $statement->bindValue(':plan', $this->plan, \PDO::PARAM_STR);
-        $statement->bindValue(':enable', $this->enable, \PDO::PARAM_INT);
-        $statement->bindValue(':invite', $this->invite, \PDO::PARAM_INT);
-        $statement->bindValue(':regDateLine', $this->regDateLine, \PDO::PARAM_INT);
-        $statement->bindValue(":payTime", $this->payTime, \PDO::PARAM_INT);
-        $statement->bindValue(":expireTime", $this->expireTime, \PDO::PARAM_INT);
-
-        $statement->execute();
-        $this->uid = Database::lastInsertId();
-        if (!$inTransaction) {
-            Database::commit();
-        }
-        return $this->uid;
-    }
-
-    /**
-     * Verify whether the given password is correct
-     * @param string $password Password needs to verify
-     * @return bool Whether the password is correct
-     */
-    public function verifyPassword($password) {
-        list($hashedPassword, $encryptType) = explode('T', $this->password);
-        if ($encryptType == self::ENCRYPT_TYPE_DEFAULT) {
-            return $hashedPassword == md5(ENCRYPT_KEY . md5($password) . ENCRYPT_KEY);
-        } elseif ($encryptType == self::ENCRYPT_TYPE_ENHANCE) {
-            $salt = substr(md5($this->uid . $this->email . ENCRYPT_KEY), 8, 16);
-            return $hashedPassword == substr(md5(md5($password) . $salt), 0, 30);
-        }
-        return false;
-    }
-
-    /**
-     * Save new password
-     * @param string $password New password
-     */
-    public function savePassword($password) {
-        $salt = substr(md5($this->uid . $this->email . ENCRYPT_KEY), 8, 16);
-        $this->password = substr(md5(md5($password) . $salt), 0, 30) . 'T' . self::ENCRYPT_TYPE_ENHANCE;
-        $inTransaction = Database::inTransaction();
-        if (!$inTransaction) {
-            Database::beginTransaction();
-        }
-        $statement = Database::prepare("UPDATE member SET `password`=:pwd WHERE uid=:userId");
-        $statement->bindValue(':pwd', $this->password, \PDO::PARAM_STR);
-        $statement->bindValue(':userId', $this->uid, \PDO::PARAM_INT);
-        $statement->execute();
-        if (!$inTransaction) {
-            Database::commit();
-        }
-    }
-
-    /**
-     * update User info
-     *
-     */
-    public function updateUser() {
-
-        $inTransaction = Database::inTransaction();
-        if (!$inTransaction) {
-            Database::beginTransaction();
-        }
-        $sql = "UPDATE member SET email=:email, sspwd=:sspwd, `port`=:port, nickname=:nickname," .
-            "`flow_up`=:flow_up, `flow_down`=:flow_down, transfer=:transfer, plan=:plan, `enable`=:enable, invite=:invite, invite_num=:invite_num, regDateLine=:regDateLine,".
-            "lastConnTime=:lastConnTime,lastCheckinTime=:lastCheckinTime,lastFindPasswdTime=:lastFindPasswdTime,".
-            "lastFindPasswdCount=:lastFindPasswdCount,forgePwdCode=:forgePwdCode,payTime=:payTime, expireTime=:expireTime WHERE uid=:userId";
-
-        $statement = Database::prepare($sql);
-        $statement->bindValue(':email', $this->email, \PDO::PARAM_STR);
-        $statement->bindValue(':sspwd', $this->sspwd, \PDO::PARAM_STR);
-        $statement->bindValue(':port', $this->port, \PDO::PARAM_INT);
-        $statement->bindValue(':nickname', $this->nickname, \PDO::PARAM_STR);
-        $statement->bindValue(':flow_up', $this->flow_up, \PDO::PARAM_INT);
-        $statement->bindValue(':flow_down', $this->flow_down, \PDO::PARAM_INT);
-        $statement->bindValue(':transfer', $this->transfer, \PDO::PARAM_INT);
-        $statement->bindValue(':plan', $this->plan, \PDO::PARAM_STR);
-        $statement->bindValue(':enable', $this->enable, \PDO::PARAM_INT);
-        $statement->bindValue(':invite', $this->invite, \PDO::PARAM_STR);
-        $statement->bindValue(':invite_num', $this->invite_num, \PDO::PARAM_INT);
-        $statement->bindValue(':regDateLine', $this->regDateLine, \PDO::PARAM_INT);
-        $statement->bindValue(':lastConnTime', $this->lastConnTime, \PDO::PARAM_INT);
-        $statement->bindValue(':lastCheckinTime', $this->lastCheckinTime, \PDO::PARAM_INT);
-        $statement->bindValue(':lastFindPasswdTime', $this->lastFindPasswordTime, \PDO::PARAM_INT);
-        $statement->bindValue(':lastFindPasswdCount', $this->lastFindPasswordCount, \PDO::PARAM_INT);
-        $statement->bindValue(':forgePwdCode', $this->forgePwdCode, \PDO::PARAM_STR);
-        $statement->bindValue(":payTime", $this->payTime, \PDO::PARAM_INT);
-        $statement->bindValue(":expireTime", $this->expireTime, \PDO::PARAM_INT);
-
-        $statement->bindValue(':userId', $this->uid, \PDO::PARAM_INT);
-        $flag = $statement->execute();
-
-        if (!$inTransaction) {
-            Database::commit();
-        }
-        return $flag;
-    }
-
-    public function stop() {
-
-        $inTransaction = Database::inTransaction();
-        if (!$inTransaction) {
-            Database::beginTransaction();
-        }
-        $statement = Database::prepare("UPDATE member SET enable=0 WHERE uid=:uid");
-        $statement->bindValue(':uid', $this->uid, \PDO::PARAM_INT);
-        $flag = $statement->execute();
-        if (!$inTransaction) {
-            Database::commit();
-        }
-        return $flag;
-    }
-
-    /**
-     * User delete
-     * @param $uid
-     * @return bool
-     */
-    public static function delete($uid) {
-        $inTransaction = Database::inTransaction();
-        if (!$inTransaction) {
-            Database::beginTransaction();
-        }
-        $statement = Database::prepare("DELETE FROM member WHERE uid=?");
-        $statement->bindValue(1, $uid, \PDO::PARAM_INT);
-        $result = $statement->execute();
-
-        if(!$inTransaction) {
-            $result = Database::commit();
-        }
-        return $result;
-    }
-
-    public function deleteMe() {
-        return self::delete($this->uid);
-    }
-
-
-    public static function checkUserPortIsAvailable($port = 0, $uid) {
-        if($port != 0) {
-            $statement = Database::prepare("SELECT * FROM member WHERE port=? AND uid<>?");
-            $statement->bindValue(1, $port, \PDO::PARAM_INT);
-            $statement->bindValue(2, $uid, \PDO::PARAM_INT);
-            $statement->execute();
-            $statement->setFetchMode(\PDO::FETCH_CLASS, '\\Model\\User');
-            return $statement->fetch(\PDO::FETCH_CLASS);
-        }
-    }
-
-
-    /**
-     * Get password
-     */
-    public function getPassword() {
-        return $this->password;
-    }
-
-    public function getRegTime() {
-        return date("Y-m-d H:i:s", $this->regDateLine);
-    }
-
-    public function getGravatar() {
-        return \Helper\Util::GetGravatar($this->email, 128);
-    }
-
-    public function getFlow() {
-        return \Helper\Util::ToGB($this->transfer);
-    }
-
-    public static function getSSPwd($userId) {
-        $statement = Database::prepare("SELECT * FROM member WHERE uid=?");
-        $statement->bindValue(1, $userId, \PDO::PARAM_INT);
-        $statement->execute();
-        $statement->setFetchMode(\PDO::FETCH_CLASS, '\\Model\\User');
-        return $statement->fetch(\PDO::FETCH_CLASS);
-    }
-
-    public static function getUserCheckIn($uid) {
-        $statement = Database::prepare("SELECT count(*) FROM member WHERE lastCheckinTime > " . date('Y-m-d 00:00:00',
-                time()) . " AND uid=?");
-        $statement->bindValue(1, $uid, \PDO::PARAM_INT);
-        $checkIn = $statement->fetch(\PDO::PARAM_INT)[0];
-        return $checkIn == null ? 0 : $checkIn;
+    public function setPassword($password)
+    {
+        $this->password = password_hash($password, PASSWORD_BCRYPT);
     }
 
 
