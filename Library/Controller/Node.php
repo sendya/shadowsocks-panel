@@ -9,6 +9,7 @@ namespace Controller;
 use Core\Error;
 use Core\Template;
 use Model\User;
+use Helper\Message;
 
 /**
  * Class Node
@@ -28,7 +29,7 @@ class Node
      */
     public function QRCode()
     {
-
+        
     }
 
     public function Json()

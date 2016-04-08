@@ -20,11 +20,10 @@ Core\Error::registerHandler();
 // Initialize config
 @include DATA_PATH . 'Config.php';
 
-// Handler for json request
-Core\Filter::register(new Helper\JSON());
-
 // Handler for user power
 Core\Filter::register(new Helper\LoginFilter());
+// Handler for json request
+Core\Filter::register(new Helper\JSON());
 
 $defaultRouter = new Core\DefaultRouter();
 $defaultRouter->handleRequest();

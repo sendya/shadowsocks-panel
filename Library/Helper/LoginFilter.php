@@ -23,7 +23,8 @@ class LoginFilter implements IFilter {
     protected $black = false;
 
     public function preRoute(&$path) {
-
+        if (substr($path, -5) == '.json')
+            $this->isJson = true;
     }
 
     public function afterRoute(&$className, &$method) {
@@ -32,7 +33,7 @@ class LoginFilter implements IFilter {
 
         $reflection = new ReflectionMethod($className, $method);
         $docComment = $reflection->getDocComment();
-        $this->isJson = $this->isJSON($docComment);
+        // $this->isJson = $this->isJSON($docComment);
         if(strpos($docComment, '@Authorization') !== false && !$user) {
             $this->black = true;
         }
@@ -46,7 +47,7 @@ class LoginFilter implements IFilter {
             if($this->isJson) {
                 Template::setContext($this->data);
             } else {
-                Message::show('a', 'auth/login', 3);
+                Message::show($this->data['message'], 'auth/login', 3);
             }
         }
     }
