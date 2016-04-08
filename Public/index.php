@@ -23,5 +23,8 @@ Core\Error::registerHandler();
 // Handler for json request
 Core\Filter::register(new Helper\JSON());
 
+// Handler for user power
+Core\Filter::register(new Helper\LoginFilter());
+
 $defaultRouter = new Core\DefaultRouter();
 $defaultRouter->handleRequest();

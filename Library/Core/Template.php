@@ -27,7 +27,7 @@ class Template
         if ($context) {
             self::setContext($context);
         }
-        if(strpos($templateName, "Misc")==false && strpos($templateName, THEME)==false)
+        if(!is_numeric(stripos($templateName, "Misc")) && !is_numeric(stripos($templateName, THEME)))
             $templateName = THEME .'/'. $templateName;
 
         $templateFileOrigin = self::getPath($templateName);
@@ -35,7 +35,9 @@ class Template
         if (!file_exists($templateFile) && !file_exists($templateFileOrigin)) {
             throw new Error("Template {$templateName} not exists!", 101);
         }
-        if (!file_exists($templateFile)) {
+        if (defined(TEMPLATE_UPDATE) && !TEMPLATE_UPDATE) {
+            // Do not check template update
+        } else if (!file_exists($templateFile)) {
             self::compile($templateName);
         } elseif (filemtime($templateFile) <= filemtime($templateFileOrigin)) {
             self::compile($templateName);
@@ -111,8 +113,9 @@ class Template
         // variable with braces:
         $sourceCode = preg_replace('/\{\$([A-Za-z0-9_\[\]\'"]+)(->|::)(\$?[A-Za-z0-9_\-]+)(\(.*\))?}/',
             '<?php echo \$\\1\\2\\3\\4; ?>', $sourceCode);
-        $sourceCode = preg_replace('/\{\$([A-Za-z0-9_\[\]\'"]+)}/', '<?php echo \$\\1; ?>', $sourceCode);
+        $sourceCode = preg_replace('/\{\$([A-Za-z0-9_\[\]\->\(\)]+)\}/', '<?php echo \$\\1; ?>', $sourceCode);
         $sourceCode = preg_replace('/\{([A-Z][A-Z0-9_\[\]]*)\}/', '<?php echo \\1; ?>', $sourceCode);
+        $sourceCode = preg_replace('/\{\((.*)\)}/', '<?php echo \\1; ?>', $sourceCode);
         $lock->acquire();
 
         // PHP code:

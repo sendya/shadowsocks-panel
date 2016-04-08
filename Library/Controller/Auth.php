@@ -6,22 +6,25 @@
  */
 namespace Controller;
 
+use Model\Invite;
+use Model\User;
+
 use Core\Template;
 use Helper\Message;
-use Model\User;
+use Helper\Utils;
+use Helper\Option;
 
 class Auth {
 
     public function index() {
-
-        var_dump(strpos("Default/Misc/Error", "Misc")==false);
-        exit();
-
-
-        Message::show("你走错地方啦，3秒后给你开启传送点", 'auth/login', 3);
-        exit();
+        header("Location: /auth/login");
     }
 
+    /**
+     * Login
+     *
+     * @JSON
+     */
     public function login() {
         /**
          * 1. 判断用户是否已经登陆,
@@ -37,7 +40,7 @@ class Auth {
             $passwd = htmlspecialchars($_REQUEST['passwd']);
             $remember_me = htmlspecialchars($_REQUEST['remember_me']);
 
-            $user = $user->GetUserByEmail($email);
+            $user = User::getUserByEmail($email);
 
             if ($user) {
                 if ($user->verifyPassword($passwd)) {
@@ -52,8 +55,7 @@ class Auth {
                 }
             }
 
-            echo json_encode($result);
-            exit();
+            return $result;
         } else {
             Template::setView('panel/login');
         }
@@ -101,7 +103,9 @@ class Auth {
         header("Location:/");
     }
 
-
+    /**
+     * @JSON
+     */
     public function register() {
         $result = array('error' => 1, 'message' => '注册失败');
         $email = strtolower(trim($_POST['r_email']));
@@ -109,7 +113,7 @@ class Auth {
         $passwd = trim($_POST['r_passwd']);
         $repasswd = trim($_POST['r_passwd2']);
         $inviteCode = trim($_POST['r_invite']);
-        $invite = Invite::GetInviteByInviteCode($inviteCode); //校验 invite 是否可用
+        $invite = Invite::getInviteByInviteCode($inviteCode); //校验 invite 是否可用
         if ($invite->status != 0 || $invite == null || empty($invite)) {
             $result['message'] = '邀请码不可用';
         } else if ($repasswd != $passwd) {
@@ -118,7 +122,7 @@ class Auth {
             $result['message'] = '密码太短,至少8字符';
         } /* else if (strlen($userName) < 4) {
             $result['message'] = '昵称太短,至少2中文字符或6个英文字符';
-        }*/ else if ($chkEmail = Util::MailFormatCheck($email)) {
+        }*/ else if ($chkEmail = Utils::mailCheck($email)) {
             $result['message'] = $chkEmail;
         } else {
             $user = new User();
@@ -128,62 +132,44 @@ class Auth {
 
             $user->nickname = $userName;
 
-            // 定义邀请码套餐与流量单位
-            $transferNew = Util::GetGB();
+            // LEVEL 从数据库中获取
+            $transferLevel = [
+                'A'     =>  10,
+                'B'     =>  50,
+                'C'     =>  150,
+                'D'     =>  300,
+                'VIP'   =>  500
+            ];
 
-            switch($invite->plan) {
-                case 'B':
-                    $transferNew = $transferNew*50;
-                    break;
-                case 'C':
-                    $transferNew = $transferNew*150;
-                    break;
-                case 'D':
-                    $transferNew = $transferNew*300;
-                    break;
-                case 'VIP':
-                    $transferNew = $transferNew*500;
-                    break;
-                case 'SVIP':
-                    $transferNew = $transferNew*5200;
-                    break;
-                case 'A':
-                default:
-                    $transferNew = $transferNew*10;
-                    break;
-            }
+            // 定义邀请码套餐与流量单位
+            $transferNew = Utils::gb() * $transferLevel[$invite->plan];
 
             $user->transfer = $transferNew;
             $user->invite = $inviteCode;
-            $user->plan = $invite->plan;//将邀请码的账户类型设定到注册用户上.
+            $user->plan = $invite->plan;// 将邀请码的账户类型设定到注册用户上.
             $user->regDateLine = time();
             $user->lastConnTime = $user->regDateLine;
-            $user->sspwd = Util::GetRandomPwd();
+            $user->sspwd = Utils::randomChar();
             $user->payTime = time(); // 注册时支付时间
-            if(!defined('TEST_USER_DAY'))
-                defined('TEST_USER_DAY', 7);
-            $user->expireTime = time() + (3600 * 24 * TEST_USER_DAY); // 到期时间
-            $user->insertToDB();
+            $user_test_day = Option::get('user_test_day')?: 0;
+            $user->expireTime = time() + (3600 * 24 * intval($user_test_day)); // 到期时间
 
-            // if(!ENABLE_PLAN_A || $invite->plan != 'A')
-            $user->port = $user->uid; // 将用户uid设定为 port
+            $user->port = Utils::getNewPort(); // 端口号
+            $user->setPassword($passwd);
+            $user->save();
 
             $invite->reguid = $user->uid;
             $invite->regDateLine = $user->regDateLine;
             $invite->status = 1; // -1过期 0-未使用 1-已用
-            $invite->inviteIp = Util::GetUserIP();
-            $invite->updateInvite();
-            $user->updateUser();
-            $user->savePassword($passwd);
+            $invite->inviteIp = Utils::getUserIP();
+            $invite->save();
 
             if (null != $user->uid && 0 != $user->uid) {
                 $result['error'] = 0;
                 $result['message'] = '注册成功';
             }
         }
-
-        echo json_encode($result);
-        exit();
+        return $result;
     }
 
     public function forgePwd() {

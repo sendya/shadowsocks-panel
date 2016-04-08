@@ -1,4 +1,4 @@
-<import template="/panel/_head" />
+<import template="panel/_head" />
 <body class="page-body invite-page">
 <style>.row {margin-left: 0;margin-right: 0;}</style>
 <div class="invite-container">
@@ -24,7 +24,7 @@
                     <td>{(date('Y-m-d H:i:s', $invite->dateLine))}</td>
                     <td>{$invite->invite}</td>
                     <td><if condition="$invite->status == 0">
-                        <a href="/Auth/login?invite={$invite->invite}#register" target="_blank">点击使用</a>
+                        <a href="auth/login?invite={$invite->invite}#register" target="_blank">点击使用</a>
                         <elseif condition="$invite->status == 1">已用</elseif><else>过期</if></td>
                 </tr>
                 </loop>
@@ -34,9 +34,9 @@
                 </tbody>
             </table>
             <div class="row center">
-                <h4><a href="/Auth/login" class="btn btn-black btn-icon"><span>&nbsp;回到登陆&nbsp;</span><i class="fa-mail-reply-all"></i></a></h4>
+                <h4><a href="auth/login" class="btn btn-black btn-icon"><span>&nbsp;回到登陆&nbsp;</span><i class="fa-mail-reply-all"></i></a></h4>
             </div>
         </div>
     </div>
 </div>
-<import template="/panel/_footer" />
+<import template="panel/_footer" />

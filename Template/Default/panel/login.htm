@@ -4,186 +4,6 @@
 	<div class="login-container">
 		<div class="row">
 			<div class="col-sm-6">
-<style>
-	input:-webkit-autofill {
-		-webkit-box-shadow: 0 0 0px 1000px #313334 inset;
-		border: 1px solid rgba(55, 57, 58, 0.9)!important;
-	}
-</style>
-<script type="text/javascript">
-jQuery(document).ready(function($) {
-	setTimeout(function() {
-		$(".fade-in-effect").addClass("in");
-	}, 1);
-	$("form#login").validate({
-		rules: {
-			email: {required: true},
-			passwd: {required: true}},
-		messages: {
-			email: {required: "请输入用户名."},
-			passwd: {required: "请输入密码."}},
-		submitHandler: function(form) {
-			$('button[type="submit"]').attr('disabled',"true");
-			show_loading_bar(70);
-			var opts = {
-				closeButton: true,
-				debug: false,
-				positionClass: "toast-top-full-width",
-				onclick: null,
-				showDuration: "300",
-				hideDuration: "1000",
-				timeOut: "5000",
-				extendedTimeOut: "1000",
-				showEasing: "swing",
-				hideEasing: "linear",
-				showMethod: "fadeIn",
-				hideMethod: "fadeOut"
-			};
-
-			$.ajax({
-				url: "/auth/login.json",
-				method: "POST",
-				dataType: "json",
-				data: {
-					do_login: true,
-					email: $(form).find("#email").val(),
-					passwd: $(form).find("#passwd").val(),
-					remember_me: document.getElementById('remember_me').checked==true ? 'week' : ''
-				},
-				success: function(resp) {
-					console.log("in success");
-					$('button[type="submit"]').removeAttr("disabled");
-					show_loading_bar({
-						delay: .5,
-						pct: 100,
-						finish: function() {
-							if (resp.error == "0") {
-								toastr.success(resp.message, "提示", opts);
-								setTimeout("window.location.href = '/member'", 2000);
-							} else if (resp.message != "") {
-								toastr.error(resp.message, "提示!", opts);
-								$('#email').select();
-							} else {
-								toastr.error("请求服务器失败，请稍后重试", "无效登录!", opts);
-								$('#email').select();
-							}
-						}
-					});
-				},
-				error: function(jqXHR) {
-					show_loading_bar({
-						delay: .5,
-						pct: 100,
-						finish: function() {
-							toastr.error('程序出现致命错误，无法连接到登录服务器<br/>可能的问题：<br/>&nbsp;&nbsp;1.数据库连接失败<br/>&nbsp;&nbsp;2.请求地址API错误', "错误!", opts);
-							$('button[type="submit"]').removeAttr("disabled");
-						}
-					});
-				}
-			});
-		}
-	});
-	$("form#register").validate({
-		rules: {
-			r_email: {
-				required: true
-			},
-			r_passwd: {
-				required: true
-			},
-			r_passwd2: {
-				required: true
-			}, /*
-			r_user_name: {
-				required: true
-			}, */
-			r_invite: {
-				required: true
-			}
-		},
-		messages: {
-			r_email: {
-				required: "请输入用户名."
-			},
-			r_passwd: {
-				required: "请输入密码."
-			},
-			r_passwd2: {
-				required: "请再次输入密码"
-			},
-			r_user_name: {
-				required: "请输入昵称"
-			},
-			r_invite: {
-				required: "没邀请码注册个球啊?"
-			}
-		},
-		submitHandler: function(form) {
-			$('button[type="submit"]').attr('disabled',"true");
-			show_loading_bar(70);
-			var opts = {
-				closeButton: true,
-				debug: false,
-				positionClass: "toast-top-full-width",
-				onclick: null,
-				showDuration: "300",
-				hideDuration: "1000",
-				timeOut: "5000",
-				extendedTimeOut: "1000",
-				showEasing: "swing",
-				hideEasing: "linear",
-				showMethod: "fadeIn",
-				hideMethod: "fadeOut"
-			};
-			if ($("#r_passwd").val() == "" || $("#r_passwd").val() != $("#r_passwd2").val()) {
-				toastr.error("两次密码不一致", "错误!", opts);
-				return;
-			}
-			$.ajax({
-				url: "/auth/register.json",
-				method: "POST",
-				dataType: "json",
-				data: {
-					do_register: true,
-					r_email: $(form).find("#r_email").val(),
-					r_passwd: $(form).find("#r_passwd").val(),
-					r_passwd2: $(form).find("#r_passwd2").val(),
-					r_user_name: $(form).find("#r_user_name").val(),
-					r_invite: $(form).find("#r_invite").val()
-				},
-				success: function(resp) {
-					$('button[type="submit"]').removeAttr("disabled");
-					show_loading_bar({
-						delay: .5,
-						pct: 100,
-						finish: function() {
-							if (resp.error == '0') {
-								toastr.success(resp.message, "提示!", opts);
-								setTimeout('$(".login-button").trigger("click");', 2000);
-							} else if (resp.error == '1') {
-								toastr.error(resp.message, "提示!", opts);
-								$('#email').select();
-							} else {
-								toastr.error("请求服务器失败，请稍后重试", "无效登录!", opts);
-								$('#email').select();
-							}
-						}
-					});
-				},
-				error:function(jqXHR){
-					$('button[type="submit"]').removeAttr("disabled");
-					show_loading_bar({
-						delay: .5,pct: 100,finish: function() {
-							toastr.error("发生错误：与服务器的请求失败", "哈哈哈哈哈错误了!", opts);
-						}
-					});
-				}
-			});
-		}
-	});
-	$("form#login .form-group:has(.form-control):first .form-control").focus();
-});
-</script>
 				<!-- Errors container -->
 				<div class="errors-container">
 				</div>
@@ -254,14 +74,14 @@ jQuery(document).ready(function($) {
 						</button>
 					</div>
 					<div class="form-group">
-						<a type="button" class="btn btn-dark btn-block text-left login-button" href="/auth/login#login">
+						<a type="button" class="btn btn-dark btn-block text-left login-button" href="/auth/login<php>if($_GET['invite'] != '') echo '?invite='. $_GET['invite'];</php>#login">
 							<i class="fa-lock"></i>
 							返 回 登 录
 						</a>
 					</div>
 				</form>
 				<div class="external-login">
-					<a href="/auth/login#register"  class="facebook register-button">
+					<a href="/auth/login<php>if($_GET['invite'] != '') echo '?invite='. $_GET['invite'];</php>#register"  class="facebook register-button">
 						<i class="fa-user"></i>
 						注册账号
 					</a>
@@ -271,13 +91,185 @@ jQuery(document).ready(function($) {
 	</div>
 	<script>
 		jQuery(document).ready(function($) {
-			$(".register-button").click(function(){$("#login").hide(); $(".external-login").hide(); $("#register").show(); document.title = document.title.replace('Login', 'Register');});
-			$(".login-button").click(function(){$("#login").show(); $(".external-login").show(); $("#register").hide();document.title = document.title.replace('Register', 'Login');});
+			setTimeout(function() {
+				$(".fade-in-effect").addClass("in");
+			}, 1);
+			$(".register-button").click(function(){$("#login").hide(); $(".external-login").hide(); $("#register").show(); document.title = document.title.replace('login', 'register');});
+			$(".login-button").click(function(){$("#login").show(); $(".external-login").show(); $("#register").hide();document.title = document.title.replace('register', 'login');});
 			console.debug(location.hash);
 			if (location.hash == '#register') {
 				$(".register-button").trigger("click");
 			} else {
 				$(".login-button").trigger("click");}
+		});
+	</script>
+	<script type="text/javascript">
+		jQuery(document).ready(function($) {
+			$("form#login").validate({
+				rules: {
+					email: {required: true},
+					passwd: {required: true}},
+				messages: {
+					email: {required: "请输入用户名."},
+					passwd: {required: "请输入密码."}},
+				submitHandler: function(form) {
+					$('button[type="submit"]').attr('disabled',"true");
+					show_loading_bar(70);
+					var opts = {
+						closeButton: true,
+						debug: false,
+						positionClass: "toast-top-full-width",
+						onclick: null,
+						showDuration: "300",
+						hideDuration: "1000",
+						timeOut: "5000",
+						extendedTimeOut: "1000",
+						showEasing: "swing",
+						hideEasing: "linear",
+						showMethod: "fadeIn",
+						hideMethod: "fadeOut"
+					};
+
+					$.ajax({
+						url: "/auth/login.json",
+						method: "POST",
+						dataType: "json",
+						data: {
+							do_login: true,
+							email: $(form).find("#email").val(),
+							passwd: $(form).find("#passwd").val(),
+							remember_me: document.getElementById('remember_me').checked==true ? 'week' : ''
+						},
+						success: function(result) {
+							console.log("in success");
+							$('button[type="submit"]').removeAttr("disabled");
+							show_loading_bar({
+								delay: .5,
+								pct: 100,
+								finish: function() {
+									if (result.code == 200) {
+										if(result.data.error == 0) {
+											toastr.success(result.data.message, "提示", opts);
+											setTimeout("window.location.href = '/member'", 2000);
+										} else {
+											toastr.error(result.data.message, "提示!", opts);
+											$('#email').select();
+										}
+									} else {
+										toastr.error("请求服务器失败，请稍后重试", "无效登录!", opts);
+										$('#email').select();
+									}
+								}
+							});
+						},
+						error: function(jqXHR) {
+							show_loading_bar({
+								delay: .5,
+								pct: 100,
+								finish: function() {
+									toastr.error('程序出现致命错误，无法连接到登录服务器<br/>可能的问题：<br/>&nbsp;&nbsp;1.数据库连接失败<br/>&nbsp;&nbsp;2.请求地址API错误', "错误!", opts);
+									$('button[type="submit"]').removeAttr("disabled");
+								}
+							});
+						}
+					});
+				}
+			});
+			$("form#register").validate({
+				rules: {
+					r_email: {
+						required: true
+					},
+					r_passwd: {
+						required: true
+					},
+					r_passwd2: {
+						required: true
+					},
+					r_invite: {
+						required: true
+					}
+				},
+				messages: {
+					r_email: {
+						required: "请输入用户名."
+					},
+					r_passwd: {
+						required: "请输入密码."
+					},
+					r_passwd2: {
+						required: "请再次输入密码"
+					},
+					r_invite: {
+						required: "没邀请码注册个球啊?"
+					}
+				},
+				submitHandler: function(form) {
+					$('button[type="submit"]').attr('disabled',"true");
+					show_loading_bar(70);
+					var opts = {
+						closeButton: true,
+						debug: false,
+						positionClass: "toast-top-full-width",
+						onclick: null,
+						showDuration: "300",
+						hideDuration: "1000",
+						timeOut: "5000",
+						extendedTimeOut: "1000",
+						showEasing: "swing",
+						hideEasing: "linear",
+						showMethod: "fadeIn",
+						hideMethod: "fadeOut"
+					};
+					if ($("#r_passwd").val() == "" || $("#r_passwd").val() != $("#r_passwd2").val()) {
+						toastr.error("两次密码不一致", "错误!", opts);
+						return;
+					}
+					$.ajax({
+						url: "/auth/register.json",
+						method: "POST",
+						dataType: "json",
+						data: {
+							do_register: true,
+							r_email: $(form).find("#r_email").val(),
+							r_passwd: $(form).find("#r_passwd").val(),
+							r_passwd2: $(form).find("#r_passwd2").val(),
+							r_user_name: $(form).find("#r_user_name").val(),
+							r_invite: $(form).find("#r_invite").val()
+						},
+						success: function(result) {
+							$('button[type="submit"]').removeAttr("disabled");
+							show_loading_bar({
+								delay: .5,
+								pct: 100,
+								finish: function() {
+									if (result.code == 200) {
+										if(result.data.error == 0) {
+											toastr.success(result.data.message, "提示!", opts);
+											setTimeout('$(".login-button").trigger("click");', 2000);
+										} else {
+											toastr.error(result.data.message, "提示!", opts);
+											$('#email').select();
+										}
+									}  else {
+										toastr.error("请求服务器失败，请稍后重试", "系统错误!", opts);
+										$('#email').select();
+									}
+								}
+							});
+						},
+						error:function(jqXHR){
+							$('button[type="submit"]').removeAttr("disabled");
+							show_loading_bar({
+								delay: .5,pct: 100,finish: function() {
+									toastr.error("发生错误：与服务器的请求失败", "哈哈哈哈哈错误了!", opts);
+								}
+							});
+						}
+					});
+				}
+			});
+			$("form#login .form-group:has(.form-control):first .form-control").focus();
 		});
 	</script>
 		<import template="/panel/_footer" />

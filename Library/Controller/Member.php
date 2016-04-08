@@ -8,13 +8,17 @@ namespace Controller;
 
 use Core\Error;
 use Core\Template;
-use Helper\Listener;
 use Helper\Util;
 use Model\Invite;
 use Model\Node;
 use Model\User;
 
-class Member extends Listener {
+/**
+ * Class Member
+ * @Authorization
+ * @package Controller
+ */
+class Member {
 
     public function Index() {
         global $user;
@@ -44,7 +48,6 @@ class Member extends Listener {
         include Template::load("panel/member");
     }
 
-    //2015.11.10 start
     public function Node() {
         global $user;
         $user = User::GetUserByUserId($user->uid);

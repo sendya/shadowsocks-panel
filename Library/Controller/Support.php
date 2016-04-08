@@ -14,11 +14,11 @@ class Support {
     }
 
     public function Tos() {
-        include Template::load('home/Tos');
+        Template::setView('home/Tos');
     }
 
     public function Help() {
-        include Template::load('home/help');
+        Template::setView('home/help');
     }
 
 }

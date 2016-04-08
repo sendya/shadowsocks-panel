@@ -6,11 +6,9 @@
  */
 namespace Controller;
 
-use Core\Database;
 use Core\Error;
 use Core\Template;
 use Helper\Encrypt;
-use Helper\Key;
 
 class Index {
 
@@ -18,9 +16,11 @@ class Index {
      * 进入首页
      */
     public function index() {
+        Template::setView('home/index');
+    }
 
-    		
-        include Template::load('/home/index');
+    public function test() {
+
     }
 
 }

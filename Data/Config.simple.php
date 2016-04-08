@@ -14,6 +14,12 @@ if (!defined('ROOT_PATH')) {
 define('SITE_NAME', 'KK Framework Demo Site');
 
 /**
+ * Theme setting:
+ *
+ */
+define('THEME', 'Default');
+
+/**
  * Rewrite setting:
  * remove "index.php" from url, needs to config apache/nginx manually
  */
@@ -38,6 +44,8 @@ define('HTTPS_SUPPORT', true);
  */
 define('DEBUG_ENABLE', true);
 
+define('TEMPLATE_UPDATE', true);
+
 /**
  * Base URL:
  * To manually config this, uncomment the following line and change the URL
@@ -50,3 +58,8 @@ Core\Request::autoDetectBaseURL();
  * Database Connection:
  */
 Core\Database::initialize('mysql:dbname=test;host=localhost;charset=UTF8', 'root', '');
+
+/**
+ * Session
+ */
+@session_start();
