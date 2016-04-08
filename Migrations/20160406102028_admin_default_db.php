@@ -2,7 +2,7 @@
 
 use Phinx\Migration\AbstractMigration;
 
-class UserPowerDefaultDb extends AbstractMigration
+class AdminDefaultDb extends AbstractMigration
 {
     public function up()
     {
@@ -13,6 +13,6 @@ class UserPowerDefaultDb extends AbstractMigration
             ]
         ];
 
-        $this->insert('user_power', $rows);
+        $this->insert('admin', $rows);
     }
 }

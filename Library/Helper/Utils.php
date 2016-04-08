@@ -176,6 +176,17 @@ class Utils {
         return $str;
     }
 
+    public static function menuActive($link = "", $args = "") {
+        $requestPath = \Core\Request::getRequestPath();
+        $controllerName = ucfirst(substr($requestPath, strrpos($requestPath, "/")));
+
+        if (stripos($controllerName, $link) !== false) {
+            return 'active ' . $args;
+        } else {
+            return "-";
+        }
+    }
+
     /* get & set */
     public static function toKB($value) {    return $value / self::KB;    }
     public static function toMB($value) {    return $value / self::MB;    }

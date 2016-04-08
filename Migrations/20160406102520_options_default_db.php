@@ -16,6 +16,9 @@ class OptionsDefaultDb extends AbstractMigration
             ],[
                 'k'     =>  'current_port',
                 'v'     =>  '5000'
+            ],[
+                'k'     =>  'user_test_day',
+                'v'     =>  '7'
             ]
         ];
 

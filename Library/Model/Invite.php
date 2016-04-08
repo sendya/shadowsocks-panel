@@ -11,7 +11,7 @@ use \Core\Model;
 use \Core\Database as DB;
 /**
  * Class Invite
- * @table invite
+ *
  * @package Model
  */
 class Invite extends Model {
@@ -44,8 +44,9 @@ class Invite extends Model {
 
     public static function getInviteByInviteCode($invite) {
         $statement = DB::getInstance()->prepare("SELECT * FROM invite AS t1 WHERE t1.invite=? LIMIT 0,1");
-        $statement->bindValue(1, $invite, \PDO::PARAM_STR);
+        $statement->bindValue(1, $invite, DB::PARAM_STR);
         $statement->execute();
         return $statement->fetchObject(__CLASS__);
     }
+
 }

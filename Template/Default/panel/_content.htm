@@ -1,11 +1,4 @@
-<php>
-    global $user;
-    $messageList = \Model\Message::GetPushMsgByUserId($user->uid);
-    $messageList2 = \Model\Message::GetPushMsgByUserId();
-    $messageList = array_merge($messageList, $messageList2);
-    $messageCount = count($messageList);
-    $globalMessage = \Model\Message::GetGlobalMessage();
-</php>
+
 <div class="main-content">
     <nav class="navbar user-info-navbar" role="navigation">
         <ul class="user-info-menu left-links list-inline list-unstyled">
@@ -32,6 +25,7 @@
 
                     <li>
                         <ul class="dropdown-menu-list list-unstyled ps-scrollbar">
+                            <if condition="count($messageList) > 0">
                             <loop variable="$messageList" key="$key" value="$message">
                             <li class="active notification-success" id="id-{$message->id}">
                                 <!-- active notification-secondary -->
@@ -45,6 +39,20 @@
                                 </a>
                             </li>
                             </loop>
+                            <else>
+                            <li class="active notification-success" id="id-0">
+                                <!-- active notification-secondary -->
+                                <a href="javascript:;">
+                                    <i class="fa-user"></i>
+                                    <!-- fa-lock -->
+                                        <span class="line">
+                                            <strong>无新消息</strong>
+                                        </span>
+                                    <span class="line small time">{(date("Y-m-d H:i:s", time())}</span>
+                                </a>
+                            </li>
+                            </else>
+                            </if>
                         </ul>
                     </li>
                     <li class="external">
@@ -60,7 +68,7 @@
 
             <li class="dropdown user-profile">
                 <a href="#" data-toggle="dropdown">
-                    <img src="{$user->getGravatar()}" alt="user-image" class="img-circle img-inline userpic-32" width="28" />
+                    <img src="{(\Helper\Utils::gravatar($user->email))}" alt="user-image" class="img-circle img-inline userpic-32" width="28" />
 							<span>
 								{$user->nickname}
                                 <i class="fa-angle-down"></i>

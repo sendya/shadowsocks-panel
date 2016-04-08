@@ -98,8 +98,8 @@ class Auth {
     }
 
     public function logout() {
-        setcookie("auth", '', time() - 3600, "/");
         setcookie("token", '', time() - 3600, "/");
+        $_SESSION['currentUser'] = null;
         header("Location:/");
     }
 

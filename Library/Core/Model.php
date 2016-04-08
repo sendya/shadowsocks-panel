@@ -83,7 +83,8 @@ abstract class Model
     {
         $docComment = $reflection->getDocComment();
         if (!preg_match('/@table ?([A-Za-z\-_0-9]+)/i', $docComment, $matches) || !$matches[1]) {
-            throw new Error('Cannot find table name in doc comment');
+            $arr = explode("\\", $reflection->getName()); // get class name
+            $matches[1] = $arr[count($arr)-1];
         }
         return $matches[1];
     }

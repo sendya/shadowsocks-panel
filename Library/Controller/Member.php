@@ -21,31 +21,15 @@ use Model\User;
 class Member {
 
     public function Index() {
-        global $user;
-        $serverCount = \Model\Node::GetNodeCount();
 
-        $flow = $user->flow_up + $user->flow_down;//已用
-        $usedflow = Util::FlowAutoShow($user->transfer - $flow);//剩余可用
-        $user_100 = 0;
-        if (!Member::fuckInt($flow) || !Member::fuckInt($user->transfer)) {
-            $user_100 = round($flow / $user->transfer, 2) * 100;
-        }
-        if ($user_100 == 0) $user_100 = 1;
-        $all_transfer = Util::FlowAutoShow($user->transfer);//共有流量
-        $flow = round($flow / Util::GetMB(), 2);
-        $checkin = false;//是否可以签到
-        $checkinTime = date("m-d H:i:s", $user->lastCheckinTime);
-        $lastConnTime = date("Y-m-d H:i:s", $user->lastConnTime);
-        $nowUserIp = Util::GetUserIP();
-        $userCount = \Helper\Ana::GetUserCount();
-        $checkCount = \Helper\Ana::GetCheckUserCount();
-        $connCount = \Helper\Ana::GetConnCount();
-        $useUser = \Helper\Ana::GetUseUserCount();
-        $transferAllFlow = round(\Helper\Ana::GetTransfer4All() / Util::GetGB(), 2); //取得服务器共产生的流量
+        $data['user'] = User::getCurrent();
+        $data['serverCount'] = Node::getNodeCount();
+        $data['openNode'] = 0;
+        $data['allNode'] = 1;
 
+        Template::setContext($data);
+        Template::setView('panel/member');
 
-        if ((time() - 3600 * 24) >= $user->lastCheckinTime) $checkin = true;
-        include Template::load("panel/member");
     }
 
     public function Node() {

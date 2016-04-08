@@ -1,9 +1,4 @@
 <import template="/panel/_head" />
-<php>
-    $allNode = \Model\Node::GetNodeCount();
-    $openNode = \Model\Node::GetNodeCount("可用");
-    $userPower = \Model\UserPower::verifyPower($user->uid);
-</php>
 <body class="page-body">
 <div class="modal fade" id="modal-1" style="display: none;" aria-hidden="true">
     <div class="modal-dialog">
@@ -31,7 +26,7 @@
                 <div class="user-info">
                     <div class="user-image">
                         <a href="/member">
-                            <img src="{$user->getGravatar()}" class="img-responsive img-circle" />
+                            <img src="{(\Helper\Utils::gravatar($user->email))}" class="img-responsive img-circle" />
                         </a>
                     </div>
                     <div class="user-details">
@@ -40,7 +35,7 @@
                             <!-- Available statuses: is-online, is-idle, is-busy and is-offline -->
                             <span class="user-status is-online"></span>
                         </h3>
-                        <p class="user-title">加入时间：{$user->getRegTime()}</p>
+                        <p class="user-title">加入时间：{(date('Y-m-d H:i:s', $user->regDateLine))}</p>
                         <div class="user-links">
                             <a href="/member/info" class="btn btn-primary">个人资料</a>
                             <a href="/auth/Logout" class="btn btn-success">退出</a>
@@ -93,10 +88,10 @@
                 <!-- logo -->
                 <div class="logo">
                     <a href="index" class="logo-expanded">
-                        <img src="{TPL_PATH}images/logo@2x.png" width="80" alt="" />
+                        <img src="Resource/{THEME}/images/logo@2x.png" width="80" alt="" />
                     </a>
                     <a href="index" class="logo-collapsed">
-                        <img src="{TPL_PATH}images/logo-collapsed@2x.png" width="40" alt="" />
+                        <img src="Resource/{THEME}/images/logo-collapsed@2x.png" width="40" alt="" />
                     </a>
                 </div>
                 <div class="mobile-menu-toggle visible-xs">
@@ -115,59 +110,13 @@
                 </div>
             </header>
             <ul id="main-menu" class="main-menu">
-                <li class="{(\Helper\Util::CheckAction('member', 'opened'))}">
+                <li class="{(\Helper\Utils::menuActive('member', 'opened'))}">
                 <a href="/member" class="pjax">
                     <i class="linecons-cog"></i>
                     <span class="title">仪表盘</span>
                 </a>
                 </li>
-                <li class="{(\Helper\Util::CheckAction('node'))}">
-                <a href="/member/node" class="pjax">
-                    <i class="linecons-params "></i>
-                    <span class="title">节点列表</span>
-                    <span class="label label-success pull-right">{$openNode}/{$allNode}</span>
-                </a>
-                </li>
-                <li class="{(\Helper\Util::CheckAction('info'))}">
-                <a href="/member/info" class="pjax">
-                    <i class="linecons-user "></i>
-                    <span class="title">个人资料</span>
-                </a>
-                </li>
-                <li class="{(\Helper\Util::CheckAction('Change', ' opened expanded'))} has-sub">
-                <a href="javascript:;">
-                    <i class="linecons-user"></i>
-                    <span class="title">资料修改</span>
-                </a>
-                <ul>
-                    <li class="{(\Helper\Util::CheckAction('ChangePassword'))}">
-                    <a href="/member/ChangePassword" class="pjax">
-                        <span class="title">修改网站登陆密码</span>
-                    </a>
-                    </li>
-                    <li class="{(\Helper\Util::CheckAction('ChangeSSPassword'))}">
-                    <a href="/member/ChangeSSPassword" class="pjax">
-                        <span class="title">修改SS连接密码</span>
-                    </a>
-                    </li>
-                    <li class="{(\Helper\Util::CheckAction('ChangeNickname'))}">
-                    <a href="/member/ChangeNickname" class="pjax">
-                        <span class="title">修改用户昵称</span>
-                    </a>
-                    </li>
-                    <li class="{(\Helper\Util::CheckAction('ChangePlanLevel'))}">
-                    <a href="/member/ChangePlanLevel" class="pjax">
-                        <span class="title">升级账户</span>
-                    </a>
-                    </li>
-                </ul>
-                </li>
-                <li class="{(\Helper\Util::CheckAction('invite'))}">
-                <a href="/member/invite" class="pjax">
-                    <i class="linecons-heart "></i>
-                    <span class="title">邀请好友</span>
-                </a>
-                </li>
+
                 <li class="has-sub">
                     <a href="javascript:;">
                         <i class="linecons-paper-plane"></i>
@@ -182,7 +131,7 @@
                         </li>
                         <li><a href="support/tos">
                             <i class="entypo-flow-line"></i>
-                            <span class="title">关于{$SITE_NAME}</span>
+                            <span class="title">关于{SITE_NAME}</span>
                         </a>
                         </li>
                     </ul>

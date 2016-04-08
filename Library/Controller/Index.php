@@ -9,6 +9,8 @@ namespace Controller;
 use Core\Error;
 use Core\Template;
 use Helper\Encrypt;
+use Helper\Utils;
+use Model\Invite;
 
 class Index {
 
@@ -20,6 +22,17 @@ class Index {
     }
 
     public function test() {
+
+        $iv = new Invite();
+        $iv->expiration = 10;
+        $iv->dateLine = time();
+        $iv->regDateLine = time();
+        $iv->plan = 'A';
+        $iv->status = 1;
+        $iv->inviteIp = '127.0.0.1';
+        $iv->reguid = 1;
+        $iv->invite = md5(Utils::randomChar()."1");
+        $iv->save();
 
     }
 

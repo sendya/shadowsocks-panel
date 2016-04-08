@@ -9,7 +9,7 @@ define('ROOT_PATH', dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR);
 define('LIBRARY_PATH', ROOT_PATH . 'Library/');
 define('DATA_PATH', ROOT_PATH . 'Data/');
 @ini_set('display_errors', 'on');
-@ini_set('expose_php', false);
+@ini_set('expose_php', true);
 
 // Register composer
 require ROOT_PATH . 'Package/autoload.php';
