@@ -89,7 +89,7 @@
 			</div>
 		</div>
 	</div>
-	<script>
+	<script type="text/javascript">
 		jQuery(document).ready(function($) {
 			setTimeout(function() {
 				$(".fade-in-effect").addClass("in");
@@ -100,11 +100,24 @@
 			if (location.hash == '#register') {
 				$(".register-button").trigger("click");
 			} else {
-				$(".login-button").trigger("click");}
-		});
-	</script>
-	<script type="text/javascript">
-		jQuery(document).ready(function($) {
+				$(".login-button").trigger("click");
+			}
+
+			var opts = {
+				closeButton: true,
+				debug: false,
+				positionClass: "toast-top-full-width",
+				onclick: null,
+				showDuration: "300",
+				hideDuration: "1000",
+				timeOut: "5000",
+				extendedTimeOut: "1000",
+				showEasing: "swing",
+				hideEasing: "linear",
+				showMethod: "fadeIn",
+				hideMethod: "fadeOut"
+			};
+
 			$("form#login").validate({
 				rules: {
 					email: {required: true},
@@ -115,21 +128,6 @@
 				submitHandler: function(form) {
 					$('button[type="submit"]').attr('disabled',"true");
 					show_loading_bar(70);
-					var opts = {
-						closeButton: true,
-						debug: false,
-						positionClass: "toast-top-full-width",
-						onclick: null,
-						showDuration: "300",
-						hideDuration: "1000",
-						timeOut: "5000",
-						extendedTimeOut: "1000",
-						showEasing: "swing",
-						hideEasing: "linear",
-						showMethod: "fadeIn",
-						hideMethod: "fadeOut"
-					};
-
 					$.ajax({
 						url: "/auth/login.json",
 						method: "POST",
@@ -270,6 +268,9 @@
 				}
 			});
 			$("form#login .form-group:has(.form-control):first .form-control").focus();
+			<if condition="$globalMessage[0]!=null && $globalMessage[0]->enable==1">
+			toastr.success("{($globalMessage[0]->content)}", "提示", opts);
+			</if>
 		});
 	</script>
 		<import template="/panel/_footer" />

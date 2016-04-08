@@ -12,6 +12,7 @@ use Helper\Stats;
 use Helper\Util;
 use Helper\Utils;
 use Model\Invite;
+use Model\Message;
 use Model\Node;
 use Model\User;
 
@@ -57,7 +58,7 @@ class Member {
         $data['user']->plan = Utils::planAutoShow($user->plan);
 
         // Message
-
+        $data['globalMessage'] = Message::getGlobalMessage();
 
         Template::setContext($data);
         Template::setView('panel/member');

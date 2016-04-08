@@ -159,8 +159,8 @@ class Template
         }
 
         // clear space and tab
-//        $sourceCode = preg_replace('/^[ \t]*(.+)[ \t]*$/m', '\\1', $sourceCode);
-//        $sourceCode = preg_replace('/[\r\n]/', '', $sourceCode);
+        $sourceCode = preg_replace('/^[ \t]*(.+)[ \t]*$/m', '\\1', $sourceCode);
+        $sourceCode = preg_replace('/[\r\n]/', '', $sourceCode);
 
         $output = '<?php' . PHP_EOL;
         $output .= 'if(!defined(\'ROOT_PATH\'))';

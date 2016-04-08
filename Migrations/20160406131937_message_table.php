@@ -1,6 +1,7 @@
 <?php
 
 use Phinx\Migration\AbstractMigration;
+use Phinx\Db\Adapter\MysqlAdapter;
 
 class MessageTable extends AbstractMigration
 {
@@ -14,6 +15,8 @@ class MessageTable extends AbstractMigration
             ->addColumn('type', 'integer', ['default' => 0, 'comment' => '消息类型：-3 套餐处说明 -2 系统公告 -1 重复推送，0 正常消息，大于0 推送次数'])
             ->addColumn('pushEndTime', 'integer', ['default' => 0])
             ->addColumn('order', 'integer', ['default' => 1])
+            ->addColumn('enable', 'integer', ['default' => 0, 'limit' => MysqlAdapter::INT_TINY])
+            ->addIndex(['id', 'type'],[])
             ->create();
     }
 }

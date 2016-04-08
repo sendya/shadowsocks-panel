@@ -8,6 +8,7 @@ namespace Controller;
 
 use Model\Invite;
 use Model\User;
+use Model\Message as MessageModel;
 
 use Core\Template;
 use Helper\Message;
@@ -57,6 +58,8 @@ class Auth {
 
             return $result;
         } else {
+            $data['globalMessage']  = MessageModel::getGlobalMessage();
+            Template::setContext($data);
             Template::setView('panel/login');
         }
     }

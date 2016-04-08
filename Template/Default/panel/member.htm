@@ -1,6 +1,5 @@
 <import template="/panel/_header" />
 <import template="/panel/_content" />
-
 <div class="row">
     <div class="col-sm-3">
 
@@ -101,12 +100,12 @@
             <div class="chart-entry-view">
                 <div class="chart-entry-label">
                     <if condition="count($globalMessage)>0">
-                    <span>{$globalMessage[0]->content}</span>
+                    <span>{$globalMessage[1]->content}</span><br/>
                     </if>
-                    <p>Win客户端：1.<a href="https://sscat.it/response/download/SS-CSharp_2.5.6.exe" target="_blank">SS-CSharp_2.5.6</a>&nbsp;&nbsp;&nbsp;
-                        2.<a href="https://sscat.it/response/download/ShadowsocksR.zip" target="_blank" title="ShadowsocksR 3.4.2">ShadowsocksR</a>&nbsp;&nbsp;&nbsp;
-                        <br>Android客户端：<a href="https://sscat.it/response/download/SS-Android_2.7.7.apk" target="_blank">SS-Android_2.7.7.apk</a></p>
-                    更多平台客户端请前往 <a href="https://sscat.it/response/download/" target="_blank"> [下载中心] </a>
+                    <p>Win客户端：1.<a href="http://h.mloli.com/shadowsocks/" target="_blank">SS-CSharp_2.5.6</a>&nbsp;&nbsp;&nbsp;
+                        2.<a href="http://h.mloli.com/shadowsocks/" target="_blank" title="ShadowsocksR 3.4.2">ShadowsocksR</a>&nbsp;&nbsp;&nbsp;
+                        <br>Android客户端：<a href="http://h.mloli.com/shadowsocks/" target="_blank">SS-Android_2.7.7.apk</a></p>
+                    更多平台客户端请前往 <a href="http://h.mloli.com/shadowsocks/" target="_blank"> [下载中心] </a>
                 </div>
             </div>
         </div>
@@ -133,8 +132,8 @@
     $(document).ready(function() {
         <php>
             if(\Helper\Updater::check() == true) {
-            echo "showToastr(\"更新提示：\\n发现新版本Shadowsocks-Panel，请前往github更新..\\n(本消息只管理员权限可以收到)\", 0);";
-        }
+                echo "showToastr(\"更新提示：\\n发现新版本Shadowsocks-Panel，请前往github更新..\\n(本消息只管理员权限可以收到)\", 0);";
+            }
         </php>
         $("#checkin").click(function() {
             $(this).val("请稍等");
@@ -181,12 +180,18 @@
                 $(this).html("<b>点击显示密码</b>");
             }
         });
-        showToastr("{$globalMessage[2]->content}", 800);
+        <if condition="$globalMessage[3]!=null && $globalMessage[3]->enable==1">
+            showToastr("{$globalMessage[3]->content}", 800);
+        </if>
+
         $("#planList").on('click', function(){
-            $("#modal-1 .modal-body").html("{$globalMessage[1]->content}");
-            $("#modal-1").modal("show", {
-                backdrop:"fade"
-            });
+            <if condition="$globalMessage[2]!=null && $globalMessage[2]->enable==1">
+                $("#modal-1 .modal-body").html("{$globalMessage[2]->content}");
+            <else>
+                $("#modal-1 .modal-body").html("管理员未设置内容..");
+            </if>
+
+            $("#modal-1").modal("show", {backdrop:"fade"});
         });
         $.get("/api/queryCountry.json",{}, function(data){
             var counrty = "";

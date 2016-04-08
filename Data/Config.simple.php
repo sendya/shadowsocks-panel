@@ -11,7 +11,7 @@ if (!defined('ROOT_PATH')) {
 /**
  * Site Name
  */
-define('SITE_NAME', 'KK Framework Demo Site');
+define('SITE_NAME', 'SS Cat');
 
 /**
  * Theme setting:
