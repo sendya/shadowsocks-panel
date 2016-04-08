@@ -21,27 +21,27 @@
             <div class="xe-label">
                 <!-- reset -->
 
-                <div id="checkin-on" <if condition="!$checkin">style="display:none;"</if>>
+                <div id="checkin-on" <if condition="!$checked">style="display:none;"</if>>
                 <strong>
                     <a id="checkin" href="javascript:;" style="color:#000;">点击签到</a>
                 </strong>
                 <span id="checkin-tag">签到送流量</span>
             </div>
-            <div id="checkin-off" <if condition="$checkin">style="display:none;"</if>>
+            <div id="checkin-off" <if condition="$checked">style="display:none;"</if>>
             <strong>
                 <div id="checkinoff">您已签到</div>
             </strong>
-            <span  id="checkinoff-tag" >{$checkinTime}</span>
+            <span  id="checkinoff-tag" >{$checkedTime}</span>
         </div>
     </div>
 </div>
 
-<div class="xe-widget xe-counter xe-counter-info" data-count=".num" data-from="1" data-to="{$serverCount}" data-duration="1" data-easing="true">
+<div class="xe-widget xe-counter xe-counter-info" data-count=".num" data-from="1" data-to="{$allNode}" data-duration="1" data-easing="true">
     <div class="xe-icon">
         <i class="linecons-desktop"></i>
     </div>
     <div class="xe-label">
-        <strong class="num">{$serverCount}</strong>
+        <strong class="num">{$allNode}</strong>
         <span>服务器数</span>
     </div>
 </div>
@@ -51,13 +51,13 @@
 
     <div class="chart-item-bg">
         <div class="chart-label">
-            <div class="h3 text-secondary text-bold" data-count="this" data-from="0" data-to="{$flow}" data-suffix="MB" data-duration="1">{$flow} MB</div>
+            <div class="h3 text-secondary text-bold" data-count="this" data-from="0" data-to="{$useTransfer}" data-suffix="{$useTransferUnit}" data-duration="1">{$useTransfer} {$useTransferUnit}</div>
             <span class="text-medium text-muted">流量使用情况</span>
         </div>
         <div class="progress progress-striped active" style="height: 20px;position: absolute;left:30px;right:30px;top:30%">
-            <div class="progress-bar progress-bar-info" style="width: {$user_100}%;height:20px;"></div>
+            <div class="progress-bar progress-bar-info" style="width: {$pctTransfer}%;height:20px;"></div>
         </div>
-        <div style="position: absolute;left:30px;right:30px;top:40%">共有流量：{$all_transfer}<br/>可用流量：{$usedflow}<br/><br/>您的当前IP：<code>{$nowUserIp}</code><br/>您的地区：<code id="country_id">获取中.</code><br/>
+        <div style="position: absolute;left:30px;right:30px;top:40%">共有流量：{$allTransfer}<br/>可用流量：{$slaTransfer}<br/><br/>您的当前IP：<code>{$userIp}</code><br/>您的地区：<code id="country_id">获取中.</code><br/>
             <h2><a href="support/help" target="_blank">使用教程&gt;&gt;</a></h2>
         </div>
         <div  style="height: 298px;">
@@ -71,7 +71,7 @@
             <div class="h4 text-purple text-bold" data-count="this" data-from="0.00" data-to="{$onlineNum}" data-suffix="%" data-duration="1.5">{$onlineNum}%</div>
             <span class="text-small text-upper text-muted">在线人数百分比</span><br />
             <span class="text-small text-upper text-muted">注册用户：<code> {$userCount} </code><br/>签到人数：<code> {$checkCount} </code><br /></span>
-							<span class="text-small text-upper text-muted">实时在线：<code> {$connCount} </code><br />
+							<span class="text-small text-upper text-muted">实时在线：<code> {$online} </code><br />
 
         </div>
         <div id="server-uptime-chart" style="height: 134px;"></div>
@@ -79,9 +79,9 @@
 
     <div class="chart-item-bg">
         <div class="chart-label chart-label-small">
-            <div class="h4 text-secondary text-bold" data-count="this" data-from="0.00" data-to="{$transferAllFlow}" data-suffix="GB" data-decimal="." data-duration="2">0</div>
-            <span class="text-small text-upper text-muted">{SITE_NAME} 已经产生流量<code>{$transferAllFlow}</code>GB</span><br />
-            <span class="text-small text-upper text-muted">{SITE_NAME} 已经有<code>{$useUser}</code>人使用</span>
+            <div class="h4 text-secondary text-bold" data-count="this" data-from="0.00" data-to="{$systemTransfer}" data-suffix="GB" data-decimal="." data-duration="2">0</div>
+            <span class="text-small text-upper text-muted">{SITE_NAME} 已经产生流量<code>{$systemTransfer}</code>GB</span><br />
+            <span class="text-small text-upper text-muted">{SITE_NAME} 已经有<code>{$useUserCount}</code>人使用</span>
         </div>
 
         <div id="sales-avg-chart" style="height: 134px; position: relative;">
@@ -122,7 +122,7 @@
                 <button class="btn btn-sm btn-info">{$user->plan}</button>   &nbsp;
                 <button class="btn btn-sm btn-secondary" id="updatePlan"> 升级套餐 </button>   &nbsp;
                 <button class="btn btn-sm btn-secondary" id="planList"> 套餐详情 </button><br /><br />
-                最后使用时间：<code>{$lastConnTime}</code>
+                最后使用时间：<code>{$lastOnlineTime}</code>
 
             </div>
             <div style="height: 200px"></div>

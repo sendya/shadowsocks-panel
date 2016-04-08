@@ -52,22 +52,6 @@ class Node extends Model {
     }
 
     /**
-     * Get Node count
-     * @param int $status
-     * @return mixed
-     */
-    public static function getNodeCount($status = 0) {
-        $sql = "SELECT count(*) FROM node";
-        if ($status == 1)
-            $sql .= " WHERE status={$status}";
-
-        $statement = DB::getInstance()->prepare($sql);
-        $statement->execute();
-        $nodeCount = $statement->fetch(DB::FETCH_NUM);
-        return $nodeCount[0];
-    }
-
-    /**
      * Delete node
      * @param $nodeId
      * @return bool

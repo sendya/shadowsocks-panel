@@ -7,12 +7,12 @@ class MemberTable extends AbstractMigration
 {
     public function change()
     {
-        $table = $this->table('member', ['id' => 'uid', 'comment' => '用户信息表']);
+        $table = $this->table('member', ['id' => 'uid', 'signed' => true, 'comment' => '用户信息表']);
         $table->addColumn('email', 'string', ['limit' => 64])
             ->addColumn('nickname', 'string', ['limit' => 64])
             ->addColumn('password', 'string', ['limit' => 60])
             ->addColumn('sspwd', 'string', ['limit' => 32])
-            ->addColumn('port', 'integer', ['limit' => 5, 'null' => true])
+            ->addColumn('port', 'integer', ['limit' => 5, 'null' => true, 'signed' => true])
             ->addColumn('flow_up', 'integer', ['limit' => MysqlAdapter::INT_BIG, 'default' => 0])
             ->addColumn('flow_down', 'integer', ['limit' => MysqlAdapter::INT_BIG, 'default' => 0])
             ->addColumn('transfer', 'integer', ['limit' => MysqlAdapter::INT_BIG, 'default' => 0])

@@ -8,7 +8,9 @@ namespace Controller;
 
 use Core\Error;
 use Core\Template;
+use Helper\Stats;
 use Helper\Util;
+use Helper\Utils;
 use Model\Invite;
 use Model\Node;
 use Model\User;
@@ -21,14 +23,41 @@ use Model\User;
 class Member {
 
     public function Index() {
+        $user = User::getUserByUserId(User::getCurrent()->uid);
+        $data['user'] = $user;
 
-        $data['user'] = User::getCurrent();
-        $data['serverCount'] = Node::getNodeCount();
-        $data['openNode'] = 0;
-        $data['allNode'] = 1;
-        $data['connCount'] = 10;
-        $data['userCount'] = User::getCount()!=null?:0;
-        $data['onlineNum'] = round($data['connCount']/$data['userCount'],2)*100;
+        $data['openNode'] = Stats::countNode(1);
+        $data['allNode'] = Stats::countNode();
+        $data['online'] = Stats::countOnline();
+        $data['userCount'] = Stats::countUser()!=null?:0;
+        $data['useUserCount'] = Stats::countUseUser(); // 使用过服务的用户数
+        $data['checkCount'] = Stats::countSignUser();
+        $data['onlineNum'] = 0.00; // default online number.
+        if($data['online']!==0 && $data['userCount']!==0)
+            $data['onlineNum'] = round($data['online']/$data['userCount'],2)*100;
+
+        $data['allTransfer'] = Utils::flowAutoShow($user->transfer);
+        $data['useTransfer'] = $user->flow_up + $user->flow_down; // round(() / Utils::mb(), 2);
+        $data['slaTransfer'] = Utils::flowAutoShow($user->transfer - $data['useTransfer']);
+        $data['pctTransfer'] = 0.00;
+        if(is_numeric($data['useTransfer']) && is_numeric($user->transfer)) {
+            $data['pctTransfer'] = round($data['useTransfer'] / $user->transfer, 2) * 100;
+        }
+        $data['useTransfer'] = Utils::flowAutoShow($data['useTransfer'], 1);
+        $tmp = explode(" ", $data['useTransfer']);
+        $data['useTransfer'] = $tmp[0];
+        $data['useTransferUnit'] = count($tmp)>1?$tmp[1]:'KB';
+        $data['systemTransfer'] = round(Stats::countTransfer() / Utils::gb(), 2); // 全部用户产生的流量
+
+        $data['checkedTime'] = date('m-d H:i', $user->lastCheckinTime);
+        $data['lastOnlineTime'] = date('Y-m-d H:i:s', $user->lastConnTime);
+        $data['checked'] = strtotime(date('Y-m-d 00:00:00', time())) > strtotime(date('Y-m-d H:i:s', $user->lastCheckinTime));
+        $data['userIp'] = Utils::getUserIP();
+
+        $data['user']->plan = Utils::planAutoShow($user->plan);
+
+        // Message
+
 
         Template::setContext($data);
         Template::setView('panel/member');

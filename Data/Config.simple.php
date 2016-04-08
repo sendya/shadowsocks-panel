@@ -44,8 +44,6 @@ define('HTTPS_SUPPORT', true);
  */
 define('DEBUG_ENABLE', true);
 
-define('TEMPLATE_UPDATE', true);
-
 /**
  * Base URL:
  * To manually config this, uncomment the following line and change the URL

@@ -6,9 +6,11 @@
  */
 namespace Controller;
 
+use Core\Database;
 use Core\Error;
 use Core\Template;
 use Helper\Encrypt;
+use Helper\Option;
 use Helper\Utils;
 use Model\Invite;
 
@@ -22,17 +24,14 @@ class Index {
     }
 
     public function test() {
-
-        $iv = new Invite();
-        $iv->expiration = 10;
-        $iv->dateLine = time();
-        $iv->regDateLine = time();
-        $iv->plan = 'A';
-        $iv->status = 1;
-        $iv->inviteIp = '127.0.0.1';
-        $iv->reguid = 1;
-        $iv->invite = md5(Utils::randomChar()."1");
-        $iv->save();
+        $planNames = [
+            'A'    =>  '免费用户',
+            'B'    =>  '普通用户',
+            'C'    =>  '高级用户',
+            'D'    =>  '超级用户',
+            'VIP'  =>  '特权会员'
+        ];
+        Option::set('custom_plan_name', json_encode($planNames));
 
     }
 

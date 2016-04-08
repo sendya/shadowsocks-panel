@@ -8,12 +8,17 @@ namespace Controller;
 
 
 use Core\Error;
-use Helper\Listener;
-use Helper\Util;
+use Helper\Option;
+use Helper\Utils;
 use Model\Invite;
 use Model\User;
 
-class Form extends Listener {
+/**
+ * Class Form
+ * @Authorization
+ * @package Controller
+ */
+class Form {
     const PLAN_A = 'A', PLAN_B = 'B', PLAN_C = 'C', PLAN_D = 'D', PLAN_VIP = 'VIP';
 
     public function index() {
@@ -107,19 +112,22 @@ class Form extends Listener {
         exit();
     }
 
+    /**
+     * 签到
+     * @JSON
+     */
     public function checkIn() {
-        global $user;
-        $user = User::GetUserByUserId($user->uid);
+        $user = User::getUserByUserId(User::getCurrent()->uid);
         $result = array('error' => 1, 'message' => '');
-        if ($user->lastCheckinTime <= time() - 3600 * 24) //一天
+        if ($user->lastCheckinTime <= strtotime(date('Y-m-d 00:00:00', time())) )
         {
-            $checkinTransfer = rand(5, 25) * Util::GetMB();
+            $checkinTransfer = rand(Option::get('check_transfer_min'), Option::get('check_transfer_max')) * Utils::mb();
             $user->lastCheckinTime = time();
             $user->transfer = $user->transfer + $checkinTransfer;
-            $user->updateUser();
+            $user->save();
             $result['user'] = $user;
             $result['time'] = date("m-d H:i:s", $user->lastCheckinTime);
-            $result['message'] = '签到成功, 获得' . Util::FlowAutoShow($checkinTransfer) . ' 流量';
+            $result['message'] = '签到成功, 获得' . Utils::flowAutoShow($checkinTransfer) . ' 流量';
         } else {
             $result['message'] = '你已经在 ' . date('Y-m-d H:i:s', $user->lastCheckinTime) . " 时签到过.";
         }

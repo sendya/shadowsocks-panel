@@ -52,7 +52,7 @@ class Utils {
      * @param array $atts
      * @return string
      */
-    public static function gravatar($email, $s = 80, $d = 'mm', $r = 'g', $img = false, $atts = array()) {
+    public static function gravatar($email, $s = 128, $d = 'mm', $r = 'g', $img = false, $atts = array()) {
         $host = array(
             '//gravatar0.ifdream.net/avatar/',
             '//www.gravatar.com/avatar/',
@@ -112,13 +112,7 @@ class Utils {
      */
     public static function planAutoShow($plan) {
         // planNames 从数据库中获取
-        $planNames = [
-            'A'    =>  '免费用户',
-            'B'    =>  '普通用户',
-            'C'    =>  '高级用户',
-            'D'    =>  '超级用户',
-            'VIP'  =>  '特权会员'
-        ];
+        $planNames = json_decode(Option::get('custom_plan_name'), true);
         $planName = $planNames[$plan];
         if($planName == '') $planName = '测试账户';
         return $planName;
@@ -160,15 +154,15 @@ class Utils {
         if ($value > self::GB) {
             $str = round($value / self::GB, 2);
             if ($type)
-                $str .= "GB";
+                $str .= " GB";
         } else if ($value > self::MB) {
             $str = round($value / self::MB, 2);
             if ($type)
-                $str .= "MB";
+                $str .= " MB";
         } else if ($value > self::KB) {
             $str = round($value / self::KB, 2);
             if ($type)
-                $str .= "KB";
+                $str .= " KB";
         } else {
             $str = round($value, 2);
             $str .= "";

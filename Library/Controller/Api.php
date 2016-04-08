@@ -8,12 +8,17 @@
 
 namespace Controller;
 
-use Helper\Util;
+use Helper\Utils;
 
 class Api {
 
-    public function QueryCountry(){
-        $ipAddress = Util::GetUserIP();
+    /**
+     * 查询 IP 详细信息
+     *
+     * @JSON
+     */
+    public function queryCountry(){
+        $ipAddress = Utils::getUserIP();
         $ch = curl_init();
         $url = 'http://apis.baidu.com/apistore/iplookupservice/iplookup?ip='.$ipAddress;
         $header = array(

@@ -55,9 +55,10 @@ class Stats {
      * @return int
      */
     public static function countTransfer() {
-        $stn = DB::getInstance()->prepare("SELECT (sum(flow_up) + sum(flow_down)) AS transferAll FROM `member`");
+        $stn = DB::getInstance()->prepare("SELECT sum(flow_up) + sum(flow_down) FROM `member`");
         $stn->execute();
-        return $stn->fetch(DB::FETCH_NUM)[0]!=null?:0;
+
+        return $stn->fetch(DB::FETCH_NUM)[0];
     }
 
     /**
@@ -70,6 +71,21 @@ class Stats {
         $stn->execute();
         return $stn->fetch(DB::FETCH_NUM)[0]!=null?:0;
     }
+
+    /**
+     * Count node
+     *
+     * @param int $type
+     * @return int
+     */
+    public static function countNode($type = 0) {
+        $querySQL = "SELECT count(*) FROM `node` ";
+        if($type == 1) $querySQL .= " WHERE status='可用'";
+        $stn = DB::getInstance()->prepare($querySQL);
+        $stn->execute();
+        return $stn->fetch(DB::FETCH_NUM)[0]?:0;
+    }
+
 
     /**
      * 后端统计 <b>使用量区间</b>

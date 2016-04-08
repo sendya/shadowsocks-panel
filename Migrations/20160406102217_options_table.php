@@ -8,7 +8,7 @@ class OptionsTable extends AbstractMigration
     {
         $this->table("options", array('id' => false, 'comment' => '系统设置', 'primary_key' => ['k']))
             ->addColumn('k', 'string', ['limit' => 64])
-            ->addColumn('v', 'string', ['limit' => 64, 'null' => true])
+            ->addColumn('v', 'string', ['limit' => 1500, 'null' => true])
             ->addIndex(['k'], ['unique' => true])
             ->create();
     }

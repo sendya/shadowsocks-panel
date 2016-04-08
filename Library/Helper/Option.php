@@ -14,7 +14,25 @@ class Option {
     public $k;
     public $v;
 
+    private static $list;
+
+    function __construct() {
+        if(!self::$list)
+            self::$list = self::init();
+        return self::$list;
+    }
+
     public static function get($k) {
+
+        if(self::$list) {
+            if(self::$list[$k])
+                return self::$list[$k];
+        }
+
+/*        if($GLOBALS['OPTIONS']!=null) {
+            if($GLOBALS['OPTIONS'][$k]!=null)
+                return $GLOBALS['OPTIONS'][$k];
+        }*/
 
         $querySQL = "SELECT k, v FROM options WHERE k=?";
         $statement = DB::getInstance()->prepare($querySQL);
@@ -27,9 +45,9 @@ class Option {
     public static function set($k, $v) {
 
         $sql = "UPDATE options SET v=:v WHERE k=:k";
-        if(Option::get($k) == null) {
+        if(Option::get($k) == null)
             $sql = "INSERT INTO options(k, v) VALUES(:k, :v)";
-        }
+
         $inTransaction = DB::getInstance()->inTransaction();
         if (!$inTransaction) {
             DB::getInstance()->beginTransaction();
@@ -41,5 +59,18 @@ class Option {
         if (!$inTransaction) {
             DB::getInstance()->commit();
         }
+        self::$list = self::init();
+    }
+
+    public static function init() {
+        $stn = DB::getInstance()->prepare("SELECT k, v FROM options");
+        $stn->execute();
+        $opt = $stn->fetchAll(DB::FETCH_UNIQUE | DB::FETCH_COLUMN);
+        // $GLOBALS['OPTIONS'] = $opt;
+        return $opt;
+    }
+
+    public static function getOptions() {
+        return self::$list;
     }
 }
