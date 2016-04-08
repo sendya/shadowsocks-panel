@@ -131,11 +131,6 @@
 </div>
 <script type="text/javascript">
     $(document).ready(function() {
-        <php>
-            if(\Helper\Updater::check() == true) {
-                echo "showToastr(\"更新提示：\\n发现新版本Shadowsocks-Panel，请前往github更新..\\n(本消息只管理员权限可以收到)\", 0);";
-        }
-        </php>
         $("#checkin").click(function() {
             $(this).val("请稍等");
             showToastr("正在请求签到..请稍等", 0, 1500);
