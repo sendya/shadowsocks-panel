@@ -48,7 +48,7 @@
                                         <span class="line">
                                             <strong>无新消息</strong>
                                         </span>
-                                    <span class="line small time">{(date("Y-m-d H:i:s", time())}</span>
+                                    <span class="line small time">{(date("Y-m-d H:i:s", time()))}</span>
                                 </a>
                             </li>
                             </else>
@@ -69,10 +69,10 @@
             <li class="dropdown user-profile">
                 <a href="#" data-toggle="dropdown">
                     <img src="{(\Helper\Utils::gravatar($user->email))}" alt="user-image" class="img-circle img-inline userpic-32" width="28" />
-							<span>
-								{$user->nickname}
-                                <i class="fa-angle-down"></i>
-							</span>
+                    <span>
+                        {$user->nickname}
+                        <i class="fa-angle-down"></i>
+                    </span>
                 </a>
 
                 <ul class="dropdown-menu user-profile-menu list-unstyled">
@@ -83,19 +83,19 @@
                         </a>
                     </li>
                     <li>
-                        <a href="/member/ChangePassword">
+                        <a href="/member/changePassword">
                             <i class="fa-wrench"></i>
                             设置
                         </a>
                     </li>
                     <li>
-                        <a href="Support/Help">
+                        <a href="Support/help">
                             <i class="fa-info"></i>
                             帮助
                         </a>
                     </li>
                     <li class="last">
-                        <a href="auth/Logout">
+                        <a href="auth/logout">
                             <i class="fa-lock"></i>
                             登出
                         </a>

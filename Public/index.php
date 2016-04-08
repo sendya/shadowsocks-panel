@@ -25,5 +25,5 @@ Core\Filter::register(new Helper\LoginFilter());
 // Handler for json request
 Core\Filter::register(new Helper\JSON());
 
-$defaultRouter = new Core\DefaultRouter();
+$defaultRouter = new Core\Router();
 $defaultRouter->handleRequest();

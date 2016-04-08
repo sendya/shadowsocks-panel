@@ -26,6 +26,9 @@ class Member {
         $data['serverCount'] = Node::getNodeCount();
         $data['openNode'] = 0;
         $data['allNode'] = 1;
+        $data['connCount'] = 10;
+        $data['userCount'] = User::getCount()!=null?:0;
+        $data['onlineNum'] = round($data['connCount']/$data['userCount'],2)*100;
 
         Template::setContext($data);
         Template::setView('panel/member');

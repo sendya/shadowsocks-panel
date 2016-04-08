@@ -102,6 +102,16 @@ class User extends Model {
         return $statement->fetchAll(DB::FETCH_CLASS, __CLASS__);
     }
 
+    public static function getCount() {
+        $stn = DB::getInstance()->prepare("SELECT count(1) FROM `member`");
+        $stn->execute();
+        return $stn->fetch(DB::FETCH_NUM)[0];
+    }
+
+    public static function getOnline() {
+
+    }
+
     public function verifyPassword($password)
     {
         return password_verify($password, $this->password);

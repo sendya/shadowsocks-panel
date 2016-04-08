@@ -1,5 +1,6 @@
 <import template="/panel/_header" />
 <import template="/panel/_content" />
+
 <div class="row">
     <div class="col-sm-3">
 
@@ -21,78 +22,75 @@
                 <!-- reset -->
 
                 <div id="checkin-on" <if condition="!$checkin">style="display:none;"</if>>
-                    <strong>
-                        <a id="checkin" href="javascript:;" style="color:#000;">点击签到</a>
-                    </strong>
-                    <span id="checkin-tag">签到送流量</span>
-                </div>
-                <div id="checkin-off" <if condition="$checkin">style="display:none;"</if>>
-                    <strong>
-                        <div id="checkinoff">您已签到</div>
-                    </strong>
-                    <span  id="checkinoff-tag" >{$checkinTime}</span>
-                </div>
+                <strong>
+                    <a id="checkin" href="javascript:;" style="color:#000;">点击签到</a>
+                </strong>
+                <span id="checkin-tag">签到送流量</span>
             </div>
-        </div>
-
-        <div class="xe-widget xe-counter xe-counter-info" data-count=".num" data-from="1" data-to="{$serverCount}" data-duration="1" data-easing="true">
-            <div class="xe-icon">
-                <i class="linecons-desktop"></i>
-            </div>
-            <div class="xe-label">
-                <strong class="num">{$serverCount}</strong>
-                <span>服务器数</span>
-            </div>
-        </div>
-
-    </div>
-    <div class="col-sm-6">
-
-        <div class="chart-item-bg">
-            <div class="chart-label">
-                <div class="h3 text-secondary text-bold" data-count="this" data-from="0" data-to="{$flow}" data-suffix="MB" data-duration="1">{$flow} MB</div>
-                <span class="text-medium text-muted">流量使用情况</span>
-            </div>
-            <div class="progress progress-striped active" style="height: 20px;position: absolute;left:30px;right:30px;top:30%">
-                <div class="progress-bar progress-bar-info" style="width: {$user_100}%;height:20px;"></div>
-            </div>
-            <div style="position: absolute;left:30px;right:30px;top:40%">共有流量：{$all_transfer}<br/>可用流量：{$usedflow}<br/><br/>您的当前IP：<code>{$nowUserIp}</code><br/>您的地区：<code id="country_id">获取中.</code><br/>
-                <h2><a href="support/help" target="_blank">使用教程&gt;&gt;</a></h2>
-            </div>
-            <div  style="height: 298px;">
-
-            </div>
+            <div id="checkin-off" <if condition="$checkin">style="display:none;"</if>>
+            <strong>
+                <div id="checkinoff">您已签到</div>
+            </strong>
+            <span  id="checkinoff-tag" >{$checkinTime}</span>
         </div>
     </div>
-    <div class="col-sm-3">
-        <php>
-            $onlineNum = round($connCount/$userCount,2)*100;
-        </php>
-        <div class="chart-item-bg">
-            <div class="chart-label chart-label-small">
-                <div class="h4 text-purple text-bold" data-count="this" data-from="0.00" data-to="{$onlineNum}" data-suffix="%" data-duration="1.5">{$onlineNum}%</div>
-                <span class="text-small text-upper text-muted">在线人数百分比</span><br />
-                <span class="text-small text-upper text-muted">注册用户：<code> {$userCount} </code><br/>签到人数：<code> {$checkCount} </code><br /></span>
+</div>
+
+<div class="xe-widget xe-counter xe-counter-info" data-count=".num" data-from="1" data-to="{$serverCount}" data-duration="1" data-easing="true">
+    <div class="xe-icon">
+        <i class="linecons-desktop"></i>
+    </div>
+    <div class="xe-label">
+        <strong class="num">{$serverCount}</strong>
+        <span>服务器数</span>
+    </div>
+</div>
+
+</div>
+<div class="col-sm-6">
+
+    <div class="chart-item-bg">
+        <div class="chart-label">
+            <div class="h3 text-secondary text-bold" data-count="this" data-from="0" data-to="{$flow}" data-suffix="MB" data-duration="1">{$flow} MB</div>
+            <span class="text-medium text-muted">流量使用情况</span>
+        </div>
+        <div class="progress progress-striped active" style="height: 20px;position: absolute;left:30px;right:30px;top:30%">
+            <div class="progress-bar progress-bar-info" style="width: {$user_100}%;height:20px;"></div>
+        </div>
+        <div style="position: absolute;left:30px;right:30px;top:40%">共有流量：{$all_transfer}<br/>可用流量：{$usedflow}<br/><br/>您的当前IP：<code>{$nowUserIp}</code><br/>您的地区：<code id="country_id">获取中.</code><br/>
+            <h2><a href="support/help" target="_blank">使用教程&gt;&gt;</a></h2>
+        </div>
+        <div  style="height: 298px;">
+
+        </div>
+    </div>
+</div>
+<div class="col-sm-3">
+    <div class="chart-item-bg">
+        <div class="chart-label chart-label-small">
+            <div class="h4 text-purple text-bold" data-count="this" data-from="0.00" data-to="{$onlineNum}" data-suffix="%" data-duration="1.5">{$onlineNum}%</div>
+            <span class="text-small text-upper text-muted">在线人数百分比</span><br />
+            <span class="text-small text-upper text-muted">注册用户：<code> {$userCount} </code><br/>签到人数：<code> {$checkCount} </code><br /></span>
 							<span class="text-small text-upper text-muted">实时在线：<code> {$connCount} </code><br />
 
-            </div>
-            <div id="server-uptime-chart" style="height: 134px;"></div>
+        </div>
+        <div id="server-uptime-chart" style="height: 134px;"></div>
+    </div>
+
+    <div class="chart-item-bg">
+        <div class="chart-label chart-label-small">
+            <div class="h4 text-secondary text-bold" data-count="this" data-from="0.00" data-to="{$transferAllFlow}" data-suffix="GB" data-decimal="." data-duration="2">0</div>
+            <span class="text-small text-upper text-muted">{SITE_NAME} 已经产生流量<code>{$transferAllFlow}</code>GB</span><br />
+            <span class="text-small text-upper text-muted">{SITE_NAME} 已经有<code>{$useUser}</code>人使用</span>
         </div>
 
-        <div class="chart-item-bg">
-            <div class="chart-label chart-label-small">
-                <div class="h4 text-secondary text-bold" data-count="this" data-from="0.00" data-to="{$transferAllFlow}" data-suffix="GB" data-decimal="." data-duration="2">0</div>
-                <span class="text-small text-upper text-muted">{SITE_NAME} 已经产生流量<code>{$transferAllFlow}</code>GB</span><br />
-                <span class="text-small text-upper text-muted">{SITE_NAME} 已经有<code>{$useUser}</code>人使用</span>
-            </div>
-
-            <div id="sales-avg-chart" style="height: 134px; position: relative;">
-                <div style="position: absolute; top: 25px; right: 0; left: 40%; bottom: 0"></div>
-            </div>
-
+        <div id="sales-avg-chart" style="height: 134px; position: relative;">
+            <div style="position: absolute; top: 25px; right: 0; left: 40%; bottom: 0"></div>
         </div>
 
     </div>
+
+</div>
 </div>
 
 
@@ -102,7 +100,9 @@
         <div class="chart-item-bg">
             <div class="chart-entry-view">
                 <div class="chart-entry-label">
+                    <if condition="count($globalMessage)>0">
                     <span>{$globalMessage[0]->content}</span>
+                    </if>
                     <p>Win客户端：1.<a href="https://sscat.it/response/download/SS-CSharp_2.5.6.exe" target="_blank">SS-CSharp_2.5.6</a>&nbsp;&nbsp;&nbsp;
                         2.<a href="https://sscat.it/response/download/ShadowsocksR.zip" target="_blank" title="ShadowsocksR 3.4.2">ShadowsocksR</a>&nbsp;&nbsp;&nbsp;
                         <br>Android客户端：<a href="https://sscat.it/response/download/SS-Android_2.7.7.apk" target="_blank">SS-Android_2.7.7.apk</a></p>
@@ -133,7 +133,7 @@
     $(document).ready(function() {
         <php>
             if(\Helper\Updater::check() == true) {
-                echo "showToastr(\"更新提示：\\n发现新版本Shadowsocks-Panel，请前往github更新..\\n(本消息只管理员权限可以收到)\", 0);";
+            echo "showToastr(\"更新提示：\\n发现新版本Shadowsocks-Panel，请前往github更新..\\n(本消息只管理员权限可以收到)\", 0);";
         }
         </php>
         $("#checkin").click(function() {
@@ -190,7 +190,7 @@
         });
         $.get("/api/queryCountry.json",{}, function(data){
             var counrty = "";
-            // data.retData.province.country + " " + data.retData.province
+
             if(data.retData.country != 'None'){
                 counrty += data.retData.country;
             }

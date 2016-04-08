@@ -26,24 +26,11 @@
   },
   "entries": {
     "js": [
-      "Resource/Default/js/xenon-api.js",
-      "Resource/Default/js/xenon-custom.js",
-      "Resource/Default/js/xenon-notes.js",
-      "Resource/Default/js/xenon-toggles.js",
-      "Resource/Default/js/xenon-widgets.js",
-      "Resource/Default/js/pjax.js",
-      "Resource/Default/js/html5shiv.min.js",
-      "Resource/Default/js/respond.min.js"
+      "Resource/Default/home/js/home.js"
     ],
     "css": [
       "Resource/Misc/Error.css",
-      "Resource/Default/css/bootstrap.css",
-      "Resource/Default/css/custom.css",
-      "Resource/Default/css/xenon.css",
-      "Resource/Default/css/xenon-components.css",
-      "Resource/Default/css/xenon-core.css",
-      "Resource/Default/css/xenon-forms.css",
-      "Resource/Default/css/xenon-skins.css"
+      "Resource/Default/home/css/home.css"
     ]
   },
   "author": "kookxiang <r18@ikk.me>",

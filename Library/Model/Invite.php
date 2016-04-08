@@ -12,10 +12,12 @@ use \Core\Database as DB;
 /**
  * Class Invite
  *
+ * @table invite
  * @package Model
  */
 class Invite extends Model {
 
+    /** @var primaryKey  */
     private $primaryKey = 'uid';// 定义主键
 
     public $uid; //邀请码归属用户uid   -1代表公共邀请码

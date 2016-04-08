@@ -35,9 +35,7 @@ class Template
         if (!file_exists($templateFile) && !file_exists($templateFileOrigin)) {
             throw new Error("Template {$templateName} not exists!", 101);
         }
-        if (defined(TEMPLATE_UPDATE) && !TEMPLATE_UPDATE) {
-            // Do not check template update
-        } else if (!file_exists($templateFile)) {
+        if (!file_exists($templateFile)) {
             self::compile($templateName);
         } elseif (filemtime($templateFile) <= filemtime($templateFileOrigin)) {
             self::compile($templateName);
@@ -161,8 +159,8 @@ class Template
         }
 
         // clear space and tab
-        $sourceCode = preg_replace('/^[ \t]*(.+)[ \t]*$/m', '\\1', $sourceCode);
-        $sourceCode = preg_replace('/[\r\n]/', '', $sourceCode);
+//        $sourceCode = preg_replace('/^[ \t]*(.+)[ \t]*$/m', '\\1', $sourceCode);
+//        $sourceCode = preg_replace('/[\r\n]/', '', $sourceCode);
 
         $output = '<?php' . PHP_EOL;
         $output .= 'if(!defined(\'ROOT_PATH\'))';
