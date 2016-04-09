@@ -11,6 +11,24 @@ use ReflectionProperty;
 
 abstract class Model
 {
+    public function delete()
+    {
+        $reflection = new ReflectionObject($this);
+        $primaryKey = $this->getPrimaryKeyName($reflection);
+        $property = $reflection->getProperty($primaryKey);
+        if ($property->isProtected() || $property->isPrivate()) {
+            $property->setAccessible(true);
+        }
+        $primaryValue = $property->getValue($this);
+        if (!$primaryValue) {
+            throw new Error('Cannot delete object without id');
+        }
+        $tableName = $this->getTableName($reflection);
+        $statement = Database::getInstance()->prepare("DELETE FROM `{$tableName}` WHERE `{$primaryKey}`=:value");
+        $statement->bindValue(':value', $primaryValue);
+        $statement->execute();
+    }
+
     public function save()
     {
         $map = array();
@@ -70,9 +88,9 @@ abstract class Model
     {
         if (!$reflection->hasProperty('primaryKey')) {
             return 'id';
-        }else {
+        } else {
             $property = $reflection->getProperty('primaryKey');
-            if ($property->isPrivate() || $property->isProtected()){
+            if ($property->isPrivate() || $property->isProtected()) {
                 $property->setAccessible(true);
             }
             return $property->getValue($this);
@@ -83,9 +101,9 @@ abstract class Model
     {
         $docComment = $reflection->getDocComment();
         if (!preg_match('/@table ?([A-Za-z\-_0-9]+)/i', $docComment, $matches) || !$matches[1]) {
-            $arr = explode("\\", $reflection->getName()); // get class name
-            $matches[1] = $arr[count($arr)-1];
+            return strtolower($reflection->getShortName());
+        } else {
+            return $matches[1];
         }
-        return $matches[1];
     }
 }

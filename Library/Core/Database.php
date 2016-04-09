@@ -28,6 +28,16 @@ class Database extends \PDO
         self::$instance->setAttribute(self::ATTR_ERRMODE, self::ERRMODE_EXCEPTION);
     }
 
+    /**
+     * Prepares a statement for execution and returns a statement object
+     * @link http://php.net/manual/en/pdo.prepare.php
+     * @param string $statement
+     * @param array $driver_options [optional]
+     * @return \PDOStatement
+     */
+    public static function sql($statement, array $driver_options = array()){
+        return self::getInstance()->prepare($statement, $driver_options);
+    }
 
     /**
      * Get current database connection

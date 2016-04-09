@@ -35,6 +35,14 @@ class JSON implements IFilter
                     'hasError' => true,
                     'message' => $error->getMessage(),
                 ));
+            } elseif (Template::getView() == 'Misc/Redirect') {
+                $this->outputJson(array(
+                    'code' => 302,
+                    'data' => null,
+                    'hasError' => true,
+                    'message' => $context['text'] ? $context['text'] : 'JSON request has been redirected',
+                    'target' => $context['link']
+                ));
             } else {
                 $this->outputJson(array(
                     'code' => self::$statusCode,
