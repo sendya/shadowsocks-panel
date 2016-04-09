@@ -136,16 +136,10 @@ class Auth {
             $user->nickname = $userName;
 
             // LEVEL 从数据库中获取
-            $transferLevel = [
-                'A'     =>  10,
-                'B'     =>  50,
-                'C'     =>  150,
-                'D'     =>  300,
-                'VIP'   =>  500
-            ];
+            $custom_transfer_level = Option::get('custom_transfer_level');
 
             // 定义邀请码套餐与流量单位
-            $transferNew = Utils::gb() * $transferLevel[$invite->plan];
+            $transferNew = Utils::gb() * $custom_transfer_level[$invite->plan];
 
             $user->transfer = $transferNew;
             $user->invite = $inviteCode;
@@ -175,6 +169,10 @@ class Auth {
         return $result;
     }
 
+    /**
+     * @JSON
+     * @throws \Core\Error
+     */
     public function forgePwd() {
         $result = array('error' => 1, 'message' => '请求找回密码失败');
         $siteName = SITE_NAME;

@@ -23,12 +23,13 @@ use Model\User;
  */
 class Member {
 
-    public function Index() {
+    /**
+     * 主页面
+     */
+    public function index() {
         $user = User::getUserByUserId(User::getCurrent()->uid);
         $data['user'] = $user;
 
-        $data['openNode'] = Stats::countNode(1);
-        $data['allNode'] = Stats::countNode();
         $data['online'] = Stats::countOnline();
         $data['userCount'] = Stats::countUser()!=null?:0;
         $data['useUserCount'] = Stats::countUseUser(); // 使用过服务的用户数
@@ -65,21 +66,23 @@ class Member {
 
     }
 
-    public function Node() {
-        global $user;
-        $user = User::GetUserByUserId($user->uid);
-        $nodes = Node::GetNodeArray(0);
-        $nodeVip = Node::GetNodeArray(1);
+    /**
+     * 节点页面
+     */
+    public function node() {
+        $data['user'] = User::getCurrent();
+        $data['nodes'] = Node::getNodeArray(0);
+        $data['nodeVip'] = Node::getNodeArray(1);
 
-        include Template::load("panel/node");
-        //throw new Error("This page is not available" , 404);
+        Template::setContext($data);
+        Template::setView("panel/node");
     }
 
     /**
      *    Invite list
      *    2015.11.11 start
      */
-    public function Invite() {
+    public function invite() {
         global $user;
         $inviteList = Invite::GetInvitesByUid($user->uid, "0");
 
@@ -92,69 +95,95 @@ class Member {
      *    User info page,
      *    2015.11.12 start
      */
-    public function Info() {
-        global $user;
+    public function info() {
 
-        include Template::load("panel/info");
+        Template::putContext('user', User::getCurrent());
+        Template::setView("panel/info");
     }
 
-    public function ChangePassword() {
-        global $user;
-        $user = User::GetUserByUserId($user->uid);
+    /**
+     * 修改 网站登陆密码
+     * @JSON
+     * @throws Error
+     */
+    public function changePassword() {
+        $user = User::getUserByUserId(User::getCurrent()->uid);
+
         if($_POST['nowpwd'] != null && $_POST['pwd'] != null) {
             $result = array('error' => 1, 'message' => '密码修改失败.');
             $nowpwd = $_POST['nowpwd'];
             $pwd = $_POST['pwd'];
             if(!$user->verifyPassword($nowpwd)) { // 密码不正确
                 $result['message'] = "旧密码错误！";
-                echo json_encode($result);
-                exit();
+                return $result;
             }
             if($pwd == $nowpwd) {
                 $result['message'] = "新密码不能和旧密码相同！";
-                echo json_encode($result);
-                exit();
+                return $result;
             }
             if(strlen($pwd) < 6) {
                 $result['message'] = "新密码不能少于6位！";
-                echo json_encode($result);
-                exit();
+                return $result;
             }
-            $user->savePassword($pwd);
+            $user->setPassword(htmlspecialchars($pwd));
 
             $result['error'] = 0;
             $result['message'] = "修改密码成功！";
-            echo json_encode($result);
-            exit();
+            return $result;
         } else {
-            include Template::load("panel/changePassword");
+            Template::putContext('user', $user);
+            Template::setView("panel/changePassword");
         }
     }
 
-    public function ChangeSSPassword() {
-        global $user;
-        include Template::load("panel/changeSSPassword");
+    /**
+     * 修改 SS连接密码
+     * @JSON
+     * @throws Error
+     */
+    public function changeSSPassword() {
+        Template::putContext('user', User::getCurrent());
+        Template::setView("panel/changeSSPassword");
     }
 
-    public function ChangeNickname() {
-        global $user;
+    /**
+     * 修改 昵称
+     * @JSON
+     * @throws Error
+     */
+    public function changeNickname() {
+        $user = User::getCurrent();
 
-        include Template::load("panel/changeNickname");
+
+        Template::putContext('user', $user);
+        Template::setView("panel/changeNickname");
     }
 
-    public function ChangePlanLevel() {
-        global $user;
+    /**
+     * 升级面板 Plan
+     * @JSON
+     * @throws Error
+     */
+    public function updatePlan() {
+        $user = User::getCurrent();
 
-        include Template::load("panel/changePlanLevel");
+
+        Template::putContext('user', $user);
+        Template::setView("panel/changePlanLevel");
     }
 
+    /**
+     * 删除自己的账户（在本站彻底清空自己注册的账户）
+     *
+     * @JSON
+     * @return array
+     */
     public function deleteMe() {
-        global $user;
+        $user = User::getCurrent();
 
         $flag = $_POST['delete'];
-        $result = array("code"=> 200, "hasError"=> true, "message"=> "请求错误");
+        $result = array('error' => 1, "message"=> "请求错误");
         if($flag != null && $flag == '1'){
-            $user = User::GetUserByUserId($user->uid);
             $rs = $user->deleteMe();
             if($rs) {
                 setcookie("auth", '', time() - 3600, "/");
@@ -163,8 +192,7 @@ class Member {
             }
         }
 
-        echo json_encode($result);
-        exit();
+        return $result;
     }
 
 

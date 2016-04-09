@@ -13,11 +13,11 @@ class Support {
         exit();
     }
 
-    public function Tos() {
+    public function tos() {
         Template::setView('home/Tos');
     }
 
-    public function Help() {
+    public function help() {
         Template::setView('home/help');
     }
 

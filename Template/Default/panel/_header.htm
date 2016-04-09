@@ -1,4 +1,8 @@
 <import template="/panel/_head" />
+<php>
+    $openNode = \Helper\Stats::countNode(1);
+    $allNode = \Helper\Stats::countNode();
+</php>
 <body class="page-body">
 <div class="modal fade" id="modal-1" style="display: none;" aria-hidden="true">
     <div class="modal-dialog">

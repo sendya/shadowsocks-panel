@@ -26,6 +26,9 @@ class OptionsDefaultDb extends AbstractMigration
                 'k'     =>  'check_transfer_max',
                 'v'     =>  '50'
             ],[
+                'k'     =>  'custom_transfer_level',
+                'v'     =>  '{"A":10,"B":50,"C":150,"D":300,"VIP":500}'
+            ],[
                 'k'     =>  'custom_plan_name',
                 'v'     =>  '{"A":"\u514d\u8d39\u7528\u6237","B":"\u666e\u901a\u7528\u6237","C":"\u9ad8\u7ea7\u7528\u6237","D":"\u8d85\u7ea7\u7528\u6237","VIP":"\u7279\u6743\u4f1a\u5458"}'
             ]

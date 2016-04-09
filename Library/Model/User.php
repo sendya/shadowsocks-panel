@@ -108,10 +108,6 @@ class User extends Model {
         return $stn->fetch(DB::FETCH_NUM)[0];
     }
 
-    public static function getOnline() {
-
-    }
-
     public function verifyPassword($password)
     {
         return password_verify($password, $this->password);
@@ -125,5 +121,7 @@ class User extends Model {
     public function isAdmin() {
         return $this->isAdmin;
     }
+
+
 
 }

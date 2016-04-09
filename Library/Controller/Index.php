@@ -24,14 +24,14 @@ class Index {
     }
 
     public function test() {
-        $planNames = [
-            'A'    =>  '免费用户',
-            'B'    =>  '普通用户',
-            'C'    =>  '高级用户',
-            'D'    =>  '超级用户',
-            'VIP'  =>  '特权会员'
+        $transferLevel = [
+            'A'     =>  10,
+            'B'     =>  50,
+            'C'     =>  150,
+            'D'     =>  300,
+            'VIP'   =>  500
         ];
-        Option::set('custom_plan_name', json_encode($planNames));
+        Option::set('custom_transfer_level', json_encode($transferLevel));
 
     }
 
