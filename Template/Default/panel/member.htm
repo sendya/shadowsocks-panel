@@ -118,7 +118,7 @@
                 <div  class="h1 text-purple text-bold">连接信息</div>
                 端口：<code>{$user->port}</code><br />
                 密码：<div id="showpwd" style="display: inline"><b>点击显示密码</b></div><br />
-                <button class="btn btn-sm btn-info">{$user->plan}</button>   &nbsp;
+                <button class="btn btn-sm btn-info">{$user->getPlan()}</button>   &nbsp;
                 <button class="btn btn-sm btn-secondary" id="updatePlan"> 升级套餐 </button>   &nbsp;
                 <button class="btn btn-sm btn-secondary" id="planList"> 套餐详情 </button><br /><br />
                 最后使用时间：<code>{$lastOnlineTime}</code>

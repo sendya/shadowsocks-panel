@@ -38,11 +38,18 @@ class LoginFilter implements IFilter {
             $this->black = true;
         }
         $reflection = new ReflectionObject(new $className);
-        $docComment = $reflection->getDocComment();
-        if(strpos($docComment, '@Authorization') !== false && !$user) {
+        $docCommentC = $reflection->getDocComment();
+        if(strpos($docCommentC, '@Authorization') !== false && !$user) {
             $this->black = true;
         }
+        if(strpos($docComment, '@Admin') !== false || strpos($docCommentC, '@Admin')!== false) {
+            if(!$user->isAdmin()) {
+                $this->data['message'] = '你不是管理员，无法访问此页面';
+                $this->black = true;
 
+            }
+
+        }
         if($this->black) {
             if($this->isJson) {
                 Template::setContext($this->data);

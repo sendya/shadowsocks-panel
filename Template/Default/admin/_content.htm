@@ -11,7 +11,7 @@
             <li class="dropdown hover-line">
                 <a href="javascript:;" data-toggle="dropdown">
                     <i class="fa-bell-o"></i>
-                    <span class="badge badge-purple"></span>
+                    <span class="badge badge-purple"><if condition="$messageCount > 0">{$messageCount}</if></span>
                 </a>
 
                 <ul class="dropdown-menu notifications">
@@ -24,7 +24,34 @@
 
                     <li>
                         <ul class="dropdown-menu-list list-unstyled ps-scrollbar">
-                            
+                            <if condition="count($messageList) > 0">
+                                <loop variable="$messageList" key="$key" value="$message">
+                                    <li class="active notification-success" id="id-{$message->id}">
+                                        <!-- active notification-secondary -->
+                                        <a href="javascript:;">
+                                            <i class="fa-user"></i>
+                                            <!-- fa-lock -->
+											<span class="line">
+												<strong>{$message->content}</strong>
+											</span>
+                                            <span class="line small time">{(date("Y-m-d H:i:s", $message->pushTime))}</span>
+                                        </a>
+                                    </li>
+                                </loop>
+                                <else>
+                                    <li class="active notification-success" id="id-0">
+                                        <!-- active notification-secondary -->
+                                        <a href="javascript:;">
+                                            <i class="fa-user"></i>
+                                            <!-- fa-lock -->
+                                        <span class="line">
+                                            <strong>无新消息</strong>
+                                        </span>
+                                            <span class="line small time">{(date("Y-m-d H:i:s", time()))}</span>
+                                        </a>
+                                    </li>
+                                </else>
+                            </if>
                         </ul>
                     </li>
                     <li class="external">
@@ -40,11 +67,11 @@
 
             <li class="dropdown user-profile">
                 <a href="#" data-toggle="dropdown">
-                    <img src="{$user->getGravatar()}" alt="user-image" class="img-circle img-inline userpic-32" width="28" />
-							<span>
-								{$user->nickname}
-                                <i class="fa-angle-down"></i>
-							</span>
+                    <img src="{(\Helper\Utils::gravatar($user->email))}" alt="user-image" class="img-circle img-inline userpic-32" width="28" />
+                    <span>
+                        {$user->nickname}
+                        <i class="fa-angle-down"></i>
+                    </span>
                 </a>
 
                 <ul class="dropdown-menu user-profile-menu list-unstyled">
@@ -55,13 +82,19 @@
                         </a>
                     </li>
                     <li>
-                        <a href="/Support/Help">
+                        <a href="/member/changePassword">
+                            <i class="fa-wrench"></i>
+                            设置
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/support/help">
                             <i class="fa-info"></i>
                             帮助
                         </a>
                     </li>
                     <li class="last">
-                        <a href="/auth/Logout">
+                        <a href="/auth/logout">
                             <i class="fa-lock"></i>
                             登出管理端
                         </a>
@@ -70,4 +103,4 @@
             </li>
         </ul>
     </nav>
-    <script type="text/javascript">function showToastr(messages,waitime,timeOut){if(timeOut==null||timeOut==0||timeOut=="")timeOut="5000";setTimeout(function(){var opts={"closeButton":true,"debug":false,"positionClass":"toast-top-right toast-default","toastClass":"black","onclick":null,"showDuration":"100","hideDuration":"1000","timeOut":timeOut,"extendedTimeOut":"1000","showEasing":"swing","hideEasing":"linear","showMethod":"fadeIn","hideMethod":"fadeOut"};toastr.info(messages,"系统提示",opts);},waitime);}</script>
+    <script type="text/javascript">function showToastr(messages,waitime,timeOut, title){if(timeOut==null||timeOut==0||timeOut=="")timeOut="5000";setTimeout(function(){var opts={"closeButton":true,"debug":false,"positionClass":"toast-top-right toast-default","toastClass":"black","onclick":null,"showDuration":"100","hideDuration":"1000","timeOut":timeOut,"extendedTimeOut":"1000","showEasing":"swing","hideEasing":"linear","showMethod":"fadeIn","hideMethod":"fadeOut"};toastr.info(messages, title==undefined?'系统提示':title,opts);},waitime);}</script>

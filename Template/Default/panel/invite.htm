@@ -36,7 +36,7 @@
                 <th >状态</th>
             </tr>
             </thead>
-            <tbody>
+            <tbody id="data-tbody">
 
             <if condition="count($inviteList) > 0">
             <loop variable="$inviteList" key="$key" value="$invite">
@@ -66,37 +66,42 @@
         </table>
 
         <hr>
-
         <h4>注意！</h4>
-
         <p>邀请码请给认识的需要的人。<br />邀请码使用流量购买 1个/10GB,请不要浪费<br />邀请有记录，若被邀请的人违反用户协议，您将会有连带责任。</p>
-
         <br>
-
         <pre>邀请码这种东西，若无力生成,请找管理员索要吧。</pre>
 
     </div>
 </div>
 <script>
     $(document).ready(function(){
-
         $(".invitec").click(function(){
             showToastr("生成邀请码中..", 0, 2000);
             $.ajax({
                 type:"GET",
-                url:"/Form/addInvite",
+                url:"/invite/create.json",
                 dataType:"json",
-                success:function(data){
-                    if(data.error == 0){
+                success:function(result){
+                    if(result.code != 200) {
+                        showToastr(result.message, 0, 5000, '系统错误');
+                        return;
+                    }
+                    var data = result.data;
+                    if(data.error == 0) {
                         showToastr(data.message, 0, 5000);
-                        setTimeout("window.location.reload()", 2000);
+
                         $("#invitec_num").html(data.invite_num);
                         $("#invitec_num2").html(data.invite_num);
-                    }else{
-                        //$("#msg-error").show();
-                        //$("#msg-error-p").html(data.msg);
-                        showToastr(data.message, 0, 5000);
+
+                        if(data.invite != null) {
+
+                            $("#data-tbody").append('<tr><td>'+ $("#data-tbody").children("tr").length +'</td><td>'+data.invite.invite+'</td><td><a href="javascript:;" class="btn btn-sm btn-secondary" data-set-skin="">可用</a></td></tr>');
+                        }
+
+                    } else {
+                        showToastr(data.message, 0, 5000, '错误');
                     }
+
                 },
                 error:function(jqXHR){
                     showToastr("发生错误："+jqXHR.status, 0);
@@ -104,21 +109,23 @@
             })
         });
         $('.inviteFlow').click(function(){
-            showToastr("正在校验信息..", 0, 2000);
+            showToastr("正在校验信息..", 0, 1500);
             $.ajax({
                 type:"GET",
-                url:"/Form/buyInvite",
+                url:"/invite/buy.json",
                 dataType:"json",
-                success:function(data){
-                    if(data.error == 0){
-                        showToastr(data.message, 0, 5000);
+                success:function(result){
+                    if(result.code != 200) {
+                        showToastr(result.message, 0, 5000, '系统错误');
+                        return;
+                    }
+                    if(result.data.error == 0) {
+                        showToastr(result.data.message, 0, 5000);
                         $(".invitec").removeClass("hidden");
-                        $("#invitec_num").html(data.invite_num);
-                        $("#invitec_num2").html(data.invite_num);
-                    }else{
-                        //$("#msg-error").show();
-                        //$("#msg-error-p").html(data.msg);
-                        showToastr(data.message, 0, 5000);
+                        $("#invitec_num").html(result.data.invite_num);
+                        $("#invitec_num2").html(result.data.invite_num);
+                    } else {
+                        showToastr(result.data.message, 0, 5000, '错误');
                     }
                 },
                 error:function(jqXHR){

@@ -136,7 +136,7 @@ class Auth {
             $user->nickname = $userName;
 
             // LEVEL 从数据库中获取
-            $custom_transfer_level = Option::get('custom_transfer_level');
+            $custom_transfer_level = json_decode(Option::get('custom_transfer_level'), true);
 
             // 定义邀请码套餐与流量单位
             $transferNew = Utils::gb() * $custom_transfer_level[$invite->plan];

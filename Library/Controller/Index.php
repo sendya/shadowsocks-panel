@@ -24,15 +24,9 @@ class Index {
     }
 
     public function test() {
-        $transferLevel = [
-            'A'     =>  10,
-            'B'     =>  50,
-            'C'     =>  150,
-            'D'     =>  300,
-            'VIP'   =>  500
-        ];
-        Option::set('custom_transfer_level', json_encode($transferLevel));
 
+        var_dump(Invite::addInvite(1, 'A'));
+        exit();
     }
 
 }

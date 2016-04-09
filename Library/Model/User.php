@@ -11,6 +11,7 @@ namespace Model;
 use Core\Database as DB;
 use Core\Error;
 use Core\Model;
+use Helper\Utils;
 
 /**
  * Class User
@@ -122,6 +123,7 @@ class User extends Model {
         return $this->isAdmin;
     }
 
-
-
+    public function getPlan() {
+        return Utils::planAutoShow($this->plan);
+    }
 }

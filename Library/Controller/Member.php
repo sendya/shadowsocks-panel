@@ -56,8 +56,6 @@ class Member {
         $data['checked'] = strtotime(date('Y-m-d 00:00:00', time())) > strtotime(date('Y-m-d H:i:s', $user->lastCheckinTime));
         $data['userIp'] = Utils::getUserIP();
 
-        $data['user']->plan = Utils::planAutoShow($user->plan);
-
         // Message
         $data['globalMessage'] = Message::getGlobalMessage();
 
@@ -83,12 +81,11 @@ class Member {
      *    2015.11.11 start
      */
     public function invite() {
-        global $user;
-        $inviteList = Invite::GetInvitesByUid($user->uid, "0");
+        $data['user'] = User::getUserByUserId(User::getCurrent()->uid);
+        $data['inviteList'] = Invite::GetInvitesByUid($data['user']->uid, "0");
 
-        include Template::load("panel/invite");
-
-        //throw new Error("This page is not available", 404);
+        Template::setContext($data);
+        Template::setView("panel/invite");
     }
 
     /**
@@ -96,7 +93,6 @@ class Member {
      *    2015.11.12 start
      */
     public function info() {
-
         Template::putContext('user', User::getCurrent());
         Template::setView("panel/info");
     }
@@ -164,11 +160,8 @@ class Member {
      * @JSON
      * @throws Error
      */
-    public function updatePlan() {
-        $user = User::getCurrent();
-
-
-        Template::putContext('user', $user);
+    public function changePlan() {
+        Template::putContext('user', User::getCurrent());
         Template::setView("panel/changePlanLevel");
     }
 
@@ -184,20 +177,12 @@ class Member {
         $flag = $_POST['delete'];
         $result = array('error' => 1, "message"=> "请求错误");
         if($flag != null && $flag == '1'){
-            $rs = $user->deleteMe();
-            if($rs) {
-                setcookie("auth", '', time() - 3600, "/");
-                setcookie("token", '', time() - 3600, "/");
-                $result = array("code"=> 200, "hasError"=> false, "message"=> "您已经从本站消除所有记忆，将在 3秒 后执行世界初始化...<br/>祝您过得愉快。");
+            if($user->delete()) {
+                $result = array("error"=> 0, "message"=> "您已经从本站消除所有记忆，将在 3秒 后执行世界初始化...<br/>祝您过得愉快。");
+                $_SESSION['currentUser'] = null;
             }
         }
 
         return $result;
-    }
-
-
-    private static function fuckInt($number) {
-        if ($number == null || $number == 0) return true;
-        return false;
     }
 }

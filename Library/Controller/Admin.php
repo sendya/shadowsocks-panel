@@ -10,8 +10,14 @@ namespace Controller;
 
 use \Core\Response;
 
+/**
+ * Class Admin
+ * @Admin
+ *
+ * @package Controller
+ */
 class Admin {
     public function index() {
-        Response::redirect("/Admin/user");
+        // Response::redirect("/Admin");
     }
 }

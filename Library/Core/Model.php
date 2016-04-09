@@ -26,7 +26,8 @@ abstract class Model
         $tableName = $this->getTableName($reflection);
         $statement = Database::getInstance()->prepare("DELETE FROM `{$tableName}` WHERE `{$primaryKey}`=:value");
         $statement->bindValue(':value', $primaryValue);
-        $statement->execute();
+        $result = $statement->execute();
+        return $result;
     }
 
     public function save()
@@ -75,13 +76,14 @@ abstract class Model
                 $statement->bindValue(":{$key}", $value);
             }
         }
-        $statement->execute();
+        $result = $statement->execute();
         if (!$identifier) {
             $insertId = Database::getInstance()->lastInsertId();
             if ($insertId) {
                 $reflection->getProperty($primaryKey)->setValue($this, $insertId);
             }
         }
+        return $result;
     }
 
     private function getPrimaryKeyName(ReflectionObject $reflection)

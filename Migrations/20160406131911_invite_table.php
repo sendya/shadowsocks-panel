@@ -7,7 +7,7 @@ class InviteTable extends AbstractMigration
 {
     public function change()
     {
-        $this->table("invite", array('id' => false, 'comment' => '邀请码', 'primary_key' => ['invite']))
+        $this->table("invite", array('comment' => '邀请码'))
             ->addColumn('uid', 'integer', ['limit' => 10, 'default' => -1])
             ->addColumn('dateLine', 'integer', ['limit' => 11, 'default' => 0])
             ->addColumn('expiration', 'integer', ['limit' => 3])

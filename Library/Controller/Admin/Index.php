@@ -11,21 +11,25 @@ use \Core\Template;
 use \Model\User;
 use \Model\Node;
 use \Helper\Util;
-use \Helper\Ana;
+use \Helper\Stats;
 use Helper\Mail;
 use Helper\Message;
 
-class Index extends AdminListener {
+/**
+ * Class Index
+ * @Admin
+ * @package Controller\Admin
+ */
+class Index {
     public function index() {
-        global $user;
-
-        $flow_num10 = Ana::dataUsage(0);
-        $flow_num30 = Ana::dataUsage(1);
-        $flow_num100 = Ana::dataUsage(2);
-        $flow_max = Ana::dataUsage(3);
-        $userCount = Ana::GetUserCount();
-
-        include Template::load('/admin/index');
+        $data['user'] = User::getCurrent();
+        $data['flow_num10'] = Stats::dataUsage(0);
+        $data['flow_num30'] = Stats::dataUsage(1);
+        $data['flow_num100'] = Stats::dataUsage(2);
+        $data['flow_max'] = Stats::dataUsage(3);
+        $data['userCount'] = Stats::countUser();
+        Template::setContext($data);
+        Template::setView('admin/index');
     }
 
     public function mailTest() {

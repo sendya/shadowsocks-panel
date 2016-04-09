@@ -109,10 +109,11 @@ class Template
         $lock->acquire();
 
         // variable with braces:
-        $sourceCode = preg_replace('/\{\$([A-Za-z0-9_\\\[\]\'"]+)(->|::)(\$?[A-Za-z0-9_\-]+)(\(.*\))?}/',
+        $sourceCode = preg_replace('/\{\$([A-Za-z0-9_\[\]\'"]+)(->|::)(\$?[A-Za-z0-9_\-]+)(\(.*\))?}/',
             '<?php echo \$\\1\\2\\3\\4; ?>', $sourceCode);
-        $sourceCode = preg_replace('/\{\$([A-Za-z0-9_\[\]\'"]+)}/', '<?php echo \$\\1; ?>', $sourceCode);
+        $sourceCode = preg_replace('/\{\$([A-Za-z0-9_\[\]\->\(\)]+)\}/', '<?php echo \$\\1; ?>', $sourceCode);
         $sourceCode = preg_replace('/\{([A-Z][A-Z0-9_\[\]]*)\}/', '<?php echo \\1; ?>', $sourceCode);
+        $sourceCode = preg_replace('/\{\((.*)\)}/', '<?php echo \\1; ?>', $sourceCode);
         $lock->acquire();
 
         // PHP code:

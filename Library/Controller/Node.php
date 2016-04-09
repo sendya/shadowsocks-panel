@@ -8,8 +8,10 @@ namespace Controller;
 
 use Core\Error;
 use Core\Template;
-use Model\User;
 use Helper\Message;
+use Helper\Utils;
+use Model\User;
+use Model\Node as NodeModel;
 
 /**
  * Class Node
@@ -24,44 +26,66 @@ class Node
     }
 
     /**
-     * @JSON
      * @throws Error
      */
-    public function QRCode()
-    {
-        
+    public function qrCode() {
+        $id = trim($_REQUEST['id']);
+        $user = User::getUserByUserId(User::getCurrent()->uid);
+        $node = NodeModel::getNodeById($id);
+        $info = self::nodeQr($node->server, $user->port, $user->sspwd, $node->method);
+        if (self::verifyPlan($user->plan, $node->type)) {
+            Template::putContext('info', $info);
+            Template::putContext('node', $node);
+            Template::setView('node/QrCode');
+        } else {
+            Message::show('你不是 VIP, 无法使用高级节点！', 'member/node');
+        }
     }
 
-    public function Json()
+    public function json()
     {
-        global $user;
         $id = trim($_REQUEST['id']);
-        $user = User::GetUserByUserId($user->uid);
-        $node = Nodem::GetNodeById($id);
-        $info = NodeUtil::NodeJson($node->server, $user->port, $user->sspwd, $node->method, $node->name);
-        if (Node::CheckPlan($user->plan, $node->type)) {
+        $user = User::getUserByUserId(User::getCurrent()->uid);
+        $node = NodeModel::getNodeById($id);
+        $info = self::nodeJson($node->server, $user->port, $user->sspwd, $node->method, $node->name);
+        if (self::verifyPlan($user->plan, $node->type)) {
+            Template::putContext('info', $info);
+            Template::putContext('node', $node);
             Template::setView('node/Json');
         } else {
-            throw new \Core\Error("your not vip", 233);
+            Message::show('你不是 VIP, 无法使用高级节点！', 'member/node');
         }
-        exit();
     }
 
-    public function JsonList()
+    /**
+     * 导出节点列表
+     */
+    public function jsonList()
     {
-        global $user;
-        $id = trim($_REQUEST['id']);
-        $nodeList = Nodem::GetNodeArray();
+        $user = User::getUserByUserId(User::getCurrent()->uid);
+        $nodeList = NodeModel::getNodeArray();
         $info = "";
         foreach ($nodeList as $node) {
-            $info .= NodeUtil::NodeJson($node->server, $node->port, $user->sspwd, $node->method) . ",";
+            if (self::verifyPlan($user->plan, $node->type)) {
+                $info .= self::nodeJson($node->server, $user->port, $user->sspwd, $node->method, $node->name) . ",";
+            }
         }
+        Template::putContext('info', $info);
         Template::setView('node/JsonAll');
-        exit();
     }
 
-    private static function CheckPlan($plan, $nodeType)
-    {
+
+    private static function nodeJson($server, $server_port, $password, $method, $name) {
+        return '{"server":"' . $server . '","server_port":' . $server_port . ',"local_port":1080,' . '"password":"' . $password . '","timeout":600,' . '"method":"' . $method . '", "remarks": "' . $name . '"}';
+    }
+
+    private static function nodeQr($server, $server_port, $password, $method) {
+        $ssurl = $method . ":" . $password . "@" . $server . ":" . $server_port;
+        $ssqr = "ss://" . base64_encode($ssurl);
+        return array("ssurl" => $ssurl, "ssqr" => $ssqr);
+    }
+
+    private static function verifyPlan($plan, $nodeType) {
         if ($nodeType == 1) {
             if ($plan == 'VIP' || $plan == 'SVIP') {
                 return true;
@@ -71,8 +95,6 @@ class Node
         } else {
             return true;
         }
-
-
     }
 
 }

@@ -94,20 +94,20 @@ class Stats {
      * @return int
      */
     public static function dataUsage($type = 0) {
-        $querySQL = "SELECT count(1) FROM member WHERE 1=1 ";
+        $querySQL = "SELECT count(*) FROM member WHERE 1=1 ";
         switch($type) {
             case 1:
-                $querySQL .= "AND flow_up+flow_down BETWEEN " . (Utils::gb()*10+1) . " AND " . (Utils::gb()*30); // 11GB ~ 30GB
+                $querySQL .= "AND flow_up+flow_down BETWEEN " . (Utils::GB*10+1) . " AND " . (Utils::GB*30); // 11GB ~ 30GB
                 break;
             case 2:
-                $querySQL .= "AND flow_up+flow_down BETWEEN " . (Utils::gb()*30+1) . " AND " . (Utils::gb()*100); // 30GB ~ 100GB
+                $querySQL .= "AND flow_up+flow_down BETWEEN " . (Utils::GB*30+1) . " AND " . (Utils::GB*100); // 30GB ~ 100GB
                 break;
             case 3:
-                $querySQL .= "AND flow_up+flow_down > " . (Utils::gb()*100+1); // 大于 100GB
+                $querySQL .= "AND flow_up+flow_down > " . (Utils::GB*100+1); // 大于 100GB
                 break;
             case 0:
             default:
-                $querySQL .= "AND flow_up+flow_down < " . (Utils::gb()*10); // 小于10GB
+                $querySQL .= "AND flow_up+flow_down < " . (Utils::GB*10); // 小于10GB
                 break;
         }
         $statement = DB::getInstance()->prepare($querySQL);

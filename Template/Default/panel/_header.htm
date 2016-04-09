@@ -1,7 +1,7 @@
 <import template="/panel/_head" />
 <php>
     $openNode = \Helper\Stats::countNode(1);
-    $allNode = \Helper\Stats::countNode();
+    $allNode = \Helper\Stats::countNode()
 </php>
 <body class="page-body">
 <div class="modal fade" id="modal-1" style="display: none;" aria-hidden="true">
@@ -140,22 +140,22 @@
                     </a>
                     <ul>
                         <li class="{(\Helper\Utils::menuActive('ChangePassword'))}">
-                            <a href="/member/ChangePassword" class="pjax">
+                            <a href="/member/changePassword" class="pjax">
                                 <span class="title">修改网站登陆密码</span>
                             </a>
                         </li>
                         <li class="{(\Helper\Utils::menuActive('ChangeSSPassword'))}">
-                            <a href="/member/ChangeSSPassword" class="pjax">
+                            <a href="/member/changeSSPassword" class="pjax">
                                 <span class="title">修改SS连接密码</span>
                             </a>
                         </li>
                         <li class="{(\Helper\Utils::menuActive('ChangeNickname'))}">
-                            <a href="/member/ChangeNickname" class="pjax">
+                            <a href="/member/changeNickname" class="pjax">
                                 <span class="title">修改用户昵称</span>
                             </a>
                         </li>
-                        <li class="{(\Helper\Utils::menuActive('ChangePlanLevel'))}">
-                            <a href="/member/ChangePlanLevel" class="pjax">
+                        <li class="{(\Helper\Utils::menuActive('ChangePlan'))}">
+                            <a href="/member/changePlan" class="pjax">
                                 <span class="title">升级账户</span>
                             </a>
                         </li>
