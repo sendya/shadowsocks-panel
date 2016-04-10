@@ -6,13 +6,7 @@
  */
 namespace Controller;
 
-use Core\Database;
-use Core\Error;
 use Core\Template;
-use Helper\Encrypt;
-use Helper\Option;
-use Helper\Utils;
-use Model\Invite;
 
 class Index {
 
@@ -25,7 +19,9 @@ class Index {
 
     public function test() {
 
-        var_dump(Invite::addInvite(1, 'A'));
+        var_dump(\Model\User::getUserByUserId(2));
+
+        var_dump($_SESSION['currentUser']);
         exit();
     }
 

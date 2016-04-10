@@ -50,7 +50,7 @@ class User extends Model {
     /** @ignore */
     public $lastActive = TIMESTAMP;
     /** @ignore */
-    private $isAdmin = false;
+    private $admin = 0;
 
     /**
      * Get current user object
@@ -80,7 +80,7 @@ class User extends Model {
      * @return User
      */
     public static function getUserByEmail($email) {
-        $statement = DB::getInstance()->prepare('SELECT * FROM `member` WHERE email = ?');
+        $statement = DB::getInstance()->prepare('SELECT t1.*, IF(t2.id>0,1,0) as `admin` FROM `member` t1 LEFT JOIN `admin` t2 ON t1.uid=t2.uid WHERE t1.email = ?');
         $statement->bindValue(1, $email);
         $statement->execute();
         return $statement->fetchObject(__CLASS__);
@@ -91,14 +91,14 @@ class User extends Model {
      * @return User
      */
     public static function getUserByUserId($userId) {
-        $statement = DB::getInstance()->prepare('SELECT t1.*, IF(t2.id>0,1,0) as `isAdmin` FROM `member` t1 LEFT JOIN `admin` t2 ON t1.uid=t2.uid WHERE t1.uid = ?');
+        $statement = DB::getInstance()->prepare('SELECT t1.*, IF(t2.id>0,1,0) as `admin` FROM `member` t1 LEFT JOIN `admin` t2 ON t1.uid=t2.uid WHERE t1.uid = ?');
         $statement->bindValue(1, $userId, DB::PARAM_INT);
         $statement->execute();
         return $statement->fetchObject(__CLASS__);
     }
 
     public static function getUserList() {
-        $statement = DB::getInstance()->prepare('SELECT * FROM `member` ORDER BY uid');
+        $statement = DB::getInstance()->prepare('SELECT t1.*, t2.id as `admin` FROM `member` t1 LEFT JOIN `admin` t2 ON t1.uid=t2.uid ORDER BY uid');
         $statement->execute();
         return $statement->fetchAll(DB::FETCH_CLASS, __CLASS__);
     }
@@ -120,7 +120,7 @@ class User extends Model {
     }
 
     public function isAdmin() {
-        return $this->isAdmin;
+        return $this->admin;
     }
 
     public function getPlan() {

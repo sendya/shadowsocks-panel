@@ -42,26 +42,31 @@
 <script>
     $(document).ready(function(){
         $("#submit-nickname").click(function(){
+            var but = $(this);
             var nickname = $("#nickname-new").val();
             if(nickname == null || nickname == '') {
                 showToastr("你不填写就想改真的好吗?", 0, 2000);
                 return;
             }
-            $(this).attr('disabled',"true");
+            but.attr('disabled', 'true').addClass('disabled');
             $.ajax({
                 type:"POST",
-                url:"/Form/ChangeNickname",
+                url:"/member/changeNickname.json",
                 data:{nickname:$("#nickname-new").val()},
                 dataType:"json",
                 success:function(result){
-                    showToastr(result.message, 0);
-                    setTimeout(function(){
-                        location.reload();
-                    }, 3000);
+                    but.removeAttr('disabled').removeClass('disabled');
+                    if(result.code != 200) {
+                        showToastr(result.message, 0);
+                        return;
+                    }
+                    showToastr(result.data.message, 0);
+                    $("#nickname-old").val($("#nickname-new").val());
+                    $("#nickname-new").val('');
                 },
                 error:function(jqXHR){
                     showToastr("发生错误："+jqXHR.status, 0);
-                    $(this).removeAttr('disabled');
+                    but.removeAttr('disabled').removeClass('disabled');
                 }
             })
         });

@@ -173,11 +173,22 @@ class Utils {
     public static function menuActive($link = "", $args = "") {
         $requestPath = \Core\Request::getRequestPath();
         $controllerName = ucfirst(substr($requestPath, strrpos($requestPath, "/")));
+        if(strpos($link, '|') !== false) {
+            $links = explode('|', $link);
+            $arg = "";
+            for($i=0;$i<count($links);$i++) {
+                if (stripos($controllerName, $links[$i]) !== false) {
+                    $arg = 'active ' . $args;
+                    break;
+                }
+            }
+            return $arg;
+        }
 
         if (stripos($controllerName, $link) !== false) {
             return 'active ' . $args;
         } else {
-            return "-";
+            return "";
         }
     }
 

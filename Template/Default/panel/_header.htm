@@ -42,7 +42,7 @@
                         <p class="user-title">加入时间：{(date('Y-m-d H:i:s', $user->regDateLine))}</p>
                         <div class="user-links">
                             <a href="/member/info" class="btn btn-primary">个人资料</a>
-                            <a href="/auth/Logout" class="btn btn-success">退出</a>
+                            <a href="/auth/logout" class="btn btn-success">退出</a>
                         </div>
                     </div>
                 </div>
@@ -133,7 +133,7 @@
                         <span class="title">个人资料</span>
                     </a>
                 </li>
-                <li class="{(\Helper\Utils::menuActive('Change', ' opened expanded'))} has-sub">
+                <li class="{(\Helper\Utils::menuActive('Change|actCard', ' opened expanded'))} has-sub">
                     <a href="javascript:;">
                         <i class="linecons-user"></i>
                         <span class="title">资料修改</span>
@@ -141,22 +141,22 @@
                     <ul>
                         <li class="{(\Helper\Utils::menuActive('ChangePassword'))}">
                             <a href="/member/changePassword" class="pjax">
-                                <span class="title">修改网站登陆密码</span>
-                            </a>
-                        </li>
-                        <li class="{(\Helper\Utils::menuActive('ChangeSSPassword'))}">
-                            <a href="/member/changeSSPassword" class="pjax">
-                                <span class="title">修改SS连接密码</span>
+                                <span class="title">密码修改</span>
                             </a>
                         </li>
                         <li class="{(\Helper\Utils::menuActive('ChangeNickname'))}">
                             <a href="/member/changeNickname" class="pjax">
-                                <span class="title">修改用户昵称</span>
+                                <span class="title">昵称修改</span>
                             </a>
                         </li>
                         <li class="{(\Helper\Utils::menuActive('ChangePlan'))}">
                             <a href="/member/changePlan" class="pjax">
-                                <span class="title">升级账户</span>
+                                <span class="title">续费升级</span>
+                            </a>
+                        </li>
+                        <li class="{(\Helper\Utils::menuActive('actCard'))}">
+                            <a href="/member/actCard" class="pjax">
+                                <span class="title">套餐卡</span>
                             </a>
                         </li>
                     </ul>

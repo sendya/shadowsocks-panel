@@ -122,9 +122,11 @@ class Member {
                 return $result;
             }
             $user->setPassword(htmlspecialchars($pwd));
+            $user->save();
+            $_SESSION['currentUser'] = null;
 
             $result['error'] = 0;
-            $result['message'] = "修改密码成功！";
+            $result['message'] = "修改密码成功, 请重新登陆";
             return $result;
         } else {
             Template::putContext('user', $user);
@@ -137,9 +139,21 @@ class Member {
      * @JSON
      * @throws Error
      */
-    public function changeSSPassword() {
-        Template::putContext('user', User::getCurrent());
-        Template::setView("panel/changeSSPassword");
+    public function changeSSPwd() {
+        $user = User::getUserByUserId(User::getCurrent()->uid);
+
+        if($_POST['sspwd']!=null) {
+            $ssPwd = trim($_POST['sspwd']);
+            if($_POST['sspwd'] =='1')
+                $ssPwd = Utils::randomChar(8);
+            $user->sspwd = $ssPwd;
+            $user->save();
+            $result = array('error' => 0, 'message' => '修改SS连接密码成功', 'sspwd' => $ssPwd);
+            return $result;
+        } else {
+            Template::putContext('user', $user);
+            Template::setView("panel/changeSSPassword");
+        }
     }
 
     /**
@@ -149,10 +163,17 @@ class Member {
      */
     public function changeNickname() {
         $user = User::getCurrent();
+        if($_POST['nickname'] != null) {
 
-
-        Template::putContext('user', $user);
-        Template::setView("panel/changeNickname");
+            $user = User::getUserByUserId($user->uid);
+            $user->nickname = htmlspecialchars(trim($_POST['nickname']));
+            $user->save();
+            $_SESSION['currentUser'] = $user;
+            return array('error' => 0, 'message' => '修改昵称成功，刷新页面或重新登陆生效。');
+        } else {
+            Template::putContext('user', $user);
+            Template::setView("panel/changeNickname");
+        }
     }
 
     /**
@@ -163,6 +184,22 @@ class Member {
     public function changePlan() {
         Template::putContext('user', User::getCurrent());
         Template::setView("panel/changePlanLevel");
+    }
+
+    public function actCard() {
+        Template::putContext('user', User::getCurrent());
+        Template::setView('panel/actCard');
+    }
+
+    /**
+     * @JSON
+     * @return array
+     */
+    public function expireDate() {
+
+        $user = User::getUserByUserId(User::getCurrent()->uid);
+        $expireTime = date('Y-m-d H:i:s', $user->expireTime);
+        return array('error' => 0, 'message' => '您的到期时间：' .$expireTime , 'expireTime' => $expireTime);
     }
 
     /**

@@ -31,9 +31,13 @@
                 <div class="form-group">
                     <p>昵称：{$user->nickname}</p>
                     <p>账户：{$user->email}</p>
-                    <p>套餐：<code> {$user->getPlan()} </code> </p>
+                    <p>套餐：<span class="label label-info">{$user->getPlan()}</span> </p>
                     <p>账户余额：{$user->money}元 </p>
-                    <p><a class="btn btn-info" href="javascript:;" id="updatePlan">升级账户等级</a>&nbsp;&nbsp;</p>
+                    <hr/>
+                    <p>您的总流量：{(\Helper\Utils::flowAutoShow($user->transfer))}</p>
+                    <p>可用流量：{(\Helper\Utils::flowAutoShow($user->transfer - ($user->flow_up+$user->flow_down)))}</p>
+                    <p>已用流量：{(\Helper\Utils::flowAutoShow($user->flow_up+$user->flow_down))}</p>
+                    <p><a class="btn btn-info" href="javascript:;" id="updatePlan">升级账户等级</a>&nbsp;&nbsp;<a class="btn btn-info" href="javascript:;" id="">临时增加流量(1元/G)</a></p>
                 </div>
             </div>
         </div>

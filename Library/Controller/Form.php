@@ -41,7 +41,7 @@ class Form {
         exit();
     }
 
-    public function ChangeSSPwd() {
+    public function changeSSPwd() {
         global $user;
         $result = array('error' => 1, 'message' => '修改失败');
         $sspwd = trim(($_POST['sspwd']));
