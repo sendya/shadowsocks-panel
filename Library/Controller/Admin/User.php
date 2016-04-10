@@ -9,61 +9,71 @@ namespace Controller\Admin;
 
 use \Core\Template;
 
+use Helper\Option;
 use Helper\Util;
+use Helper\Utils;
 use \Model\User as UserModel;
 
-class User extends AdminListener {
+/**
+ * Class User
+ * @Admin
+ * @Authorization
+ * @package Controller\Admin
+ */
+class User {
 
     public function index() {
-        //throw new \Core\Error("user list", 505);
-        global $user;
-        $users = UserModel::GetUserArray();
-        include Template::load('/admin/user');
+        $data['user'] = UserModel::getCurrent();
+        $data['users'] = UserModel::getUserList();
+        $data['planList'] = json_decode(Option::get('custom_plan_name'), true);
+        Template::setContext($data);
+        Template::setView('admin/user');
     }
 
+    /**
+     * @JSON
+     * @throws \Core\Error
+     */
     public function delete() {
-        global $user;
-
         $result = array("error" => 1, "message" => "Request failed");
         if($_POST['userId'] != null) {
-            $rs = UserModel::delete($_POST['userId']);
-            if($rs) {
-                $result['error'] = 0;
-                $result['message'] = '删除账户成功！';
-            }
+            UserModel::delete(trim($_POST['userId']));
+            $result['error'] = 0;
+            $result['message'] = '删除账户成功！';
         }
-        echo json_encode($result);
-        exit();
+        return $result;
     }
 
+    /**
+     * @JSON
+     */
     public function query() {
-        global $user;
-
         $result = array("error" => 1, "message" => "Request failed");
         if($_POST['uid'] != null) {
-            $us = UserModel::GetUserByUserId($_POST['uid']);
+            $us = UserModel::getUserByUserId(trim($_POST['uid']));
             if($us) {
                 // 手动处理一下流量单位
-                $us->transfer = $us->transfer / Util::GetGB();
-                $us->flow_down = $us->flow_down / Util::GetGB();
+                $us->transfer = $us->transfer / Utils::GB;
+                $us->flow_down = ($us->flow_up+$us->flow_down) / Utils::GB;
                 $us->payTime = date('Y-m-d H:i:s', $us->payTime);
                 $us->expireTime = date('Y-m-d H:i:s', $us->expireTime);
                 $result['error'] = 0;
-                $result['data'] = $us;
+                $result['user'] = $us;
                 $result['message'] = 'Success';
             }
         }
-        echo json_encode($result);
-        exit();
+        return $result;
     }
 
-    // TODO -- 加班没空,本周末写
-    public function modify() {
-        global $user;
+    /**
+     * 修改用户信息
+     * @JSON
+     */
+    public function update() {
 
         $result = array("error" => 1, "message" => "Request failed");
         if($_POST['user_uid'] != null) {
-            $us = UserModel::GetUserByUserId($_POST['user_uid']);
+            $us = UserModel::getUserByUserId(trim($_POST['user_uid']));
             if($us) {
                 if($_POST['user_email'] != null) $us->email = $_POST['user_email'];
                 if($_POST['user_nickname'] != null) $us->nickname = $_POST['user_nickname'];
@@ -71,39 +81,35 @@ class User extends AdminListener {
                 if($_POST['user_sspwd'] != null) $us->sspwd = $_POST['user_sspwd'];
                 if($_POST['user_plan'] != null) $us->plan = $_POST['user_plan'];
                 if($_POST['user_invite_num'] != null) $us->invite_num = $_POST['user_invite_num'];
-                if($_POST['user_transfer'] != null) $us->transfer = floatval($_POST['user_transfer']) * Util::GetGB();
-                if($_POST['user_flow_up'] != null) $us->flow_up = $_POST['user_flow_up'] * Util::GetGB();
-                if($_POST['user_enable'] != null) $us->enable = $_POST['user_enable']; // 是否启用该用户。该字段会强制用户无法链接到所有服务器！
+                if($_POST['user_transfer'] != null) $us->transfer = floatval($_POST['user_transfer']) * Utils::GB;
+                if($_POST['user_flow_up'] != null) {$us->flow_down = $_POST['user_flow_down'] * Utils::GB;$us->flow_up=0;}
+                if($_POST['user_enable'] != null) $us->enable = intval($_POST['user_enable']); // 是否启用该用户。该字段会强制用户无法链接到所有服务器！
                 if($_POST['user_payTime'] != null) $us->payTime = strtotime($_POST['user_payTime']);
                 if($_POST['user_expireTime'] != null) $us->expireTime = strtotime($_POST['user_expireTime']);
-                $result['user'] =  $us;
+
                 if($us->enable != 0 && $us->enable != 1) $us->enable=0;
                 if($us->port!=null && $us->port!=0) {
                     $rs = UserModel::checkUserPortIsAvailable($us->port, $us->uid);
                     if($rs) {
                         $result = array("error" => 1, "message" => "端口{$rs->port}已被占用，请更换");
-                        echo json_encode($result);
-                        exit();
+                        return $result;
                     }
                 }
-                if(strlen($us->plan) > 4) {
-                    $result = array("error" => 1, "message" => "账户等级最大字符4位");
-                    echo json_encode($result);
-                    exit();
-                }
                 if($_POST['user_password']!=null && $_POST['user_password']!='') { // change password
-                    $us->savePassword(trim($_POST['user_password']));
+                    $us->setPassword(trim($_POST['user_password']));
                 }
-                $rs2 = $us->updateUser();
-                if($rs2) {
-                    $result['error'] = 0;
-                    $result['message'] = '更新信息成功';
-                } else {
-                    $result['message'] = '出现未知错误，修改失败';
-                }
+                $us->save();
+                $result['error'] = 0;
+                $result['message'] = '更新信息成功';
+                $us->plan = Utils::planAutoShow($us->plan);
+                $us->transfer = Utils::flowAutoShow($us->transfer);
+                $us->flow_down = ($us->flow_up+$us->flow_down) / Utils::GB;
+                $us->payTime = date('Y-m-d H:i:s', $us->payTime);
+                $us->expireTime = date('Y-m-d H:i:s', $us->expireTime);
+
+                $result['user'] = $us;
             }
         }
-        echo json_encode($result);
-        exit();
+        return $result;
     }
 }

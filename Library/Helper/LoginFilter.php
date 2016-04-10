@@ -43,10 +43,9 @@ class LoginFilter implements IFilter {
             $this->black = true;
         }
         if(strpos($docComment, '@Admin') !== false || strpos($docCommentC, '@Admin')!== false) {
-            if(!$user->isAdmin()) {
+            if($user && !$user->isAdmin()) {
                 $this->data['message'] = '你不是管理员，无法访问此页面';
                 $this->black = true;
-
             }
 
         }

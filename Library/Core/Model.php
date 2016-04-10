@@ -56,7 +56,7 @@ abstract class Model
         if ($identifier) {
             $sql = "UPDATE `{$tableName}` SET ";
             foreach ($map as $key => $value) {
-                $sql .= "{$key} = :{$key},";
+                $sql .= "`{$key}` = :{$key},";
             }
             $sql = rtrim($sql, ',');
             $sql .= " WHERE {$primaryKey} = :id";
@@ -68,7 +68,7 @@ abstract class Model
         } else {
             $sql = "INSERT INTO `{$tableName}` SET ";
             foreach ($map as $key => $value) {
-                $sql .= "{$key} = :{$key},";
+                $sql .= "`{$key}` = :{$key},";
             }
             $sql = rtrim($sql, ',');
             $statement = Database::getInstance()->prepare($sql);

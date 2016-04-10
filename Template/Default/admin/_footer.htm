@@ -1,4 +1,3 @@
-
 <script type="text/javascript">
     function pageJSload() {
         xenon_toggles_init();
@@ -24,9 +23,17 @@
 <script src="{TPL_PATH}js/pjax.js"></script>
 -->
 <script type="text/javascript">
-    jQuery(document).ready(function($){
-        $("#form1").validate();
-    });
+    pageJSload();
+    function reset(isShow) {
+        if(isShow) {
+            jQuery('#modal-isload').hide();
+            jQuery('#modal-isbody').show();
+        } else {
+            jQuery('#modal-isload').show();
+            jQuery('#modal-isbody').hide();
+        }
+
+    }
     function postJSON(formId, action, isReload, callback) {
         $.ajax({
             url: action,

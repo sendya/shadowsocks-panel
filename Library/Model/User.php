@@ -109,6 +109,17 @@ class User extends Model {
         return $stn->fetch(DB::FETCH_NUM)[0];
     }
 
+    public static function checkUserPortIsAvailable($port = 0, $uid) {
+        if($port != 0) {
+            $stn = DB::sql("SELECT * FROM member WHERE port=? AND uid<>?");
+            $stn->bindValue(1, $port, DB::PARAM_INT);
+            $stn->bindValue(2, $uid, DB::PARAM_INT);
+            $stn->execute();
+            return $stn->fetchObject(__CLASS__);
+        }
+        return null;
+    }
+
     public function verifyPassword($password)
     {
         return password_verify($password, $this->password);

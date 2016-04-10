@@ -8,6 +8,7 @@ namespace Controller;
 
 use Core\Error;
 use Core\Template;
+use Helper\Option;
 use Helper\Stats;
 use Helper\Util;
 use Helper\Utils;
@@ -184,6 +185,66 @@ class Member {
     public function changePlan() {
         Template::putContext('user', User::getCurrent());
         Template::setView("panel/changePlanLevel");
+    }
+
+    /**
+     * 首页的 升级套餐 button
+     * @JSON
+     */
+    public function updatePlan() {
+        $user = User::getUserByUserId(User::getCurrent()->uid);
+
+        $custom_transfer_level = json_decode(Option::get('custom_transfer_level'), true);
+
+        $result = array('error' => 1, 'message' => '升级账户类型失败.');
+        switch ($user->plan) {
+            case 'A':
+                if ($user->money >= 15) {
+                    $user->money = $user->money - 15; // 扣除15 升级到B套餐
+                    $user->plan = 'B';
+                    $user->transfer = Utils::GB * intval($custom_transfer_level['B']);
+                    $user->save();
+                    $result['error'] = 0;
+                    $result['message'] = '升级成功，您的当前等级为';
+                } else {
+                    $result['message'] = '升级失败，您的余额不足';
+                }
+                break;
+            case 'B':
+                if ($user->money >= 25) {
+                    $user->money = $user->money - 25;//扣除15 升级到B套餐
+                    $user->plan = 'C';
+                    $user->transfer = Utils::GB * intval($custom_transfer_level['C']);
+                    $user->save();
+                    $result['error'] = 0;
+                    $result['message'] = '升级成功，您的当前等级为';
+                } else {
+                    $result['message'] = '升级失败，您的余额不足';
+                }
+                break;
+            case 'C':
+                if ($user->money >= 40) {
+                    $user->money = $user->money - 40;//扣除15 升级到B套餐
+                    $user->plan = 'D';
+                    $user->transfer =Utils::GB * intval($custom_transfer_level['D']);
+                    $user->save();
+                    $result['error'] = 0;
+                    $result['message'] = '升级成功，您的当前等级为';
+                } else {
+                    $result['message'] = '升级失败，您的余额不足';
+                }
+                break;
+            case 'VIP':
+                $result['error'] = 0;
+                $result['message'] = '卧槽，你不给肛凭什么给你VIP';
+                break;
+            default:
+                $result['message'] = '不知道服务器娘哪里出问题了喵.请求失败';
+                break;
+        }
+        $result['level'] = $user->plan;
+        return $result;
+
     }
 
     public function actCard() {

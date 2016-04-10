@@ -139,7 +139,7 @@ class Auth {
             $custom_transfer_level = json_decode(Option::get('custom_transfer_level'), true);
 
             // 定义邀请码套餐与流量单位
-            $transferNew = Utils::gb() * $custom_transfer_level[$invite->plan];
+            $transferNew = Utils::GB * intval($custom_transfer_level[$invite->plan]);
 
             $user->transfer = $transferNew;
             $user->invite = $inviteCode;
@@ -148,7 +148,7 @@ class Auth {
             $user->lastConnTime = $user->regDateLine;
             $user->sspwd = Utils::randomChar();
             $user->payTime = time(); // 注册时支付时间
-            $user_test_day = Option::get('user_test_day')?: 0;
+            $user_test_day = Option::get('user_test_day')?: 7;
             $user->expireTime = time() + (3600 * 24 * intval($user_test_day)); // 到期时间
 
             $user->port = Utils::getNewPort(); // 端口号

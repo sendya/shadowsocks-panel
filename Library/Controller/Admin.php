@@ -13,7 +13,7 @@ use \Core\Response;
 /**
  * Class Admin
  * @Admin
- *
+ * @Authorization
  * @package Controller
  */
 class Admin {

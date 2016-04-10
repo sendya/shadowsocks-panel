@@ -14,8 +14,20 @@
             <div class="row">
                 <div class="col-xs-12">
                     <div class="box">
-                        <div class="box-body table-responsive no-padding">
-                            <table class="table table-hover">
+                        <div class="panel panel-default">
+
+                            <div class="panel-heading">
+                                <h3 class="panel-title"></h3>
+
+                                <div class="panel-options">
+                                    <a href="javascript:;" data-toggle="reload">
+                                        <i class="fa-rotate-right"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="panel-body">
+                                <div class="table-responsive">
+                                    <table cellspacing="0" class="table table-small-font table-bordered table-striped">
                                 <tbody>
                                 <tr>
                                     <th width="90px">端口</th>
@@ -27,28 +39,30 @@
                                     <th>操作</th>
                                 </tr>
                                 <if condition="count($users) > 0">
-                                <loop variable="$users" key="$key" value="$us">
-                                <tr id="user-{$us->uid}">
-                                    <td>#{$us->uid}</td>
-                                    <td>{$us->nickname}</td>
-                                    <td>{$us->email}</td>
-                                    <td>{$us->plan}</td>
-                                    <td>{(\Helper\Util::FlowAutoShow($us->transfer))}</td>
-                                    <td>{(date('Y-m-d H:i:s', $us->expireTime))}</td>
-                                    <td>
-                                        <a class="btn btn-info btn-sm" href="javascript:;" onclick="userModify({$us->uid});">编辑</a>
-                                        <a class="btn btn-danger btn-sm" href="javascript:;" onclick="userRemove({$us->uid})">删除</a>
-                                    </td>
-                                </tr>
-                                </loop>
-                                <else>
-                                <tr>
-                                    <td>#</td>
-                                    <td colspan="5">没有节点</td>
-                                </tr>
+                                    <loop variable="$users" key="$key" value="$us">
+                                        <tr id="user-{$us->uid}">
+                                            <td>{$us->port}</td>
+                                            <td>{$us->nickname}</td>
+                                            <td>{$us->email}</td>
+                                            <td>{$us->getPlan()}</td>
+                                            <td>{(\Helper\Utils::flowAutoShow($us->transfer))}</td>
+                                            <td>{(date('Y-m-d H:i:s', $us->expireTime))}</td>
+                                            <td>
+                                                <a class="btn btn-info btn-sm" href="javascript:;" onclick="userModify({$us->uid});">编辑</a>
+                                                <a class="btn btn-danger btn-sm" href="javascript:;" onclick="userRemove({$us->uid})">删除</a>
+                                            </td>
+                                        </tr>
+                                    </loop>
+                                    <else>
+                                        <tr id="user-0">
+                                            <td>#</td>
+                                            <td colspan="5">没有用户</td>
+                                        </tr>
                                 </if>
                                 </tbody>
                             </table>
+                                </div>
+                            </div>
                         </div><!-- /.box-body -->
                     </div><!-- /.box -->
                 </div>
@@ -65,11 +79,12 @@
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 <h4 class="modal-title">修改用户资料</h4>
             </div>
-            <form role="form" id="form1" method="post" action="/admin/user/add" class="validate" onsubmit="return postJSON(this.id, this.action);">
+            <form role="form" id="form1" method="post" action="/admin/user/update.json" class="validate">
                 <input type="hidden" name="form_add" value="{(time())}"/>
                 <input type="hidden" name="user.uid" id="uid" value=""/>
                 <div class="modal-body">
-
+                    <div id="modal-isload">Content is loading...</div>
+                    <div id="modal-isbody" style="display: none;">
                     <div class="row">
                         <div class="col-md-6">
 
@@ -107,7 +122,7 @@
                             <div class="form-group">
                                 <label for="field-4" class="control-label">端口</label>
 
-                                <input type="text" class="form-control" name="user.port" id="field-4" placeholder=""> <!-- data-validate="required" data-message-required="" -->
+                                <input type="text" class="form-control" name="user.port" id="field-4" placeholder="">
                             </div>
 
                         </div>
@@ -138,8 +153,11 @@
 
                             <div class="form-group">
                                 <label for="field-7" class="control-label">账户等级</label>
-
-                                <input type="text" class="form-control" name="user.plan" id="field-7" placeholder="VIP">
+                                <select name="user.plan" id="field-7" class="form-control">
+                                    <loop variable="$planList" key="$key" value="$plan">
+                                        <option value="{$key}">{$plan}</option>
+                                    </loop>
+                                </select>
                             </div>
 
                         </div>
@@ -149,7 +167,7 @@
                             <div class="form-group">
                                 <label for="field-8" class="control-label">邀请码</label>
 
-                                <input type="text" class="form-control" name="user.invite_num" id="field-8" value="" placeholder="0 个">
+                                <input type="text" class="form-control" name="user.invite_num" id="field-8" value="0" placeholder="0 个">
                             </div>
                         </div>
                     </div>
@@ -170,7 +188,7 @@
                             <div class="form-group">
                                 <label for="field-10" class="control-label">已流量(GB)</label>
 
-                                <input type="text" class="form-control" name="user.flow_down" id="field-10" value="" placeholder="99 GB">
+                                <input type="text" class="form-control" name="user.flow_down" id="field-10" value="" placeholder="单位/GB">
                             </div>
                         </div>
                     </div>
@@ -195,7 +213,7 @@
                             </div>
                         </div>
                     </div>
-
+                    </div>
                 </div>
 
 
@@ -208,19 +226,89 @@
     </div>
 </div>
 <script type="text/javascript">
+    var modal_default_body = jQuery('#modal-6 .modal-body').html();
+    jQuery(document).ready(function($) {
+
+        $("form#form1").validate({
+            rules: {
+                'user.email': "required",
+                'user.port': "required",
+                'user.sspwd': "required",
+                'user.invite_num': "required",
+                'user.transfer': "required"
+            },
+            messages: {
+                'user.email': "邮箱必须填写",
+                'user.port': "端口必须填写",
+                'user.sspwd': "SS连接密码必须填写",
+                'user.invite_num': "邀请码数量必须填写",
+                'user.transfer': "总流量必须填写"
+            },
+            errorElement: 'span',
+            errorClass: 'validate-has-error',
+            highlight: function (element) {
+                $(element).closest('.form-group').addClass('validate-has-error');
+            },
+            unhighlight: function (element) {
+                $(element).closest('.form-group').removeClass('validate-has-error');
+            },
+            errorPlacement: function (error, element)
+            {
+                if(element.closest('.has-switch').length)
+                {
+                    error.insertAfter(element.closest('.has-switch'));
+                }
+                else {
+                    if(element.parent('.checkbox, .radio').length || element.parent('.input-group').length)
+                    {
+                        error.insertAfter(element.parent());
+                    }
+                    else
+                    {
+                        error.insertAfter(element);
+                    }
+                }
+            },
+            submitHandler: function(form) {
+                $.ajax({
+                    url: form.action,
+                    method: "POST",
+                    dataType: "json",
+                    data: $(form).serialize(),
+                    success: function(result){
+                        if(result.code != 200) {
+                            showToastr(result.message, 0, 3000, '系统错误');
+                            return;
+                        }
+                        if(result.data.error == 0) {
+                            changeTable(result.data.user);
+                        }
+                        showToastr(result.data.message, 0);
+                        jQuery('#modal-6').modal('hide');
+                    },
+                    error: function(Xhr){
+                        showToastr("出现未知错误，请重试", 0);
+                    }
+                });
+            }
+        });
+    });
+
     function userRemove(userId) {
         $.ajax({
-            url: "/admin/user/delete",
+            url: "/admin/user/delete.json",
             method: "POST",
             dataType: "json",
             data: {userId: userId},
-            success: function(data){
-                if(data.error == 0){
-                    showToastr(data.message, 0);
-                    $("#user-" + userId).remove();
-                } else {
-                    showToastr(data.message, 0);
+            success: function(result){
+                if(result.code != 200){
+                    showToastr(result.message, 0, 3000, '系统错误');
+                    return;
                 }
+                if(result.data.error == 0) {
+                    $("#user-" + userId).remove();
+                }
+                showToastr(result.data.message, 0);
             },
             error: function(Xhr){
                 showToastr("出现未知错误，请重试或联系管理员", 0);
@@ -228,36 +316,37 @@
         });
     }
     function userModify(userId) {
+        $("#modal-6 .modal-body").html(modal_default_body);
+        reset(false);
         $.ajax({
-            url: "/admin/user/query",
+            url: "/admin/user/query.json",
             method: "POST",
             dataType: "json",
             data: {uid: userId},
             success: function(result){
-                if(result.error == 0){
-                    if(result.data != false && result.data != null) {
-                        var user = result.data;
-                        $("input[name='user.uid']").val(user.uid);
-                        $("input[name='user.nickname']").val(user.nickname);
-                        $("input[name='user.email']").val(user.email);
-                        $("input[name='user.password']").val('');
-                        $("input[name='user.port']").val(user.port);
-                        $("input[name='user.sspwd']").val(user.sspwd);
-                        $("input[name='user.plan']").val(user.plan);
-                        $("input[name='user.invite_num']").val(user.invite_num);
-                        $("input[name='user.transfer']").val(user.transfer);
-                        $("input[name='user.flow_down']").val(user.flow_down);
-                        $("select[name='user.enable']").val(user.enable);
-                        $("input[name='user.payTime']").val(user.payTime);
-                        $("input[name='user.expireTime']").val(user.expireTime);
+                if(result.code != 200){
+                    jQuery('#modal-6').modal('hide');
+                    showToastr(result.message, 0, 3000, '系统错误');
+                    return;
+                }
 
-                        $("#form1").attr("action", "/admin/user/modify");
-
-                        jQuery('#modal-6 .modal-title').html('修改用户资料');
-                        jQuery('#modal-6').modal('show', {backdrop: 'static'});
-                    }
-                } else {
-                    showToastr(result.message, 0);
+                if(result.data.error != 1 && result.data.user != null) {
+                    var user = result.data.user;
+                    $("input[name='user.uid']").val(user.uid);
+                    $("input[name='user.nickname']").val(user.nickname);
+                    $("input[name='user.email']").val(user.email);
+                    $("input[name='user.password']").val('');
+                    $("input[name='user.port']").val(user.port);
+                    $("input[name='user.sspwd']").val(user.sspwd);
+                    $("input[name='user.plan']").val(user.plan);
+                    $("input[name='user.invite_num']").val(user.invite_num);
+                    $("input[name='user.transfer']").val(user.transfer);
+                    $("input[name='user.flow_down']").val(user.flow_down);
+                    $("select[name='user.enable']").val(user.enable);
+                    $("input[name='user.payTime']").val(user.payTime);
+                    $("input[name='user.expireTime']").val(user.expireTime);
+                    jQuery('#modal-6 .modal-title').html('修改用户资料');
+                    reset(true);
                 }
             },
             error: function(Xhr){
@@ -266,9 +355,21 @@
         });
         jQuery('#modal-6').modal('show', {backdrop: 'static'});
     }
+    function changeTable(data) {
+        var tid = $("tr#user-" + data.uid);
+        var newData = "<td>" + data.port + "</td>";
+        newData += "<td>"  + data.nickname + "</td>";
+        newData += "<td>" + data.email + "</td>";
+        newData += "<td>" + data.plan + "</td>";
+        newData += "<td>" + data.transfer + "</td>";
+        newData += "<td>" + data.expireTime + "</td>";
+        newData += "<td>" + '<a class="btn btn-info btn-sm" href="javascript:;" onclick="userModify('+data.uid+');">编辑</a>' + '<a class="btn btn-danger btn-sm" href="javascript:;" onclick="userRemove('+data.uid+');">删除</a>' + "</td>";
+        $("tr#user-" + data.uid).html(newData);
+
+    }
 </script>
-<link rel="stylesheet" href="{TPL_PATH}js/daterangepicker/daterangepicker-bs3.css">
-<script src="{TPL_PATH}js/daterangepicker/daterangepicker.js"></script>
-<script src="{TPL_PATH}js/datepicker/bootstrap-datepicker.js"></script>
-<script src="{TPL_PATH}js/timepicker/bootstrap-timepicker.min.js"></script>
+<link rel="stylesheet" href="Resource/{THEME}/js/daterangepicker/daterangepicker-bs3.css">
+<script src="Resource/{THEME}/js/daterangepicker/daterangepicker.js"></script>
+<script src="Resource/{THEME}/js/datepicker/bootstrap-datepicker.js"></script>
+<script src="Resource/{THEME}/js/timepicker/bootstrap-timepicker.min.js"></script>
 <import template="/admin/_footer" />

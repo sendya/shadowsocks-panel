@@ -19,48 +19,52 @@
                                 <h3 class="panel-title"></h3>
 
                                 <div class="panel-options">
-                                    <a href="javascript:;" onclick="nodeAdd();"><span>+</span></a>
+                                    <a href="javascript:;" id="node-add"><span>+</span></a>
                                     <a href="javascript:;" data-toggle="reload">
                                         <i class="fa-rotate-right"></i>
                                     </a>
                                 </div>
                             </div>
                             <div class="panel-body">
+                                <div class="table-responsive">
 
-                            <table class="table responsive">
-                                <tbody>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>节点</th>
-                                    <th>加密</th>
-                                    <th>描述</th>
-                                    <th>类型</th>
-                                    <th>排序</th>
-                                    <th>操作</th>
-                                </tr>
-                                <if condition="count($nodes) > 0">
-                                <loop variable="$nodes" key="$key" value="$node">
-                                <tr id="node-{$node->id}">
-                                    <td>#{$node->id}</td>
-                                    <td> {$node->name}</td>
-                                    <td> {$node->method}</td>
-                                    <td>{$node->info}</td>
-                                    <td><if condition="$node->type == 0">普通节点<else>VIP节点</if></td>
-                                    <td>{$node->order}</td>
-                                    <td>
-                                        <a class="btn btn-info btn-sm" href="javascript:;" onclick="nodeModify({$node->id});">编辑</a>
-                                        <a class="btn btn-danger btn-sm" href="javascript:;" onclick="nodeRemove({$node->id});">删除</a>
-                                    </td>
-                                </tr>
-                                </loop>
-                                <else>
-                                <tr>
-                                    <td>#</td>
-                                    <td colspan="5">没有节点</td>
-                                </tr>
-                                </if>
-                                </tbody>
-                            </table>
+                                    <table cellspacing="0" class="table table-small-font table-bordered table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>ID</th>
+                                                <th>节点</th>
+                                                <th>加密</th>
+                                                <th>描述</th>
+                                                <th>类型</th>
+                                                <th width="150px">操作</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        <if condition="count($nodes) > 0">
+                                            <loop variable="$nodes" key="$key" value="$node">
+                                                <tr id="node-{$node->id}">
+                                                    <td>#{$node->id}</td>
+                                                    <td> {$node->name}</td>
+                                                    <td> {$node->method}</td>
+                                                    <td>{$node->info}</td>
+                                                    <td><if condition="$node->type == 0">普通节点<else>Pro 节点</if></td>
+                                                    <td>
+                                                        <a class="btn btn-info btn-sm" href="javascript:;" onclick="nodeModify({$node->id});">编辑</a>
+                                                        <a class="btn btn-danger btn-sm" href="javascript:;" onclick="nodeRemove({$node->id});">删除</a>
+                                                    </td>
+                                                </tr>
+                                            </loop>
+                                            <else>
+                                                <tr id="node-0">
+                                                    <td>#</td>
+                                                    <td colspan="5">没有节点</td>
+                                                </tr>
+                                        </if>
+                                        </tbody>
+                                    </table>
+
+                                </div>
+
                             </div>
                         </div><!-- /.box-body -->
                     </div><!-- /.box -->
@@ -76,83 +80,88 @@
 
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title">新增节点</h4>
+                <h4 class="modal-title"></h4>
             </div>
-            <form role="form" id="form1" method="post" action="/admin/node/add" class="validate" onsubmit="return postJSON(this.id, this.action);">
+
+            <form role="form" id="form1" method="post" action="/admin/node/update.json" class="validate">
             <input type="hidden" name="form_add" value="{(time())}"/>
             <input type="hidden" name="node.id" id="node_id" value=""/>
             <div class="modal-body">
+                <div id="modal-isload">Content is loading...</div>
+                <div id="modal-isbody" style="display: none;">
 
-                <div class="row">
-                    <div class="col-md-6">
+                    <div class="row">
+                        <div class="col-md-6">
 
-                        <div class="form-group">
-                            <label for="field-1" class="control-label">节点名称</label>
+                            <div class="form-group">
+                                <label for="field-1" class="control-label">节点名称</label>
 
-                            <input type="text" class="form-control" name="node.name" id="field-1" value="" data-validate="required" data-message-required="节点名称必须填写.">
+                                <input type="text" class="form-control" name="node.name" id="field-1" value="" data-validate="required" data-message-required="节点名称必须填写.">
+                            </div>
+
                         </div>
 
-                    </div>
+                        <div class="col-md-6">
 
-                    <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="field-2" class="control-label">节点地址</label>
 
-                        <div class="form-group">
-                            <label for="field-2" class="control-label">节点地址</label>
+                                <input type="text" class="form-control" name="node.server" id="field-2" placeholder="127.0.0.1" data-validate="required" data-message-required="服务器地址必须填写.">
+                            </div>
 
-                            <input type="text" class="form-control" name="node.server" id="field-2" placeholder="127.0.0.1" data-validate="required" data-message-required="服务器地址必须填写.">
-                        </div>
-
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-md-6">
-
-                        <div class="form-group">
-                            <label for="field-3" class="control-label">加密方式</label>
-
-                            <input type="text" class="form-control" name="node.method" id="field-3" placeholder="aes-128-cfb" data-validate="required" data-message-required="加密方式必须填写.">
-                        </div>
-
-                    </div>
-
-                    <div class="col-md-6">
-
-                        <div class="form-group">
-                            <label for="field-4" class="control-label">节点分类(0 普通 1 vip)</label>
-
-                            <select name="node.type" id="field-4" class="form-control">
-                                <option value="0">普通节点</option>
-                                <option value="1">Pro 节点</option>
-                            </select>
-                        </div>
-
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="field-5" class="control-label">节点状态</label>
-                            <input type="text" class="form-control" name="node.status" id="field-5" placeholder="可用 / 不可用" data-validate="required" data-message-required="This is custom message for required field.">
                         </div>
                     </div>
 
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="field-6" class="control-label">排序</label>
-                            <input type="text" class="form-control" name="node.order" id="field-6" value="0" placeholder="0" data-validate="required" data-message-required="This is custom message for required field.">
-                        </div>
-                    </div>
-                </div>
+                    <div class="row">
+                        <div class="col-md-6">
 
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="form-group no-margin">
-                            <label for="field-7" class="control-label">备注信息</label>
-                            <textarea class="form-control autogrow" name="node.info" id="field-7" placeholder="Write something about server info" ></textarea>
+                            <div class="form-group">
+                                <label for="field-3" class="control-label">加密方式</label>
+
+                                <input type="text" class="form-control" name="node.method" id="field-3" placeholder="aes-128-cfb" data-validate="required" data-message-required="加密方式必须填写.">
+                            </div>
+
+                        </div>
+
+                        <div class="col-md-6">
+
+                            <div class="form-group">
+                                <label for="field-4" class="control-label">节点分类(0 普通 1 vip)</label>
+
+                                <select name="node.type" id="field-4" class="form-control">
+                                    <option value="0">普通节点</option>
+                                    <option value="1">Pro 节点</option>
+                                </select>
+                            </div>
+
                         </div>
                     </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="field-5" class="control-label">节点状态</label>
+                                <input type="text" class="form-control" name="node.status" id="field-5" placeholder="可用 / 不可用" data-validate="required" data-message-required="节点状态必须填写.">
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="field-6" class="control-label">排序</label>
+                                <input type="number" class="form-control" name="node.order" id="field-6" value="0" placeholder="0" data-validate="required" data-message-required="必须填写.">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group no-margin">
+                                <label for="field-7" class="control-label">备注信息</label>
+                                <textarea class="form-control autogrow" name="node.info" id="field-7" placeholder="Write something about server info" ></textarea>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
 
             </div>
@@ -166,19 +175,100 @@
     </div>
 </div>
 <script type="text/javascript">
+    var modal_default_body = jQuery('#modal-6 .modal-body').html();
+    jQuery(document).ready(function($) {
+
+        $("form#form1").validate({
+            rules: {
+                'node.name': "required",
+                'node.server': "required",
+                'node.method': "required",
+                'node.status': "required"
+            },
+            messages: {
+                'node.name': "节点名称必须填写",
+                'node.server': "节点连接地址必须填写",
+                'node.method': "节点加密方式必须填写",
+                'node.status': "节点状态必须填写"
+            },
+            errorElement: 'span',
+            errorClass: 'validate-has-error',
+            highlight: function (element) {
+                $(element).closest('.form-group').addClass('validate-has-error');
+            },
+            unhighlight: function (element) {
+                $(element).closest('.form-group').removeClass('validate-has-error');
+            },
+            errorPlacement: function (error, element)
+            {
+                if(element.closest('.has-switch').length)
+                {
+                    error.insertAfter(element.closest('.has-switch'));
+                }
+                else {
+                    if(element.parent('.checkbox, .radio').length || element.parent('.input-group').length)
+                    {
+                        error.insertAfter(element.parent());
+                    }
+                    else
+                    {
+                        error.insertAfter(element);
+                    }
+                }
+            },
+            submitHandler: function(form) {
+                $.ajax({
+                    url: form.action,
+                    method: "POST",
+                    dataType: "json",
+                    data: $(form).serialize(),
+                    success: function(result){
+                        if(result.code != 200) {
+                            showToastr(result.message, 0, 3000, '系统错误');
+                            return;
+                        }
+                        if(result.data.error == 0) {
+                            changeTable(result.data.node);
+                        }
+                        showToastr(result.data.message, 0);
+                        jQuery('#modal-6').modal('hide');
+                    },
+                    error: function(Xhr){
+                        showToastr("出现未知错误，请重试", 0);
+                    }
+                });
+            }
+        });
+
+        $("#node-add").on('click', function(){
+            reset(true);
+            $("input[name='node.id']").val('');
+            $("input[name='node.name']").val('');
+            $("select[name='node.type']").val('0');
+            $("input[name='node.server']").val('');
+            $("input[name='node.method']").val('');
+            $("textarea[name='node.info']").val('');
+            $("input[name='node.status']").val('');
+            $("input[name='node.order']").val('0');
+            jQuery('#modal-6 .modal-title').html('新增节点');
+            jQuery('#modal-6').modal('show', {backdrop: 'static'});
+        });
+    });
     function nodeRemove(nodeId){
         $.ajax({
-            url: "/admin/node/delete",
+            url: "/admin/node/delete.json",
             method: "POST",
             dataType: "json",
             data: {node_id: nodeId},
-            success: function(data){
-                if(data.error == 0){
-                    showToastr(data.message, 0);
-                    $("#node-" + nodeId).remove();
-                } else {
-                    showToastr(data.message, 0);
+            success: function(result){
+                if(result.code != 200){
+                    showToastr(result.message, 0, 3000, '系统错误');
+                    return;
                 }
+                if(result.data.error == 0) {
+                    $("#node-" + nodeId).remove();
+                }
+                showToastr(result.data.message, 0);
             },
             error: function(Xhr){
                 showToastr("出现未知错误，请重试或联系管理员", 0);
@@ -186,8 +276,10 @@
         });
     }
     function nodeModify(nodeId){
+        $("#modal-6 .modal-body").html(modal_default_body);
+        reset(false);
         $.ajax({
-            url: "/admin/node/nodeInfo",
+            url: "/admin/node/query.json",
             method: "GET",
             dataType: "json",
             data: {node_id: nodeId},
@@ -203,9 +295,9 @@
                         $("textarea[name='node.info']").val(node.info);
                         $("input[name='node.status']").val(node.status);
                         $("input[name='node.order']").val(node.order);
-                        $("#form1").attr("action", "/admin/node/modify");
-                        jQuery('#modal-6 .modal-title').html('修改节点');
-                        jQuery('#modal-6').modal('show', {backdrop: 'static'});
+                        $('#modal-6 .modal-title').html('修改节点');
+                        /* $('#modal-6').modal('show', {backdrop: 'static'}); */
+                        reset(true);
                     }
                 } else {
                     showToastr(result.message, 0);
@@ -215,12 +307,33 @@
                 showToastr("出现未知错误，请重试或联系管理员", 0);
             }
         });
-        jQuery('#modal-6').modal('show', {backdrop: 'static'});
+        $('#modal-6').modal('show', {backdrop: 'static'});
     }
-    function nodeAdd(){
-        $("#form1").attr("action", "/admin/node/add");
-        jQuery('#modal-6 .modal-title').html('新增节点');
-        jQuery('#modal-6').modal('show', {backdrop: 'static'});
+    function changeTable(data) {
+        var tid = $("tr#node-" + data.id).html();
+        if(data.type == '0') {data.type = '普通节点';} else {data.type = 'Pro 节点';}
+        if(tid == undefined || tid == null) {
+            /* 新增 */
+            var trCount = $("table tbody").children("tr").length;
+            var newData = '<tr id="node-"'+data.id+'>';
+            newData += "<td>#" + data.id + "</td>";
+            newData += "<td>"  + data.name + "</td>";
+            newData += "<td>" + data.method + "</td>";
+            newData += "<td>" + data.info + "</td>";
+            newData += "<td>" + data.type + "</td>";
+            newData += "<td>" + '<a class="btn btn-info btn-sm" href="javascript:;" onclick="nodeModify('+data.id+');">编辑</a>' + '<a class="btn btn-danger btn-sm" href="javascript:;" onclick="nodeRemove('+data.id+');">删除</a>' + "</td></tr>";
+            $("table tbody").append(newData);
+            if($("#node-0").html() != undefined) $("#node-0").remove();
+        } else {
+            /* 修改 */
+            var newData = "<td>#" + data.id + "</td>";
+            newData += "<td>"  + data.name + "</td>";
+            newData += "<td>" + data.method + "</td>";
+            newData += "<td>" + data.info + "</td>";
+            newData += "<td>" + data.type + "</td>";
+            newData += "<td>" + '<a class="btn btn-info btn-sm" href="javascript:;" onclick="nodeModify('+data.id+');">编辑</a>' + '<a class="btn btn-danger btn-sm" href="javascript:;" onclick="nodeRemove('+data.id+');">删除</a>' + "</td>";
+            $("tr#node-" + data.id).html(newData);
+        }
     }
 </script>
 <import template="/admin/_footer" />

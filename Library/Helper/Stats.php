@@ -113,7 +113,7 @@ class Stats {
         $statement = DB::getInstance()->prepare($querySQL);
         $statement->execute();
         $count = $statement->fetch(DB::FETCH_NUM);
-        return $count[0]!=null ?:0;
+        return $count[0];
     }
 
     /**

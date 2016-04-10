@@ -78,7 +78,7 @@
 
     <div class="chart-item-bg">
         <div class="chart-label chart-label-small">
-            <div class="h4 text-secondary text-bold" data-count="this" data-from="0.00" data-to="{$systemTransfer}" data-suffix="GB" data-decimal="." data-duration="2">0</div>
+            <div class="h4 text-secondary text-bold" data-count="this" data-from="0.00" data-to="{$systemTransfer}" data-suffix="GB" data-decimal="." data-duration="2">{$systemTransfer}</div>
             <span class="text-small text-upper text-muted">{SITE_NAME} 已经产生流量<code>{$systemTransfer}</code>GB</span><br />
             <span class="text-small text-upper text-muted">{SITE_NAME} 已经有<code>{$useUserCount}</code>人使用</span>
         </div>
@@ -118,7 +118,7 @@
                 <div  class="h1 text-purple text-bold">连接信息</div>
                 端口：<code>{$user->port}</code><br />
                 密码：<div id="showpwd" style="display: inline"><b>点击显示密码</b></div><br />
-                <button class="btn btn-sm btn-info">{$user->getPlan()}</button>   &nbsp;
+                <button class="btn btn-sm btn-info" id="plan-level">{$user->getPlan()}</button>   &nbsp;
                 <button class="btn btn-sm btn-secondary" id="updatePlan"> 升级套餐 </button>   &nbsp;
                 <button class="btn btn-sm btn-secondary" id="planList"> 套餐详情 </button><br /><br />
                 最后使用时间：<code>{$lastOnlineTime}</code>
@@ -155,20 +155,26 @@
             });
         });
         $("#updatePlan").on('click', function(){
-            $(this).val("请稍等");
-            $(this).addClass("disabled");
+            var btn = $(this);
+            btn.html("请稍等");
+            btn.attr('disabled', 'true').addClass("disabled");
             $.ajax({
                 type:"GET",
-                url:"/form/updatePlan.json",
+                url:"/member/updatePlan.json",
                 dataType:"json",
-                success:function(data) {
-                    $(this).removeClass("disabled");
-                    $(this).val("升级套餐");
-                    showToastr(data.message, 0);
+                success:function(result) {
+                    btn.removeAttr('disabled').removeClass("disabled").html("升级套餐");
+                    if(result.code != 200) {
+                        showToastr(result.message, 0, 3000, '系统错误');
+                        return;
+                    }
+                    if(result.data.error == 0) {
+                        $("#plan-level").html(result.data.level);
+                    }
+                    showToastr(result.data.message, 0);
                 },
                 error:function(jqXHR) {
-                    $(this).removeClass("disabled");
-                    $(this).val("升级套餐");
+                    btn.removeAttr('disabled').removeClass("disabled").html("升级套餐");
                     showToastr("发生错误：" + jqXHR.status, 0);
                 }
             });

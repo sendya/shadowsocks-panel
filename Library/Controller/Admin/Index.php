@@ -18,9 +18,11 @@ use Helper\Message;
 /**
  * Class Index
  * @Admin
+ * @Authorization
  * @package Controller\Admin
  */
 class Index {
+
     public function index() {
         $data['user'] = User::getCurrent();
         $data['flow_num10'] = Stats::dataUsage(0);
@@ -39,14 +41,7 @@ Hey guy, here's test mail
 EOF;
 
         Mail::mail_send($user->email,  "[". SITE_NAME ."] Mail test", $content);
-        Message::show("测试邮件已经发送到你的邮箱", '/admin', 6);
+        Message::show("测试邮件已经发送到你的邮箱", '/admin', 4);
     }
-
-    public function test() {
-        global $user;
-
-        include Template::load('/admin/test');
-    }
-
 
 }
