@@ -56,6 +56,13 @@ class Invite extends Model {
         return $statement->fetchObject(__CLASS__);
     }
 
+    public static function getInviteById($id) {
+        $statement = DB::getInstance()->prepare("SELECT * FROM invite WHERE `id`=? LIMIT 0,1");
+        $statement->bindValue(1, $id, DB::PARAM_STR);
+        $statement->execute();
+        return $statement->fetchObject(__CLASS__);
+    }
+
     /**
      * Get invites by uid
      * @param int $uid

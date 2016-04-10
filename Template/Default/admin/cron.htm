@@ -30,7 +30,7 @@
                                     <td>#{$cron->id}</td>
                                     <td></td>
                                     <td>{(date("Y-m-d H:i:s", $cron->nextrun))}</td>
-                                    <td>{(\Helper\Util::cronStatus($cron->enabled, $cron->nextrun))}</td>
+                                    <td>{(\Helper\Utils::cronStatus($cron->enable, $cron->nextrun))}</td>
                                     <td>{$cron->order}</td>
                                 </tr>
                                 </loop>

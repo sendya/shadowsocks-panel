@@ -11,18 +11,20 @@ namespace Controller\Admin;
 use \Core\Template;
 
 use \Model\Message as MessageModel;
+use Model\User;
 
 /**
  * Controller: 消息管理
+ * @Admin
+ * @Authorization
  */
-class Message extends AdminListener {
+class Message {
 
     public function index() {
-        global $user;
-
-        $lists = MessageModel::GetPushMsg(-1);
-
-        include Template::load('/admin/message');
+        $data['user'] = User::getCurrent();
+        $data['lists'] = MessageModel::getPushMessage(-1);
+        Template::setContext($data);
+        Template::setView('admin/message');
     }
 
     public function change() {

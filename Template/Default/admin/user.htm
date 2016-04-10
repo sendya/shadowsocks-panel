@@ -364,7 +364,7 @@
         newData += "<td>" + data.transfer + "</td>";
         newData += "<td>" + data.expireTime + "</td>";
         newData += "<td>" + '<a class="btn btn-info btn-sm" href="javascript:;" onclick="userModify('+data.uid+');">编辑</a>' + '<a class="btn btn-danger btn-sm" href="javascript:;" onclick="userRemove('+data.uid+');">删除</a>' + "</td>";
-        $("tr#user-" + data.uid).html(newData);
+        $("tr#node-" + data.id).html(newData);
 
     }
 </script>

@@ -3,9 +3,8 @@
 
 <div class="page-title">
     <div class="title-env">
-        <h1 class="title" onclick="messageAdd();">消息管理
-	<a class="btn btn-success btn-sm" href="javascript:;" onclick="">添加</a></h1>
-        <p class="description">请注意消息的分类！系统固定消息 无法删除，若手动删除将导致系统出现未知Bug，以此问题引起的，请勿在github发送issue</p>
+        <h1 class="title" >消息管理</h1>
+        <p class="description">请注意消息的分类！<br/>系统固定消息 无法删除，若手动删除将导致系统出现未知Bug</p>
     </div>
     <div class="breadcrumb-env">
         <ol class="breadcrumb bc-1"><li><a href="/admin"><i class="fa-home"></i>管理端</a></li><li><a href="/admin/message">消息管理</a></li></ol>
@@ -15,8 +14,21 @@
             <div class="row">
                 <div class="col-xs-12">
                     <div class="box">
-                        <div class="box-body table-responsive no-padding">
-                            <table class="table table-hover">
+                        <div class="panel panel-default">
+
+                            <div class="panel-heading">
+                                <h3 class="panel-title"></h3>
+
+                                <div class="panel-options">
+                                    <a href="javascript:;" id="message-add"><span>+</span></a>
+                                    <a href="javascript:;" data-toggle="reload">
+                                        <i class="fa-rotate-right"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="panel-body">
+                                <div class="table-responsive">
+                                    <table cellspacing="0" class="table table-small-font table-bordered table-striped">
                                 <tbody>
                                 <tr>
                                     <th>ID</th>
@@ -24,16 +36,16 @@
                                     <th>结束推送时间</th>
                                     <th>推送至</th>
                                     <th>类型</th>
-                                    <th>操作</th>
+                                    <th width="150px">操作</th>
                                 </tr>
                                 <if condition="count($lists) > 0">
                                 <loop variable="$lists" key="$key" value="$msg">
                                 <tr id="msg-{$msg->id}">
                                     <td>#{$msg->id}</td>
-                                    <td> {(mb_substr(htmlspecialchars($msg->content),0,20,'utf-8'))}</td>
-                                    <td> {(date("Y-m-d H:i:s", $msg->pushEndTime))}</td>
+                                    <td>{(mb_substr(htmlspecialchars($msg->content),0,20,'utf-8'))}</td>
+                                    <td>{(date("Y-m-d H:i:s", $msg->pushEndTime))}</td>
                                     <td><if condition="$msg->pushUsers == -1">系统消息<elseif condition="$msg->pushUsers == -2">系统固定消息<else>推送值特定用户</if></td>
-                                    <td><if condition="$msg->type == -1">重复推送<elseif condition="$msg->type == -2">系统公告<elseif condition="$msg->type == -3">套餐处说明<elseif condition="$msg->type == -4">首页浮动提示<else>普通消息</if></td>
+                                    <td><if condition="$msg->type == -1">重复推送<elseif condition="$msg->type == -2">系统公告<elseif condition="$msg->type == -3">套餐处说明<elseif condition="$msg->type == -4">首页浮动提示<elseif condition="$msg->type == -5">登陆页公告<else>普通消息</if></td>
                                     <td>
                                         <a class="btn btn-info btn-sm" href="javascript:;" onclick="messageModify({$msg->id});">编辑</a>
                                         <if condition="$msg->pushUsers != -2">
@@ -50,6 +62,8 @@
                                 </if>
                                 </tbody>
                             </table>
+                                    </div>
+                                </div>
                         </div><!-- /.box-body -->
                     </div><!-- /.box -->
                 </div>

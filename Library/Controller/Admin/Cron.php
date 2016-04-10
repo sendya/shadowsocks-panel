@@ -10,14 +10,21 @@ namespace Controller\Admin;
 
 use Core\Template;
 use Model\Cron as CronModel;
+use Model\User;
 
-class Cron extends AdminListener {
+/**
+ * Class Cron
+ * @Admin
+ * @Authorization
+ * @package Controller\Admin
+ */
+class Cron {
 
     public function index() {
-        global $user;
-        $cronList = CronModel::getCronArray();
-
-        include Template::load('/admin/cron');
+        $data['user'] = User::getCurrent();
+        $data['cronList'] = CronModel::getCronArray();
+        Template::setContext($data);
+        Template::setView('admin/cron');
     }
 
 }

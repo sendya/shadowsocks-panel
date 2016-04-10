@@ -1,22 +1,37 @@
-<import template="/admin/_header" />
-<import template="/admin/_content" />
+<import template="/admin/_header"/>
+<import template="/admin/_content"/>
 
 <div class="page-title">
     <div class="title-env">
-        <h1 class="title" onclick="inviteAdd();">邀请码管理
-	<a class="btn btn-success btn-sm" href="javascript:;" onclick="">添加</a></h1>
+        <h1 class="title">邀请码管理</h1>
         <p class="description">邀请码列表！</p>
     </div>
     <div class="breadcrumb-env">
-        <ol class="breadcrumb bc-1"><li><a href="/admin"><i class="fa-home"></i>管理端</a></li><li><a href="/admin/invite">邀请码</a></li></ol>
+        <ol class="breadcrumb bc-1">
+            <li><a href="/admin"><i class="fa-home"></i>管理端</a></li>
+            <li><a href="/admin/invite">邀请码</a></li>
+        </ol>
     </div>
 </div>
 <section class="content">
-            <div class="row">
-                <div class="col-xs-12">
-                    <div class="box">
-                        <div class="box-body table-responsive no-padding">
-                            <table class="table table-hover">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                <div class="panel panel-default">
+
+                    <div class="panel-heading">
+                        <h3 class="panel-title"></h3>
+
+                        <div class="panel-options">
+                            <a href="javascript:;" id="invite-add"><span>+</span></a>
+                            <a href="javascript:;" data-toggle="reload">
+                                <i class="fa-rotate-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <div class="table-responsive">
+                            <table cellspacing="0" class="table table-small-font table-bordered table-striped">
                                 <tbody>
                                 <tr>
                                     <th>UID</th>
@@ -24,35 +39,43 @@
                                     <th>邀请码</th>
                                     <th>等级</th>
                                     <th>状态</th>
-                                    <th>操作</th>
+                                    <th width="150px">操作</th>
                                 </tr>
                                 <if condition="count($inviteList) > 0">
-                                <loop variable="$inviteList" key="$key" value="$invite">
-                                <tr id="invite-{$invite->invite}">
-                                    <td>#{$invite->uid}</td>
-                                    <td>{(date("Y-m-d H:i:s", $invite->dateLine))}</td>
-                                    <td> {$invite->invite}</td>
-                                    <td>{$invite->plan}</td>
-                                    <td><if condition="$invite->status == 1">已用<else>未用</if></td>
-                                    <td>
-                                        <a class="btn btn-info btn-sm" href="javascript:;" onclick="inviteModify('{$invite->invite}');">编辑</a>
-                                        <a class="btn btn-danger btn-sm" href="javascript:;" onclick="inviteRemove('{$invite->invite}');">删除</a>
-                                    </td>
-                                </tr>
-                                </loop>
-                                <else>
-                                <tr>
-                                    <td>#</td>
-                                    <td colspan="5">没有邀请码</td>
-                                </tr>
+                                    <loop variable="$inviteList" key="$key" value="$invite">
+                                        <tr id="invite-{$invite->id}">
+                                            <td>#{$invite->uid}</td>
+                                            <td>{(date("Y-m-d H:i:s", $invite->dateLine))}</td>
+                                            <td> {$invite->invite}</td>
+                                            <td>{(\Helper\Utils::planAutoShow($invite->plan))}</td>
+                                            <td>
+                                                <if condition="$invite->status == 1">已用
+                                                    <else>未用
+                                                </if>
+                                            </td>
+                                            <td>
+                                                <a class="btn btn-info btn-sm" href="javascript:;"
+                                                   onclick="inviteModify('{$invite->id}');">编辑</a>
+                                                <a class="btn btn-danger btn-sm" href="javascript:;"
+                                                   onclick="inviteRemove('{$invite->id}');">删除</a>
+                                            </td>
+                                        </tr>
+                                    </loop>
+                                    <else>
+                                        <tr id="invite-0">
+                                            <td>#</td>
+                                            <td colspan="5">没有邀请码</td>
+                                        </tr>
                                 </if>
                                 </tbody>
                             </table>
-                        </div><!-- /.box-body -->
-                    </div><!-- /.box -->
-                </div>
-            </div>
-        </section>
+                        </div>
+                    </div>
+                </div><!-- /.box-body -->
+            </div><!-- /.box -->
+        </div>
+    </div>
+</section>
 </div>
 </div>
 <!-- Modal 6 (Long Modal)-->
@@ -62,154 +85,236 @@
 
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title">新增邀请码</h4>
+                <h4 class="modal-title"></h4>
             </div>
-            <form role="form" id="form1" method="post" action="/admin/invite/add.json" class="validate" onsubmit="return postJSON(this.id, this.action);">
-            <input type="hidden" name="form_add" value="{(time())}"/>
-            <input type="hidden" name="invite" id="invite" value=""/>
-            <div class="modal-body">
+            <form role="form" id="form1" method="post" action="/admin/invite/update.json" class="validate">
+                <input type="hidden" name="form_add" value="{(time())}"/>
+                <input type="hidden" name="invite" id="invite" value=""/>
+                <div class="modal-body">
+                    <div id="modal-isload">Content is loading...</div>
+                    <div id="modal-isbody" style="display: none;">
+                        <div class="row">
+                            <div class="col-md-6">
 
-                <div class="row">
-                    <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="field-1" class="control-label">邀请码（只允许系统生成）</label>
 
-                        <div class="form-group">
-                            <label for="field-1" class="control-label">邀请码（只允许系统生成）</label>
+                                    <input type="text" class="form-control" name="invite_2" id="field-1" value=""
+                                           readonly placeholder="只允许系统生成">
+                                </div>
 
-                            <input type="text" class="form-control" name="invite_2" id="field-1" value="" readonly placeholder="只允许系统生成">
-                        </div>
+                            </div>
 
-                    </div>
+                            <div class="col-md-6">
 
-                    <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="field-2" class="control-label">邀请码类型</label>
 
-                        <div class="form-group">
-                            <label for="field-2" class="control-label">邀请码类型</label>
+                                    <select name="plan" id="plan" id="field-2" class="form-control">
+                                        <loop variable="$planList" key="$key" value="$plan">
+                                            <option value="{$key}">{$plan}</option>
+                                        </loop>
+                                    </select>
+                                </div>
 
-                            <select name="plan" id="plan" id="field-2" class="form-control">
-                                <option value="A">A</option>
-                                <option value="B">B</option>
-                                <option value="C">C</option>
-                                <option value="D">D</option>
-                                <option value="VIP">VIP</option>
-                                <option value="SVIP">SVIP</option>
-                            </select>
-                        </div>
-
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-md-6">
-
-                        <div class="form-group">
-                            <label for="field-3" class="control-label">有效时间(天)</label>
-
-                            <input type="number" class="form-control" name="expiration" id="field-3" value="10" placeholder="10" data-message-required="有效时间为整数.">
-                        </div>
-
-                    </div>
-
-                    <div class="col-md-6">
-
-                        <div class="form-group">
-                            <label for="field-4" class="control-label">添加时间</label>
-
-                            <div class="date-and-time">
-                                <input type="text" id="field-4" class="form-control datepicker" placeholder="{(date('Y-m-d', time()))}" name="add_time1" data-format="yyyy-mm-dd">
-                                <input type="text" class="form-control timepicker" name="add_time2" data-template="dropdown" data-show-seconds="true" data-default-time="11:25" data-show-meridian="false" data-minute-step="5" data-second-step="5" />
                             </div>
                         </div>
 
-                    </div>
-                </div>
+                        <div class="row">
+                            <div class="col-md-6">
 
-                <div class="row">
-                    <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="field-3" class="control-label">有效时间(天)</label>
 
-                        <div class="form-group">
-                            <label for="field-5" class="control-label">添加邀请码个数</label>
+                                    <input type="number" class="form-control" name="expiration" id="field-3" value="10"
+                                           placeholder="10" data-message-required="有效时间为整数.">
+                                </div>
 
-                            <input type="number" class="form-control" name="number" id="field-5" value="1" placeholder="1" data-message-required="邀请码个数.">
+                            </div>
+
+                            <div class="col-md-6">
+
+                                <div class="form-group">
+                                    <label for="field-4" class="control-label">添加时间</label>
+
+                                    <div class="date-and-time">
+                                        <input type="text" id="field-4" class="form-control datepicker"
+                                               placeholder="{(date('Y-m-d', time()))}" name="add_time1"
+                                               data-format="yyyy-mm-dd">
+                                        <input type="text" class="form-control timepicker" name="add_time2"
+                                               data-template="dropdown" data-show-seconds="true"
+                                               data-default-time="11:25" data-show-meridian="false" data-minute-step="5"
+                                               data-second-step="5"/>
+                                    </div>
+                                </div>
+
+                            </div>
                         </div>
 
+                        <div class="row invite-num">
+                            <div class="col-md-6">
+
+                                <div class="form-group">
+                                    <label for="field-5" class="control-label">添加邀请码个数</label>
+
+                                    <input type="number" class="form-control" name="number" id="field-5" value="1"
+                                           placeholder="1" data-message-required="邀请码个数.">
+                                </div>
+
+                            </div>
+                        </div>
                     </div>
                 </div>
-
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
-                <button type="submit" class="btn btn-success">立即保存</button>
-            </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+                    <button type="submit" class="btn btn-success">立即保存</button>
+                </div>
             </form>
         </div>
 
     </div>
 </div>
 <script type="text/javascript">
-    function inviteRemove(invite){
+    var modal_default_body = jQuery('#modal-6 .modal-body').html();
+    jQuery(document).ready(function($) {
+
+        $("form#form1").validate({
+            rules: {
+                'user.email': "required",
+                'user.port': "required",
+                'user.sspwd': "required",
+                'user.invite_num': "required",
+                'user.transfer': "required"
+            },
+            messages: {
+                'user.email': "邮箱必须填写",
+                'user.port': "端口必须填写",
+                'user.sspwd': "SS连接密码必须填写",
+                'user.invite_num': "邀请码数量必须填写",
+                'user.transfer': "总流量必须填写"
+            },
+            errorElement: 'span',
+            errorClass: 'validate-has-error',
+            highlight: function (element) {
+                $(element).closest('.form-group').addClass('validate-has-error');
+            },
+            unhighlight: function (element) {
+                $(element).closest('.form-group').removeClass('validate-has-error');
+            },
+            errorPlacement: function (error, element)
+            {
+                if(element.closest('.has-switch').length)
+                {
+                    error.insertAfter(element.closest('.has-switch'));
+                }
+                else {
+                    if(element.parent('.checkbox, .radio').length || element.parent('.input-group').length)
+                    {
+                        error.insertAfter(element.parent());
+                    }
+                    else
+                    {
+                        error.insertAfter(element);
+                    }
+                }
+            },
+            submitHandler: function(form) {
+                $.ajax({
+                    url: form.action,
+                    method: "POST",
+                    dataType: "json",
+                    data: $(form).serialize(),
+                    success: function(result){
+                        if(result.code != 200) {
+                            showToastr(result.message, 0, 3000, '系统错误');
+                            return;
+                        }
+                        if(result.data.error == 0) {
+                            location.reload();
+                        }
+                        showToastr(result.data.message, 0);
+                        jQuery('#modal-6').modal('hide');
+                    },
+                    error: function(Xhr){
+                        showToastr("出现未知错误，请重试", 0);
+                    }
+                });
+            }
+        });
+
+        $("#invite-add").on('click', function(){
+            $("#modal-6 .modal-body").html(modal_default_body);
+            $("input[name='number']").show().val('');
+            $("input[name='invite']").val('');
+            $("input[name='invite_2']").val('');
+            $("#plan").val('A');
+            $("input[name='expiration']").val('');
+            $("input[name='add_time1']").val('');
+            jQuery('#modal-6 .modal-title').html('新增邀请码');
+            jQuery('#modal-6').modal('show', {backdrop: 'static'});
+            reset(true);
+        });
+    });
+
+    function inviteRemove(inviteId) {
         $.ajax({
             url: "/admin/invite/delete.json",
             method: "POST",
             dataType: "json",
-            data: {invite: invite},
-            success: function(data){
-                if(data.error == 0){
-                    showToastr(data.message, 0);
-                    $("#invite-" + invite).remove();
-                } else {
-                    showToastr(data.message, 0);
+            data: {id: inviteId},
+            success: function(result){
+                if(result.code != 200){
+                    showToastr(result.message, 0, 3000, '系统错误');
+                    return;
                 }
+                if(result.data.error == 0) {
+                    $("#invite-" + inviteId).remove();
+                }
+                showToastr(result.data.message, 0);
             },
             error: function(Xhr){
                 showToastr("出现未知错误，请重试或联系管理员", 0);
             }
         });
     }
-    function inviteModify(invite){
+    function inviteModify(inviteId) {
+        $("#modal-6 .modal-body").html(modal_default_body);
+        reset(false);
         $.ajax({
             url: "/admin/invite/query.json",
             method: "POST",
             dataType: "json",
-            data: {invite: invite},
-            success: function(result){
-                if(result.error == 0){
-                    if(result.data != false && result.data != null) {
-                        var invite = result.data;
-                        $("input[name='invite']").val(invite.invite);
-                        $("input[name='invite_2']").val(invite.invite);
-                        $("#plan").val(invite.plan);
-                        $("input[name='expiration']").val(invite.expiration);
-                        $("input[name='add_time1']").val(invite.dateLine);
-                        $("input[name='number']").hide().val('');
-                        $("#form1").attr("action", "/admin/invite/update.json");
-                        jQuery('#modal-6 .modal-title').html('修改邀请码');
-                        jQuery('#modal-6').modal('show', {backdrop: 'static'});
-                    }
-                } else {
-                    showToastr(result.message, 0);
+            data: {id: inviteId},
+            success: function (result) {
+                if(result.code != 200){
+                    jQuery('#modal-6').modal('hide');
+                    showToastr(result.message, 0, 3000, '系统错误');
+                    return;
+                }
+
+                if(result.data.error != 1 && result.data.invite != null) {
+                    var invite = result.data.invite;
+                    $("input[name='invite']").val(invite.invite);
+                    $("input[name='invite_2']").val(invite.invite);
+                    $("#plan").val(invite.plan);
+                    $("input[name='expiration']").val(invite.expiration);
+                    $("input[name='add_time1']").val(invite.dateLine);
+                    $("input[name='number']").hide().val('');
+                    $(".invite-num").remove();
+                    jQuery('#modal-6 .modal-title').html('修改邀请码');
+                    reset(true);
                 }
             },
-            error: function(Xhr){
+            error: function (Xhr) {
                 showToastr("出现未知错误，请重试或联系管理员", 0);
             }
         });
         jQuery('#modal-6').modal('show', {backdrop: 'static'});
     }
-    function inviteAdd(){
-        $("input[name='number']").show().val('');
-        $("input[name='invite']").val('');
-        $("input[name='invite_2']").val('');
-        $("#plan").val('A');
-        $("input[name='expiration']").val('');
-        $("input[name='add_time1']").val('');
-        $("#form1").attr("action", "/admin/invite/add.json");
-        jQuery('#modal-6 .modal-title').html('新增邀请码');
-        jQuery('#modal-6').modal('show', {backdrop: 'static'});
-    }
 </script>
-<link rel="stylesheet" href="{TPL_PATH}js/daterangepicker/daterangepicker-bs3.css">
-<script src="{TPL_PATH}js/daterangepicker/daterangepicker.js"></script>
-<script src="{TPL_PATH}js/datepicker/bootstrap-datepicker.js"></script>
-<script src="{TPL_PATH}js/timepicker/bootstrap-timepicker.min.js"></script>
+<link rel="stylesheet" href="Resource/{THEME}/js/daterangepicker/daterangepicker-bs3.css">
+<script src="Resource/{THEME}/js/daterangepicker/daterangepicker.js"></script>
+<script src="Resource/{THEME}/js/datepicker/bootstrap-datepicker.js"></script>
+<script src="Resource/{THEME}/js/timepicker/bootstrap-timepicker.min.js"></script>
+<import template="/admin/_footer"/>
 
-<import template="/admin/_footer" />
