@@ -157,23 +157,37 @@
                         <span class="title">消息管理</span>
                     </a>
                 </li>
-                <li class="">
-                    <a href="/admin/index/mailTest">
-                        <i class="linecons-comment "></i>
-                        <span class="title">邮件测试</span>
-                    </a>
-                </li>
-                <li class="{(\Helper\Utils::menuActive('setting'))}">
-                    <a href="/admin/setting">
-                        <i class="linecons-params "></i>
-                        <span class="title">系统设置</span>
-                    </a>
-                </li>
-                <li class="{(\Helper\Utils::menuActive('cron'))}">
-                    <a href="/admin/cron" class="pjax">
-                        <i class="linecons-calendar "></i>
-                        <span class="title">计划任务</span>
-                    </a>
+                <li class="{(\Helper\Utils::menuActive('setting|cron|system|mailTest', ' opened expanded'))} has-sub">
+                <a href="javascript:;">
+                    <i class="linecons-heart"></i>
+                    <span class="title">系统设置</span>
+                </a>
+                <ul>
+                    <li class="{(\Helper\Utils::menuActive('setting'))}">
+                        <a href="/admin/setting">
+                            <i class="linecons-params "></i>
+                            <span class="title">系统设置</span>
+                        </a>
+                    </li>
+                    <li class="{(\Helper\Utils::menuActive('system'))}">
+                        <a href="/admin/setting/system" class="pjax">
+                            <i class="linecons-calendar "></i>
+                            <span class="title">详细参数</span>
+                        </a>
+                    </li>
+                    <li class="{(\Helper\Utils::menuActive('cron'))}">
+                        <a href="/admin/cron" class="pjax">
+                            <i class="linecons-calendar "></i>
+                            <span class="title">计划任务</span>
+                        </a>
+                    </li>
+                    <li class="{(\Helper\Utils::menuActive('mailTest'))}">
+                        <a href="/admin/index/mailTest">
+                            <i class="linecons-comment "></i>
+                            <span class="title">邮件测试</span>
+                        </a>
+                    </li>
+                </ul>
                 </li>
                 <li>
                     <a href="/member">

@@ -19,12 +19,30 @@ use Model\User;
  */
 class Setting {
 
+    /**
+     * 系统设置 页面
+     */
     public function index() {
+        $data['user'] = User::getCurrent();
+        $data['custom_plan_name'] = json_decode(Option::get('custom_plan_name'), true);
+        $data['custom_transfer_level'] = json_decode(Option::get('custom_transfer_level'), true);
+        $data['check_transfer_max'] = Option::get('check_transfer_max');
+        $data['check_transfer_min'] = Option::get('check_transfer_min');
+        $data['user_test_day'] = Option::get('user_test_day');
+
+        Template::setContext($data);
+        Template::setView("admin/setting");
+    }
+
+    /**
+     * 详细参数 页面
+     */
+    public function system() {
         $data['user'] = User::getCurrent();
         $data['options'] = Option::getOptions();
 
         Template::setContext($data);
-        Template::setView("admin/setting");
+        Template::setView("admin/system");
     }
 
     /**
@@ -54,6 +72,37 @@ class Setting {
             // 初始化一次系统设置
             Option::init();
         }
+        return $result;
+    }
+
+
+    /**
+     * @JSON
+     */
+    public function saveOther() {
+        // TODO 保存其他设置
+        $result['error'] = 1;
+        $result['message'] = '功能尚未完成';
+        return $result;
+    }
+
+    /**
+     * @JSON
+     */
+    public function saveTransfer() {
+        // TODO 保存套餐流量定额
+        $result['error'] = 1;
+        $result['message'] = '功能尚未完成';
+        return $result;
+    }
+
+    /**
+     * @JSON
+     */
+    public function savePlanCustom() {
+        // TODO 保存自定义套餐名称
+        $result['error'] = 1;
+        $result['message'] = '功能尚未完成';
         return $result;
     }
 }

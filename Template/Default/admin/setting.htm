@@ -15,13 +15,15 @@
 </div>
 <section class="content">
     <div class="row">
-        <div class="col-xs-12">
+        <div class="col-sm-6 col-md-6 col-lg-6">
             <div class="box">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <h3 class="panel-title"></h3>
+                        <h3 class="panel-title">套餐自定义</h3>
                         <div class="panel-options">
-                            <a href="javascript:;" id="option-add"><span>+</span></a>
+                            <a href="javascript:;" id="setting-save" data-form-id="setting-form">
+                                <i class="linecons-cog"></i>
+                            </a>
                             <a href="javascript:;" data-toggle="reload">
                                 <i class="fa-rotate-right"></i>
                             </a>
@@ -29,33 +31,112 @@
                     </div>
                     <div class="panel-body">
                         <div class="table-responsive">
+                            <form id="setting-form" name="setting-form" action="/admin/setting/savePlanCustom.json">
                             <table cellspacing="0" class="table table-small-font table-bordered table-striped">
                                 <thead>
                                     <tr>
-                                        <th>键</th>
-                                        <th>值</th>
-                                        <th width="100px">操作</th>
+                                        <th>套餐类型</th>
+                                        <th>对应名称</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                <if condition="count($options) > 0">
-                                    <loop variable="$options" key="$key" value="$option">
+                                <if condition="count($custom_plan_name) > 0">
+                                    <loop variable="$custom_plan_name" key="$key" value="$name">
                                         <tr id="setting-{$key}">
-                                            <td>#{$key}</td>
-                                            <td><php>if(strlen($option)>60){ echo mb_substr($option,0,60)."...";} else {echo $option;}</php></td>
-                                            <td>
-                                                <a class="btn btn-info btn-sm" href="javascript:;" onclick="optionModify('{$key}');">编辑</a>
-                                            </td>
+                                            <td>{$key}</td>
+                                            <td><input class="form-control" name="setting-{$key}" value="{$name}"/></td>
                                         </tr>
                                     </loop>
-                                    <else>
-                                        <tr id="setting-0">
-                                            <td>#</td>
-                                            <td colspan="2">无系统设置参数</td>
-                                        </tr>
                                 </if>
                                 </tbody>
                             </table>
+                            </form>
+                        </div>
+                    </div>
+                </div><!-- /.box-body -->
+            </div><!-- /.box -->
+        </div>
+        <div class="col-sm-6 col-md-6 col-lg-6">
+            <div class="box">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">套餐流量</h3>
+                        <div class="panel-options">
+                            <a href="javascript:;" id="transfer-save" data-form-id="transfer-form">
+                                <i class="linecons-cog"></i>
+                            </a>
+                            <a href="javascript:;" data-toggle="reload">
+                                <i class="fa-rotate-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <div class="table-responsive">
+                            <form id="transfer-form" name="transfer-form" action="/admin/setting/saveTransfer.json">
+                            <table cellspacing="0" class="table table-small-font table-bordered table-striped">
+                                <thead>
+                                <tr>
+                                    <th>套餐类型</th>
+                                    <th>流量/GB</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <if condition="count($custom_transfer_level) > 0">
+                                    <loop variable="$custom_transfer_level" key="$key" value="$name">
+                                        <tr id="transfer-{$key}">
+                                            <td>{$key}</td>
+                                            <td><input class="form-control" name="transfer-{$key}" value="{$name}"/></td>
+                                        </tr>
+                                    </loop>
+                                </if>
+                                </tbody>
+                            </table>
+                            </form>
+                        </div>
+                    </div>
+                </div><!-- /.box-body -->
+            </div><!-- /.box -->
+        </div>
+        <div class="col-sm-6 col-md-6 col-lg-6">
+            <div class="box">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">其他定义</h3>
+                        <div class="panel-options">
+                            <a href="javascript:;" id="other-save" data-form-id="other-form">
+                                <i class="linecons-cog"></i>
+                            </a>
+                            <a href="javascript:;" data-toggle="reload">
+                                <i class="fa-rotate-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <div class="table-responsive">
+                            <form id="other-form" name="other-form" action="/admin/setting/saveOther.json">
+                            <table cellspacing="0" class="table table-small-font table-bordered table-striped">
+                                <thead>
+                                <tr>
+                                    <th width="200px">#</th>
+                                    <th>值</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>最大值(MB)</td>
+                                        <td><input class="form-control" name="check_transfer_max" value="{$check_transfer_max}"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td>最小值(MB)</td>
+                                        <td><input class="form-control" name="check_transfer_min" value="{$check_transfer_min}"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td>测试用户试用时长</td>
+                                        <td><input class="form-control" name="user_test_day" value="{$user_test_day}"/></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            </form>
                         </div>
                     </div>
                 </div><!-- /.box-body -->
@@ -65,184 +146,29 @@
 </section>
 </div>
 </div>
-<!-- Modal 6 (Long Modal)-->
-<div class="modal fade" id="modal-6">
-    <div class="modal-dialog">
-        <div class="modal-content">
-
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title"></h4>
-            </div>
-            <form role="form" id="form1" method="post" action="/admin/setting/update.json" class="validate">
-                <input type="hidden" name="form_add" value="{(time())}"/>
-                <input type="hidden" name="option.k" id="option.k" value=""/>
-                <div class="modal-body">
-                    <div id="modal-isload">Content is loading...</div>
-                    <div id="modal-isbody" style="display: none;">
-                        <div class="row">
-                            <div class="col-md-12">
-
-                                <div class="form-group">
-                                    <label for="field-1" class="control-label">键</label>
-                                    <input type="text" class="form-control disable" disabled="disabled" name="option.k2" id="field-1"
-                                           value="" placeholder="option.k">
-                                </div>
-
-                            </div>
-
-                            <div class="col-md-12">
-
-                                <div class="form-group" id="option-value">
-                                    <label for="field-2" class="control-label" >值</label>
-                                    <textarea class="form-control autogrow" rows="6" name="option.v" id="field-2" placeholder="option.v"></textarea>
-                                    <!--<select name="message.type" id="field-2" class="form-control">-->
-                                        <!--<option value="0">正常消息</option>-->
-                                        <!--<option value="-1">重复消息</option>-->
-                                        <!--<option value="-5">登录页公告</option>-->
-                                        <!--<option value="-4">首页浮动提示</option>-->
-                                        <!--<option value="-3">套餐处说明</option>-->
-                                        <!--<option value="-2">系统公告</option>-->
-                                    <!--</select>-->
-                                </div>
-
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
-                    <button type="submit" class="btn btn-success">立即保存</button>
-                </div>
-            </form>
-        </div>
-
-    </div>
-</div>
 <script type="text/javascript">
-    var modal_default_body = jQuery('#modal-6 .modal-body').html();
     jQuery(document).ready(function($) {
-        $("form#form1").validate({
-            rules: {
-                'option.v': "required"
-            },
-            messages: {
-                'option.v': "不填设置的值别想保存"
-            },
-            errorElement: 'span',
-            errorClass: 'validate-has-error',
-            highlight: function (element) {
-                $(element).closest('.form-group').addClass('validate-has-error');
-            },
-            unhighlight: function (element) {
-                $(element).closest('.form-group').removeClass('validate-has-error');
-            },
-            errorPlacement: function (error, element)
-            {
-                if(element.closest('.has-switch').length)
-                {
-                    error.insertAfter(element.closest('.has-switch'));
-                }
-                else {
-                    if(element.parent('.checkbox, .radio').length || element.parent('.input-group').length)
-                    {
-                        error.insertAfter(element.parent());
-                    }
-                    else
-                    {
-                        error.insertAfter(element);
-                    }
-                }
-            },
-            submitHandler: function(form) {
-                $.ajax({
-                    url: form.action,
-                    method: "POST",
-                    dataType: "json",
-                    data: $(form).serialize(),
-                    success: function(result){
-                        if(result.code != 200) {
-                            showToastr(result.message, 0, 3000, '系统错误');
-                            return;
-                        }
-                        showToastr(result.data.message, 0);
-                        $('#modal-6').modal('hide');
-                    },
-                    error: function(Xhr){
-                        showToastr("出现未知错误，请重试", 0);
-                    }
-                });
-            }
-        });
+        $("#setting-save,#transfer-save,#other-save").on('click', function(){
+            var formName = $(this).attr('data-form-id');
 
+            var form = $("form#"+formName);
+            $.ajax({
+                url: form.attr('action'),
+                data: form.serialize(),
+                type: "POST",
+                dataType: "json",
+                success: function(result) {
+                    if(result.code != 200) {
+                        showToastr(result.message, 0, 3000, '系统错误');
+                        return;
+                    }
+                    showToastr(result.data.message, 0, 3000, '提示');
+                },
+                error: function(jqXhr) {
+
+                }
+            });
+        });
     });
-    function optionModify(optionName){
-        $("#modal-6 .modal-body").html(modal_default_body);
-        reset(false);
-        $.ajax({
-            url: "/admin/setting/query.json",
-            method: "GET",
-            dataType: "json",
-            data: {'option': optionName},
-            success: function(result){
-                if(result.code != 200){
-                    showToastr(result.message, 0, 3000, '系统错误');
-                    return;
-                }
-                if(result.data.error == 0 && result.data.modal != null){
-                    var option = result.data.modal;
-                    $("input[name='option.k']").val(optionName);
-                    $("input[name='option.k2']").val(optionName);
-                    /* TODO 如果为键值对配置，则自动构建一个K:V对应编辑 */
-                    /*
-                    if(result.data.isArray) {
-                        var newHtml = '<label for="field-2" class="control-label" >值</label>';
-                        newHtml += '<input'
-
-                        $("#option-value").html();
-                    } else {
-                        $("textarea[name='option.v']").val(option);
-                    }*/
-
-                    $("textarea[name='option.v']").val(option);
-
-                    $('#modal-6 .modal-title').html('修改参数');
-                    reset(true);
-                } else {
-                    $('#modal-6').modal('hide');
-                }
-            },
-            error: function(Xhr){
-                showToastr("出现未知错误，请重试或联系管理员", 0);
-            }
-        });
-        $('#modal-6').modal('show', {backdrop: 'static'});
-    }
-    function changeTable(data) {
-        var tid = $("tr#msg-" + data.id).html();
-        if(tid == undefined || tid == null) {
-            /* 新增 */
-            var trCount = $("table tbody").children("tr").length;
-            var newData = '<tr id="msg-"'+data.id+'>';
-            newData += "<td>#" + data.id + "</td>";
-            newData += "<td>"  + data.content + "</td>";
-            newData += "<td>" + data.pushEndTime + "</td>";
-            newData += "<td>" + data.pushUsers + "</td>";
-            newData += "<td>" + data.type + "</td>";
-            newData += "<td>" + '<a class="btn btn-info btn-sm" href="javascript:;" onclick="messageModify('+data.id+');">编辑</a>' + '<a class="btn btn-danger btn-sm" href="javascript:;" onclick="messageRemove('+data.id+');">删除</a>' + "</td></tr>";
-            $("table tbody").append(newData);
-            if($("#node-0").html() != undefined) $("#node-0").remove();
-        } else {
-            /* 修改 */
-            var newData = "<td>#" + data.id + "</td>";
-            newData += "<td>"  + data.content + "</td>";
-            newData += "<td>" + data.pushEndTime + "</td>";
-            newData += "<td>" + data.pushUsers + "</td>";
-            newData += "<td>" + data.type + "</td>";
-            newData += "<td>" + '<a class="btn btn-info btn-sm" href="javascript:;" onclick="messageModify('+data.id+');">编辑</a>' + '<a class="btn btn-danger btn-sm" href="javascript:;" onclick="messageRemove('+data.id+');">删除</a>' + "</td>";
-            $("tr#msg-" + data.id).html(newData);
-        }
-    }
 </script>
 <import template="/admin/_footer" />
