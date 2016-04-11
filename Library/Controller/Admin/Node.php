@@ -66,13 +66,12 @@ class Node {
 	 * @JSON
 	 */
 	public function query() {
-		$result = array('error' => 1, 'message' => '获取节点信息失败');
+		$result = array('error' => 1);
 		if($_GET['node_id']!=null) {
-			$result['data'] = NodeModel::getNodeById(trim($_GET['node_id']));
+			$result['node'] = NodeModel::getNodeById(trim($_GET['node_id']));
 			$result['error'] = 0;
 		}
-		echo json_encode($result);
-		exit();
+		return $result;
 	}
 
 	/**

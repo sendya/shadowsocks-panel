@@ -25,7 +25,7 @@ use Model\User;
 class Member {
 
     /**
-     * 主页面
+     * 主页面 仪表盘
      */
     public function index() {
         $user = User::getUserByUserId(User::getCurrent()->uid);
@@ -263,6 +263,29 @@ class Member {
         return array('error' => 0, 'message' => '您的到期时间：' .$expireTime , 'expireTime' => $expireTime);
     }
 
+    /**
+     * 签到
+     *
+     * @JSON
+     */
+    public function checkIn() {
+        $user = User::getUserByUserId(User::getCurrent()->uid);
+        $result = array('error' => 1, 'message' => '签到失败或已签到。');
+        if ($user->lastCheckinTime <= strtotime(date('Y-m-d 00:00:00', time())) )
+        {
+            $checkinTransfer = rand(intval(Option::get('check_transfer_min')), intval(Option::get('check_transfer_max'))) * Utils::MB;
+            $user->lastCheckinTime = time();
+            $user->transfer = $user->transfer + $checkinTransfer;
+            $user->save();
+            $result['time'] = date("m-d H:i:s", $user->lastCheckinTime);
+            $result['message'] = '签到成功, 获得' . Utils::flowAutoShow($checkinTransfer) . ' 流量';
+            $result['error'] = 0;
+        } else {
+
+            $result['message'] = '你已经在 ' . date('Y-m-d H:i:s', $user->lastCheckinTime) . " 时签到过.";
+        }
+        return $result;
+    }
     /**
      * 删除自己的账户（在本站彻底清空自己注册的账户）
      *

@@ -67,10 +67,13 @@ class Option {
         $stn->execute();
         $opt = $stn->fetchAll(DB::FETCH_UNIQUE | DB::FETCH_COLUMN);
         // $GLOBALS['OPTIONS'] = $opt;
+        self::$list = $opt;
         return $opt;
     }
 
     public static function getOptions() {
+        if(!self::$list)
+            self::$list = self::init();
         return self::$list;
     }
 }

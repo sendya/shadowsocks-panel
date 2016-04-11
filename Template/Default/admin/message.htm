@@ -3,72 +3,90 @@
 
 <div class="page-title">
     <div class="title-env">
-        <h1 class="title" >消息管理</h1>
+        <h1 class="title">消息管理</h1>
         <p class="description">请注意消息的分类！<br/>系统固定消息 无法删除，若手动删除将导致系统出现未知Bug</p>
     </div>
     <div class="breadcrumb-env">
-        <ol class="breadcrumb bc-1"><li><a href="/admin"><i class="fa-home"></i>管理端</a></li><li><a href="/admin/message">消息管理</a></li></ol>
+        <ol class="breadcrumb bc-1">
+            <li><a href="/admin"><i class="fa-home"></i>管理端</a></li>
+            <li><a href="/admin/message">消息管理</a></li>
+        </ol>
     </div>
 </div>
 <section class="content">
-            <div class="row">
-                <div class="col-xs-12">
-                    <div class="box">
-                        <div class="panel panel-default">
-
-                            <div class="panel-heading">
-                                <h3 class="panel-title"></h3>
-
-                                <div class="panel-options">
-                                    <a href="javascript:;" id="message-add"><span>+</span></a>
-                                    <a href="javascript:;" data-toggle="reload">
-                                        <i class="fa-rotate-right"></i>
-                                    </a>
-                                </div>
-                            </div>
-                            <div class="panel-body">
-                                <div class="table-responsive">
-                                    <table cellspacing="0" class="table table-small-font table-bordered table-striped">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title"></h3>
+                        <div class="panel-options">
+                            <a href="javascript:;" id="message-add"><span>+</span></a>
+                            <a href="javascript:;" data-toggle="reload">
+                                <i class="fa-rotate-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <div class="table-responsive">
+                            <table cellspacing="0" class="table table-small-font table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>内容</th>
+                                        <th>结束推送时间</th>
+                                        <th>推送至</th>
+                                        <th>类型</th>
+                                        <th width="150px">操作</th>
+                                    </tr>
+                                </thead>
                                 <tbody>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>内容</th>
-                                    <th>结束推送时间</th>
-                                    <th>推送至</th>
-                                    <th>类型</th>
-                                    <th width="150px">操作</th>
-                                </tr>
                                 <if condition="count($lists) > 0">
-                                <loop variable="$lists" key="$key" value="$msg">
-                                <tr id="msg-{$msg->id}">
-                                    <td>#{$msg->id}</td>
-                                    <td>{(mb_substr(htmlspecialchars($msg->content),0,20,'utf-8'))}</td>
-                                    <td>{(date("Y-m-d H:i:s", $msg->pushEndTime))}</td>
-                                    <td><if condition="$msg->pushUsers == -1">系统消息<elseif condition="$msg->pushUsers == -2">系统固定消息<else>推送值特定用户</if></td>
-                                    <td><if condition="$msg->type == -1">重复推送<elseif condition="$msg->type == -2">系统公告<elseif condition="$msg->type == -3">套餐处说明<elseif condition="$msg->type == -4">首页浮动提示<elseif condition="$msg->type == -5">登陆页公告<else>普通消息</if></td>
-                                    <td>
-                                        <a class="btn btn-info btn-sm" href="javascript:;" onclick="messageModify({$msg->id});">编辑</a>
-                                        <if condition="$msg->pushUsers != -2">
-                                        <a class="btn btn-danger btn-sm" href="javascript:;" onclick="messageRemove({$msg->id});">删除</a>
-                                        </if>
-                                    </td>
-                                </tr>
-                                </loop>
-                                <else>
-                                <tr>
-                                    <td>#</td>
-                                    <td colspan="5">没有消息</td>
-                                </tr>
+                                    <loop variable="$lists" key="$key" value="$msg">
+                                        <tr id="msg-{$msg->id}">
+                                            <td>#{$msg->id}</td>
+                                            <td>{(mb_substr(htmlspecialchars($msg->content),0,20,'utf-8'))}</td>
+                                            <td>{(date("Y-m-d H:i:s", $msg->pushEndTime))}</td>
+                                            <td>
+                                                <if condition="$msg->pushUsers == -1">系统消息
+                                                    <elseif condition="$msg->pushUsers == -2">系统固定消息
+                                                        <else>用户：{$msg->pushUsers}
+                                                </if>
+                                            </td>
+                                            <td>
+                                                <if condition="$msg->type == -1">重复推送
+                                                    <elseif condition="$msg->type == -2">系统公告
+                                                        <elseif condition="$msg->type == -3">套餐处说明
+                                                            <elseif condition="$msg->type == -4">首页浮动提示
+                                                                <elseif condition="$msg->type == -5">登陆页公告
+                                                                    <else>正常消息
+                                                </if>
+                                            </td>
+                                            <td>
+                                                <a class="btn btn-info btn-sm" href="javascript:;"
+                                                   onclick="messageModify({$msg->id});">编辑</a>
+                                                <if condition="$msg->pushUsers != -2">
+                                                    <a class="btn btn-danger btn-sm" href="javascript:;"
+                                                       onclick="messageRemove({$msg->id});">删除</a>
+                                                </if>
+                                            </td>
+                                        </tr>
+                                    </loop>
+                                    <else>
+                                        <tr>
+                                            <td>#</td>
+                                            <td colspan="5">没有消息</td>
+                                        </tr>
                                 </if>
                                 </tbody>
                             </table>
-                                    </div>
-                                </div>
-                        </div><!-- /.box-body -->
-                    </div><!-- /.box -->
-                </div>
-            </div>
-        </section>
+                        </div>
+                    </div>
+                </div><!-- /.box-body -->
+            </div><!-- /.box -->
+        </div>
+    </div>
+</section>
 </div>
 </div>
 <!-- Modal 6 (Long Modal)-->
@@ -78,86 +96,185 @@
 
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title">新增消息</h4>
+                <h4 class="modal-title"></h4>
             </div>
-            <form role="form" id="form1" method="post" action="/admin/message/add.json" class="validate" onsubmit="return postJSON(this.id, this.action);">
-            <input type="hidden" name="form_add" value="{(time())}"/>
-            <input type="hidden" name="message.id" id="message_id" value=""/>
-            <div class="modal-body">
+            <form role="form" id="form1" method="post" action="/admin/message/update.json" class="validate">
+                <input type="hidden" name="form_add" value="{(time())}"/>
+                <input type="hidden" name="message.id" id="message_id" value=""/>
+                <div class="modal-body">
+                    <div id="modal-isload">Content is loading...</div>
+                    <div id="modal-isbody" style="display: none;">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group no-margin">
+                                    <label for="field-0" class="control-label">消息内容</label>
+                                    <textarea class="form-control autogrow" name="message.content" id="field-0"
+                                              placeholder="请填写消息内容，支持 HTML 标记"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
 
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="form-group no-margin">
-                            <label for="field-0" class="control-label">消息内容</label>
-                            <textarea class="form-control autogrow" name="message.content" id="field-0" placeholder="请填写消息内容，支持 HTML 标记" ></textarea>
+                                <div class="form-group">
+                                    <label for="field-1" class="control-label">推送时间</label>
+                                    <input type="text" class="form-control" name="message.pushTime" id="field-1"
+                                           value="{(date('Y-m-d H:i:s'))}" placeholder="">
+                                </div>
+
+                            </div>
+
+                            <div class="col-md-6">
+
+                                <div class="form-group">
+                                    <label for="field-2" class="control-label"
+                                           title="消息类型：-1 重复推送，0 正常消息，大于0 推送次数">消息类型</label>
+                                    <select name="message.type" id="field-2" class="form-control">
+                                        <option value="0">正常消息</option>
+                                        <option value="-1">重复消息</option>
+                                        <option value="-5">登录页公告</option>
+                                        <option value="-4">首页浮动提示</option>
+                                        <option value="-3">套餐处说明</option>
+                                        <option value="-2">系统公告</option>
+                                    </select>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+
+                                <div class="form-group">
+                                    <label for="field-3" class="control-label">推送对象</label>
+                                    <input type="text" class="form-control" name="message.pushUsers" value="-1" id="field-3"
+                                           placeholder="-1">
+                                </div>
+
+                            </div>
+
+                            <div class="col-md-6">
+
+                                <div class="form-group">
+                                    <label for="field-4" class="control-label">推送结束时间</label>
+
+                                    <input type="text" class="form-control" name="message.pushEndTime" id="field-4"
+                                           value="{(date('Y-m-d H:i:s'))}" placeholder="" data-validate="required"
+                                           data-message-required="推送结束时间必须填写">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="field-5" class="control-label">是否启用</label>
+                                    <select name="message.enable" id="field-5" class="form-control">
+                                        <option value="1">启用</option>
+                                        <option value="0">禁止</option>
+                                    </select>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-md-6">
-
-                        <div class="form-group">
-                            <label for="field-1" class="control-label">推送时间</label>
-                            <input type="text" class="form-control" name="message.pushTime" id="field-1" value="{(date('Y-m-d H:i:s'))}" placeholder="">
-                        </div>
-
-                    </div>
-
-                    <div class="col-md-6">
-
-                        <div class="form-group">
-                            <label for="field-2" class="control-label" title="消息类型：-3 套餐处说明 -2 系统公告 -1 重复推送，0 正常消息，大于0 推送次数">消息类型</label>
-                            <input type="text" class="form-control" name="message.type" id="field-2" placeholder="-1 重复推送，0 正常消息，大于0 推送次数" >
-                        </div>
-
-                    </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+                    <button type="submit" class="btn btn-success">立即保存</button>
                 </div>
-
-                <div class="row">
-                    <div class="col-md-6">
-
-                        <div class="form-group">
-                            <label for="field-3" class="control-label">推送对象</label>
-                            <input type="text" class="form-control" name="message.pushUsers" id="field-3" placeholder="-1">
-                        </div>
-
-                    </div>
-
-                    <div class="col-md-6">
-
-                        <div class="form-group">
-                            <label for="field-4" class="control-label">推送结束时间</label>
-
-                            <input type="text" class="form-control" name="message.pushEndTime" id="field-4" value="{(date('Y-m-d H:i:s'))}" placeholder="" data-validate="required" data-message-required="推送结束时间必须填写">
-                        </div>
-
-                    </div>
-                </div>
-
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
-                <button type="submit" class="btn btn-success">立即保存</button>
-            </div>
             </form>
         </div>
 
     </div>
 </div>
 <script type="text/javascript">
+    var modal_default_body = jQuery('#modal-6 .modal-body').html();
+    jQuery(document).ready(function($) {
+        $("form#form1").validate({
+            rules: {
+                'message.content': "required",
+                'message.pushTime': "required",
+                'message.type': "required",
+                'message.pushUsers': "required"
+            },
+            messages: {
+                'message.content': "消息内容必须填写",
+                'message.pushTime': "推送时间必须填写",
+                'message.type': "消息类型必须填写",
+                'message.pushUsers': "推送用户必须填写"
+            },
+            errorElement: 'span',
+            errorClass: 'validate-has-error',
+            highlight: function (element) {
+                $(element).closest('.form-group').addClass('validate-has-error');
+            },
+            unhighlight: function (element) {
+                $(element).closest('.form-group').removeClass('validate-has-error');
+            },
+            errorPlacement: function (error, element)
+            {
+                if(element.closest('.has-switch').length)
+                {
+                    error.insertAfter(element.closest('.has-switch'));
+                }
+                else {
+                    if(element.parent('.checkbox, .radio').length || element.parent('.input-group').length)
+                    {
+                        error.insertAfter(element.parent());
+                    }
+                    else
+                    {
+                        error.insertAfter(element);
+                    }
+                }
+            },
+            submitHandler: function(form) {
+                $.ajax({
+                    url: form.action,
+                    method: "POST",
+                    dataType: "json",
+                    data: $(form).serialize(),
+                    success: function(result){
+                        if(result.code != 200) {
+                            showToastr(result.message, 0, 3000, '系统错误');
+                            return;
+                        }
+                        if(result.data.error == 0) {
+                            changeTable(result.data.modal);
+                        }
+                        showToastr(result.data.message, 0);
+                        $('#modal-6').modal('hide');
+                    },
+                    error: function(Xhr){
+                        showToastr("出现未知错误，请重试", 0);
+                    }
+                });
+            }
+        });
+
+        $("#message-add").on('click', function(){
+            $("#modal-6 .modal-body").html(modal_default_body);
+            $("input[name='message.id']").val('');
+            $('#modal-6 .modal-title').html('新增消息');
+            $('#modal-6').modal('show', {backdrop: 'static'});
+            reset(true);
+        });
+    });
+
     function messageRemove(messageId){
         $.ajax({
             url: "/admin/message/delete.json",
             method: "POST",
             dataType: "json",
             data: {message_id: messageId},
-            success: function(data){
-                if(data.error == 0){
-                    showToastr(data.message, 0);
-                    $("#message-" + nodeId).remove();
-                } else {
-                    showToastr(data.message, 0);
+            success: function(result){
+                if(result.code != 200){
+                    showToastr(result.message, 0, 3000, '系统错误');
+                    return;
                 }
+                if(result.data.error == 0){
+                    $("#msg-" + messageId).remove();
+                }
+                showToastr(result.data.message, 0);
             },
             error: function(Xhr){
                 showToastr("出现未知错误，请重试或联系管理员", 0);
@@ -165,27 +282,30 @@
         });
     }
     function messageModify(messageId){
+        $("#modal-6 .modal-body").html(modal_default_body);
+        reset(false);
         $.ajax({
             url: "/admin/message/query.json",
             method: "GET",
             dataType: "json",
             data: {message_id: messageId},
             success: function(result){
-                if(result.error == 0){
-                    if(result.data != false && result.data != null) {
-                        var message = result.data;
-                        $("input[name='message.id']").val(message.id);
-                        $("input[name='message.pushTime']").val(message.pushTime);
-                        $("input[name='message.type']").val(message.type);
-                        $("input[name='message.pushUsers']").val(message.pushUsers);
-                        $("input[name='message.pushEndTime']").val(message.pushEndTime);
-                        $("textarea[name='message.content']").val(message.content);
-                        $("#form1").attr("action", "/admin/message/change.json");
-                        jQuery('#modal-6 .modal-title').html('修改消息');
-                        jQuery('#modal-6').modal('show', {backdrop: 'static'});
-                    }
+                if(result.code != 200){
+                    showToastr(result.message, 0, 3000, '系统错误');
+                    return;
+                }
+                if(result.data.error == 0 && result.data.modal != null){
+                    var message = result.data.modal;
+                    $("input[name='message.id']").val(message.id);
+                    $("input[name='message.pushTime']").val(message.pushTime);
+                    $("select[name='message.type']").val(message.type);
+                    $("input[name='message.pushUsers']").val(message.pushUsers);
+                    $("input[name='message.pushEndTime']").val(message.pushEndTime);
+                    $("textarea[name='message.content']").val(message.content);
+                    $('#modal-6 .modal-title').html('修改消息');
+                    reset(true);
                 } else {
-                    showToastr(result.message, 0);
+                    $('#modal-6').modal('hide');
                 }
             },
             error: function(Xhr){
@@ -194,11 +314,30 @@
         });
         jQuery('#modal-6').modal('show', {backdrop: 'static'});
     }
-    function messageAdd(){
-        $("#form1").attr("action", "/admin/message/change.json");
-        $("input[name='message.id']").val('');
-        jQuery('#modal-6 .modal-title').html('新增消息');
-        jQuery('#modal-6').modal('show', {backdrop: 'static'});
+    function changeTable(data) {
+        var tid = $("tr#msg-" + data.id).html();
+        if(tid == undefined || tid == null) {
+            /* 新增 */
+            var trCount = $("table tbody").children("tr").length;
+            var newData = '<tr id="msg-"'+data.id+'>';
+            newData += "<td>#" + data.id + "</td>";
+            newData += "<td>"  + data.content + "</td>";
+            newData += "<td>" + data.pushEndTime + "</td>";
+            newData += "<td>" + data.pushUsers + "</td>";
+            newData += "<td>" + data.type + "</td>";
+            newData += "<td>" + '<a class="btn btn-info btn-sm" href="javascript:;" onclick="messageModify('+data.id+');">编辑</a>' + '<a class="btn btn-danger btn-sm" href="javascript:;" onclick="messageRemove('+data.id+');">删除</a>' + "</td></tr>";
+            $("table tbody").append(newData);
+            if($("#node-0").html() != undefined) $("#node-0").remove();
+        } else {
+            /* 修改 */
+            var newData = "<td>#" + data.id + "</td>";
+            newData += "<td>"  + data.content + "</td>";
+            newData += "<td>" + data.pushEndTime + "</td>";
+            newData += "<td>" + data.pushUsers + "</td>";
+            newData += "<td>" + data.type + "</td>";
+            newData += "<td>" + '<a class="btn btn-info btn-sm" href="javascript:;" onclick="messageModify('+data.id+');">编辑</a>' + '<a class="btn btn-danger btn-sm" href="javascript:;" onclick="messageRemove('+data.id+');">删除</a>' + "</td>";
+            $("tr#msg-" + data.id).html(newData);
+        }
     }
 </script>
 <import template="/admin/_footer" />

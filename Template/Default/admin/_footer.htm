@@ -23,7 +23,6 @@
 <script src="{TPL_PATH}js/pjax.js"></script>
 -->
 <script type="text/javascript">
-    pageJSload();
     function reset(isShow) {
         if(isShow) {
             jQuery('#modal-isload').hide();
@@ -32,26 +31,6 @@
             jQuery('#modal-isload').show();
             jQuery('#modal-isbody').hide();
         }
-
-    }
-    function postJSON(formId, action, isReload, callback) {
-        $.ajax({
-            url: action,
-            method: "POST",
-            dataType: "json",
-            data: $("#"+formId).serialize(),
-            success: function(data){
-                showToastr(data.message, 0);
-                if(isReload)
-                    window.location.reload();
-
-                jQuery('#modal-6').modal('hide');
-            },
-            error: function(Xhr){
-                showToastr("出现未知错误，请重试或联系管理员", 0);
-            }
-        });
-        return false;
     }
 </script>
 </body>

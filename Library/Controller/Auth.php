@@ -11,9 +11,9 @@ use Model\User;
 use Model\Message as MessageModel;
 
 use Core\Template;
-use Helper\Message;
 use Helper\Utils;
 use Helper\Option;
+use Helper\Mail;
 
 class Auth {
 
@@ -37,9 +37,9 @@ class Auth {
             header("Location:/member");
         } else if (isset($_REQUEST['email']) && isset($_REQUEST['passwd'])) {
             $result = array('error' => 1, 'message' => '账户不存在啊喂!');
-            $email = htmlspecialchars($_REQUEST['email']);
-            $passwd = htmlspecialchars($_REQUEST['passwd']);
-            $remember_me = htmlspecialchars($_REQUEST['remember_me']);
+            $email = htmlspecialchars(trim($_REQUEST['email']));
+            $passwd = htmlspecialchars(trim($_REQUEST['passwd']));
+            $remember_me = htmlspecialchars(trim($_REQUEST['remember_me']));
 
             $user = User::getUserByEmail($email);
 
@@ -64,40 +64,13 @@ class Auth {
         }
     }
 
-    public function Lockscreen() {
-        global $user;
-        if (isset($_POST['email']) && isset($_POST['passwd'])) {
-            $result = array("status" => 0, "message" => "验证失败");
-            $passwd = htmlspecialchars($_POST['passwd']);
-            $result['passwd'] = $passwd;
-            $user = User::getInstance();
-            $user = $user->GetUserByEmail($user->email);
-            if(!$user) {
-                setcookie("auth", '', time() - 3600, "/");
-                setcookie("token", '', time() - 3600, "/");
-                $result['message'] = "账户不存在. 请手动退回到登录页";
-                echo json_encode($result);
-                exit();
-            }
-            $result['obj'] = $user;
-            if ($user->verifyPassword($passwd)) {
-                Util::setToken();
-                $result['status'] = 1;
-                $result['message'] = "验证成功, 将跳转到 >> 仪表盘";
-            } else {
-                $result['message'] = "我跟你讲, 你密码错的在试2遍就给你锁了.";
-            }
-
-            echo json_encode($result);
-            exit();
-        } else {
-            if (!\Helper\Listener::checkLogin()) {
-                \Core\Response::redirect('/auth/login');
-                exit();
-            }
-            include Template::load('/panel/lockscreen');
-        }
-        exit();
+    /**
+     * 锁屏
+     * @JSON
+     */
+    public function lockScreen() {
+        // TODO -- 这个功能可能会弃用
+        // 2016-04-09
     }
 
     public function logout() {
@@ -179,7 +152,7 @@ class Auth {
 
         if(isset($_POST['email']) && $_POST['email'] != '') {
 
-            $user = User::GetUserByEmail($_POST['email']);
+            $user = User::getUserByEmail(htmlspecialchars(trim($_POST['email'])));
             if(!$user) {
                 echo json_encode($result);
                 exit();
@@ -187,11 +160,10 @@ class Auth {
             $user->lastFindPasswdTime = time();
             if($user->lastFindPasswdCount != 0 && $user->lastFindPasswdCount > 2) {
                 $result['message'] = '找回密码重试次数已达上限!';
-                echo json_encode($result);
-                exit();
+                return $result;
             }
 
-            $code = Util::GetRandomChar(10);
+            $code = Utils::randomChar(10);
             $user->forgePwdCode = $code;
 
             $content = <<<EOF
@@ -208,23 +180,23 @@ EOF;
 
             $mailResult = Mail::mail_send($user->email,  "[". SITE_NAME ."] Password Recovery", $content);
 
-            $user->updateUser();
+            $user->save();
 
             $result['uid'] = $user->uid;
             $result['message'] = '验证代码已经发送到该注册邮件地址，请注意查收!';
             $result['error'] = 0;
-
+            return $result;
         } else if($_POST['code'] != '' && $_POST['uid'] != '') {
             $uid = $_POST['uid'];
             $code = trim($_POST['code']);
             $user = User::GetUserByUserId(trim($uid));
             if($user->forgePwdCode == $code) {
-                $newPassword = Util::GetRandomChar(10);
-                $user->savePassword($newPassword);
+                $newPassword = Utils::randomChar(10);
+                $user->setPassword($newPassword);
 
                 $user->lastFindPasswdCount = 0;
                 $user->lastFindPasswdTime = 0;
-                $user->updateUser();
+                $user->save();
 
                 $content = <<<EOF
 Dear {$user->nickname}:<br/>
@@ -249,14 +221,13 @@ EOF;
                 $result['message'] = '验证码不正确。请确认';
                 $result['error'] = -1;
             }
-
+            return $result;
         } else {
-            include Template::load('/home/forgePwd');
-            exit();
+            Template::putContext('user', User::getCurrent());
+            Template::setView('home/forgePwd');
         }
 
-        echo json_encode($result);
-        exit();
+        return $result;
     }
 
 }

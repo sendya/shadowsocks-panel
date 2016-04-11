@@ -141,13 +141,19 @@
             $(this).addClass("disabled");
             $.ajax({
                 type:"GET",
-                url:"/form/checkIn.json",
+                url:"/member/checkIn.json",
                 dataType:"json",
                 success:function(result) {
-                    showToastr(result.message, 0);
-                    $("#checkin-on").hide();
-                    $("#checkin-off").show();
-                    $("#checkinoff-tag").html(result.time);
+                    if(result.code != 200) {
+                        showToastr(result.message, 0, 3000, '系统错误');
+                        return;
+                    }
+                    if(result.data.error == 0) {
+                        $("#checkin-on").hide();
+                        $("#checkin-off").show();
+                        $("#checkinoff-tag").html(result.data.time);
+                    }
+                    showToastr(result.data.message, 0);
                 },
                 error:function(jqXHR) {
                     showToastr("出现未知错误，请重试或联系管理员", 0);

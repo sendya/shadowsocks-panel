@@ -18,6 +18,7 @@
     }
   },
   "require": {
-    "robmorgan/phinx": "^0.5.3"
+    "robmorgan/phinx": "^0.5.3",
+    "nette/mail": "*"
   }
 }

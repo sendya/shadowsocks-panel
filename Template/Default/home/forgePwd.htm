@@ -66,17 +66,17 @@
                                             pct:100,
                                             finish:function() {
                                                 $("#resetButton").removeAttr("disabled").html("确定重置");
-                                                if (resp.error == 0) {
-                                                    toastr.success(resp.message, "系统消息!", opts);
-                                                    $("#uid").val(resp.uid);
-                                                    $("#email").attr("name", "code").attr("placeholder", "请填写邮件验证代码").val("");
-                                                    //setTimeout("window.location.href = '/Auth/login';", 3e3);
-                                                } else if (resp.error == 1) {
-                                                    toastr.error(resp.message, "错误!", opts);
-                                                } else {
-                                                    toastr.error(resp.message, "Invalid find pwd!", opts);
-                                                    $("#email").select();
+                                                if(resp.code != 200) {
+                                                    toastr.error(resp.message, "系统错误", opts);
+                                                    return;
                                                 }
+                                                if (resp.data.error == 0) {
+
+                                                    $("#uid").val(resp.data.uid);
+                                                    $("#email").attr("name", "code").attr("placeholder", "请填写邮件验证代码").val("");
+                                                }
+                                                toastr.success(resp.data.message, "提示", opts);
+                                                $("#email").select();
                                             }
                                         });
                                     }
@@ -96,15 +96,15 @@
                                             pct:100,
                                             finish:function() {
                                                 $("#resetButton").removeAttr("disabled").html("重置");
-                                                if (resp.error == 0) {
-                                                    toastr.success(resp.message, "系统消息!", opts);
-                                                    setTimeout("window.location.href = '/auth/login#login';", 3e3);
-                                                } else if (resp.error == 1) {
-                                                    toastr.error(resp.message, "错误!", opts);
-                                                } else {
-                                                    toastr.error(resp.message, "Invalid find pwd!", opts);
-                                                    $("#email").select();
+                                                if(resp.code != 200) {
+                                                    toastr.error(resp.message, "系统错误", opts);
+                                                    return;
                                                 }
+                                                if (resp.data.error == 0) {
+                                                    setTimeout("window.location.href = '/auth/login#login';", 3e3);
+                                                }
+                                                toastr.success(resp.data.message, "提示", opts);
+                                                $("#email").select();
                                             }
                                         });
                                     }
@@ -123,7 +123,7 @@
                 </div>
                 <div class="form-group">
                     <h3>找回密码</h3>
-                    <p>如果你忘记了密码,可以在这里重置.&nbsp;<a href="/Auth/login" style="color:#FFF">返回登陆</a></p>
+                    <p>如果你忘记了密码,可以在这里重置.&nbsp;<a href="/auth/login" style="color:#FFF">返回登陆</a></p>
                     <div class="input-group">
                         <input type="hidden" id="code" name="code" class="form-control" value="" required autofocus>
                         <input type="hidden" id="uid" name="uid" class="form-control" value="" required autofocus>

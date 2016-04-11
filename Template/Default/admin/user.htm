@@ -7,28 +7,31 @@
         <p class="description">用户列表！</p>
     </div>
     <div class="breadcrumb-env">
-        <ol class="breadcrumb bc-1"><li><a href="/admin"><i class="fa-home"></i>管理端</a></li><li><a href="/admin/user">用户管理</a></li></ol>
+        <ol class="breadcrumb bc-1">
+            <li><a href="/admin"><i class="fa-home"></i>管理端</a></li>
+            <li><a href="/admin/user">用户管理</a></li>
+        </ol>
     </div>
 </div>
 <section class="content">
-            <div class="row">
-                <div class="col-xs-12">
-                    <div class="box">
-                        <div class="panel panel-default">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                <div class="panel panel-default">
 
-                            <div class="panel-heading">
-                                <h3 class="panel-title"></h3>
+                    <div class="panel-heading">
+                        <h3 class="panel-title"></h3>
 
-                                <div class="panel-options">
-                                    <a href="javascript:;" data-toggle="reload">
-                                        <i class="fa-rotate-right"></i>
-                                    </a>
-                                </div>
-                            </div>
-                            <div class="panel-body">
-                                <div class="table-responsive">
-                                    <table cellspacing="0" class="table table-small-font table-bordered table-striped">
-                                <tbody>
+                        <div class="panel-options">
+                            <a href="javascript:;" data-toggle="reload">
+                                <i class="fa-rotate-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <div class="table-responsive">
+                            <table cellspacing="0" class="table table-small-font table-bordered table-striped">
+                                <thead>
                                 <tr>
                                     <th width="90px">端口</th>
                                     <th>用户名</th>
@@ -38,6 +41,8 @@
                                     <th>到期时间</th>
                                     <th>操作</th>
                                 </tr>
+                                </thead>
+                                <tbody>
                                 <if condition="count($users) > 0">
                                     <loop variable="$users" key="$key" value="$us">
                                         <tr id="user-{$us->uid}">
@@ -48,8 +53,10 @@
                                             <td>{(\Helper\Utils::flowAutoShow($us->transfer))}</td>
                                             <td>{(date('Y-m-d H:i:s', $us->expireTime))}</td>
                                             <td>
-                                                <a class="btn btn-info btn-sm" href="javascript:;" onclick="userModify({$us->uid});">编辑</a>
-                                                <a class="btn btn-danger btn-sm" href="javascript:;" onclick="userRemove({$us->uid})">删除</a>
+                                                <a class="btn btn-info btn-sm" href="javascript:;"
+                                                   onclick="userModify({$us->uid});">编辑</a>
+                                                <a class="btn btn-danger btn-sm" href="javascript:;"
+                                                   onclick="userRemove({$us->uid})">删除</a>
                                             </td>
                                         </tr>
                                     </loop>
@@ -61,13 +68,13 @@
                                 </if>
                                 </tbody>
                             </table>
-                                </div>
-                            </div>
-                        </div><!-- /.box-body -->
-                    </div><!-- /.box -->
-                </div>
-            </div>
-        </section>
+                        </div>
+                    </div>
+                </div><!-- /.box-body -->
+            </div><!-- /.box -->
+        </div>
+    </div>
+</section>
 </div>
 </div>
 <!-- Modal 6 (Long Modal)-->
@@ -85,142 +92,152 @@
                 <div class="modal-body">
                     <div id="modal-isload">Content is loading...</div>
                     <div id="modal-isbody" style="display: none;">
-                    <div class="row">
-                        <div class="col-md-6">
+                        <div class="row">
+                            <div class="col-md-6">
 
-                            <div class="form-group">
-                                <label for="field-1" class="control-label">昵称</label>
+                                <div class="form-group">
+                                    <label for="field-1" class="control-label">昵称</label>
 
-                                <input type="text" class="form-control" name="user.nickname" id="field-1" placeholder="">
+                                    <input type="text" class="form-control" name="user.nickname" id="field-1"
+                                           placeholder="">
+                                </div>
+
                             </div>
+                            <div class="col-md-6">
 
-                        </div>
-                        <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="field-2" class="control-label">邮箱</label>
 
-                            <div class="form-group">
-                                <label for="field-2" class="control-label">邮箱</label>
+                                    <input type="text" class="form-control" name="user.email" id="field-2"
+                                           placeholder="">
+                                </div>
 
-                                <input type="text" class="form-control" name="user.email" id="field-2" placeholder="" >
-                            </div>
-
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-6">
-
-                            <div class="form-group">
-                                <label for="field-3" class="control-label">密码</label>
-
-                                <input type="text" class="form-control" name="user.password" id="field-3" placeholder="不修改请留空">
-                            </div>
-
-                        </div>
-
-                        <div class="col-md-6">
-
-                            <div class="form-group">
-                                <label for="field-4" class="control-label">端口</label>
-
-                                <input type="text" class="form-control" name="user.port" id="field-4" placeholder="">
-                            </div>
-
-                        </div>
-
-                        <div class="col-md-6">
-
-                            <div class="form-group">
-                                <label for="field-5" class="control-label">SS连接密码</label>
-
-                                <input type="text" class="form-control" name="user.sspwd" id="field-5" value="" placeholder="">
                             </div>
                         </div>
-                        <div class="col-md-6">
 
-                            <div class="form-group">
-                                <label for="field-6" class="control-label">是否启用用户</label>
+                        <div class="row">
+                            <div class="col-md-6">
 
-                                <select name="user.enable" id="field-6" class="form-control">
-                                    <option value="0">停用</option>
-                                    <option value="1">启用</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
+                                <div class="form-group">
+                                    <label for="field-3" class="control-label">密码</label>
 
-                    <div class="row">
-                        <div class="col-md-6">
+                                    <input type="text" class="form-control" name="user.password" id="field-3"
+                                           placeholder="不修改请留空">
+                                </div>
 
-                            <div class="form-group">
-                                <label for="field-7" class="control-label">账户等级</label>
-                                <select name="user.plan" id="field-7" class="form-control">
-                                    <loop variable="$planList" key="$key" value="$plan">
-                                        <option value="{$key}">{$plan}</option>
-                                    </loop>
-                                </select>
                             </div>
 
-                        </div>
+                            <div class="col-md-6">
 
-                        <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="field-4" class="control-label">端口</label>
 
-                            <div class="form-group">
-                                <label for="field-8" class="control-label">邀请码</label>
+                                    <input type="text" class="form-control" name="user.port" id="field-4"
+                                           placeholder="">
+                                </div>
 
-                                <input type="text" class="form-control" name="user.invite_num" id="field-8" value="0" placeholder="0 个">
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-6">
-
-                            <div class="form-group">
-                                <label for="field-9" class="control-label">总流量(GB)</label>
-
-                                <input type="text" class="form-control" name="user.transfer" id="field-9" value="" placeholder="100 GB">
                             </div>
 
-                        </div>
+                            <div class="col-md-6">
 
-                        <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="field-5" class="control-label">SS连接密码</label>
 
-                            <div class="form-group">
-                                <label for="field-10" class="control-label">已流量(GB)</label>
+                                    <input type="text" class="form-control" name="user.sspwd" id="field-5" value=""
+                                           placeholder="">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
 
-                                <input type="text" class="form-control" name="user.flow_down" id="field-10" value="" placeholder="单位/GB">
+                                <div class="form-group">
+                                    <label for="field-6" class="control-label">是否启用用户</label>
+
+                                    <select name="user.enable" id="field-6" class="form-control">
+                                        <option value="0">停用</option>
+                                        <option value="1">启用</option>
+                                    </select>
+                                </div>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="row">
-                        <div class="col-md-6">
+                        <div class="row">
+                            <div class="col-md-6">
 
-                            <div class="form-group">
-                                <label for="field-11" class="control-label">续费时间</label>
+                                <div class="form-group">
+                                    <label for="field-7" class="control-label">账户等级</label>
+                                    <select name="user.plan" id="field-7" class="form-control">
+                                        <loop variable="$planList" key="$key" value="$plan">
+                                            <option value="{$key}">{$plan}</option>
+                                        </loop>
+                                    </select>
+                                </div>
 
-                                <input type="text" class="form-control" name="user.payTime" id="field-11" value="" placeholder="">
                             </div>
 
-                        </div>
+                            <div class="col-md-6">
 
-                        <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="field-8" class="control-label">邀请码</label>
 
-                            <div class="form-group">
-                                <label for="field-12" class="control-label">到期时间</label>
-
-                                <input type="text" class="form-control" name="user.expireTime" id="field-12" value="" placeholder="">
+                                    <input type="text" class="form-control" name="user.invite_num" id="field-8"
+                                           value="0" placeholder="0 个">
+                                </div>
                             </div>
                         </div>
-                    </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+
+                                <div class="form-group">
+                                    <label for="field-9" class="control-label">总流量(GB)</label>
+
+                                    <input type="text" class="form-control" name="user.transfer" id="field-9" value=""
+                                           placeholder="100 GB">
+                                </div>
+
+                            </div>
+
+                            <div class="col-md-6">
+
+                                <div class="form-group">
+                                    <label for="field-10" class="control-label">已流量(GB)</label>
+
+                                    <input type="text" class="form-control" name="user.flow_down" id="field-10" value=""
+                                           placeholder="单位/GB">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+
+                                <div class="form-group">
+                                    <label for="field-11" class="control-label">续费时间</label>
+
+                                    <input type="text" class="form-control" name="user.payTime" id="field-11" value=""
+                                           placeholder="">
+                                </div>
+
+                            </div>
+
+                            <div class="col-md-6">
+
+                                <div class="form-group">
+                                    <label for="field-12" class="control-label">到期时间</label>
+
+                                    <input type="text" class="form-control" name="user.expireTime" id="field-12"
+                                           value="" placeholder="">
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
 
-            <div class="modal-footer">
-                <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
-                <button type="submit" class="btn btn-info">保存修改</button>
-            </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+                    <button type="submit" class="btn btn-info">保存修改</button>
+                </div>
             </form>
         </div>
     </div>

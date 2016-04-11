@@ -109,6 +109,14 @@ class User extends Model {
         return $stn->fetch(DB::FETCH_NUM)[0];
     }
 
+    public static function getUserArrayByExpire() {
+        $selectSQL = "SELECT * FROM member WHERE expireTime<:expireTime OR (flow_up+flow_down)>transfer ORDER BY uid";
+        $statement = DB::sql($selectSQL);
+        $statement->bindValue(":expireTime", time(), DB::PARAM_INT);
+        $statement->execute();
+        return $statement->fetchAll(DB::FETCH_CLASS, __CLASS__);
+    }
+
     public static function checkUserPortIsAvailable($port = 0, $uid) {
         if($port != 0) {
             $stn = DB::sql("SELECT * FROM member WHERE port=? AND uid<>?");

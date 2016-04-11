@@ -85,7 +85,7 @@ class Message extends Model {
     public static function deleteOuttimeMessage() {
         $inTransaction = DB::getInstance()->inTransaction();
         if (!$inTransaction) DB::getInstance()->beginTransaction();
-        $statement = DB::getInstance()->prepare("DELETE * FROM message WHERE pushEndTime< :pushEndTime");
+        $statement = DB::getInstance()->prepare("DELETE FROM `message` WHERE pushEndTime< :pushEndTime");
         $statement->bindValue(':pushEndTime', time(), DB::PARAM_INT);
         $result = $statement->execute();
         if (!$inTransaction) DB::getInstance()->commit();
@@ -100,7 +100,7 @@ class Message extends Model {
     public static function deleteMessageById($id) {
         $inTransaction = DB::getInstance()->inTransaction();
         if (!$inTransaction) DB::getInstance()->beginTransaction();
-        $statement = DB::getInstance()->prepare("DELETE * FROM message WHERE id=:id");
+        $statement = DB::getInstance()->prepare("DELETE FROM `message` WHERE id=:id");
         $statement->bindValue(':id', $id, DB::PARAM_INT);
         $result = $statement->execute();
         if (!$inTransaction) DB::getInstance()->commit();

@@ -32,5 +32,6 @@ Data/**/*
 
 
 # Front-end Resources (compiled)
-Public/**/*
-!Public/**/*.php
+#Public/**/*
+#!Public/**/*.php
+

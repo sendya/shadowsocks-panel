@@ -20,6 +20,17 @@ define('SITE_NAME', 'SS Cat');
 define('THEME', 'Default');
 
 /**
+ * Mailer config
+ */
+$MAIL = array(
+    'host' => 'smtp.exmail.qq.com',
+    'username' => 'h@loacg.com',
+    'password' => 'password',
+    'from'     => '某科学的h本 <h@loacg.com>',
+    'secure' => ''
+);
+
+/**
  * Rewrite setting:
  * remove "index.php" from url, needs to config apache/nginx manually
  */

@@ -88,7 +88,9 @@ switch ($argv[1]) {
             $phinxCommand = ROOT_PATH . 'Package\bin\phinx.bat migrate';
         }
         system($phinxCommand);
+        /*
 
+        临时屏蔽 npm 自动构建
         if (!command_exists('npm')) {
             echo 'It seems like you don\'t have a valid npm installation. Please refer to http://nodejs.org';
             break;
@@ -98,6 +100,7 @@ switch ($argv[1]) {
         echo 'Building front-end resources...'.PHP_EOL;
         system('npm run build');
         echo 'All done~ Cheers!';
+        */
         echo 'All done~ Cheers!';
         break;
     default:

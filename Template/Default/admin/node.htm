@@ -250,8 +250,8 @@
             $("textarea[name='node.info']").val('');
             $("input[name='node.status']").val('');
             $("input[name='node.order']").val('0');
-            jQuery('#modal-6 .modal-title').html('新增节点');
-            jQuery('#modal-6').modal('show', {backdrop: 'static'});
+            $('#modal-6 .modal-title').html('新增节点');
+            $('#modal-6').modal('show', {backdrop: 'static'});
         });
     });
     function nodeRemove(nodeId){
@@ -284,23 +284,24 @@
             dataType: "json",
             data: {node_id: nodeId},
             success: function(result){
-                if(result.error == 0){
-                    if(result.data != false && result.data != null) {
-                        var node = result.data;
-                        $("input[name='node.id']").val(node.id);
-                        $("input[name='node.name']").val(node.name);
-                        $("select[name='node.type']").val(node.type);
-                        $("input[name='node.server']").val(node.server);
-                        $("input[name='node.method']").val(node.method);
-                        $("textarea[name='node.info']").val(node.info);
-                        $("input[name='node.status']").val(node.status);
-                        $("input[name='node.order']").val(node.order);
-                        $('#modal-6 .modal-title').html('修改节点');
-                        /* $('#modal-6').modal('show', {backdrop: 'static'}); */
-                        reset(true);
-                    }
+                if(result.code != 200){
+                    showToastr(result.message, 0, 3000, '系统错误');
+                    return;
+                }
+                if(result.data.error == 0 && result.data.node != null){
+                    var node = result.data.node;
+                    $("input[name='node.id']").val(node.id);
+                    $("input[name='node.name']").val(node.name);
+                    $("select[name='node.type']").val(node.type);
+                    $("input[name='node.server']").val(node.server);
+                    $("input[name='node.method']").val(node.method);
+                    $("textarea[name='node.info']").val(node.info);
+                    $("input[name='node.status']").val(node.status);
+                    $("input[name='node.order']").val(node.order);
+                    $('#modal-6 .modal-title').html('修改节点');
+                    reset(true);
                 } else {
-                    showToastr(result.message, 0);
+                    $('#modal-6').modal('hide');
                 }
             },
             error: function(Xhr){
