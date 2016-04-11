@@ -31,7 +31,5 @@ Data/**/*
 !Data/Config.simple.php
 
 
-# Front-end Resources (compiled)
-#Public/**/*
-#!Public/**/*.php
+
 
