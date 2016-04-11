@@ -83,7 +83,7 @@
             $.ajax({
                 type: "POST",
                 url:"/card/activation.json",
-                data: {"act_card": $("#act_card").val()},
+                data: {"actCard": btn.val()},
                 dataType:"json",
                 success:function(result){
                     if(result.code != 200) {

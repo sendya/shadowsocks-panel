@@ -15,7 +15,7 @@ class CardTable extends AbstractMigration
             ->addColumn('pram1', 'string', ['comment'=> '保留字段', 'null'=> true])
             ->addColumn('status', 'integer', ['limit'=> MysqlAdapter::INT_TINY, 'default'=> 1, 'comment'=> '卡状态 0-失效 1-可用'])
             ->addIndex(['card'],['unique'=> true])
-            ->addColumn(['id', 'card'],[])
+            ->addIndex(['id', 'card'],[])
             ->create();
     }
 }

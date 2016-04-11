@@ -27,26 +27,26 @@ class Card extends Model {
     public $status; // 卡状态 0-失效 1-可用
 
     public static function queryCard($card) {
-        $st = DB::sql("SELECT * FROM card WHERE card=:card");
+        $st = DB::sql("SELECT * FROM card WHERE card=:card AND status=1");
         $st->bindValue(":card", $card, DB::PARAM_STR);
         $st->execute();
         return $st->fetchObject(__CLASS__);
     }
 
     public static function queryCardById($id) {
-        $st = DB::sql("SELECT * FROM card WHERE id=:id");
+        $st = DB::sql("SELECT * FROM card WHERE id=:id AND status=1");
         $st->bindValue(":id", $id, DB::PARAM_INT);
         $st->execute();
         return $st->fetchObject(__CLASS__);
     }
 
-    public static function destroy($card) {
+    public function destroy() {
         $inTransaction = DB::getInstance()->inTransaction();
         if (!$inTransaction) {
             DB::getInstance()->beginTransaction();
         }
         $st = DB::sql("UPDATE card SET status=0 WHERE card=:card"); // 失效卡
-        $st->bindValue(":card", $card, DB::PARAM_STR);
+        $st->bindValue(":card", $this->card, DB::PARAM_STR);
         $flag = $st->execute();
         if(!$inTransaction)
             DB::getInstance()->commit();
