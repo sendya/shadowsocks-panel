@@ -9,86 +9,47 @@
 namespace Model;
 
 use Core\Database as DB;
+use Core\Model;
 
-class Card {
+class Card extends Model {
 
-    public $id;
-    public $card;
+    public $id; // 主键
+    public $card; // 卡号 不重复
     public $add_time;
-    public $type;
-    public $status;
+    public $type; // 类型 0-套餐卡 1-流量卡 2-测试卡
+    /**
+     * 1. 为套餐卡时，此字段为套餐类型（单位A/B/C/D/VIP）
+     * 2. 为流量卡时，此字段为流量大小（单位GB）
+     * 3. 为测试卡时，此字段为测试时长（单位天）
+     */
+    public $info;
+    public $pram1; // 保留字段
+    public $status; // 卡状态 0-失效 1-可用
 
-    public static function QueryCard($card) {
-        $st = DB::prepare("SELECT * FROM card WHERE card=:card");
-        $st->bindValue(":card", $card, \PDO::PARAM_STR);
+    public static function queryCard($card) {
+        $st = DB::sql("SELECT * FROM card WHERE card=:card");
+        $st->bindValue(":card", $card, DB::PARAM_STR);
         $st->execute();
-        $st->setFetchMode(\PDO::FETCH_CLASS, '\\Model\\Card');
-        return $st->fetch(\PDO::FETCH_CLASS);
+        return $st->fetchObject(__CLASS__);
     }
 
-    public static function QueryCardById($id) {
-        $st = DB::prepare("SELECT * FROM card WHERE id=:id");
-        $st->bindValue(":id", $id, \PDO::PARAM_INT);
+    public static function queryCardById($id) {
+        $st = DB::sql("SELECT * FROM card WHERE id=:id");
+        $st->bindValue(":id", $id, DB::PARAM_INT);
         $st->execute();
-        $st->setFetchMode(\PDO::FETCH_CLASS, '\\Model\\Card');
-        return $st->fetch(\PDO::FETCH_CLASS);
-    }
-
-    public static function delete($param) {
-        $sqlParam = "DELETE FROM card WHERE card=:card";
-        $st = DB::prepare($sqlParam);
-        $st->bindValue(":card", $param, \PDO::PARAM_STR);
-        $rs = $st->execute();
-        return $rs;
-    }
-
-    public function insertToDB() {
-        $inTransaction = DB::inTransaction();
-        if (!$inTransaction) {
-            DB::beginTransaction();
-        }
-        $st = DB::prepare("INSERT INTO card SET card=:card, add_time=:add_time, `type`=:type, status=:status");
-        $st->bindValue(":card", $this->card, \PDO::PARAM_STR);
-        $st->bindValue(":add_time", $this->add_time, \PDO::PARAM_INT);
-        $st->bindValue(":type", $this->type, \PDO::PARAM_INT);
-        $st->bindValue(":status", $this->status, \PDO::PARAM_INT);
-        $st->execute();
-        $this->id = DB::lastInsertId();
-        if (!$inTransaction) {
-            DB::commit();
-        }
-        return $this->id;
-    }
-
-    public function update() {
-        $inTransaction = DB::inTransaction();
-        if (!$inTransaction) {
-            DB::beginTransaction();
-        }
-        $st = DB::prepare("UPDATE card SET card=:card, add_time=:add_time, `type`=:type, status=:status WHERE id:id");
-        $st->bindValue(":card", $this->card, \PDO::PARAM_STR);
-        $st->bindValue(":add_time", $this->add_time, \PDO::PARAM_INT);
-        $st->bindValue(":type", $this->type, \PDO::PARAM_INT);
-        $st->bindValue(":status", $this->status, \PDO::PARAM_INT);
-        $st->bindValue(":id", $this->id, \PDO::PARAM_INT);
-        $flag = $st->execute();
-
-        if (!$inTransaction) {
-            DB::commit();
-        }
-        return $flag;
+        return $st->fetchObject(__CLASS__);
     }
 
     public static function destroy($card) {
-        $inTransaction = DB::inTransaction();
+        $inTransaction = DB::getInstance()->inTransaction();
         if (!$inTransaction) {
-            DB::beginTransaction();
+            DB::getInstance()->beginTransaction();
         }
-        $st = DB::prepare("UPDATE card SET status=0 WHERE card=:card"); // 失效卡
-        $st->bindValue(":card", $card, \PDO::PARAM_STR);
+        $st = DB::sql("UPDATE card SET status=0 WHERE card=:card"); // 失效卡
+        $st->bindValue(":card", $card, DB::PARAM_STR);
         $flag = $st->execute();
         if(!$inTransaction)
-            DB::commit();
+            DB::getInstance()->commit();
         return $flag;
     }
 }
