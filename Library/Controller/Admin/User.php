@@ -82,7 +82,7 @@ class User {
                 if($_POST['user_plan'] != null) $us->plan = $_POST['user_plan'];
                 if($_POST['user_invite_num'] != null) $us->invite_num = $_POST['user_invite_num'];
                 if($_POST['user_transfer'] != null) $us->transfer = floatval($_POST['user_transfer']) * Utils::GB;
-                if($_POST['user_flow_up'] != null) {$us->flow_down = $_POST['user_flow_down'] * Utils::GB;$us->flow_up=0;}
+                if($_POST['user_flow_down'] != null) {$us->flow_down = intval($_POST['user_flow_down']) * Utils::GB;$us->flow_up=0;}
                 if($_POST['user_enable'] != null) $us->enable = intval($_POST['user_enable']); // 是否启用该用户。该字段会强制用户无法链接到所有服务器！
                 if($_POST['user_payTime'] != null) $us->payTime = strtotime($_POST['user_payTime']);
                 if($_POST['user_expireTime'] != null) $us->expireTime = strtotime($_POST['user_expireTime']);
