@@ -10,6 +10,7 @@ namespace Controller\Admin;
 use \Core\Template;
 
 use \Model\Invite as InviteModel;
+use \Model\UserPower as UserPowerModel;
 
 /**
  * Controller: 邀请码
@@ -39,19 +40,28 @@ class Invite extends AdminListener {
 		global $user;
 		$result = array('error'=> 0, 'message'=> '添加成功，刷新可见');
 		$plan = 'A';
+		$type = -1;
+		$userPowerId = 5000;
 		$inviteNumber = 1;
 		if($_POST['plan'] != null) {
 			$plan = $_POST['plan'];
 		}
+		if($_POST['type'] != null) {
+			$type = $_POST['type'];
+		}
 		if($_POST['number'] != null) {
 			$inviteNumber = $_POST['number'];
 		}
+		$userPowerId = UserPowerModel::GetPowerById(1);
+		if($type != -1) {
+			$type = $userPowerId
+		}
 		if($inviteNumber > 1) {
 			for($i=0; $i<$inviteNumber;$i++){
-				InviteModel::addInvite(-1, $plan);
+				InviteModel::addInvite($type, $plan);
 			}
 		} else {
-			InviteModel::addInvite(-1, $plan);
+			InviteModel::addInvite($type, $plan);
 		}
 		$result['inviteNumber'] = $inviteNumber;
 		$result['plan'] = $plan;
