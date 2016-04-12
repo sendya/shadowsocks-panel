@@ -35,7 +35,7 @@ class Index {
     }
 
     public function mailTest() {
-        global $user;
+        $user = User::getCurrent();
         $content = <<<EOF
 Hey guy, here's test mail
 EOF;

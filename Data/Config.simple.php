@@ -32,10 +32,10 @@ define('RESOURCE', 'Resource/'.THEME);
 $MAIL = array(
     'host' => 'smtp.exmail.qq.com',
     'username' => 'h@loacg.com',
-    'password' => 'yinliang1994',
+    'password' => 'password',
     'from'     => '某科学的h本 <h@loacg.com>',
     'secure' => ''
-);
+); // open SSL send 'secure' => 'ssl'
 
 /**
  * Rewrite setting:
