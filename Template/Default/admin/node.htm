@@ -33,9 +33,9 @@
                                             <tr>
                                                 <th>ID</th>
                                                 <th>节点</th>
-                                                <th>加密</th>
-                                                <th>描述</th>
-                                                <th>类型</th>
+                                                <th width="120px">加密</th>
+                                                <th width="310px">描述</th>
+                                                <th width="85px">类型</th>
                                                 <th width="150px">操作</th>
                                             </tr>
                                         </thead>
@@ -231,7 +231,7 @@
                             changeTable(result.data.node);
                         }
                         showToastr(result.data.message, 0);
-                        jQuery('#modal-6').modal('hide');
+                        $('#modal-6').modal('hide');
                     },
                     error: function(Xhr){
                         showToastr("出现未知错误，请重试", 0);
