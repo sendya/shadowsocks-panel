@@ -32,7 +32,7 @@ class Member {
         $data['user'] = $user;
 
         $data['online'] = Stats::countOnline();
-        $data['userCount'] = Stats::countUser()!=null?:0;
+        $data['userCount'] = Stats::countUser();
         $data['useUserCount'] = Stats::countUseUser(); // 使用过服务的用户数
         $data['checkCount'] = Stats::countSignUser();
         $data['onlineNum'] = 0.00; // default online number.

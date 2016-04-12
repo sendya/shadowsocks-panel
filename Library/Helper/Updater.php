@@ -6,6 +6,7 @@
  */
 
 namespace Helper;
+use Model\User;
 
 /**
  * shadowsocks-panel 在线更新
@@ -25,7 +26,7 @@ class Updater {
         if($response['download_url']!=null) {
 
         }
-        if($current_version != $online_version) {
+        if($current_version != $online_version && User::getCurrent()->isAdmin()) {
             // 有新更新
             return true;
         }
