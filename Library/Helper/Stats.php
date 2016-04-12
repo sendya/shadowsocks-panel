@@ -27,7 +27,7 @@ class Stats {
     public static function countUser() {
         $stn = DB::getInstance()->prepare("SELECT count(1) FROM `member`");
         $stn->execute();
-        return $stn->fetch(DB::FETCH_NUM)[0]!=null?:0;
+        return $stn->fetch(DB::FETCH_NUM)[0];
     }
 
     /**
@@ -37,7 +37,7 @@ class Stats {
     public static function countOnline() {
         $stn = DB::getInstance()->prepare("SELECT count(1) FROM `member` WHERE lastConnTime > " . (time() - 600));
         $stn->execute();
-        return $stn->fetch(DB::FETCH_NUM)[0]!=null?:0;
+        return $stn->fetch(DB::FETCH_NUM)[0];
     }
 
     /**
@@ -47,7 +47,7 @@ class Stats {
     public static function countSignUser() {
         $stn = DB::getInstance()->prepare("SELECT count(1) FROM `member` WHERE lastCheckinTime > " . strtotime(date('Y-m-d 00:00:00', time())));
         $stn->execute();
-        return $stn->fetch(DB::FETCH_NUM)[0]!=null?:0;
+        return $stn->fetch(DB::FETCH_NUM)[0];
     }
 
     /**
@@ -69,7 +69,7 @@ class Stats {
     public static function countUseUser() {
         $stn = DB::getInstance()->prepare("SELECT count(1) FROM `member` WHERE lastConnTime > 0");
         $stn->execute();
-        return $stn->fetch(DB::FETCH_NUM)[0]!=null?:0;
+        return $stn->fetch(DB::FETCH_NUM)[0];
     }
 
     /**
@@ -83,7 +83,7 @@ class Stats {
         if($type == 1) $querySQL .= " WHERE status='可用'";
         $stn = DB::getInstance()->prepare($querySQL);
         $stn->execute();
-        return $stn->fetch(DB::FETCH_NUM)[0]?:0;
+        return $stn->fetch(DB::FETCH_NUM)[0];
     }
 
 
