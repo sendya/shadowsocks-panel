@@ -93,6 +93,25 @@
                 <div class="modal-body">
                     <div id="modal-isload">Content is loading...</div>
                     <div id="modal-isbody" style="display: none;">
+                        <div class="row" id="add_select_uid" style="display:none;">
+                            <div class="col-md-12">
+                                <div class="input-group">
+                                    <span class="input-group-btn" id="selectList">
+                                        <button type="button" class="btn dropdown-toggle" id="user-select" data-toggle="dropdown">
+                                            公共邀请码 <span class="caret"></span>
+                                        </button>
+                                        <ul class="dropdown-menu">
+                                            <li><a href="javascript:;" data-selectid="-1">公共邀请码</a></li>
+                                            <li><a href="javascript:;" data-selectid="{$user->uid}">私有邀请码</a></li>
+                                            <li class="divider"></li>
+                                            <li><a href="javascript:;" data-selectid="0">给指定UID</a></li>
+                                        </ul>
+                                    </span>
+                                    <input type="text" name="add_uid" id="field-0" value="-1" class="form-control no-left-border form-focus-red" title="邀请码所属用户(默认-1公共,指定UID为私密)" placeholder="邀请码所属用户(默认-1公共)">
+                                </div>
+                                <hr/>
+                            </div>
+                        </div>
                         <div class="row">
                             <div class="col-md-6">
 
@@ -112,7 +131,7 @@
 
                                     <select name="plan" id="plan" id="field-2" class="form-control">
                                         <loop variable="$planList" key="$key" value="$plan">
-                                            <option value="{$key}">{$plan}</option>
+                                            <option value="{$key}">({$key}){$plan}</option>
                                         </loop>
                                     </select>
                                 </div>
@@ -230,10 +249,11 @@
                             return;
                         }
                         if(result.data.error == 0) {
+                            $('#modal-6').modal('hide');
                             location.reload();
                         }
                         showToastr(result.data.message, 0);
-                        jQuery('#modal-6').modal('hide');
+
                     },
                     error: function(Xhr){
                         showToastr("出现未知错误，请重试", 0);
@@ -250,9 +270,16 @@
             $("#plan").val('A');
             $("input[name='expiration']").val('');
             $("input[name='add_time1']").val('');
-            jQuery('#modal-6 .modal-title').html('新增邀请码');
-            jQuery('#modal-6').modal('show', {backdrop: 'static'});
+            $('#modal-6 .modal-title').html('新增邀请码');
+            $('#modal-6').modal('show', {backdrop: 'static'});
             reset(true);
+            $("#add_select_uid").show();
+            $("#selectList a").on('click', function (){
+                var defVal = ' <span class="caret"></span>';
+                var selectVal = $(this).text();
+                $("#user-select").html(selectVal + defVal);
+                $("input[name='add_uid']").val($(this).attr('data-selectid'));
+            });
         });
     });
 
@@ -287,7 +314,7 @@
             data: {id: inviteId},
             success: function (result) {
                 if(result.code != 200){
-                    jQuery('#modal-6').modal('hide');
+                    $('#modal-6').modal('hide');
                     showToastr(result.message, 0, 3000, '系统错误');
                     return;
                 }
@@ -301,7 +328,7 @@
                     $("input[name='add_time1']").val(invite.dateLine);
                     $("input[name='number']").hide().val('');
                     $(".invite-num").remove();
-                    jQuery('#modal-6 .modal-title').html('修改邀请码');
+                    $('#modal-6 .modal-title').html('修改邀请码');
                     reset(true);
                 }
             },
@@ -309,7 +336,7 @@
                 showToastr("出现未知错误，请重试或联系管理员", 0);
             }
         });
-        jQuery('#modal-6').modal('show', {backdrop: 'static'});
+        $('#modal-6').modal('show', {backdrop: 'static'});
     }
 </script>
 <import template="/admin/_footer"/>

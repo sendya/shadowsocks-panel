@@ -25,6 +25,7 @@ class Invite {
      	$data['user'] = User::getCurrent();
 		$data['inviteList'] = InviteModel::getInviteArray(0);
 		$data['planList'] = json_decode(Option::get('custom_plan_name'), true);
+		array_splice($data['planList'], -1,1); // 移除 Z(固定流量套餐)
 		Template::setContext($data);
         Template::setView('admin/invite');
     }
@@ -33,6 +34,7 @@ class Invite {
 		$data['user'] = User::getCurrent();
 		$data['inviteList'] = InviteModel::getInviteArray(1);
 		$data['planList'] = json_decode(Option::get('custom_plan_name'), true);
+		array_splice($data['planList'], -1,1);
 		Template::setContext($data);
 		Template::setView('admin/invite');
 	}
@@ -43,23 +45,35 @@ class Invite {
      */
     public function update() {
 		$result = array('error'=> -1, 'message'=> 'Request failed');
-
+		$user = User::getCurrent();
 		if($_POST['invite'] == null) {
 			$result = array('error'=> 0, 'message'=> '添加成功，刷新可见');
 			$plan = 'A';
+			$add_uid = -1;
 			$inviteNumber = 1;
 			if($_POST['plan'] != null) {
 				$plan = $_POST['plan'];
+			}
+			if($_POST['add_uid'] != null) {
+				$add_uid = trim($_POST['add_uid']);
+				if($add_uid != $user->uid && $add_uid != -1) {
+					if(!User::getUserByUserId($add_uid)) {
+						$result['error'] = 1;
+						$result['message'] = "此UID: ". $add_uid . " 的用户不存在，添加失败";
+						return $result;
+					}
+
+				}
 			}
 			if($_POST['number'] != null) {
 				$inviteNumber = $_POST['number'];
 			}
 			if($inviteNumber > 1) {
 				for($i=0; $i<$inviteNumber;$i++){
-					InviteModel::addInvite(-1, $plan);
+					InviteModel::addInvite($add_uid, $plan);
 				}
 			} else {
-				InviteModel::addInvite(-1, $plan);
+				InviteModel::addInvite($add_uid, $plan);
 			}
 			$result['inviteNumber'] = $inviteNumber;
 			$result['plan'] = $plan;
