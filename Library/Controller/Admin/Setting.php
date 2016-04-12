@@ -80,9 +80,17 @@ class Setting {
      * @JSON
      */
     public function saveOther() {
-        // TODO 保存其他设置
-        $result['error'] = 1;
-        $result['message'] = '功能尚未完成';
+        $check_transfer_max = intval(trim($_POST['check_transfer_max']));
+        $check_transfer_min = intval(trim($_POST['check_transfer_min']));
+        $user_test_day = intval(trim($_POST['user_test_day']));
+
+        Option::set('check_transfer_max', $check_transfer_max);
+        Option::set('check_transfer_min', $check_transfer_min);
+        Option::set('user_test_day', $user_test_day);
+        Option::init();
+
+        $result['error'] = 0;
+        $result['message'] = '保存完毕';
         return $result;
     }
 
@@ -90,9 +98,17 @@ class Setting {
      * @JSON
      */
     public function saveTransfer() {
-        // TODO 保存套餐流量定额
-        $result['error'] = 1;
-        $result['message'] = '功能尚未完成';
+        $custom_transfer_level['A'] = intval($_POST['transfer-A']);
+        $custom_transfer_level['B'] = intval($_POST['transfer-B']);
+        $custom_transfer_level['C'] = intval($_POST['transfer-C']);
+        $custom_transfer_level['D'] = intval($_POST['transfer-D']);
+        $custom_transfer_level['VIP'] = intval($_POST['transfer-VIP']);
+
+        Option::set('custom_transfer_level', json_encode($custom_transfer_level));
+        Option::init();
+
+        $result['error'] = 0;
+        $result['message'] = '保存完毕';
         return $result;
     }
 
@@ -100,9 +116,18 @@ class Setting {
      * @JSON
      */
     public function savePlanCustom() {
-        // TODO 保存自定义套餐名称
-        $result['error'] = 1;
-        $result['message'] = '功能尚未完成';
+        $custom_plan_name['A'] = $_POST['setting-A'];
+        $custom_plan_name['B'] = $_POST['setting-B'];
+        $custom_plan_name['C'] = $_POST['setting-C'];
+        $custom_plan_name['D'] = $_POST['setting-D'];
+        $custom_plan_name['VIP'] = $_POST['setting-VIP'];
+        $custom_plan_name['Z'] = $_POST['setting-Z'];
+
+        Option::set('custom_plan_name', json_encode($custom_plan_name));
+        Option::init();
+
+        $result['error'] = 0;
+        $result['message'] = '保存完毕';
         return $result;
     }
 }

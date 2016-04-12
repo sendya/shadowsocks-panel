@@ -117,6 +117,22 @@ class User extends Model {
         return $statement->fetchAll(DB::FETCH_CLASS, __CLASS__);
     }
 
+    /**
+     * 停止用户
+     */
+    public function stop() {
+        $inTransaction = DB::getInstance()->inTransaction();
+        if (!$inTransaction) {
+            DB::getInstance()->beginTransaction();
+        }
+        $stn = DB::sql("UPDATE member SET `enable` = 0 WHERE uid=?");
+        $stn->bindValue(1, $this->uid, DB::PARAM_INT);
+        $stn->execute();
+        if (!$inTransaction) {
+            DB::getInstance()->commit();
+        }
+    }
+
     public static function checkUserPortIsAvailable($port = 0, $uid) {
         if($port != 0) {
             $stn = DB::sql("SELECT * FROM member WHERE port=? AND uid<>?");

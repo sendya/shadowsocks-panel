@@ -20,12 +20,19 @@ define('SITE_NAME', 'SS Cat');
 define('THEME', 'Default');
 
 /**
+ * Resource url setting:
+ *
+ */
+//define('RESOURCE', 'https://static-2.loacg.com/open/static/sspanel');
+define('RESOURCE', 'Resource/'.THEME);
+
+/**
  * Mailer config
  */
 $MAIL = array(
     'host' => 'smtp.exmail.qq.com',
     'username' => 'h@loacg.com',
-    'password' => 'password',
+    'password' => 'yinliang1994',
     'from'     => '某科学的h本 <h@loacg.com>',
     'secure' => ''
 );
