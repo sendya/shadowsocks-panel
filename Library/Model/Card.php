@@ -26,8 +26,14 @@ class Card extends Model {
     public $pram1; // 保留字段
     public $status; // 卡状态 0-失效 1-可用
 
+    public static function queryAll() {
+        $st = DB::sql("SELECT * FROM card ORDER BY add_time");
+        $st->execute();
+        return $st->fetchAll(DB::FETCH_CLASS, __CLASS__);
+    }
+
     public static function queryCard($card) {
-        $st = DB::sql("SELECT * FROM card WHERE card=:card AND status=1");
+        $st = DB::sql("SELECT * FROM card WHERE card=:card");
         $st->bindValue(":card", $card, DB::PARAM_STR);
         $st->execute();
         return $st->fetchObject(__CLASS__);
