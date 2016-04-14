@@ -56,6 +56,7 @@
                                 $.ajax({
                                     url:"/auth/forgePwd.json",
                                     method:"POST",
+                                    timeout : 4000,
                                     dataType:"json",
                                     data:{
                                         email:$("#email").val()
@@ -74,11 +75,18 @@
 
                                                     $("#uid").val(resp.data.uid);
                                                     $("#email").attr("name", "code").attr("placeholder", "请填写邮件验证代码").val("");
+                                                    $(".form-group h3").text("最后一步");
+                                                    $(".form-message").html("请输入邮件中收到的验证码，请暂时不要关闭本页面。");
                                                 }
                                                 toastr.success(resp.data.message, "提示", opts);
                                                 $("#email").select();
                                             }
                                         });
+                                    },
+                                    error: function(jqXhr) {
+                                        toastr.error("请求服务器失败。<b>可能邮件系统配置出错无法发送邮件</b>！", "提示", opts);
+                                        $("#email").select();
+                                        $("#resetButton").removeAttr("disabled").html("重试");
                                     }
                                 });
                             } else {
@@ -123,7 +131,7 @@
                 </div>
                 <div class="form-group">
                     <h3>找回密码</h3>
-                    <p>如果你忘记了密码,可以在这里重置.&nbsp;<a href="/auth/login" style="color:#FFF">返回登陆</a></p>
+                    <p class="form-message">如果你忘记了密码,可以在这里重置.&nbsp;<a href="/auth/login" style="color:#FFF">返回登陆</a></p>
                     <div class="input-group">
                         <input type="hidden" id="code" name="code" class="form-control" value="" required autofocus>
                         <input type="hidden" id="uid" name="uid" class="form-control" value="" required autofocus>

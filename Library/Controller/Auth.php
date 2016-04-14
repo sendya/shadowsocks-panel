@@ -169,9 +169,12 @@ class Auth {
             $content = <<<EOF
 Dear {$user->nickname}:<br/>
 Use this code to disable your password and access your {$siteName} account:<br/>
+(这个验证码是用于停止您当前 {$siteName} 所在账户的旧密码):<br/>
 <br/>
 Code: {$code}
 <br/>
+<br/>
+<b>请将验证码在找回密码页面输入才能确认重置密码！</b>
 <br/>
 Yours,
 The {$siteName} Team
@@ -183,7 +186,7 @@ EOF;
             $user->save();
 
             $result['uid'] = $user->uid;
-            $result['message'] = '验证代码已经发送到该注册邮件地址，请注意查收!';
+            $result['message'] = '验证代码已经发送到该注册邮件地址，请注意查收!<br/>请勿关闭本页面，您还需要验证码来验证您的账户所有权才可重置密码！！';
             $result['error'] = 0;
             return $result;
         } else if($_POST['code'] != '' && $_POST['uid'] != '') {
@@ -201,11 +204,13 @@ EOF;
                 $content = <<<EOF
 Dear {$user->nickname}:<br/>
 Here's your new password<br/>
+(这是你的新密码)<br/>
 <br/>
 Password: {$newPassword}
 <br/>
 <br/>
 <b>ATTENTION: PLEASE CHANGE THE PASSWORD AND DELETE THIS EMAIL IMMEDIATELY ALTER LOG IN YOUR ACCOUNT FOR SECURITY PURPOSES.</b>
+<b>请在登录后立即修改密码，并且删除此邮件.</b>
 <br/>
 <br/>
 Yours, The {$siteName} Team

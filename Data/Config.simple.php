@@ -27,7 +27,8 @@ define('THEME', 'Default');
 define('RESOURCE', 'Resource/'.THEME);
 
 /**
- * Mailer config
+ * Mailer config:
+ * open SSL send: 'secure' => 'ssl'
  */
 $MAIL = array(
     'host' => 'smtp.exmail.qq.com',
@@ -35,7 +36,7 @@ $MAIL = array(
     'password' => 'password',
     'from'     => '某科学的h本 <h@loacg.com>',
     'secure' => ''
-); // open SSL send 'secure' => 'ssl'
+);
 
 /**
  * Rewrite setting:
