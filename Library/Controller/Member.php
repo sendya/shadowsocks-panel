@@ -43,7 +43,7 @@ class Member {
         $data['useTransfer'] = $user->flow_up + $user->flow_down; // round(() / Utils::mb(), 2);
         $data['slaTransfer'] = Utils::flowAutoShow($user->transfer - $data['useTransfer']);
         $data['pctTransfer'] = 0.00;
-        if(is_numeric($data['useTransfer']) && is_numeric($user->transfer)) {
+        if(is_numeric($data['useTransfer']) && $data['useTransfer']>0 && is_numeric($user->transfer) && $user->transfer>0) {
             $data['pctTransfer'] = round($data['useTransfer'] / $user->transfer, 2) * 100;
         }
         $data['useTransfer'] = Utils::flowAutoShow($data['useTransfer'], 1);

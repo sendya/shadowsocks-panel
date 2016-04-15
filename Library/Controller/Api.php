@@ -10,6 +10,7 @@ namespace Controller;
 
 use Helper\Option;
 use Helper\Utils;
+use Model\Card;
 
 class Api {
 
@@ -36,13 +37,38 @@ class Api {
     }
 
     /**
+     * 淘宝自动发货API
+     * 创建卡号
      *
      * @JSON
      */
     public function createCard() {
-        $KEY = Option::get("CREATE_CARD_API_KEY");
         $CURR_KEY = $_SERVER['CARD_API_KEY'];
+        if(!$CURR_KEY) {
+            header("HTTP/1.1 405 Method Not Allowed");
+            exit();
+        }
 
+        $KEY = Option::get('CREATE_CARD_API_KEY');
+        if($KEY == null) {
+            $KEY = password_hash( Utils::randomChar(12) . time() , PASSWORD_BCRYPT);
+            Option::set('CREATE_CARD_API_KEY', $KEY);
+        }
+
+
+        if(strtoupper($KEY)  == strtoupper($CURR_KEY)) {
+            $card = new Card();
+            $card->card = substr(hash("sha256", time() . Utils::randomChar(10)) . time(),1, 26);
+            $card->add_time = time();
+            $card->type = intval(trim($_POST['type']));
+            $card->info = trim($_POST['info']);
+            $card->status = 1;
+
+            $card->save();
+            return array('error' => 0, 'message' => 'success', 'card' => $card);
+        } else {
+            return array('error' => 1, 'message' => 'Bad Request');
+        }
 
     }
 }
