@@ -83,7 +83,7 @@ class Member {
      */
     public function invite() {
         $data['user'] = User::getUserByUserId(User::getCurrent()->uid);
-        $data['inviteList'] = Invite::GetInvitesByUid($data['user']->uid, "0");
+        $data['inviteList'] = Invite::getInvitesByUid($data['user']->uid, "0");
 
         Template::setContext($data);
         Template::setView("panel/invite");

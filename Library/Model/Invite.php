@@ -69,7 +69,7 @@ class Invite extends Model {
      * @param string $status
      * @return array
      */
-    public static function GetInvitesByUid($uid = -1, $status = "") {
+    public static function getInvitesByUid($uid = -1, $status = "") {
         $sql = "SELECT * FROM invite WHERE uid={$uid} ";
         if($status != "")
             $sql .= "AND status={$status} ";
