@@ -17,7 +17,7 @@ use \Model\Invite as InviteModel;
 class Invite {
 
     public function index() {
-        $inviteList = InviteModel::GetInviteArray(-1);
+        $inviteList = InviteModel::getInviteArray(-1);
         Template::setView('home/invite');
         Template::putContext('inviteList', $inviteList);
     }
