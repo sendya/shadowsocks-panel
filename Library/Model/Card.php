@@ -40,7 +40,7 @@ class Card extends Model {
     }
 
     public static function queryCardById($id) {
-        $st = DB::sql("SELECT * FROM card WHERE id=:id AND status=1");
+        $st = DB::sql("SELECT * FROM card WHERE id=:id ");
         $st->bindValue(":id", $id, DB::PARAM_INT);
         $st->execute();
         return $st->fetchObject(__CLASS__);

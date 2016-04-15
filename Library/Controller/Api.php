@@ -8,6 +8,7 @@
 
 namespace Controller;
 
+use Helper\Option;
 use Helper\Utils;
 
 class Api {
@@ -32,5 +33,16 @@ class Api {
         $res = curl_exec($ch);
         echo $res;
         exit();
+    }
+
+    /**
+     *
+     * @JSON
+     */
+    public function createCard() {
+        $KEY = Option::get("CREATE_CARD_API_KEY");
+        $CURR_KEY = $_SERVER['CARD_API_KEY'];
+
+
     }
 }

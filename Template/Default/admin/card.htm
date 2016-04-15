@@ -110,8 +110,7 @@
                             <div class="col-md-6">
 
                                 <div class="form-group">
-                                    <label for="field-2" class="control-label">卡类型</label>
-
+                                    <label for="card_type" class="control-label">卡类型</label>
                                     <select name="card_type" id="card_type" id="field-2" class="form-control">
                                         <option value="0">套餐卡（A/B/C/D/VIP）</option>
                                         <option value="1">流量卡</option>
@@ -133,12 +132,23 @@
 
                             </div>
 
-                            <div class="col-md-6">
+                            <div class="col-md-6" id="is-add">
 
                                 <div class="form-group">
                                     <label for="field-5" class="control-label">卡号数量</label>
                                     <input type="number" class="form-control" name="number" id="field-5" value="1"
                                            placeholder="1" data-message-required="卡号数量.">
+                                </div>
+
+                            </div>
+
+                            <div class="col-md-6" style="display: none;" id="is-modify">
+                                <div class="form-group">
+                                    <label for="field-6" class="control-label">是否有效</label>
+                                    <select class="form-control" name="card_status" id="field-6">
+                                        <option value="1">有效</option>
+                                        <option value="0">失效</option>
+                                    </select>
                                 </div>
 
                             </div>
@@ -218,8 +228,8 @@
                             return;
                         }
                         if(result.data.error == 0) {
+                            changeTable(result.data.card);
                             $('#modal-6').modal('hide');
-                            location.reload();
                         }
                         showToastr(result.data.message, 0);
 
@@ -237,7 +247,9 @@
             $("input[name='card_2']").val('');
             $("#card_type").val(0);
             $("input[name='card_info']").val('');
-            $("input[name='number']").show().val('');
+            $("input[name='number']").val('');
+            $("#is-modify").hide().val(0);
+            $("#is-add").show();
             $('#modal-6 .modal-title').html('新增卡号');
             $('#modal-6').modal('show', {backdrop: 'static'});
             reset(true);
@@ -287,8 +299,9 @@
                     $("input[name='card_2']").val(card.card);
                     $("#card_type").val(card.type);
                     $("input[name='card_info']").val(card.info);
-                    $("input[name='number']").hide().val('');
-
+                    $("select[name='card_status']").val(card.status);
+                    $("#is-modify").show().val(0);
+                    $("#is-add").hide();
                     $('#modal-6 .modal-title').html('修改卡号');
                     reset(true);
                 }
@@ -298,6 +311,36 @@
             }
         });
         $('#modal-6').modal('show', {backdrop: 'static'});
+    }
+
+    function changeTable(data) {
+        if($("tr#card-" + data.id).html() != undefined) {
+            var newData =  "<td>#" + data.id + "</td>";
+            newData += "<td>"  + data.card + "</td>";
+            newData += "<td>" + data.add_time + "</td>";
+            newData += "<td>" + data.type + "</td>";
+            newData += "<td>" + data.info + "</td>";
+            newData += "<td>" + data.status + "</td>";
+            newData += "<td>" + '<a class="btn btn-info btn-sm" href="javascript:;" onclick="cardModify('+data.id+');">编辑</a>' + '<a class="btn btn-danger btn-sm" href="javascript:;" onclick="cardRemove('+data.id+');">删除</a>' + "</td></tr>";
+            $("tr#card-" + data.id).html(newData);
+        } else {
+            /* 新增 */
+            var trCount = $("table tbody").children("tr").length;
+            var cardNumber = data.length;
+            var newData = '';
+            for(var i=0;i<cardNumber; ++i) {
+                newData += '<tr id="card-"'+data[i].id+'>';
+                newData += "<td>#" + data[i].id + "</td>";
+                newData += "<td>"  + data[i].card + "</td>";
+                newData += "<td>" + data[i].add_time + "</td>";
+                newData += "<td>" + data[i].type + "</td>";
+                newData += "<td>" + data[i].info + "</td>";
+                newData += "<td>" + data[i].status + "</td>";
+                newData += "<td>" + '<a class="btn btn-info btn-sm" href="javascript:;" onclick="cardModify('+data[i].id+');">编辑</a>' + '<a class="btn btn-danger btn-sm" href="javascript:;" onclick="cardRemove('+data[i].id+');">删除</a>' + "</td></tr>";
+            }
+            $("table tbody").append(newData);
+            if($("#card-0").html() != undefined) $("#card-0").remove();
+        }
     }
 </script>
 <import template="/admin/_footer"/>
