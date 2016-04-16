@@ -147,15 +147,14 @@ class Auth {
      * @throws \Core\Error
      */
     public function forgePwd() {
-        $result = array('error' => 1, 'message' => '请求找回密码失败');
+        $result = array('error' => 1, 'message' => '请求找回密码失败，请刷新页面重试。');
         $siteName = SITE_NAME;
 
         if(isset($_POST['email']) && $_POST['email'] != '') {
 
             $user = User::getUserByEmail(htmlspecialchars(trim($_POST['email'])));
             if(!$user) {
-                echo json_encode($result);
-                exit();
+                return $result;
             }
             $user->lastFindPasswdTime = time();
             if($user->lastFindPasswdCount != 0 && $user->lastFindPasswdCount > 2) {
@@ -164,7 +163,10 @@ class Auth {
             }
 
             $code = Utils::randomChar(10);
-            $user->forgePwdCode = $code;
+            $forgePwdCode['code'] = $code;
+            $forgePwdCode['time'] = time();
+
+            $user->forgePwdCode = json_encode($forgePwdCode);
 
             $content = <<<EOF
 Dear {$user->nickname}:<br/>
@@ -193,7 +195,10 @@ EOF;
             $uid = $_POST['uid'];
             $code = trim($_POST['code']);
             $user = User::GetUserByUserId(trim($uid));
-            if($user->forgePwdCode == $code) {
+            $forgePwdCode = json_decode($user->forgePwdCode, true);
+
+            // forgePwdCode.length > 1 且 验证码一样 且 时间不超过600秒(10分钟)
+            if(count($forgePwdCode)>1 && $forgePwdCode['code'] == $code && (time() - intval($forgePwdCode['time'])) < 600) {
                 $newPassword = Utils::randomChar(10);
                 $user->setPassword($newPassword);
 
@@ -223,7 +228,7 @@ EOF;
                 $result['error'] = 0;
 
             } else {
-                $result['message'] = '验证码不正确。请确认';
+                $result['message'] = '验证码已经超时或者 验证码填写不正确。请再次确认';
                 $result['error'] = -1;
             }
             return $result;

@@ -19,16 +19,6 @@ use Model\Mail as MailModel;
  */
 class Mail implements Mailer {
 
-    public function isAvailable() {
-        $className = "mail_" . __CLASS__;
-        $config = Option::get($className);
-        if(!$config)
-            return false;
-
-
-        return true;
-    }
-
     /**
      * Send mail
      * @param MailModel $mail
@@ -42,19 +32,6 @@ class Mail implements Mailer {
         $headers .= 'From: =?UTF-8?B?'.base64_encode(SITE_NAME).'?= <'.$this->_get_setting('from').">\r\n";
         $result = mail($address, '=?UTF-8?B?'.base64_encode($mail->subject).'?=', base64_encode($mail->message), $headers);
         return $result;
-    }
-
-    public function test() {
-        if(!$this->isAvailable())
-            return false;
-
-        global $user;
-        $mail = new MailModel();
-        $mail->address = $user->email;
-        $mail->subject = "这是一封测试邮件";
-        $mail->content = "<h1>这是一封测试邮件</h1>如果你收到这封邮件代表邮件系统正常！";
-
-        return $this->send($mail);
     }
 
 }

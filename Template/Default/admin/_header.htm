@@ -163,7 +163,7 @@
                         <span class="title">消息管理</span>
                     </a>
                 </li>
-                <li class="{(\Helper\Utils::menuActive('setting|cron|system|mailTest', ' opened expanded'))} has-sub">
+                <li class="{(\Helper\Utils::menuActive('setting|cron|system|mailer', ' opened expanded'))} has-sub">
                 <a href="javascript:;">
                     <i class="linecons-beaker"></i>
                     <span class="title">系统设置</span>
@@ -181,16 +181,16 @@
                             <span class="title">详细参数</span>
                         </a>
                     </li>
+                    <li class="{(\Helper\Utils::menuActive('mailer'))}">
+                        <a href="/admin/mailer">
+                            <i class="linecons-comment "></i>
+                            <span class="title">邮件设置</span>
+                        </a>
+                    </li>
                     <li class="{(\Helper\Utils::menuActive('cron'))}">
                         <a href="/admin/cron" class="pjax">
                             <i class="linecons-calendar "></i>
                             <span class="title">计划任务</span>
-                        </a>
-                    </li>
-                    <li class="{(\Helper\Utils::menuActive('mailTest'))}">
-                        <a href="/admin/index/mailTest">
-                            <i class="linecons-comment "></i>
-                            <span class="title">邮件测试</span>
                         </a>
                     </li>
                 </ul>

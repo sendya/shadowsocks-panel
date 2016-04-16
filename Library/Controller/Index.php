@@ -6,7 +6,11 @@
  */
 namespace Controller;
 
+use Core\Database;
 use Core\Template;
+use Helper\Mailer\Smtp;
+use Helper\Utils;
+use Model\Mail;
 
 class Index {
 
@@ -19,10 +23,15 @@ class Index {
 
     public function test() {
 
-        var_dump(\Model\User::getUserByUserId(2));
+        $mail = new Smtp();
+        $message = new Mail();
 
-        var_dump($_SESSION['currentUser']);
-        exit();
+        $message->address = "yladmxa@qq.com";
+        $message->content = "text content";
+        $message->subject = "mail title.";
+
+        $aaa = $mail->send($message);
+        print_r($aaa);
     }
 
 }

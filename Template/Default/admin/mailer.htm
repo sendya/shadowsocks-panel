@@ -1,0 +1,229 @@
+<import template="/admin/_header" />
+<import template="/admin/_content" />
+
+<div class="page-title">
+    <div class="title-env">
+        <h1 class="title">邮件设置</h1>
+        <p class="description">系统的邮件发送方式。</p>
+    </div>
+    <div class="breadcrumb-env">
+        <ol class="breadcrumb bc-1">
+            <li><a href="/admin"><i class="fa-home"></i>管理端</a></li>
+            <li><a href="/admin/setting">邮件设置</a></li>
+        </ol>
+    </div>
+</div>
+<section class="content">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                <div class="panel panel-default">
+
+                    <div class="panel-heading">
+                        <h3 class="panel-title"></h3>
+
+                        <div class="panel-options">
+                            <a href="javascript:;" id="invite-add"><span>+</span></a>
+                            <a href="javascript:;" data-toggle="reload">
+                                <i class="fa-rotate-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+
+                        <input type="radio" class="cbr cbr-secondary" value="" checked /> SMTP方式<br/>
+                        <input type="radio" class="cbr cbr-secondary" value=""/> PHP内置邮件发送函数<br/>
+                        <input type="radio" class="cbr cbr-secondary" value=""/> MailGun代发系统<br/>
+                        <input type="radio" class="cbr cbr-secondary" value=""/> SS Cat提供的邮件投递API(发送者显示：SS Cat&lt;post@sscat.it&gt;)<br/>
+                        <br/>
+                        <br/>
+                        <button type="submit" class="btn btn-success">立即保存</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+</div>
+</div>
+<!-- Modal 6 (Long Modal)-->
+<div class="modal fade" id="modal-6">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title"></h4>
+            </div>
+            <form role="form" id="form1" method="post" action="/admin/setting/update.json" class="validate">
+                <input type="hidden" name="form_add" value="{(time())}"/>
+                <input type="hidden" name="option.k" id="option.k" value=""/>
+                <div class="modal-body">
+                    <div id="modal-isload">Content is loading...</div>
+                    <div id="modal-isbody" style="display: none;">
+                        <div class="row">
+                            <div class="col-md-12">
+
+                                <div class="form-group">
+                                    <label for="field-1" class="control-label">键</label>
+                                    <input type="text" class="form-control disable" disabled="disabled" name="option.k2" id="field-1"
+                                           value="" placeholder="option.k">
+                                </div>
+
+                            </div>
+
+                            <div class="col-md-12">
+
+                                <div class="form-group" id="option-value">
+                                    <label for="field-2" class="control-label" >值</label>
+                                    <textarea class="form-control autogrow" rows="6" name="option.v" id="field-2" placeholder="option.v"></textarea>
+                                    <!--<select name="message.type" id="field-2" class="form-control">-->
+                                        <!--<option value="0">正常消息</option>-->
+                                        <!--<option value="-1">重复消息</option>-->
+                                        <!--<option value="-5">登录页公告</option>-->
+                                        <!--<option value="-4">首页浮动提示</option>-->
+                                        <!--<option value="-3">套餐处说明</option>-->
+                                        <!--<option value="-2">系统公告</option>-->
+                                    <!--</select>-->
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+                    <button type="submit" class="btn btn-success">立即保存</button>
+                </div>
+            </form>
+        </div>
+
+    </div>
+</div>
+<script type="text/javascript">
+    var modal_default_body = jQuery('#modal-6 .modal-body').html();
+    jQuery(document).ready(function($) {
+        $("form#form1").validate({
+            rules: {
+                'option.v': "required"
+            },
+            messages: {
+                'option.v': "不填设置的值别想保存"
+            },
+            errorElement: 'span',
+            errorClass: 'validate-has-error',
+            highlight: function (element) {
+                $(element).closest('.form-group').addClass('validate-has-error');
+            },
+            unhighlight: function (element) {
+                $(element).closest('.form-group').removeClass('validate-has-error');
+            },
+            errorPlacement: function (error, element)
+            {
+                if(element.closest('.has-switch').length)
+                {
+                    error.insertAfter(element.closest('.has-switch'));
+                }
+                else {
+                    if(element.parent('.checkbox, .radio').length || element.parent('.input-group').length)
+                    {
+                        error.insertAfter(element.parent());
+                    }
+                    else
+                    {
+                        error.insertAfter(element);
+                    }
+                }
+            },
+            submitHandler: function(form) {
+                $.ajax({
+                    url: form.action,
+                    method: "POST",
+                    dataType: "json",
+                    data: $(form).serialize(),
+                    success: function(result){
+                        if(result.code != 200) {
+                            showToastr(result.message, 0, 3000, '系统错误');
+                            return;
+                        }
+                        showToastr(result.data.message, 0);
+                        $('#modal-6').modal('hide');
+                    },
+                    error: function(Xhr){
+                        showToastr("出现未知错误，请重试", 0);
+                    }
+                });
+            }
+        });
+
+    });
+    function optionModify(optionName){
+        $("#modal-6 .modal-body").html(modal_default_body);
+        reset(false);
+        $.ajax({
+            url: "/admin/setting/query.json",
+            method: "GET",
+            dataType: "json",
+            data: {'option': optionName},
+            success: function(result){
+                if(result.code != 200){
+                    showToastr(result.message, 0, 3000, '系统错误');
+                    return;
+                }
+                if(result.data.error == 0 && result.data.modal != null){
+                    var option = result.data.modal;
+                    $("input[name='option.k']").val(optionName);
+                    $("input[name='option.k2']").val(optionName);
+                    /* TODO 如果为键值对配置，则自动构建一个K:V对应编辑 */
+                    /*
+                    if(result.data.isArray) {
+                        var newHtml = '<label for="field-2" class="control-label" >值</label>';
+                        newHtml += '<input'
+
+                        $("#option-value").html();
+                    } else {
+                        $("textarea[name='option.v']").val(option);
+                    }*/
+
+                    $("textarea[name='option.v']").val(option);
+
+                    $('#modal-6 .modal-title').html('修改参数');
+                    reset(true);
+                } else {
+                    $('#modal-6').modal('hide');
+                }
+            },
+            error: function(Xhr){
+                showToastr("出现未知错误，请重试或联系管理员", 0);
+            }
+        });
+        $('#modal-6').modal('show', {backdrop: 'static'});
+    }
+    function changeTable(data) {
+        var tid = $("tr#msg-" + data.id).html();
+        if(tid == undefined || tid == null) {
+            /* 新增 */
+            var trCount = $("table tbody").children("tr").length;
+            var newData = '<tr id="msg-"'+data.id+'>';
+            newData += "<td>#" + data.id + "</td>";
+            newData += "<td>"  + data.content + "</td>";
+            newData += "<td>" + data.pushEndTime + "</td>";
+            newData += "<td>" + data.pushUsers + "</td>";
+            newData += "<td>" + data.type + "</td>";
+            newData += "<td>" + '<a class="btn btn-info btn-sm" href="javascript:;" onclick="messageModify('+data.id+');">编辑</a>' + '<a class="btn btn-danger btn-sm" href="javascript:;" onclick="messageRemove('+data.id+');">删除</a>' + "</td></tr>";
+            $("table tbody").append(newData);
+            if($("#node-0").html() != undefined) $("#node-0").remove();
+        } else {
+            /* 修改 */
+            var newData = "<td>#" + data.id + "</td>";
+            newData += "<td>"  + data.content + "</td>";
+            newData += "<td>" + data.pushEndTime + "</td>";
+            newData += "<td>" + data.pushUsers + "</td>";
+            newData += "<td>" + data.type + "</td>";
+            newData += "<td>" + '<a class="btn btn-info btn-sm" href="javascript:;" onclick="messageModify('+data.id+');">编辑</a>' + '<a class="btn btn-danger btn-sm" href="javascript:;" onclick="messageRemove('+data.id+');">删除</a>' + "</td>";
+            $("tr#msg-" + data.id).html(newData);
+        }
+    }
+</script>
+<import template="/admin/_footer" />

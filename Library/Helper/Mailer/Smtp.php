@@ -9,15 +9,17 @@
 namespace Helper\Mailer;
 
 
-use Contactable\Mailer;
-use Model\Mail as MailModel;
+use Contactable\IMailer;
+use Core\Error;
+use Helper\Option;
+use Model\Mail as MMail;
 
 /**
  * Class Smtp
  * @description SMTP 方式发送邮件，需要指定SMTP服务器以及账户密码
  * @package Helper\Mailer
  */
-class Smtp implements Mailer{
+class Smtp implements IMailer {
 
     private $smtpServer = '';
     private $port = '25';
@@ -29,7 +31,7 @@ class Smtp implements Mailer{
     private $localdomain = 'localhost';
     private $charset = 'utf-8';
     private $contentTransferEncoding = false;
-    private $debug = false;
+    private $debug = true;
 
     private $smtpConnect = false;
     private $to = false;
@@ -41,40 +43,37 @@ class Smtp implements Mailer{
 
     private $config;
 
-    public function isAvailable() {
-        // TODO: Implement isAvailable() method.
-    }
-
-    public function send(MailModel $mail) {
+    public function send(MMail $mail) {
         $this->to = $mail->address;
         $this->subject = $mail->subject;
         $this->message = $mail->content;
 
         if(!$this->Connect2Server()) {
             if(!$this->debug) return false;
-            echo $this->Error.$this->newline.'<!-- '.$this->newline;
-            print_r($this->logArray);
-            echo $this->newline.'-->'.$this->newline;
-            return false;
+            //echo $this->Error.$this->newline.'<!-- '.$this->newline;
+            //print_r($this->logArray);
+            //echo $this->newline.'-->'.$this->newline;
+            return $this->logArray;
         }
         return true;
     }
 
-    public function test() {
-        if(!$this->isAvailable())
-            return false;
+    public function __construct() {
+        /*
+        $config = Option::get("MAIL_" . __CLASS__);
+        if(!$config)
+            throw new Error("邮件模块：" . __CLASS__ . " 配置不完整，无法使用。");
 
-        global $user;
-        $mail = new MailModel();
-        $mail->address = $user->email;
-        $mail->subject = "这是一封测试邮件";
-        $mail->content = "<h1>这是一封测试邮件</h1>如果你收到这封邮件代表邮件系统正常！";
+        $this->config = json_decode($config, true);
+        */
 
-        return $this->send($mail);
-    }
+        $this->config = array(
+            "server" => "smtp.exmail.qq.com",
+            "address" => "h@loacg.com",
+            "smtp_name" => "h@loacg.com",
+            "smtp_pass" => "yinliang1994"
+        );
 
-
-    public function Smtp(){
         $this->smtpServer = $this->config['server'];
         $this->address = $this->config['address'];
         $this->username = $this->config['smtp_name'];
