@@ -14,7 +14,7 @@ class InviteTable extends AbstractMigration
             ->addColumn('inviteIp', 'string', ['limit' => 32, 'null' => true])
             ->addColumn('invite', 'string', ['limit' => 60])
             ->addColumn('reguid', 'integer', ['limit' => 10, 'null' => true])
-            ->addColumn('regDateLine', 'integer', ['limit' => 11])
+            ->addColumn('regDateLine', 'integer', ['limit' => 11, 'default' => 0])
             ->addColumn('plan', 'string', ['limit' => 4, 'default' => 'A'])
             ->addColumn('status', 'integer', ['limit' => MysqlAdapter::INT_TINY, 'comment' => '-1过期 0-未使用 1-已用'])
             ->addIndex(['invite'], ['unique' => true])
