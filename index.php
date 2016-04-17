@@ -41,6 +41,33 @@ function command_exists($command)
     return false;
 }
 
+function copyDir($strSrcDir, $strDstDir)
+{
+    $dir = opendir($strSrcDir);
+    if (!$dir) {
+        return false;
+    }
+    if (!is_dir($strDstDir)) {
+        if (!mkdir($strDstDir)) {
+            return false;
+        }
+    }
+    while (false !== ($file = readdir($dir))) {
+        if (($file!='.') && ($file!='..')) {
+            if (is_dir($strSrcDir.'/'.$file) ) {
+                if (!copydir($strSrcDir.'/'.$file, $strDstDir.'/'.$file)) {
+                    return false;
+                }
+            } else {
+                if (!copy($strSrcDir.'/'.$file, $strDstDir.'/'.$file)) {
+                    return false;
+                }
+            }
+        }
+    }
+    closedir($dir);
+    return true;
+}
 
 switch ($argv[1]) {
     case 'install':
@@ -83,13 +110,19 @@ switch ($argv[1]) {
 
         echo 'Now migrating database...' . PHP_EOL;
         // $phinxCommand = PHP_BINARY . ' ' . ROOT_PATH . 'Package/bin/phinx migrate';
-        $phinxCommand = ROOT_PATH . 'Package/bin/phinx migrate';
+        $phinxCommand = PHP_BINARY . ' ' . ROOT_PATH . 'Package/bin/phinx migrate';
         if(PATH_SEPARATOR!=':') {
             $phinxCommand = ROOT_PATH . 'Package\bin\phinx.bat migrate';
         }
         system($phinxCommand);
-        /*
 
+        echo 'Now check resources is exits...' . PHP_EOL;
+        if(!is_dir(ROOT_PATH . 'Public/Resource')) {
+            echo 'Resources is not existed, gulping...' . PHP_EOL;
+            copyDir(ROOT_PATH . 'Resource', ROOT_PATH . 'Public/Resource');
+        }
+
+        /*
         临时屏蔽 npm 自动构建
         if (!command_exists('npm')) {
             echo 'It seems like you don\'t have a valid npm installation. Please refer to http://nodejs.org';
