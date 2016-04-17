@@ -64,6 +64,8 @@ class Card
                         $user->transfer += intval($card->info) * Utils::GB; // 如果之前是 流量 套餐，则递增
                     } else {
                         $user->transfer = intval($card->info) * Utils::GB; // 如果之前是 普通套餐，则清空总流量并设定新流量
+                        $user->flow_up = 0;
+                        $user->flow_down = 0;
                     }
                     $user->plan = 'Z'; // 强制设定为Z
                     $user->expireTime = strtotime("+1 year"); // 账户可用时间增加一年

@@ -10,6 +10,7 @@ namespace Controller\Admin;
 use \Core\Template;
 
 use Helper\Option;
+use Helper\PageData;
 use Helper\Util;
 use Helper\Utils;
 use \Model\User as UserModel;
@@ -30,6 +31,16 @@ class User
         $data['planList'] = json_decode(Option::get('custom_plan_name'), true);
         Template::setContext($data);
         Template::setView('admin/user');
+    }
+
+    /**
+     * @JSON
+     */
+    public function getList() {
+        $pageData = new PageData('member', "ORDER BY uid",
+            ['uid', 'port', 'email', 'nickname', 'plan', 'transfer', 'expireTime']);
+        $pageData->execute();
+        Template::setContext($pageData->getContext());
     }
 
     /**

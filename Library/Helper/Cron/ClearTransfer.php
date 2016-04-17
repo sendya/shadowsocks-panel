@@ -23,7 +23,6 @@ class ClearTransfer implements ICron
 
     public function run()
     {
-        // $resetDate = Setting::get('reset_date');
         $resetDate = '1';
         $date = date("d", time());
         if ($date == $resetDate) {
@@ -32,12 +31,11 @@ class ClearTransfer implements ICron
             if (!$inTransaction) {
                 DB::getInstance()->beginTransaction();
             }
-            $st = DB::sql("UPDATE member SET flow_up=0, flow_down=0");
-            $rs = $st->execute();
+            $st = DB::sql("UPDATE member SET flow_up=0, flow_down=0 WHERE `plan`!='Z'");
+            $st->execute();
             if (!$inTransaction) {
                 DB::getInstance()->commit();
             }
-            return $rs;
         }
         return false;
     }
