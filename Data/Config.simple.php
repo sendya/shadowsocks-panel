@@ -74,7 +74,7 @@ Core\Request::autoDetectBaseURL();
 /**
  * Database Connection:
  */
-Core\Database::initialize('mysql:dbname=sspanel;host=localhost;port=3306', 'root', 'password');
+Core\Database::initialize('mysql:dbname=sspanel;host=localhost;port=3306;charset=UTF8', 'root', 'password');
 
 /**
  * Session

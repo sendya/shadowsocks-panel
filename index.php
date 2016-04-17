@@ -109,10 +109,15 @@ switch ($argv[1]) {
         echo 'Done!' . PHP_EOL;
 
         echo 'Now migrating database...' . PHP_EOL;
-        // $phinxCommand = PHP_BINARY . ' ' . ROOT_PATH . 'Package/bin/phinx migrate';
-        $phinxCommand = PHP_BINARY . ' ' . ROOT_PATH . 'Package/bin/phinx migrate';
         if(PATH_SEPARATOR!=':') {
             $phinxCommand = ROOT_PATH . 'Package\bin\phinx.bat migrate';
+        } else {
+            $phinxCommand = ROOT_PATH . 'Package/bin/phinx';
+            if(!is_executable($phinxCommand)) {
+                echo 'Package/ directory Permission denied , change your directory Permission(chmod -R +x Package/)' . PHP_EOL;
+                break;
+            }
+            $phinxCommand .= ' migrate';
         }
         system($phinxCommand);
 
