@@ -11,6 +11,10 @@ use ReflectionProperty;
 
 abstract class Model
 {
+    const SAVE_AUTO = 0;
+    const SAVE_INSERT = 1;
+    const SAVE_UPDATE = 2;
+
     public function delete()
     {
         $reflection = new ReflectionObject($this);
@@ -26,11 +30,10 @@ abstract class Model
         $tableName = $this->getTableName($reflection);
         $statement = Database::getInstance()->prepare("DELETE FROM `{$tableName}` WHERE `{$primaryKey}`=:value");
         $statement->bindValue(':value', $primaryValue);
-        $result = $statement->execute();
-        return $result;
+        $statement->execute();
     }
 
-    public function save()
+    public function save($mode = self::SAVE_AUTO)
     {
         $map = array();
         $reflection = new ReflectionObject($this);
@@ -53,7 +56,7 @@ abstract class Model
         $identifier = $map[$primaryKey];
         unset($map[$primaryKey]);
         $tableName = $this->getTableName($reflection);
-        if ($identifier) {
+        if ($mode == self::SAVE_UPDATE || ($identifier && $mode != self::SAVE_INSERT)) {
             $sql = "UPDATE `{$tableName}` SET ";
             foreach ($map as $key => $value) {
                 $sql .= "`{$key}` = :{$key},";
@@ -68,7 +71,7 @@ abstract class Model
         } else {
             $sql = "INSERT INTO `{$tableName}` SET ";
             foreach ($map as $key => $value) {
-                $sql .= "`{$key}` = :{$key},";
+                $sql .= "{$key} = :{$key},";
             }
             $sql = rtrim($sql, ',');
             $statement = Database::getInstance()->prepare($sql);
@@ -76,14 +79,13 @@ abstract class Model
                 $statement->bindValue(":{$key}", $value);
             }
         }
-        $result = $statement->execute();
+        $statement->execute();
         if (!$identifier) {
             $insertId = Database::getInstance()->lastInsertId();
             if ($insertId) {
                 $reflection->getProperty($primaryKey)->setValue($this, $insertId);
             }
         }
-        return $result;
     }
 
     private function getPrimaryKeyName(ReflectionObject $reflection)
