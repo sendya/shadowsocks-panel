@@ -17,12 +17,14 @@ use Model\User;
  * @Authorization
  * @package Controller\Admin
  */
-class Setting {
+class Setting
+{
 
     /**
      * 系统设置 页面
      */
-    public function index() {
+    public function index()
+    {
         $data['user'] = User::getCurrent();
         $data['custom_plan_name'] = json_decode(Option::get('custom_plan_name'), true);
         $data['custom_transfer_level'] = json_decode(Option::get('custom_transfer_level'), true);
@@ -37,7 +39,8 @@ class Setting {
     /**
      * 详细参数 页面
      */
-    public function system() {
+    public function system()
+    {
         $data['user'] = User::getCurrent();
         $data['options'] = Option::getOptions();
 
@@ -50,7 +53,8 @@ class Setting {
      *
      * @JSON
      */
-    public function query() {
+    public function query()
+    {
         $result['error'] = 0;
         $result['message'] = 'success';
 
@@ -63,11 +67,12 @@ class Setting {
      * 修改
      * @JSON
      */
-    public function update() {
+    public function update()
+    {
 
         $result['error'] = 0;
         $result['message'] = '保存完成';
-        if($_POST['option_v'] != null && $_POST['option_k'] != null) {
+        if ($_POST['option_v'] != null && $_POST['option_k'] != null) {
             Option::set(trim($_POST['option_k']), trim($_POST['option_v']));
             // 初始化一次系统设置
             Option::init();
@@ -79,7 +84,8 @@ class Setting {
     /**
      * @JSON
      */
-    public function saveOther() {
+    public function saveOther()
+    {
         $check_transfer_max = intval(trim($_POST['check_transfer_max']));
         $check_transfer_min = intval(trim($_POST['check_transfer_min']));
         $user_test_day = intval(trim($_POST['user_test_day']));
@@ -97,7 +103,8 @@ class Setting {
     /**
      * @JSON
      */
-    public function saveTransfer() {
+    public function saveTransfer()
+    {
         $custom_transfer_level['A'] = intval($_POST['transfer-A']);
         $custom_transfer_level['B'] = intval($_POST['transfer-B']);
         $custom_transfer_level['C'] = intval($_POST['transfer-C']);
@@ -115,7 +122,8 @@ class Setting {
     /**
      * @JSON
      */
-    public function savePlanCustom() {
+    public function savePlanCustom()
+    {
         $custom_plan_name['A'] = $_POST['setting-A'];
         $custom_plan_name['B'] = $_POST['setting-B'];
         $custom_plan_name['C'] = $_POST['setting-C'];

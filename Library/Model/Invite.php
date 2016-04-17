@@ -17,7 +17,8 @@ use Helper\Utils;
  * @table invite
  * @package Model
  */
-class Invite extends Model {
+class Invite extends Model
+{
 
     public $id; // 改主键
     public $uid; //邀请码归属用户uid   -1代表公共邀请码
@@ -27,17 +28,22 @@ class Invite extends Model {
     public $invite;//邀请码
     public $reguid = 0;//使用该邀请码注册的用户uid
     public $regDateLine = 0;//使用该 invite 时间 mysql:datetime
-    public $plan='A'; //Invite type
+    public $plan = 'A'; //Invite type
     public $status = 0;//invite状态 (0-未使用, 1-已用, -1过期)
 
-    public static function getInviteArray($status = -1) {
+    public static function getInviteArray($status = -1)
+    {
         $sql = "SELECT * FROM invite";
-        if($status == 0) {
+        if ($status == 0) {
             $sql .= " WHERE status = 0";
-        } else if($status == -1) {
-            $sql .= " WHERE status = 0 AND uid=-1";
-        } else if($status == 1) {
-            $sql .= " WHERE status = 1 OR status = -1 ";
+        } else {
+            if ($status == -1) {
+                $sql .= " WHERE status = 0 AND uid=-1";
+            } else {
+                if ($status == 1) {
+                    $sql .= " WHERE status = 1 OR status = -1 ";
+                }
+            }
         }
         $statement = DB::getInstance()->prepare($sql);
         $statement->execute();
@@ -49,14 +55,16 @@ class Invite extends Model {
      * @param $invite
      * @return mixed
      */
-    public static function getInviteByInviteCode($invite) {
+    public static function getInviteByInviteCode($invite)
+    {
         $statement = DB::getInstance()->prepare("SELECT * FROM invite AS t1 WHERE t1.invite=? LIMIT 0,1");
         $statement->bindValue(1, $invite, DB::PARAM_STR);
         $statement->execute();
         return $statement->fetchObject(__CLASS__);
     }
 
-    public static function getInviteById($id) {
+    public static function getInviteById($id)
+    {
         $statement = DB::getInstance()->prepare("SELECT * FROM invite WHERE `id`=? LIMIT 0,1");
         $statement->bindValue(1, $id, DB::PARAM_STR);
         $statement->execute();
@@ -69,10 +77,12 @@ class Invite extends Model {
      * @param string $status
      * @return array
      */
-    public static function getInvitesByUid($uid = -1, $status = "") {
+    public static function getInvitesByUid($uid = -1, $status = "")
+    {
         $sql = "SELECT * FROM invite WHERE uid={$uid} ";
-        if($status != "")
+        if ($status != "") {
             $sql .= "AND status={$status} ";
+        }
 
         $sql .= "ORDER BY dateLine DESC";
         $stn = DB::sql($sql);
@@ -86,17 +96,18 @@ class Invite extends Model {
      * @param string $plan
      * @return bool
      */
-    public static function addInvite($uid, $plan = 'A') {
-        $inviteStr = substr(hash("sha256", $uid . Utils::randomChar(10)),0, 26) . $uid;
+    public static function addInvite($uid, $plan = 'A')
+    {
+        $inviteStr = substr(hash("sha256", $uid . Utils::randomChar(10)), 0, 26) . $uid;
         $obj = new self;
         $obj->inviteIp = Utils::getUserIP();
         $obj->invite = $inviteStr;
         $obj->plan = $plan;
         $obj->uid = $uid;
-        if($uid != -1) {
+        if ($uid != -1) {
             $user = User::getUserByUserId($uid);
-            $user->transfer = $user->transfer - Utils::GB*10;
-            $user->invite_num = $user->invite_num-1;
+            $user->transfer = $user->transfer - Utils::GB * 10;
+            $user->invite_num = $user->invite_num - 1;
             $user->save();
         }
         $result = $obj->save();

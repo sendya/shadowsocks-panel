@@ -17,14 +17,16 @@ use Core\Database as DB;
  * @Authorization
  * @package Helper
  */
-class Stats {
+class Stats
+{
 
     /**
      * Count all user
      * @NoAuthorization
      * @return int
      */
-    public static function countUser() {
+    public static function countUser()
+    {
         $stn = DB::getInstance()->prepare("SELECT count(1) FROM `member`");
         $stn->execute();
         return $stn->fetch(DB::FETCH_NUM)[0];
@@ -34,7 +36,8 @@ class Stats {
      * Count last connect time f 600s
      * @return int
      */
-    public static function countOnline() {
+    public static function countOnline()
+    {
         $stn = DB::getInstance()->prepare("SELECT count(1) FROM `member` WHERE lastConnTime > " . (time() - 600));
         $stn->execute();
         return $stn->fetch(DB::FETCH_NUM)[0];
@@ -44,8 +47,10 @@ class Stats {
      * Count sign user
      * @return int
      */
-    public static function countSignUser() {
-        $stn = DB::getInstance()->prepare("SELECT count(1) FROM `member` WHERE lastCheckinTime > " . strtotime(date('Y-m-d 00:00:00', time())));
+    public static function countSignUser()
+    {
+        $stn = DB::getInstance()->prepare("SELECT count(1) FROM `member` WHERE lastCheckinTime > " . strtotime(date('Y-m-d 00:00:00',
+                time())));
         $stn->execute();
         return $stn->fetch(DB::FETCH_NUM)[0];
     }
@@ -54,7 +59,8 @@ class Stats {
      * Usage for all users
      * @return int
      */
-    public static function countTransfer() {
+    public static function countTransfer()
+    {
         $stn = DB::getInstance()->prepare("SELECT sum(flow_up) + sum(flow_down) FROM `member`");
         $stn->execute();
 
@@ -66,7 +72,8 @@ class Stats {
      * @NoAuthorization
      * @return int
      */
-    public static function countUseUser() {
+    public static function countUseUser()
+    {
         $stn = DB::getInstance()->prepare("SELECT count(1) FROM `member` WHERE lastConnTime > 0");
         $stn->execute();
         return $stn->fetch(DB::FETCH_NUM)[0];
@@ -78,9 +85,12 @@ class Stats {
      * @param int $type
      * @return int
      */
-    public static function countNode($type = 0) {
+    public static function countNode($type = 0)
+    {
         $querySQL = "SELECT count(*) FROM `node` ";
-        if($type == 1) $querySQL .= " WHERE status='可用'";
+        if ($type == 1) {
+            $querySQL .= " WHERE status='可用'";
+        }
         $stn = DB::getInstance()->prepare($querySQL);
         $stn->execute();
         return $stn->fetch(DB::FETCH_NUM)[0];
@@ -93,21 +103,22 @@ class Stats {
      * @param int $type
      * @return int
      */
-    public static function dataUsage($type = 0) {
+    public static function dataUsage($type = 0)
+    {
         $querySQL = "SELECT count(*) FROM member WHERE 1=1 ";
-        switch($type) {
+        switch ($type) {
             case 1:
-                $querySQL .= "AND flow_up+flow_down BETWEEN " . (Utils::GB*10+1) . " AND " . (Utils::GB*30); // 11GB ~ 30GB
+                $querySQL .= "AND flow_up+flow_down BETWEEN " . (Utils::GB * 10 + 1) . " AND " . (Utils::GB * 30); // 11GB ~ 30GB
                 break;
             case 2:
-                $querySQL .= "AND flow_up+flow_down BETWEEN " . (Utils::GB*30+1) . " AND " . (Utils::GB*100); // 30GB ~ 100GB
+                $querySQL .= "AND flow_up+flow_down BETWEEN " . (Utils::GB * 30 + 1) . " AND " . (Utils::GB * 100); // 30GB ~ 100GB
                 break;
             case 3:
-                $querySQL .= "AND flow_up+flow_down > " . (Utils::GB*100+1); // 大于 100GB
+                $querySQL .= "AND flow_up+flow_down > " . (Utils::GB * 100 + 1); // 大于 100GB
                 break;
             case 0:
             default:
-                $querySQL .= "AND flow_up+flow_down < " . (Utils::GB*10); // 小于10GB
+                $querySQL .= "AND flow_up+flow_down < " . (Utils::GB * 10); // 小于10GB
                 break;
         }
         $statement = DB::getInstance()->prepare($querySQL);
@@ -122,7 +133,8 @@ class Stats {
      * @param int $type
      * @return int
      */
-    public static function onlineUsage($type = 0) {
+    public static function onlineUsage($type = 0)
+    {
         $querySQL = "SELECT ";
 
         // sql...
@@ -130,6 +142,6 @@ class Stats {
         $stn = DB::getInstance()->prepare($querySQL);
         $stn->execute();
         $count = $stn->fetch(DB::FETCH_NUM);
-        return $count[0]!=null ?:0;
+        return $count[0] != null ?: 0;
     }
 }

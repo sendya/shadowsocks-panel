@@ -13,7 +13,8 @@ namespace Contactable;
  *
  * @package Contactable
  */
-interface IPay {
+interface IPay
+{
 
     public function pay();
 

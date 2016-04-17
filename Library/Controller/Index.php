@@ -12,16 +12,19 @@ use Helper\Mailer\Smtp;
 use Helper\Utils;
 use Model\Mail;
 
-class Index {
+class Index
+{
 
     /**
      * 进入首页
      */
-    public function index() {
+    public function index()
+    {
         Template::setView('home/index');
     }
 
-    public function test() {
+    public function test()
+    {
 
         $mail = new Smtp();
         $message = new Mail();

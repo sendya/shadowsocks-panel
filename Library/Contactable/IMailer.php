@@ -15,7 +15,8 @@ use Model\Mail;
  * instanceof
  * Interface Mailer
  */
-interface IMailer {
+interface IMailer
+{
 
     /** 发送方法 */
     public function send(Mail $mail);

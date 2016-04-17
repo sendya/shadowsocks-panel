@@ -27,8 +27,9 @@ class Template
         if ($context) {
             self::setContext($context);
         }
-        if(stripos($templateName, "Misc")===false && stripos($templateName, THEME)===false)
-            $templateName = THEME .'/'. $templateName;
+        if (stripos($templateName, "Misc") === false && stripos($templateName, THEME) === false) {
+            $templateName = THEME . '/' . $templateName;
+        }
 
         $templateFileOrigin = self::getPath($templateName);
         $templateFile = DATA_PATH . "Template/{$templateName}.php";

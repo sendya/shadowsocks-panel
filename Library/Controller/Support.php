@@ -8,16 +8,20 @@ namespace Controller;
 
 use Core\Template;
 
-class Support {
-    public function index() {
+class Support
+{
+    public function index()
+    {
         exit();
     }
 
-    public function tos() {
+    public function tos()
+    {
         Template::setView('home/Tos');
     }
 
-    public function help() {
+    public function help()
+    {
         Template::setView('home/help');
     }
 

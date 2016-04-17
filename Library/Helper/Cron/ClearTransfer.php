@@ -18,13 +18,15 @@ use Core\Database;
  *
  * @package Helper\Cron
  */
-class ClearTransfer implements ICron {
-    
-    public function run() {
+class ClearTransfer implements ICron
+{
+
+    public function run()
+    {
         // $resetDate = Setting::get('reset_date');
         $resetDate = '1';
         $date = date("d", time());
-        if($date == $resetDate) {
+        if ($date == $resetDate) {
 
             $inTransaction = DB::getInstance()->inTransaction();
             if (!$inTransaction) {
@@ -40,7 +42,8 @@ class ClearTransfer implements ICron {
         return false;
     }
 
-    public function getStep() {
+    public function getStep()
+    {
         return strtotime(date('Y-m-01 00:00:00', strtotime("1 month"))); // 下个月
     }
 }

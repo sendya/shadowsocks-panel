@@ -16,8 +16,10 @@ use \Core\Response;
  * @Authorization
  * @package Controller
  */
-class Admin {
-    public function index() {
+class Admin
+{
+    public function index()
+    {
         // Response::redirect("/Admin");
     }
 }

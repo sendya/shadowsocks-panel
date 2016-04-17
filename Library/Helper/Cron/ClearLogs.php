@@ -19,16 +19,19 @@ use Model\User;
  *
  * @package Helper\Cron
  */
-class ClearLogs implements ICron {
+class ClearLogs implements ICron
+{
 
     const STEP = 3600; // 1小时执行一次
 
-    public function run() {
-
+    public function run()
+    {
 
 
     }
-    public function getStep() {
-        return time()+self::STEP;
+
+    public function getStep()
+    {
+        return time() + self::STEP;
     }
 }

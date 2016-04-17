@@ -7,7 +7,8 @@
 namespace Contactable;
 
 
-interface ICron {
+interface ICron
+{
 
     /** Cron 的运行方法 */
     public function run();

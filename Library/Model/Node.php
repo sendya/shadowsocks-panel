@@ -10,7 +10,8 @@ namespace Model;
 use Core\Model;
 use Core\Database as DB;
 
-class Node extends Model {
+class Node extends Model
+{
 
     public $id; // 节点id
     public $name; // 节点名称
@@ -26,7 +27,8 @@ class Node extends Model {
      * @param $nodeId
      * @return mixed
      */
-    public static function getNodeById($nodeId) {
+    public static function getNodeById($nodeId)
+    {
         $statement = DB::getInstance()->prepare("SELECT * FROM node WHERE id=?");
         $statement->bindValue(1, $nodeId);
         $statement->execute();
@@ -38,10 +40,11 @@ class Node extends Model {
      * @param $type
      * @return Node[]
      */
-    public static function getNodeArray($type = -1) {
+    public static function getNodeArray($type = -1)
+    {
         $nodeList = null;
         $selectSQL = "SELECT * FROM node ";
-        if($type != -1) {
+        if ($type != -1) {
             $selectSQL .= " WHERE type=?";
         }
         $selectSQL .= "  ORDER BY `order`";
@@ -56,13 +59,18 @@ class Node extends Model {
      * @param $nodeId
      * @return bool
      */
-    public static function deleteNode($nodeId) {
+    public static function deleteNode($nodeId)
+    {
         $inTransaction = DB::getInstance()->inTransaction();
-        if (!$inTransaction) DB::getInstance()->beginTransaction();
+        if (!$inTransaction) {
+            DB::getInstance()->beginTransaction();
+        }
         $statement = DB::getInstance()->prepare("DELETE FROM node WHERE id=:id");
         $statement->bindValue(':id', $nodeId, DB::PARAM_INT);
         $result = $statement->execute();
-        if (!$inTransaction) DB::getInstance()->commit();
+        if (!$inTransaction) {
+            DB::getInstance()->commit();
+        }
         return $result;
     }
 }

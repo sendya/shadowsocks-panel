@@ -18,9 +18,11 @@ use Model\User;
  * @Authorization
  * @package Controller\Admin
  */
-class Cron {
+class Cron
+{
 
-    public function index() {
+    public function index()
+    {
         $data['user'] = User::getCurrent();
         $data['cronList'] = CronModel::getCronArray();
         Template::setContext($data);

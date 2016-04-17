@@ -34,7 +34,7 @@ $MAIL = array(
     'host' => 'smtp.exmail.qq.com',
     'username' => 'h@loacg.com',
     'password' => 'password',
-    'from'     => '某科学的h本 <h@loacg.com>',
+    'from'     => '某科学的H本 <h@loacg.com>',
     'secure' => ''
 );
 
@@ -74,7 +74,7 @@ Core\Request::autoDetectBaseURL();
 /**
  * Database Connection:
  */
-Core\Database::initialize('mysql:dbname=test;host=localhost;charset=UTF8', 'root', '');
+Core\Database::initialize('mysql:dbname=sspanel;host=localhost;port=3306', 'root', 'password');
 
 /**
  * Session

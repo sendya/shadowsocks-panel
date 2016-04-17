@@ -12,9 +12,11 @@ namespace Controller\Admin;
 use Core\Template;
 use Model\User;
 
-class Mailer {
+class Mailer
+{
 
-    public function index() {
+    public function index()
+    {
 
         $data['user'] = User::getCurrent();
         Template::setContext($data);

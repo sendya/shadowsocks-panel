@@ -22,12 +22,14 @@ use Model\User;
  * @Authorization
  * @package Controller
  */
-class Member {
+class Member
+{
 
     /**
      * 主页面 仪表盘
      */
-    public function index() {
+    public function index()
+    {
         $user = User::getUserByUserId(User::getCurrent()->uid);
         $data['user'] = $user;
 
@@ -36,25 +38,27 @@ class Member {
         $data['useUserCount'] = Stats::countUseUser(); // 使用过服务的用户数
         $data['checkCount'] = Stats::countSignUser();
         $data['onlineNum'] = 0.00; // default online number.
-        if($data['online']!==0 && $data['userCount']!==0)
-            $data['onlineNum'] = round($data['online']/$data['userCount'],2)*100;
+        if ($data['online'] !== 0 && $data['userCount'] !== 0) {
+            $data['onlineNum'] = round($data['online'] / $data['userCount'], 2) * 100;
+        }
 
         $data['allTransfer'] = Utils::flowAutoShow($user->transfer);
         $data['useTransfer'] = $user->flow_up + $user->flow_down; // round(() / Utils::mb(), 2);
         $data['slaTransfer'] = Utils::flowAutoShow($user->transfer - $data['useTransfer']);
         $data['pctTransfer'] = 0.00;
-        if(is_numeric($data['useTransfer']) && $data['useTransfer']>0 && is_numeric($user->transfer) && $user->transfer>0) {
+        if (is_numeric($data['useTransfer']) && $data['useTransfer'] > 0 && is_numeric($user->transfer) && $user->transfer > 0) {
             $data['pctTransfer'] = round($data['useTransfer'] / $user->transfer, 2) * 100;
         }
         $data['useTransfer'] = Utils::flowAutoShow($data['useTransfer'], 1);
         $tmp = explode(" ", $data['useTransfer']);
         $data['useTransfer'] = $tmp[0];
-        $data['useTransferUnit'] = count($tmp)>1?$tmp[1]:'KB';
+        $data['useTransferUnit'] = count($tmp) > 1 ? $tmp[1] : 'KB';
         $data['systemTransfer'] = round(Stats::countTransfer() / Utils::gb(), 2); // 全部用户产生的流量
 
         $data['checkedTime'] = date('m-d H:i', $user->lastCheckinTime);
         $data['lastOnlineTime'] = date('Y-m-d H:i:s', $user->lastConnTime);
-        $data['checked'] = strtotime(date('Y-m-d 00:00:00', time())) > strtotime(date('Y-m-d H:i:s', $user->lastCheckinTime));
+        $data['checked'] = strtotime(date('Y-m-d 00:00:00', time())) > strtotime(date('Y-m-d H:i:s',
+                $user->lastCheckinTime));
         $data['userIp'] = Utils::getUserIP();
 
         // Message
@@ -68,7 +72,8 @@ class Member {
     /**
      * 节点页面
      */
-    public function node() {
+    public function node()
+    {
         $data['user'] = User::getCurrent();
         $data['nodes'] = Node::getNodeArray(0);
         $data['nodeVip'] = Node::getNodeArray(1);
@@ -81,7 +86,8 @@ class Member {
      *    Invite list
      *    2015.11.11 start
      */
-    public function invite() {
+    public function invite()
+    {
         $data['user'] = User::getUserByUserId(User::getCurrent()->uid);
         $data['inviteList'] = Invite::getInvitesByUid($data['user']->uid, "0");
 
@@ -93,7 +99,8 @@ class Member {
      *    User info page,
      *    2015.11.12 start
      */
-    public function info() {
+    public function info()
+    {
         Template::putContext('user', User::getCurrent());
         Template::setView("panel/info");
     }
@@ -103,22 +110,23 @@ class Member {
      * @JSON
      * @throws Error
      */
-    public function changePassword() {
+    public function changePassword()
+    {
         $user = User::getUserByUserId(User::getCurrent()->uid);
 
-        if($_POST['nowpwd'] != null && $_POST['pwd'] != null) {
+        if ($_POST['nowpwd'] != null && $_POST['pwd'] != null) {
             $result = array('error' => 1, 'message' => '密码修改失败.');
             $nowpwd = $_POST['nowpwd'];
             $pwd = $_POST['pwd'];
-            if(!$user->verifyPassword($nowpwd)) { // 密码不正确
+            if (!$user->verifyPassword($nowpwd)) { // 密码不正确
                 $result['message'] = "旧密码错误！";
                 return $result;
             }
-            if($pwd == $nowpwd) {
+            if ($pwd == $nowpwd) {
                 $result['message'] = "新密码不能和旧密码相同！";
                 return $result;
             }
-            if(strlen($pwd) < 6) {
+            if (strlen($pwd) < 6) {
                 $result['message'] = "新密码不能少于6位！";
                 return $result;
             }
@@ -140,13 +148,15 @@ class Member {
      * @JSON
      * @throws Error
      */
-    public function changeSSPwd() {
+    public function changeSSPwd()
+    {
         $user = User::getUserByUserId(User::getCurrent()->uid);
 
-        if($_POST['sspwd']!=null) {
+        if ($_POST['sspwd'] != null) {
             $ssPwd = trim($_POST['sspwd']);
-            if($_POST['sspwd'] =='1')
+            if ($_POST['sspwd'] == '1') {
                 $ssPwd = Utils::randomChar(8);
+            }
             $user->sspwd = $ssPwd;
             $user->save();
             $result = array('error' => 0, 'message' => '修改SS连接密码成功', 'sspwd' => $ssPwd);
@@ -162,9 +172,10 @@ class Member {
      * @JSON
      * @throws Error
      */
-    public function changeNickname() {
+    public function changeNickname()
+    {
         $user = User::getCurrent();
-        if($_POST['nickname'] != null) {
+        if ($_POST['nickname'] != null) {
 
             $user = User::getUserByUserId($user->uid);
             $user->nickname = htmlspecialchars(trim($_POST['nickname']));
@@ -182,7 +193,8 @@ class Member {
      * @JSON
      * @throws Error
      */
-    public function changePlan() {
+    public function changePlan()
+    {
         Template::putContext('user', User::getCurrent());
         Template::setView("panel/changePlanLevel");
     }
@@ -191,7 +203,8 @@ class Member {
      * 首页的 升级套餐 button
      * @JSON
      */
-    public function updatePlan() {
+    public function updatePlan()
+    {
         $user = User::getUserByUserId(User::getCurrent()->uid);
 
         $custom_transfer_level = json_decode(Option::get('custom_transfer_level'), true);
@@ -226,7 +239,7 @@ class Member {
                 if ($user->money >= 40) {
                     $user->money = $user->money - 40;//扣除15 升级到B套餐
                     $user->plan = 'D';
-                    $user->transfer =Utils::GB * intval($custom_transfer_level['D']);
+                    $user->transfer = Utils::GB * intval($custom_transfer_level['D']);
                     $user->save();
                     $result['error'] = 0;
                     $result['message'] = '升级成功，您的当前等级为';
@@ -247,7 +260,8 @@ class Member {
 
     }
 
-    public function actCard() {
+    public function actCard()
+    {
         Template::putContext('user', User::getCurrent());
         Template::setView('panel/actCard');
     }
@@ -256,11 +270,12 @@ class Member {
      * @JSON
      * @return array
      */
-    public function expireDate() {
+    public function expireDate()
+    {
 
         $user = User::getUserByUserId(User::getCurrent()->uid);
         $expireTime = date('Y-m-d H:i:s', $user->expireTime);
-        return array('error' => 0, 'message' => '您的到期时间：' .$expireTime , 'expireTime' => $expireTime);
+        return array('error' => 0, 'message' => '您的到期时间：' . $expireTime, 'expireTime' => $expireTime);
     }
 
     /**
@@ -268,12 +283,13 @@ class Member {
      *
      * @JSON
      */
-    public function checkIn() {
+    public function checkIn()
+    {
         $user = User::getUserByUserId(User::getCurrent()->uid);
         $result = array('error' => 1, 'message' => '签到失败或已签到。');
-        if ($user->lastCheckinTime <= strtotime(date('Y-m-d 00:00:00', time())) )
-        {
-            $checkinTransfer = rand(intval(Option::get('check_transfer_min')), intval(Option::get('check_transfer_max'))) * Utils::MB;
+        if ($user->lastCheckinTime <= strtotime(date('Y-m-d 00:00:00', time()))) {
+            $checkinTransfer = rand(intval(Option::get('check_transfer_min')),
+                    intval(Option::get('check_transfer_max'))) * Utils::MB;
             $user->lastCheckinTime = time();
             $user->transfer = $user->transfer + $checkinTransfer;
             $user->save();
@@ -286,20 +302,22 @@ class Member {
         }
         return $result;
     }
+
     /**
      * 删除自己的账户（在本站彻底清空自己注册的账户）
      *
      * @JSON
      * @return array
      */
-    public function deleteMe() {
+    public function deleteMe()
+    {
         $user = User::getCurrent();
 
         $flag = $_POST['delete'];
-        $result = array('error' => 1, "message"=> "请求错误");
-        if($flag != null && $flag == '1'){
-            if($user->delete()) {
-                $result = array("error"=> 0, "message"=> "您已经从本站消除所有记忆，将在 3秒 后执行世界初始化...<br/>祝您过得愉快。");
+        $result = array('error' => 1, "message" => "请求错误");
+        if ($flag != null && $flag == '1') {
+            if ($user->delete()) {
+                $result = array("error" => 0, "message" => "您已经从本站消除所有记忆，将在 3秒 后执行世界初始化...<br/>祝您过得愉快。");
                 $_SESSION['currentUser'] = null;
             }
         }

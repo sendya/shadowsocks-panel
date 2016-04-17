@@ -19,11 +19,13 @@ use Model\User;
  *
  * @package Helper\Cron
  */
-class StopExpireUser implements ICron {
+class StopExpireUser implements ICron
+{
 
     const STEP = 300; // 5分钟执行一次
 
-    public function run() {
+    public function run()
+    {
 
         $users = User::getUserArrayByExpire();
         $mailPost = false;
@@ -41,7 +43,9 @@ class StopExpireUser implements ICron {
         }
 
     }
-    public function getStep() {
-        return time()+self::STEP;
+
+    public function getStep()
+    {
+        return time() + self::STEP;
     }
 }

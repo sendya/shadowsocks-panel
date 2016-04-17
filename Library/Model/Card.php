@@ -11,7 +11,8 @@ namespace Model;
 use Core\Database as DB;
 use Core\Model;
 
-class Card extends Model {
+class Card extends Model
+{
 
     public $id; // 主键
     public $card; // 卡号 不重复
@@ -26,27 +27,31 @@ class Card extends Model {
     public $pram1; // 保留字段
     public $status; // 卡状态 0-失效 1-可用
 
-    public static function queryAll() {
+    public static function queryAll()
+    {
         $st = DB::sql("SELECT * FROM card ORDER BY add_time");
         $st->execute();
         return $st->fetchAll(DB::FETCH_CLASS, __CLASS__);
     }
 
-    public static function queryCard($card) {
+    public static function queryCard($card)
+    {
         $st = DB::sql("SELECT * FROM card WHERE card=:card");
         $st->bindValue(":card", $card, DB::PARAM_STR);
         $st->execute();
         return $st->fetchObject(__CLASS__);
     }
 
-    public static function queryCardById($id) {
+    public static function queryCardById($id)
+    {
         $st = DB::sql("SELECT * FROM card WHERE id=:id ");
         $st->bindValue(":id", $id, DB::PARAM_INT);
         $st->execute();
         return $st->fetchObject(__CLASS__);
     }
 
-    public function destroy() {
+    public function destroy()
+    {
         $inTransaction = DB::getInstance()->inTransaction();
         if (!$inTransaction) {
             DB::getInstance()->beginTransaction();
@@ -54,8 +59,9 @@ class Card extends Model {
         $st = DB::sql("UPDATE card SET status=0 WHERE card=:card"); // 失效卡
         $st->bindValue(":card", $this->card, DB::PARAM_STR);
         $flag = $st->execute();
-        if(!$inTransaction)
+        if (!$inTransaction) {
             DB::getInstance()->commit();
+        }
         return $flag;
     }
 }

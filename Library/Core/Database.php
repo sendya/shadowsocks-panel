@@ -35,7 +35,8 @@ class Database extends \PDO
      * @param array $driver_options [optional]
      * @return \PDOStatement
      */
-    public static function sql($statement, array $driver_options = array()){
+    public static function sql($statement, array $driver_options = array())
+    {
         return self::getInstance()->prepare($statement, $driver_options);
     }
 

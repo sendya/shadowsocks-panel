@@ -21,9 +21,11 @@ use Helper\Message;
  * @Authorization
  * @package Controller\Admin
  */
-class Index {
+class Index
+{
 
-    public function index() {
+    public function index()
+    {
         $data['user'] = User::getCurrent();
         $data['flow_num10'] = Stats::dataUsage(0);
         $data['flow_num30'] = Stats::dataUsage(1);
@@ -34,13 +36,14 @@ class Index {
         Template::setView('admin/index');
     }
 
-    public function mailTest() {
+    public function mailTest()
+    {
         $user = User::getCurrent();
         $content = <<<EOF
 Hey guy, here's test mail
 EOF;
 
-        Mail::mail_send($user->email,  "[". SITE_NAME ."] Mail test", $content);
+        Mail::mail_send($user->email, "[" . SITE_NAME . "] Mail test", $content);
         Message::show("测试邮件已经发送到你的邮箱", '/admin', 4);
     }
 

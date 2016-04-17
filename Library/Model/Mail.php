@@ -12,7 +12,8 @@ namespace Model;
  * Class Mail
  * @package Model
  */
-class Mail {
+class Mail
+{
 
     public $address;
     public $subject;

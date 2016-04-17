@@ -18,7 +18,8 @@ use Helper\Utils;
  * @table member
  * @package Model
  */
-class User extends Model {
+class User extends Model
+{
 
     const ENCRYPT_TYPE_DEFAULT = 0;
     const ENCRYPT_TYPE_ENHANCE = 1;
@@ -56,7 +57,8 @@ class User extends Model {
      * Get current user object
      * @return User
      */
-    public static function getCurrent() {
+    public static function getCurrent()
+    {
         /** @var User $user */
         $user = $_SESSION['currentUser'];
         if ($user && TIMESTAMP - $user->lastActive > 600) {
@@ -79,7 +81,8 @@ class User extends Model {
      * @param $email
      * @return User
      */
-    public static function getUserByEmail($email) {
+    public static function getUserByEmail($email)
+    {
         $statement = DB::getInstance()->prepare('SELECT t1.*, IF(t2.id>0,1,0) as `admin` FROM `member` t1 LEFT JOIN `admin` t2 ON t1.uid=t2.uid WHERE t1.email = ?');
         $statement->bindValue(1, $email);
         $statement->execute();
@@ -90,26 +93,30 @@ class User extends Model {
      * @param $userId
      * @return User
      */
-    public static function getUserByUserId($userId) {
+    public static function getUserByUserId($userId)
+    {
         $statement = DB::getInstance()->prepare('SELECT t1.*, IF(t2.id>0,1,0) as `admin` FROM `member` t1 LEFT JOIN `admin` t2 ON t1.uid=t2.uid WHERE t1.uid = ?');
         $statement->bindValue(1, $userId, DB::PARAM_INT);
         $statement->execute();
         return $statement->fetchObject(__CLASS__);
     }
 
-    public static function getUserList() {
+    public static function getUserList()
+    {
         $statement = DB::getInstance()->prepare('SELECT t1.*, t2.id as `admin` FROM `member` t1 LEFT JOIN `admin` t2 ON t1.uid=t2.uid ORDER BY uid');
         $statement->execute();
         return $statement->fetchAll(DB::FETCH_CLASS, __CLASS__);
     }
 
-    public static function getCount() {
+    public static function getCount()
+    {
         $stn = DB::getInstance()->prepare("SELECT count(1) FROM `member`");
         $stn->execute();
         return $stn->fetch(DB::FETCH_NUM)[0];
     }
 
-    public static function getUserArrayByExpire() {
+    public static function getUserArrayByExpire()
+    {
         $selectSQL = "SELECT * FROM member WHERE expireTime<:expireTime OR (flow_up+flow_down)>transfer ORDER BY uid";
         $statement = DB::sql($selectSQL);
         $statement->bindValue(":expireTime", time(), DB::PARAM_INT);
@@ -120,7 +127,8 @@ class User extends Model {
     /**
      * 停止用户
      */
-    public function stop() {
+    public function stop()
+    {
         $inTransaction = DB::getInstance()->inTransaction();
         if (!$inTransaction) {
             DB::getInstance()->beginTransaction();
@@ -133,8 +141,9 @@ class User extends Model {
         }
     }
 
-    public static function checkUserPortIsAvailable($port = 0, $uid) {
-        if($port != 0) {
+    public static function checkUserPortIsAvailable($port = 0, $uid)
+    {
+        if ($port != 0) {
             $stn = DB::sql("SELECT * FROM member WHERE port=? AND uid<>?");
             $stn->bindValue(1, $port, DB::PARAM_INT);
             $stn->bindValue(2, $uid, DB::PARAM_INT);
@@ -154,11 +163,13 @@ class User extends Model {
         $this->password = password_hash($password, PASSWORD_BCRYPT);
     }
 
-    public function isAdmin() {
+    public function isAdmin()
+    {
         return $this->admin;
     }
 
-    public function getPlan() {
+    public function getPlan()
+    {
         return Utils::planAutoShow($this->plan);
     }
 }

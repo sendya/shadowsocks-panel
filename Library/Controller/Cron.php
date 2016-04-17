@@ -11,16 +11,18 @@ namespace Controller;
 use Helper\CronTab;
 use Helper\Util;
 
-class Cron {
+class Cron
+{
 
 
-    public function index() {
+    public function index()
+    {
         define('ENABLE_CRON', true);
         define('CLEAN_TRANSFER', true);
 
         $cron = new CronTab();
         $cron->run();
-        
+
         echo 'ok';
         exit();
     }

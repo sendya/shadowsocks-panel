@@ -11,17 +11,20 @@ namespace Helper;
 use Core\Error;
 use Model\Mail;
 
-final class Mailer {
+final class Mailer
+{
 
     private static $available;
 
-    public function __construct() {
+    public function __construct()
+    {
         self::$available = Option::get("MAIL_AVAILABLE");
     }
 
-    public static function send(Mail $mail) {
+    public static function send(Mail $mail)
+    {
 
-        if(self::$available) {
+        if (self::$available) {
             $ul = ucfirst(self::$available);
             $class = "\\Helper\\Mailer\\{$ul}";
             $mailer = new $class;

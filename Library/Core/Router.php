@@ -10,11 +10,13 @@ class Router extends DefaultRouter
 {
     function __construct()
     {
-        if (!defined('KK_START'))
+        if (!defined('KK_START')) {
             define('KK_START', microtime(true));
+        }
     }
 
-    public static function execTime() {
+    public static function execTime()
+    {
         return round(microtime(true) - KK_START, 4);
     }
 }

@@ -19,10 +19,12 @@ use Model\Mail;
  * Class MailGun
  * @package Helper\Mailer
  */
-class MailGun implements IMailer {
+class MailGun implements IMailer
+{
 
 
-    public function send(Mail $mail) {
+    public function send(Mail $mail)
+    {
         // TODO: Implement send() method.
     }
 

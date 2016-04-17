@@ -25,16 +25,17 @@ class Mail extends Message
      * @param $content 邮件内容
      * @throws InvalidArgumentException
      */
-    public static function mail_send($to, $title, $content) {
+    public static function mail_send($to, $title, $content)
+    {
         global $MAIL;
         $mail = Mail::to($to)
-                    ->from($MAIL['from'])
-                    ->title($title)
-                    ->content($content);
-                    if ( $mail instanceof Mail ) {
-                        $mailer = new \Nette\Mail\SmtpMailer($mail->config);
-                        $mailer->send($mail);
-                    }
+            ->from($MAIL['from'])
+            ->title($title)
+            ->content($content);
+        if ($mail instanceof Mail) {
+            $mailer = new \Nette\Mail\SmtpMailer($mail->config);
+            $mailer->send($mail);
+        }
     }
 
     function __construct($to)

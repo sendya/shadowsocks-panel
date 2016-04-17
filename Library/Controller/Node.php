@@ -28,7 +28,8 @@ class Node
     /**
      * @throws Error
      */
-    public function qrCode() {
+    public function qrCode()
+    {
         $id = trim($_REQUEST['id']);
         $user = User::getUserByUserId(User::getCurrent()->uid);
         $node = NodeModel::getNodeById($id);
@@ -75,17 +76,20 @@ class Node
     }
 
 
-    private static function nodeJson($server, $server_port, $password, $method, $name) {
+    private static function nodeJson($server, $server_port, $password, $method, $name)
+    {
         return '{"server":"' . $server . '","server_port":' . $server_port . ',"local_port":1080,' . '"password":"' . $password . '","timeout":600,' . '"method":"' . $method . '", "remarks": "' . $name . '"}';
     }
 
-    private static function nodeQr($server, $server_port, $password, $method) {
+    private static function nodeQr($server, $server_port, $password, $method)
+    {
         $ssurl = $method . ":" . $password . "@" . $server . ":" . $server_port;
         $ssqr = "ss://" . base64_encode($ssurl);
         return array("ssurl" => $ssurl, "ssqr" => $ssqr);
     }
 
-    private static function verifyPlan($plan, $nodeType) {
+    private static function verifyPlan($plan, $nodeType)
+    {
         if ($nodeType == 1) {
             if ($plan == 'VIP' || $plan == 'SVIP') {
                 return true;
