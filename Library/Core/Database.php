@@ -22,10 +22,20 @@ class Database extends \PDO
     public static function initialize($dsn, $username = null, $password = null, $options = array())
     {
         if (self::$instance) {
-            throw new Error('');
+            throw new Error('Cannot re-initialize database');
         }
         self::$instance = new Database($dsn, $username, $password, $options);
         self::$instance->setAttribute(self::ATTR_ERRMODE, self::ERRMODE_EXCEPTION);
+
+        $currentSqlMode = Database::getInstance()->query('SELECT @@GLOBAL.SQL_MODE')->fetchColumn();
+        if (strpos($currentSqlMode, 'STRICT_TRANS_TABLES')) {
+            $currentSqlMode = explode(',', $currentSqlMode);
+            $strictTransTable = array_search('STRICT_TRANS_TABLES', $currentSqlMode);
+            unset($currentSqlMode[$strictTransTable]);
+            $statement = self::$instance->prepare('SET SESSION sql_mode = ?');
+            $statement->bindValue('1', implode(',', $currentSqlMode));
+            $statement->execute();
+        }
     }
 
     /**
