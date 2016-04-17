@@ -44,6 +44,29 @@
                                 </tr>
                                 </thead>
                                 <tbody>
+                                <if condition="count($users) > 0">
+                                    <loop variable="$users" key="$key" value="$us">
+                                        <tr id="user-{$us->uid}">
+                                            <td>{$us->port}</td>
+                                            <td>{$us->nickname}</td>
+                                            <td>{$us->email}</td>
+                                            <td>{$us->getPlan()}</td>
+                                            <td>{(\Helper\Utils::flowAutoShow($us->transfer))}</td>
+                                            <td>{(date('Y-m-d H:i:s', $us->expireTime))}</td>
+                                            <td>
+                                                <a class="btn btn-info btn-sm" href="javascript:;"
+                                                   onclick="userModify({$us->uid});">编辑</a>
+                                                <a class="btn btn-danger btn-sm" href="javascript:;"
+                                                   onclick="userRemove({$us->uid})">删除</a>
+                                            </td>
+                                        </tr>
+                                    </loop>
+                                    <else>
+                                        <tr id="user-0">
+                                            <td>#</td>
+                                            <td colspan="5">没有用户</td>
+                                        </tr>
+                                </if>
                                 </tbody>
                             </table>
 
@@ -52,14 +75,19 @@
 
                             <div class="row">
                                 <div class="col-xs-6">
-                                    <div class="dataTables_info" id="dataTables_info">显示 1 - 10 共 57 条数据</div>
+                                    <div class="dataTables_info" role="status" aria-live="polite">显示 1 - 10 共 57 条数据</div>
                                 </div>
                                 <div class="col-xs-6">
                                     <div class="dataTables_paginate paging_simple_numbers" style=" float: right;margin: 0">
                                         <ul class="pagination">
-                                            <li class="paginate_button previous disabled" tabindex="0"><a href="javascript:;">上一页</a></li>
-                                            <li class="paginate_button active" tabindex="0"><a href="javascript:;">1</a></li>
-                                            <li class="paginate_button next disabled" tabindex="0"><a href="javascript:;">下一页</a></li>
+                                            <li class="paginate_button previous disabled" tabindex="0"><a href="#">Previous</a></li>
+                                            <li class="paginate_button active" tabindex="0"><a href="#">1</a></li>
+                                            <li class="paginate_button " tabindex="0"><a href="#">2</a></li>
+                                            <li class="paginate_button " tabindex="0"><a href="#">3</a></li>
+                                            <li class="paginate_button " tabindex="0"><a href="#">4</a></li>
+                                            <li class="paginate_button " tabindex="0"><a href="#">5</a></li>
+                                            <li class="paginate_button " tabindex="0"><a href="#">6</a></li>
+                                            <li class="paginate_button next" tabindex="0"><a href="#">Next</a></li>
                                         </ul>
                                     </div>
                                 </div>
@@ -247,8 +275,6 @@
     var modal_default_body = jQuery('#modal-6 .modal-body').html();
     jQuery(document).ready(function($) {
 
-        getList();
-
         $("form#form1").validate({
             rules: {
                 'user.email': "required",
@@ -387,61 +413,5 @@
         $("tr#node-" + data.id).html(newData);
 
     }
-    function getList(page) {
-        if(page == null)
-            page = 0;
-        $.ajax({
-            url: "/admin/user/GetList.json",
-            method: "GET",
-            dataType: "json",
-            data: {'page': page},
-            success: function(result) {
-                if(result.code != 200) {
-                    showToastr(result.message, 0, 3000, '系统错误');
-                    return;
-                }
-                if(result.data.data.length >0) {
-                    var data = result.data;
-                    var table = $("table tbody");
-                    table.empty();
-                    for(var i=0; i<data.data.length; ++i) {
-                        var user = data.data[i];
-
-                        var newData = '<tr id="user-'+user.uid+'">';
-                        newData += '<td>'+user.port+'</td>';
-                        newData += '<td>'+user.nickname+'</td>';
-                        newData += '<td>'+user.email+'</td>';
-                        newData += '<td>'+user.plan+'</td>';
-                        newData += '<td>'+user.transfer+'</td>';
-                        newData += '<td>'+user.expireTime+'</td>';
-                        newData += '<td>'+'<a class="btn btn-info btn-sm" href="javascript:;" onclick="userModify('+user.uid+');">编辑</a>' + '<a class="btn btn-danger btn-sm" href="javascript:;" onclick="userRemove('+user.uid+');">删除</a>' +'</td>';
-                        newData += '</tr>';
-                        table.append(newData);
-                    }
-                    $("#dataTables_info").html("显示 "+ (data.currentPage-1)*data.pageSize +" - " + (data.currentPage)*data.pageSize + " 条数据, 共 "+data.totalPage+" 页");
-                    createPageNav(data.totalPage, data.currentPage);
-                }
-            }
-        });
-    }
-    function createPageNav(totalPage, currentPage) {
-        var pageNav = '<li class="paginate_button previous ' + (currentPage==1?'disabled':'') + '" tabindex="0"><a href="javascript:;" onclick="getList('+(currentPage-1)+')">上一页</a></li>';
-        if(totalPage - currentPage > 3) {
-            pageNav += '<li class="paginate_button " tabindex="0"><a href="javascript:;" onclick="getList('+(currentPage-1)+')">'+(currentPage-1)+'</a></li>';
-            pageNav += '<li class="paginate_button " tabindex="0"><a href="javascript:;" onclick="getList('+(currentPage+1)+')">'+(currentPage+1)+'</a></li>';
-            pageNav += '<li class="paginate_button " tabindex="0"><a href="javascript:;" onclick="getList('+(currentPage+2)+')">'+(currentPage+2)+'</a></li>';
-            pageNav += '<li class="paginate_button " tabindex="0"><a href="javascript:;" onclick="getList('+(currentPage+3)+')">'+(currentPage+3)+'</a></li>';
-            pageNav += '<li class="paginate_button disabled" tabindex="0"><a href="javascript:;">...</a></li>';
-            pageNav += '<li class="paginate_button " tabindex="0"><a href="javascript:;" onclick="getList('+totalPage+')">'+totalPage+'</a></li>';
-        } else {
-            pageNav += '<li class="paginate_button " tabindex="0"><a href="javascript:;" onclick="getList(1)">1</a></li>';
-            pageNav += '<li class="paginate_button " tabindex="0"><a href="javascript:;" onclick="getList(2)">2</a></li>';
-            pageNav += '<li class="paginate_button " tabindex="0"><a href="javascript:;" onclick="getList(3)">3</a></li>';
-            pageNav += '<li class="paginate_button " tabindex="0"><a href="javascript:;" onclick="getList('+totalPage+')">'+totalPage+'</a></li>';
-        }
-        pageNav += '<li class="paginate_button next ' + (currentPage==totalPage?'disabled':'') + '" tabindex="0"><a href="javascript:;" onclick="getList('+(currentPage+1)+')">下一页</a></li>';
-        $(".pagination").html(pageNav);
-    }
-
 </script>
 <import template="/admin/_footer" />
