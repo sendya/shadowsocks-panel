@@ -200,7 +200,7 @@ The {$siteName} Team
 EOF;
 
 
-            $mailResult = Mail::mail_send($user->email, "[" . SITE_NAME . "] Password Recovery", $content);
+            Mail::mail_send($user->email, "[" . SITE_NAME . "] Password Recovery", $content);
 
             $user->save();
 

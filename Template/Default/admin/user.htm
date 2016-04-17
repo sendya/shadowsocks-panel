@@ -413,7 +413,7 @@
                         newData += '<td>'+user.email+'</td>';
                         newData += '<td>'+user.plan+'</td>';
                         newData += '<td>'+user.transfer+'</td>';
-                        newData += '<td>'+user.expireTime+'</td>';
+                        newData += '<td>'+getTime(user.expireTime)+'</td>';
                         newData += '<td>'+'<a class="btn btn-info btn-sm" href="javascript:;" onclick="userModify('+user.uid+');">编辑</a>' + '<a class="btn btn-danger btn-sm" href="javascript:;" onclick="userRemove('+user.uid+');">删除</a>' +'</td>';
                         newData += '</tr>';
                         table.append(newData);
@@ -442,6 +442,17 @@
         pageNav += '<li class="paginate_button next ' + (currentPage==totalPage?'disabled':'') + '" tabindex="0"><a href="javascript:;" onclick="getList('+(currentPage+1)+')">下一页</a></li>';
         $(".pagination").html(pageNav);
     }
-
+    function getTime(/** timestamp=0 **/) {
+        var ts = arguments[0] || 0;
+        var t,y,m,d,h,i,s;
+        t = ts ? new Date(ts*1000) : new Date();
+        y = t.getFullYear();
+        m = t.getMonth()+1;
+        d = t.getDate();
+        h = t.getHours();
+        i = t.getMinutes();
+        s = t.getSeconds();
+        return y+'-'+(m<10?'0'+m:m)+'-'+(d<10?'0'+d:d)+' '+(h<10?'0'+h:h)+':'+(i<10?'0'+i:i)+':'+(s<10?'0'+s:s);
+    }
 </script>
 <import template="/admin/_footer" />
