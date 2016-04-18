@@ -40,6 +40,7 @@ class CronTab
             $obj->run();
             $this->setNextRun($obj->getStep());
         }
+        file_put_contents(ROOT_PATH . "cron.txt", "aaaa");
     }
 
     private function getNextRun()

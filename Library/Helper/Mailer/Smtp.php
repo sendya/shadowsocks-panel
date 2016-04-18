@@ -12,7 +12,9 @@ namespace Helper\Mailer;
 use Contactable\IMailer;
 use Core\Error;
 use Helper\Option;
+use Helper\Utils;
 use Model\Mail as MMail;
+use ReflectionObject;
 
 /**
  * Class Smtp
@@ -24,15 +26,16 @@ class Smtp implements IMailer
 
     private $smtpServer = '';
     private $port = '25';
-    private $timeout = '45';
+    private $timeout = '20';
     private $username = '';
     private $password = '';
     private $address = '';
+    private $form = '';
     private $newline = "\r\n";
     private $localdomain = 'localhost';
     private $charset = 'utf-8';
     private $contentTransferEncoding = false;
-    private $debug = true;
+    private $debug = false;
 
     private $smtpConnect = false;
     private $to = false;
@@ -54,9 +57,6 @@ class Smtp implements IMailer
             if (!$this->debug) {
                 return false;
             }
-            //echo $this->Error.$this->newline.'<!-- '.$this->newline;
-            //print_r($this->logArray);
-            //echo $this->newline.'-->'.$this->newline;
             return $this->logArray;
         }
         return true;
@@ -64,25 +64,22 @@ class Smtp implements IMailer
 
     public function __construct()
     {
-        /*
-        $config = Option::get("MAIL_" . __CLASS__);
-        if(!$config)
-            throw new Error("邮件模块：" . __CLASS__ . " 配置不完整，无法使用。");
+        $className = Utils::getShortName($this);
+
+        $config = Option::get("MAIL_" . $className);
+        if (!$config) {
+            throw new Error("邮件模块 " . $className . " 配置不完整，无法使用。");
+        }
 
         $this->config = json_decode($config, true);
-        */
 
-        $this->config = array(
-            "server" => "smtp.exmail.qq.com",
-            "address" => "h@loacg.com",
-            "smtp_name" => "h@loacg.com",
-            "smtp_pass" => "yinliang1994"
-        );
+        Option::set('MAIL_' . $className, json_encode($this->config));
 
         $this->smtpServer = $this->config['server'];
         $this->address = $this->config['address'];
         $this->username = $this->config['smtp_name'];
         $this->password = $this->config['smtp_pass'];
+        $this->form = $this->config['from'];
     }
 
     private function Connect2Server()
@@ -92,7 +89,7 @@ class Smtp implements IMailer
         if (!is_resource($this->smtpConnect)) {
             return false;
         }
-        $this->logArray['connection'] = 'Connection accepted: ' . $this->readResponse();
+        // $this->logArray['connection'] = 'Connection accepted: ' . $this->readResponse();
         $this->sendCommand("EHLO {$this->localdomain}");
         $this->logArray['EHLO'] = $this->readResponse();
         $this->sendCommand('AUTH LOGIN');
@@ -161,8 +158,8 @@ class Smtp implements IMailer
     private function sendHeaders()
     {
         $this->sendCommand('Date: ' . date('D, j M Y G:i:s') . ' +0700');
-        $this->sendCommand("From: <{$this->address}>");
-        $this->sendCommand("Reply-To: <{$this->address}>");
+        $this->sendCommand("From: $this->form");
+        $this->sendCommand("Reply-To: $this->form");
         $this->sendCommand("To: <{$this->to}>");
         $this->sendCommand("Subject: {$this->subject}");
         $this->sendCommand('MIME-Version: 1.0');

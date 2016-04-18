@@ -9,6 +9,7 @@ namespace Helper;
 
 use Model\User;
 use Helper\Option;
+use ReflectionObject;
 
 class Utils
 {
@@ -218,6 +219,12 @@ class Utils
         } else {
             return "";
         }
+    }
+
+
+    public static function getShortName(&$class) {
+        $reflection = new ReflectionObject($class);
+        return $reflection->getShortName();
     }
 
     /* get & set */
