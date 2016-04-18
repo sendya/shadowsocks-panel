@@ -36,7 +36,7 @@ class Card
         if ($_POST['actCard'] != null) {
             $actCard = htmlspecialchars(trim($_POST['actCard']));
             $card = CardModel::queryCard($actCard);
-            if (!$card) {
+            if (!$card || !$card->status) {
                 return $result;
             }
 
