@@ -30,6 +30,9 @@ class StopExpireUser implements ICron
         $notificationMail = Option::get('mail_stop_expire_notification');;
         $mailContent = Option::get('mail_stop_expire_content');
 
+        $mailer = Mailer::getInstance();
+        $mailer->toQueue(true);
+
         foreach ($users as $user) {
             $user->stop();
             if ($notificationMail) {
@@ -37,8 +40,6 @@ class StopExpireUser implements ICron
                 $mail->to = $user->email;
                 $mail->subject = "用户 {$user->nickname}，您的账户由于未续费超时已停用";
                 $mail->content = $mailContent;
-                $mailer = Mailer::getInstance();
-                $mailer->toQueue(true);
                 $mailer->send($mail);
             }
         }
