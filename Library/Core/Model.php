@@ -71,7 +71,7 @@ abstract class Model
         } else {
             $sql = "INSERT INTO `{$tableName}` SET ";
             foreach ($map as $key => $value) {
-                $sql .= "{$key} = :{$key},";
+                $sql .= "`{$key}` = :{$key},";
             }
             $sql = rtrim($sql, ',');
             $statement = Database::getInstance()->prepare($sql);
