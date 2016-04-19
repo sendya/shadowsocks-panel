@@ -13,6 +13,7 @@ use Core\Model;
 
 /**
  * Class Mail
+ * @table mail_queue
  * @package Model
  */
 class Mail extends Model
