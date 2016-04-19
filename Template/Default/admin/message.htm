@@ -21,6 +21,7 @@
                     <div class="panel-heading">
                         <h3 class="panel-title"></h3>
                         <div class="panel-options">
+                            <a href="javascript:;" id="mailer-add"><span>群邮件</span></a>
                             <a href="javascript:;" id="message-add"><span>+</span></a>
                             <a href="javascript:;" data-toggle="reload">
                                 <i class="fa-rotate-right"></i>
@@ -242,8 +243,8 @@
                             changeTable(result.data.modal);
                         }
                         showToastr(result.data.message, 0);
-                        $('#modal-6').modal('hide');
-                    },
+                $('#modal-6').modal('hide');
+            },
                     error: function(Xhr){
                         showToastr("出现未知错误，请重试", 0);
                     }
@@ -252,11 +253,26 @@
         });
 
         $("#message-add").on('click', function(){
+            $("#form1").attr("action", "admin/message/update.json");
             $("#modal-6 .modal-body").html(modal_default_body);
             $("input[name='message.id']").val('');
             $('#modal-6 .modal-title').html('新增消息');
             $('#modal-6').modal('show', {backdrop: 'static'});
             reset(true);
+        });
+        $("#mailer-add").on('click', function(){
+
+            var newHtml = '<div class="row"><div class="col-md-12">';
+            newHtml += '<div class="form-group no-margin"><label for="field-0" class="control-label">消息标题</label>';
+            newHtml += '<input class="form-control autogrow" name="mailer.subject" id="field-0" /></div>';
+            newHtml += '<div class="form-group no-margin"><label for="field-1" class="control-label">消息内容</label>';
+            newHtml += '<textarea class="form-control autogrow" name="mailer.content" rows="15" id="field-0" placeholder="请填写消息内容，支持 HTML 标记"></textarea>';
+            newHtml += '</div></div>';
+            $("#form1").attr("action", "admin/mailer/postAll.json");
+            $("#modal-6 .modal-body").html(newHtml);
+            $('#modal-6 .modal-title').html('系统邮件群发');
+            $('#modal-6').modal('show', {backdrop: 'static'});
+
         });
     });
 
@@ -302,6 +318,7 @@
                     $("input[name='message.pushUsers']").val(message.pushUsers);
                     $("input[name='message.pushEndTime']").val(message.pushEndTime);
                     $("textarea[name='message.content']").val(message.content);
+                    $("#form1").attr("action", "admin/message/update.json");
                     $('#modal-6 .modal-title').html('修改消息');
                     reset(true);
                 } else {

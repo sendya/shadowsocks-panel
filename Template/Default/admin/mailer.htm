@@ -14,6 +14,7 @@
     </div>
 </div>
 <section class="content">
+    <form action="admin/mailer/saveSetting.json" id="form0" name="form" onsubmit="return false;">
     <div class="row">
         <div class="col-xs-12">
             <div class="box">
@@ -31,10 +32,10 @@
                     </div>
                     <div class="panel-body">
 
-                        <input type="radio" class="cbr cbr-secondary" value="" checked /> SMTP方式<br/>
-                        <input type="radio" class="cbr cbr-secondary" value=""/> PHP内置邮件发送函数<br/>
-                        <input type="radio" class="cbr cbr-secondary" value=""/> MailGun代发系统<br/>
-                        <input type="radio" class="cbr cbr-secondary" value=""/> SS Cat提供的邮件投递API(发送者显示：SS Cat&lt;post@sscat.it&gt;)<br/>
+                        <input type="radio" name="mail_type" class="cbr cbr-secondary" value="SMTP" checked /> SMTP方式<br/><br/>
+                        <input type="radio" name="mail_type" class="cbr cbr-secondary" value="PHP_MAIL"/> PHP内置邮件发送函数<br/><br/>
+                        <input type="radio" name="mail_type" class="cbr cbr-secondary" value="MAILGUN"/> MailGun代发系统<br/><br/>
+                        <input type="radio" name="mail_type" class="cbr cbr-secondary" value="CAT_API"/> SS Cat提供的邮件投递API(发送者显示：SS Cat&lt;post@sscat.it&gt;)<br/>
                         <br/>
                         <br/>
                         <button type="submit" class="btn btn-success">立即保存</button>
@@ -43,6 +44,7 @@
             </div>
         </div>
     </div>
+    </form>
 </section>
 </div>
 </div>
