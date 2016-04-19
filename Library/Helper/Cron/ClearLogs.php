@@ -1,11 +1,9 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: Sendya
- * Date: 2016/3/27
- * Time: 3:50
+ * shadowsocks-panel
+ * Add: 2016/03/27 03:50
+ * Author: Sendya <18x@loacg.com>
  */
-
 namespace Helper\Cron;
 
 use Contactable\ICron;

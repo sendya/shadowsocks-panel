@@ -1,16 +1,14 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: Sendya
- * Date: 2016/3/27
- * Time: 3:50
+ * shadowsocks-panel
+ * Add: 2016/03/27 03:50
+ * Author: Sendya <18x@loacg.com>
  */
 
 namespace Helper\Cron;
 
 use Contactable\ICron;
 
-use Helper\Setting;
 use Model\User;
 
 /**
@@ -26,20 +24,14 @@ class StopExpireUser implements ICron
 
     public function run()
     {
-
         $users = User::getUserArrayByExpire();
-        $mailPost = false;
-//        if (Setting::get('status_mail')) {
-//            $mailPost = true;
-//            $mailContent = '';
-//        }
+        $notificationMail = false;
 
         foreach ($users as $user) {
             $user->stop();
-            /*
-            if($mailPost)
+            if ($notificationMail) {
                 new Mailer(new Mail($user->uid, '用户 {$user->nickname}，您的账户由于未续费超时已停用', $mailContent));
-            */
+            }
         }
 
     }

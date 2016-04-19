@@ -1,15 +1,16 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: Sendya
- * Date: 2016/3/27
- * Time: 0:12
+ * shadowsocks-panel
+ * Add: 2016/03/27 00:12
+ * Author: Sendya <18x@loacg.com>
  */
+
 
 namespace Helper;
 
 use Helper\Setting;
 use Core\Database as DB;
+use Model\Cron;
 
 class CronTab
 {
@@ -22,47 +23,38 @@ class CronTab
         $this->now = time();
     }
 
-    /**
-     * @return string|void
-     */
     public function run()
     {
         if (!defined('ENABLE_CRON')) {
             return;
         }
 
-        $next = $this->getNextRun();
-        if ($next != null) {
-            $this->cronId = $next->id;
-            $cl = ucfirst($this->cronId);
-            $cl = "\\Helper\\Cron\\{$cl}";
-            $obj = new $cl;
-            $obj->run();
-            $this->setNextRun($obj->getStep());
+        $cron = $this->getNextRun();
+        if (!$cron) {
+            return;
         }
-        file_put_contents(ROOT_PATH . "cron.txt", "aaaa");
+        $cron->run();
+        $this->setNextRun($cron->getStep());
+        return;
     }
 
     private function getNextRun()
     {
+        $next = Cron::getNextRun();
+        if (!$next) {
+            return false;
+        }
 
-        $st = DB::sql("SELECT * FROM cron WHERE nextrun<{$this->now} AND enable=1 ORDER BY `order` LIMIT 0,1");
-        $st->execute();
-        return $st->fetchObject(__CLASS__);
+        $this->cronId = $next->id;
+        $cl = ucfirst($this->cronId);
+        $cl = "\\Helper\\Cron\\{$cl}";
+        $obj = new $cl;
+        return $obj;
     }
 
     private function setNextRun($step)
     {
-        $inTransaction = DB::getInstance()->inTransaction();
-        if (!$inTransaction) {
-            DB::getInstance()->beginTransaction();
-        }
-        $st = DB::sql("UPDATE cron SET nextrun={$step} WHERE id='{$this->cronId}'");
-        $rs = $st->execute();
-        if (!$inTransaction) {
-            DB::getInstance()->commit();
-        }
-        return $rs;
+        Cron::setNextRun($this->cronId, $step);
     }
 
     private function start($name)

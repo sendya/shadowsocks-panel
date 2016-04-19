@@ -16,7 +16,7 @@ class Cron extends Model
 
     public $id;
     public $enable;
-    public $nextRun;
+    public $nextrun;
     public $order;
 
     public static function getCronArray()
@@ -24,5 +24,28 @@ class Cron extends Model
         $st = DB::sql("SELECT id, enable, nextrun, `order` FROM cron");
         $st->execute();
         return $st->fetchAll(DB::FETCH_CLASS, __CLASS__);
+    }
+
+    public static function getNextRun()
+    {
+        $now = time();
+        $st = DB::sql("SELECT * FROM cron WHERE nextrun<{$now} AND enable=1 ORDER BY `order` LIMIT 0,1");
+        $st->execute();
+        return $st->fetchObject(__CLASS__);
+    }
+
+    public static function setNextRun($cronId, $step)
+    {
+        $inTransaction = DB::getInstance()->inTransaction();
+        if (!$inTransaction) {
+            DB::getInstance()->beginTransaction();
+        }
+        $st = DB::sql("UPDATE cron SET nextrun=? WHERE id=?");
+        $st->bindValue(1, $step, DB::PARAM_INT);
+        $st->bindValue(2, $cronId, DB::PARAM_STR);
+        $st->execute();
+        if (!$inTransaction) {
+            DB::getInstance()->commit();
+        }
     }
 }
