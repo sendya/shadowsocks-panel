@@ -31,11 +31,10 @@ class CronTab
         }
 
         $cron = $this->getNextRun();
-        if (!$cron) {
-            return;
+        if ($cron) {
+            $cron->run();
+            $this->setNextRun($cron->getStep());
         }
-        $cron->run();
-        $this->setNextRun($cron->getStep());
 
         if (!Option::get('mail_queue')) {
             return;
