@@ -11,6 +11,7 @@ namespace Helper;
 use Helper\Setting;
 use Core\Database as DB;
 use Model\Cron;
+use Model\Mail;
 
 class CronTab
 {
@@ -35,6 +36,18 @@ class CronTab
         }
         $cron->run();
         $this->setNextRun($cron->getStep());
+
+        if (!Option::get('mail_queue')) {
+            return;
+        }
+        $mailQueue = Mail::getMailQueue();
+        if ($mailQueue) {
+            $mailQueue->delete();
+            $mailer = new Mailer();
+            $mailer->send($mailQueue);
+        } else {
+            Option::set('mail_queue', 0);
+        }
         return;
     }
 

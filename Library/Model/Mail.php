@@ -8,15 +8,28 @@
 
 namespace Model;
 
+use Core\Database as DB;
+use Core\Model;
+
 /**
  * Class Mail
  * @package Model
  */
-class Mail
+class Mail extends Model
 {
-
-    public $address;
+    public $id;
+    public $to;
     public $subject;
     public $content;
 
+    /**
+     * Get mail queue on limit 1
+     * @return Mail
+     */
+    public static function getMailQueue()
+    {
+        $st = DB::sql("SELECT * FROM mail_queue LIMIT 0,1");
+        $st->execute();
+        return $st->fetchObject(__CLASS__);
+    }
 }

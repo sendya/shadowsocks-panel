@@ -9,6 +9,9 @@ namespace Helper\Cron;
 
 use Contactable\ICron;
 
+use Helper\Mailer;
+use Helper\Option;
+use Model\Mail;
 use Model\User;
 
 /**
@@ -19,21 +22,30 @@ use Model\User;
  */
 class StopExpireUser implements ICron
 {
-
     const STEP = 300; // 5分钟执行一次
 
     public function run()
     {
         $users = User::getUserArrayByExpire();
-        $notificationMail = false;
+        $notificationMail = Option::get('mail_stop_expire_notification');;
+        $mailContent = Option::get('mail_stop_expire_content');
 
         foreach ($users as $user) {
             $user->stop();
             if ($notificationMail) {
-                new Mailer(new Mail($user->uid, '用户 {$user->nickname}，您的账户由于未续费超时已停用', $mailContent));
+                $mail = new Mail();
+                $mail->to = $user->email;
+                $mail->subject = "用户 {$user->nickname}，您的账户由于未续费超时已停用";
+                $mail->content = $mailContent;
+                $mailer = Mailer::getInstance();
+                $mailer->toQueue(true);
+                $mailer->send($mail);
             }
         }
-
+        // 避免频繁更新 Option 单例对象，循环结束后再执行
+        if ($notificationMail) {
+            Option::set('mail_queue', 1);
+        }
     }
 
     public function getStep()

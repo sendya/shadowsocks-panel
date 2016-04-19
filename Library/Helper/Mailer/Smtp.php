@@ -49,7 +49,7 @@ class Smtp implements IMailer
 
     public function send(MMail $mail)
     {
-        $this->to = $mail->address;
+        $this->to = $mail->to;
         $this->subject = $mail->subject;
         $this->message = $mail->content;
 
