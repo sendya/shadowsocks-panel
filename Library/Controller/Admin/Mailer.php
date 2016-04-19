@@ -10,8 +10,10 @@ namespace Controller\Admin;
 
 
 use Core\Template;
+use Helper\Option;
 use Model\Mail;
 use Model\User;
+use Helper\Mailer as Mailer1;
 
 class Mailer
 {
@@ -34,7 +36,8 @@ class Mailer
 
         $users = User::getUserList();
 
-        $mailer = new \Helper\Mailer();
+        $mailer = Mailer1::getInstance();
+        $mailer->toQueue(true);
 
         $mail = new Mail();
         $mail->subject = $subject;
@@ -44,6 +47,9 @@ class Mailer
             $mail->to = $user->email;
             $mailer->send($mail);
         }
+
+        Option::set('mail_queue', 1);
+
         return array('error' => 1, 'message' => '群邮件已经加入列队正在发送中..');
     }
 
