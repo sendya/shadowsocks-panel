@@ -47,6 +47,25 @@ class Smtp implements IMailer
 
     private $config;
 
+    public function isAvailable()
+    {
+        $className = Utils::getShortName($this);
+
+        $config = Option::get('MAIL_' . $className);
+        if (!$config) {
+            $_config = array(
+                "server" => "smtp.exmail.qq.com",
+                'from' => '发件人名 <no-reply@loacg.com>',
+                "address" => "no-reply@loacg.com",
+                "smtp_name" => "no-reply@loacg.com",
+                "smtp_pass" => "请填写密码"
+            );
+            Option::set('MAIL_' . $className, json_encode($_config)); // 设定默认配置
+            return false;
+        }
+        return true;
+    }
+
     public function send(MMail $mail)
     {
         $this->to = $mail->to;
@@ -66,7 +85,7 @@ class Smtp implements IMailer
     {
         $className = Utils::getShortName($this);
 
-        $config = Option::get("MAIL_" . $className);
+        $config = Option::get('MAIL_' . $className);
         if (!$config) {
             throw new Error("邮件模块 " . $className . " 配置不完整，无法使用。");
         }

@@ -17,6 +17,7 @@ use Model\Mail;
  */
 interface IMailer
 {
+    public function isAvailable();
 
     /** 发送方法 */
     public function send(Mail $mail);

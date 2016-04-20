@@ -15,6 +15,12 @@ use Model\Mail;
 use Model\User;
 use Helper\Mailer as Mailer1;
 
+/**
+ * Class Mailer
+ * @Admin
+ * @Authorization
+ * @package Controller\Admin
+ */
 class Mailer
 {
 
@@ -26,6 +32,10 @@ class Mailer
         Template::setView('admin/mailer');
     }
 
+    /**
+     * @return array
+     * @throws \Core\Error
+     */
     public function postAll()
     {
         $subject = $_POST['mailer_subject'];
@@ -51,6 +61,28 @@ class Mailer
         Option::set('mail_queue', 1);
 
         return array('error' => 1, 'message' => '群邮件已经加入列队正在发送中..');
+    }
+
+    /**
+     * @JSON
+     */
+    public function saveSetting()
+    {
+        $type = $_POST['mail_type'];
+        switch($type) {
+            case 'Smtp':
+
+                break;
+            case 'MailGun':
+
+                break;
+            case 'CoreSend':
+
+                break;
+            default:
+                return array('error' => 1, 'message' => '保存错误，找不到此邮件类');
+                break;
+        }
     }
 
 }

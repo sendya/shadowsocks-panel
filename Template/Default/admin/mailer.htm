@@ -14,7 +14,7 @@
     </div>
 </div>
 <section class="content">
-    <form action="admin/mailer/saveSetting.json" id="form0" name="form" onsubmit="return false;">
+
     <div class="row">
         <div class="col-xs-12">
             <div class="box">
@@ -31,20 +31,21 @@
                         </div>
                     </div>
                     <div class="panel-body">
-
-                        <input type="radio" name="mail_type" class="cbr cbr-secondary" value="SMTP" checked /> SMTP方式<br/><br/>
-                        <input type="radio" name="mail_type" class="cbr cbr-secondary" value="PHP_MAIL"/> PHP内置邮件发送函数<br/><br/>
-                        <input type="radio" name="mail_type" class="cbr cbr-secondary" value="MAILGUN"/> MailGun代发系统<br/><br/>
+                        <form action="" onsubmit="return false;">
+                        <input type="radio" name="mail_type" class="cbr cbr-secondary" value="Smtp" checked /> SMTP方式<br/><br/>
+                        <input type="radio" name="mail_type" class="cbr cbr-secondary" value="CoreSend"/> PHP内置邮件发送函数<br/><br/>
+                        <input type="radio" name="mail_type" class="cbr cbr-secondary" value="MailGun"/> MailGun代发系统<br/><br/>
                         <input type="radio" name="mail_type" class="cbr cbr-secondary" value="CAT_API"/> SS Cat提供的邮件投递API(发送者显示：SS Cat&lt;post@sscat.it&gt;)<br/>
                         <br/>
                         <br/>
-                        <button type="submit" class="btn btn-success">立即保存</button>
+                        <button type="button" class="btn btn-success" id="save-setting">立即保存</button>
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    </form>
+
 </section>
 </div>
 </div>
@@ -158,7 +159,28 @@
                 });
             }
         });
+        $("#save-setting").on('click', function () {
+            $.ajax({
+                url: "admin/mailer/saveSetting.json",
+                method: "POST",
+                dataType: "json",
+                data: {'mail_type': $("input[name='mail_type']").val()},
+                success: function(result) {
+                    if(result.code != 200) {
+                        showToastr(result.message, 0, 3000, '系统错误');
+                        return;
+                    }
+                    showToastr(result.data.message, 0);
 
+
+
+                    /* $('#modal-6').modal('show', {backdrop: 'static'}); */
+                },
+                error: function(jqXhr) {
+
+                }
+            });
+        });
     });
     function optionModify(optionName){
         $("#modal-6 .modal-body").html(modal_default_body);
@@ -201,31 +223,6 @@
             }
         });
         $('#modal-6').modal('show', {backdrop: 'static'});
-    }
-    function changeTable(data) {
-        var tid = $("tr#msg-" + data.id).html();
-        if(tid == undefined || tid == null) {
-            /* 新增 */
-            var trCount = $("table tbody").children("tr").length;
-            var newData = '<tr id="msg-"'+data.id+'>';
-            newData += "<td>#" + data.id + "</td>";
-            newData += "<td>"  + data.content + "</td>";
-            newData += "<td>" + data.pushEndTime + "</td>";
-            newData += "<td>" + data.pushUsers + "</td>";
-            newData += "<td>" + data.type + "</td>";
-            newData += "<td>" + '<a class="btn btn-info btn-sm" href="javascript:;" onclick="messageModify('+data.id+');">编辑</a>' + '<a class="btn btn-danger btn-sm" href="javascript:;" onclick="messageRemove('+data.id+');">删除</a>' + "</td></tr>";
-            $("table tbody").append(newData);
-            if($("#node-0").html() != undefined) $("#node-0").remove();
-        } else {
-            /* 修改 */
-            var newData = "<td>#" + data.id + "</td>";
-            newData += "<td>"  + data.content + "</td>";
-            newData += "<td>" + data.pushEndTime + "</td>";
-            newData += "<td>" + data.pushUsers + "</td>";
-            newData += "<td>" + data.type + "</td>";
-            newData += "<td>" + '<a class="btn btn-info btn-sm" href="javascript:;" onclick="messageModify('+data.id+');">编辑</a>' + '<a class="btn btn-danger btn-sm" href="javascript:;" onclick="messageRemove('+data.id+');">删除</a>' + "</td>";
-            $("tr#msg-" + data.id).html(newData);
-        }
     }
 </script>
 <import template="/admin/_footer" />
