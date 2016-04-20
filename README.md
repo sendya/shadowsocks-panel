@@ -16,12 +16,15 @@
 程序最低要求PHP版本为 **PHP5.5+** ~ **PHP7**
 
 ### 安装教程
-将最新的 `releases` 下载并解压
-复制一份 `./Data/Config.simple.php` 为 `./Data/Config.php`
 ```bash
+# 克隆 shadowsocks-panel 库下来
+git clone https://github.com/sendya/shadowsocks-panel.git
+cd shadowsocks-panel
 # 设定 Data 目录读写权限
 chmod -R 777 ./Data/
-# 配置数据库名及数据库账户密码
+# 复制一份 ./Data/Config.simple.php 为 ./Data/Config.php
+cp ./Data/Config.simple.php ./Data/Config.php
+# 配置数据库名及数据库账户密码(代码最下面)
 vim ./Data/Config.php
 
 # 开始执行安装
@@ -47,10 +50,10 @@ $ * * * * * /usr/bin/curl https://domain.com/cron
 ##### 访问您的网站并注册第一个账户（默认第一个账户为 管理员账户）
 
 
-> 注意：
-> 由于旧版本与新版本加密函数完全不同，既无法从旧版本平滑迁移数据到新版本。
-> 从旧版本导入用户数据到新版本后 请通知用户使用`找回密码`功能重置一次密码(请设定好服务器mail配置)
-> 请不要直接 `git clone` 代码下来安装。 除非你愿意自己构建 `js`和`css`。
+> 注意：  
+> 由于旧版本与新版本加密函数完全不同，既无法从旧版本平滑迁移数据到新版本。  
+> 从旧版本导入用户数据到新版本后 请通知用户使用`找回密码`功能重置一次密码(请设定好服务器mail配置)  
+> 请不要直接 `git clone` 代码下来安装。 除非你愿意自己构建 `js`和`css`。  
 
 
 other
