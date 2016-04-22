@@ -168,6 +168,16 @@ class User extends Model
         return $this->admin;
     }
 
+    /**
+     * Set administrator
+     */
+    public function setAdmin()
+    {
+        $stn = DB::sql("INSERT INTO `admin` SET uid=?");
+        $stn->bindValue(1, $this->uid, DB::PARAM_INT);
+        $stn->execute();
+    }
+
     public function getPlan()
     {
         return Utils::planAutoShow($this->plan);

@@ -81,6 +81,24 @@ class User
     }
 
     /**
+     * 设置管理员权限
+     * @Admin
+     * @Authorization
+     * @JSON
+     */
+    public function setAdmin()
+    {
+        if(!$_POST['uid']) {
+            $user = UserModel::getUserByUserId(intval($_POST['uid']));
+            if($user && !$user->isAdmin()) {
+                $user->setAdmin(); // 设定用户的admin权限。
+                return array('error' => 0, 'message' => '用户：' . $user->nickname . ' 已经成为管理员。');
+            }
+        }
+        return array('error' => 1, 'message' => '添加管理员失败，可能没有此uid的用户。');
+    }
+
+    /**
      * 修改用户信息
      * @JSON
      */
@@ -153,4 +171,5 @@ class User
         }
         return $result;
     }
+
 }
