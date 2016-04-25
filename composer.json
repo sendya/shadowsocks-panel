@@ -19,7 +19,6 @@
   },
   "require": {
     "robmorgan/phinx": "^0.5.3",
-    "nette/mail": "*",
     "mailgun/mailgun-php": "~2.0",
     "php-http/guzzle6-adapter": "^1.0"
   }
