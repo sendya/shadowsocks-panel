@@ -32,12 +32,12 @@
                     </div>
                     <div class="panel-body">
                         <form action="" onsubmit="return false;">
-                            <input type="radio" name="mail_type" class="cbr cbr-secondary" value="MailGun"/> MailGun代发系统<br/><br/>
-                            <input type="radio" name="mail_type" class="cbr cbr-secondary" value="Smtp" checked/> SMTP方式<br/><br/>
+                            <input type="radio" name="mail_type" class="cbr cbr-secondary" value="MailGun" <if condition="$selectMail == 'MailGun'">checked</if>/> MailGun代发系统<br/><br/>
+                            <input type="radio" name="mail_type" class="cbr cbr-secondary" value="Smtp" <if condition="$selectMail == 'Smtp'">checked</if>/> SMTP方式<br/><br/>
                             <input type="radio" name="mail_type" class="cbr cbr-secondary disabled" value="CoreSend"
-                                   disabled="disabled"/> PHP内置邮件发送函数<br/><br/>
+                                   disabled="disabled" <if condition="$selectMail == 'CoreSend'">checked</if>/> PHP内置邮件发送函数<br/><br/>
                             <input type="radio" name="mail_type" class="cbr cbr-secondary disabled" value="CAT_API"
-                                   disabled="disabled"/> SS Cat提供的邮件投递API(发送者显示：SS Cat&lt;post@sscat.it&gt;)<br/>
+                                   disabled="disabled" <if condition="$selectMail == 'CAT_API'">checked</if>/> SS Cat提供的邮件投递API(发送者显示：SS Cat&lt;post@sscat.it&gt;)<br/>
                             <br/>
                             <br/>
                             <button type="button" class="btn btn-success" id="save-setting">立即保存</button>
@@ -60,9 +60,8 @@
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 <h4 class="modal-title"></h4>
             </div>
-            <form role="form" id="form1" method="post" action="/admin/setting/update.json" class="validate">
-                <input type="hidden" name="form_add" value="{(time())}"/>
-                <input type="hidden" name="mailer" id=mailer" value=""/>
+            <form role="form" id="form1" method="post" action="/admin/mailer/update.json" class="validate">
+                <input type="hidden" name="mail_mailer" id=mail_mailer" value=""/>
                 <div class="modal-body">
                     <div id="modal-isload">Content is loading...</div>
                     <div id="modal-isbody" style="display: none;">
@@ -143,19 +142,19 @@
                         showToastr(result.message, 0, 3000, '系统错误');
                         return;
                     }
-
                     $(".modal-body .row").empty();
-                    $("#mailer").val(result.data.mailer);
+                    $('#modal-6 .modal-title').html('邮件系统 ' + result.data.mailer + " 设置");
                     if (result.data.configs != null) {
                         var jsonObj = result.data.configs;
                         /*遍历Json串获取其属性*/
                         for (var item in jsonObj) {
                             var obj = jsonObj[item];
-                            var strVar = "<div class=\"col-md-12\"><div class=\"form-group\"><label for=\"field-"+item+"\" class=\"control-label\">配置项："+obj.key+"<\/label><input type=\"text\" class=\"form-control\" name=\""+obj.key+"\" id=\"field-"+item+"\" value=\""+obj.value+"\" placeholder=\""+obj.value+"\"><\/div><\/div>";
+                            var strVar = "<div class=\"col-md-12\"><div class=\"form-group\"><label for=\"field-"+item+"\" class=\"control-label\">配置项："+obj.key+"<\/label><input type=\"text\" class=\"form-control\" name=\"mail_"+obj.key+"\" id=\"field-"+item+"\" value=\""+obj.value+"\" placeholder=\""+obj.value+"\"><\/div><\/div>";
                             $(".modal-body .row").append(strVar);
                             console.log("key: " + obj.key + ", value: " + obj.value);
                         }
                     }
+                    $("input[name='mail_mailer']").val(result.data.mailer);
 
                     showToastr(result.data.message, 0);
                     reset(true);

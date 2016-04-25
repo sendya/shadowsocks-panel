@@ -26,7 +26,7 @@ class Mailer
 
     public function index()
     {
-
+        $data['selectMail'] = Option::get('MAIL_AVAILABLE');
         $data['user'] = User::getCurrent();
         Template::setContext($data);
         Template::setView('admin/mailer');
@@ -83,6 +83,30 @@ class Mailer
         }
         Option::set('MAIL_AVAILABLE', $type);
         return array('error' => 0, 'message' => '请设置邮件参数', 'configs' => $_config, 'mailer' => $type);
+    }
+
+    /**
+     * @JSON
+     */
+    public function update()
+    {
+        $result['error'] = 0;
+        $result['message'] = '保存完成';
+        foreach($_POST as $key => $val) {
+            if(!empty($val) && strpos($key, 'mail_')!==false) {
+                $k = str_replace('mail_', '', $key);
+                $data[$k] = trim($val);
+            }
+        }
+
+        if(!empty($_POST['mail_mailer'])){
+            $config = json_encode($data);
+            Option::set(trim($_POST['mail_mailer']), $config);
+        } else {
+            $result['error'] = 1;
+            $result['message'] = '保存失败，参数不完整';
+        }
+        return $result;
     }
 
     private static function createMailObject($mailClass) {
