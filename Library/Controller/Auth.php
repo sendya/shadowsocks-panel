@@ -6,6 +6,7 @@
  */
 namespace Controller;
 
+use Helper\Mailer;
 use Model\Invite;
 use Model\User;
 use Model\Message as MessageModel;
@@ -199,8 +200,13 @@ Yours,
 The {$siteName} Team
 EOF;
 
-
-            Mail::mail_send($user->email, "[" . SITE_NAME . "] Password Recovery", $content);
+            $mailer = Mailer::getInstance();
+            $mail = new \Model\Mail();
+            $mail->to = $user->email;
+            $mail->subject = "[" . SITE_NAME . "] Password Recovery";
+            $mail->content = $content;
+            // $mailer->toQueue(true); 添加到邮件列队
+            $isOk = $mailer->send($mail);
 
             $user->save();
 
@@ -238,9 +244,13 @@ Password: {$newPassword}
 <br/>
 Yours, The {$siteName} Team
 EOF;
-
-
-                    $mailResult = Mail::mail_send($user->email, "[" . SITE_NAME . "] Your new Password", $content);
+                    $mailer = Mailer::getInstance();
+                    $mail = new \Model\Mail();
+                    $mail->to = $user->email;
+                    $mail->subject = "[" . SITE_NAME . "] Your new Password";
+                    $mail->content = $content;
+                    // $mailer->toQueue(true); 添加到邮件列队
+                    $isOk = $mailer->send($mail);
 
                     $result['message'] = '新密码已经发送到该账户邮件地址，请注意查收!<br/> 并且请在登陆后修改密码！';
                     $result['error'] = 0;
