@@ -31,7 +31,6 @@ class Card
 
         $user = User::getUserByUserId(User::getCurrent()->uid);
 
-        // -- TODO:: 套餐卡使用
         $result = array('error' => 1, 'message' => '该卡已经被使用或不存在。');
         if ($_POST['actCard'] != null) {
             $actCard = htmlspecialchars(trim($_POST['actCard']));
@@ -52,6 +51,7 @@ class Card
                 $user->plan = $card->info;
                 $user->transfer = Utils::GB * intval($custom_transfer_level[$user->plan]);
                 $user->payTime = time();
+                $user->enable = 1;
                 if ($user->expireTime < time()) {
                     $user->expireTime = time() + (3600 * 24 * 31); // 到期时间
                 } else {
@@ -67,6 +67,7 @@ class Card
                         $user->flow_up = 0;
                         $user->flow_down = 0;
                     }
+                    $user->enable = 1;
                     $user->plan = 'Z'; // 强制设定为Z
                     $user->expireTime = strtotime("+1 year"); // 账户可用时间增加一年
                     $result['message'] = '您的账户已经激活固定流量套餐，共有流量' . Utils::flowAutoShow($user->transfer) . ' ,该流量到期时间 ' . date('Y-m-d H:i:s',
@@ -86,6 +87,7 @@ class Card
                         $user->transfer = Utils::GB * intval($custom_transfer_level[$user->plan]);
                         $user->flow_down = 0;
                         $user->flow_up = 0;
+                        $user->enable = 1;
                         $result['message'] = '您的账户已经激活测试套餐，共有流量' . Utils::flowAutoShow($user->transfer) . ' ,到期时间 ' . date('Y-m-d H:i:s',
                                 $user->expireTime) . ', 感谢您的使用';
                     } else {

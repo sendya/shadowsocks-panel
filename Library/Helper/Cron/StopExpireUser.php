@@ -27,7 +27,7 @@ class StopExpireUser implements ICron
     public function run()
     {
         $users = User::getUserArrayByExpire();
-        $notificationMail = Option::get('mail_stop_expire_notification');;
+        $notificationMail = Option::get('mail_stop_expire_notification');
         $mailContent = Option::get('mail_stop_expire_content');
 
         $mailer = Mailer::getInstance();
@@ -47,6 +47,8 @@ class StopExpireUser implements ICron
         if ($notificationMail) {
             Option::set('mail_queue', 1);
         }
+
+        User::getUserArrayByExpireEnable(); // 启用已续费且流量未超过的用户
     }
 
     public function getStep()
