@@ -61,6 +61,7 @@ class Mailer
     }
 
     /**
+     * @JSON
      * @return array
      * @throws \Core\Error
      */
