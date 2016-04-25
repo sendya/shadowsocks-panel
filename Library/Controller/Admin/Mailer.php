@@ -45,14 +45,14 @@ class Mailer
         $mail->to = $user->email;
         $mail->subject = '[' . SITE_NAME . '] 这是一封测试邮件';
         $mail->content = '这是一封<b>单条发送</b>测试邮件';
-        if(!$mailer->send($mail)) {
+        if (!$mailer->send($mail)) {
             return $result;
         }
         $mailer->toQueue(true);
         $mail->subject = '[' . SITE_NAME . '] 这是一封多条发送测试邮件';
         $mail->content = '这是一封<b>多条发送</b>测试邮件';
         $mailer->send($mail);
-        if(!$mailer->send($mail)) {
+        if (!$mailer->send($mail)) {
             return $result;
         } else {
             $result = array('error' => 0, 'message' => '邮件已经发送到您的邮箱上');
@@ -98,17 +98,22 @@ class Mailer
     public function saveSetting()
     {
         $type = $_POST['mail_type'];
+        $mailType = 'MAIL_' . $type;
         $mailer = self::createMailObject($type);
         if (!$mailer->isAvailable()) {
-            $config = Option::get('MAIL_' . $type);
+            $config = Option::get($mailType);
         }
-        $config = Option::get('MAIL_' . $type);
+        if (!$config) {
+            $config = Option::get($mailType);
+        }
         $config = json_decode($config, true);
         $_config = [];
         foreach ($config as $key => $val) {
             $k = $key;
             $v = $val;
-            $_config[] = ['key' => $k, 'value' => $v];
+            if (strpos($k, 'mailer') === false) {
+                $_config[] = ['key' => $k, 'value' => $v];
+            }
         }
         return array('error' => 0, 'message' => '请设置邮件参数', 'configs' => $_config, 'mailer' => $type);
     }
@@ -124,14 +129,16 @@ class Mailer
         $result['message'] = '保存完成';
         foreach ($_POST as $key => $val) {
             if (!empty($val) && strpos($key, 'mail_') !== false) {
-                $k = str_replace('mail_', '', $key);
-                $data[$k] = trim($val);
+                if (strpos($key, 'mailer') === false) { // 判断是否为 mail_mailer <- 这个字段是用于是被当前设定的邮件类名，此配置无需存入数据库
+                    $k = str_replace('mail_', '', $key);
+                    $data[$k] = trim($val);
+                }
             }
         }
         if (!empty($_POST['mail_mailer'])) {
             $config = json_encode($data);
             $mailer = trim($_POST['mail_mailer']);
-            Option::set('MAIL_'.$mailer, $config);
+            Option::set('MAIL_' . $mailer, $config);
             Option::set('MAIL_AVAILABLE', $mailer);
         } else {
             $result['error'] = 1;
