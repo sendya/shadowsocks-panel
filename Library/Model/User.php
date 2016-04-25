@@ -171,11 +171,17 @@ class User extends Model
     /**
      * Set administrator
      */
-    public function setAdmin()
+    public function setAdmin($val)
     {
-        $stn = DB::sql("INSERT INTO `admin` SET uid=?");
-        $stn->bindValue(1, $this->uid, DB::PARAM_INT);
-        $stn->execute();
+        if($val == 1 && $this->isAdmin()) {
+            $stn = DB::sql("INSERT INTO `admin` SET uid=?");
+            $stn->bindValue(1, $this->uid, DB::PARAM_INT);
+            $stn->execute();
+        } else if($val == 0 && $this->isAdmin()) {
+            $stn = DB::sql("DELETE FROM `admin` WHERE uid=?");
+            $stn->bindValue(1, $this->uid, DB::PARAM_INT);
+            $stn->execute();
+        }
     }
 
     public function getPlan()

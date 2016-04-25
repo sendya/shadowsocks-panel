@@ -40,7 +40,7 @@ class Mailer
     {
         $subject = $_POST['mailer_subject'];
         $content = $_POST['mailer_content'];
-        if($subject == null || $subject == '' || $content == null || $content == '') {
+        if ($subject == null || $subject == '' || $content == null || $content == '') {
             return array('error' => 1, 'message' => '请求错误，您提交的参数不对。');
         }
 
@@ -53,7 +53,7 @@ class Mailer
         $mail->subject = $subject;
         $mail->content = $content;
 
-        foreach($users as $user) {
+        foreach ($users as $user) {
             $mail->to = $user->email;
             $mailer->send($mail);
         }
@@ -70,35 +70,36 @@ class Mailer
     {
         $type = $_POST['mail_type'];
         $mailer = self::createMailObject($type);
-        if(!$mailer->isAvailable()) {
+        if (!$mailer->isAvailable()) {
             $config = Option::get('MAIL_' . $type);
         }
-        $config = Option::get('MAIL_'.$type);
+        $config = Option::get('MAIL_' . $type);
         $config = json_decode($config, true);
         $_config = [];
-        foreach($config as $key=>$val) {
+        foreach ($config as $key => $val) {
             $k = $key;
             $v = $val;
-            $_config[] = ['key'=>$k, 'value'=>$v];
+            $_config[] = ['key' => $k, 'value' => $v];
         }
         return array('error' => 0, 'message' => '请设置邮件参数', 'configs' => $_config, 'mailer' => $type);
     }
 
     /**
+     * 更新 邮件系统设置
+     *
      * @JSON
      */
     public function update()
     {
         $result['error'] = 0;
         $result['message'] = '保存完成';
-        foreach($_POST as $key => $val) {
-            if(!empty($val) && strpos($key, 'mail_')!==false) {
+        foreach ($_POST as $key => $val) {
+            if (!empty($val) && strpos($key, 'mail_') !== false) {
                 $k = str_replace('mail_', '', $key);
                 $data[$k] = trim($val);
             }
         }
-
-        if(!empty($_POST['mail_mailer'])){
+        if (!empty($_POST['mail_mailer'])) {
             $config = json_encode($data);
             $mailer = trim($_POST['mail_mailer']);
             Option::set($mailer, $config);
@@ -110,7 +111,8 @@ class Mailer
         return $result;
     }
 
-    private static function createMailObject($mailClass) {
+    private static function createMailObject($mailClass)
+    {
         $class = "\\Helper\\Mailer\\{$mailClass}";
         $mailer = new $class;
         return $mailer;

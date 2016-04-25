@@ -230,6 +230,16 @@
                                            value="" placeholder="">
                                 </div>
                             </div>
+                            <div class="col-md-6">
+
+                                <div class="form-group">
+                                    <label for="field-13" class="control-label">是否为管理员</label>
+                                    <select name="user.isAdmin" id="field-13" class="form-control">
+                                        <option value="0">不是管理员</option>
+                                        <option value="1">是管理员</option>
+                                    </select>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -365,6 +375,7 @@
                     $("select[name='user.enable']").val(user.enable);
                     $("input[name='user.payTime']").val(user.payTime);
                     $("input[name='user.expireTime']").val(user.expireTime);
+                    $("#field-13").val(result.data.admin);
                     jQuery('#modal-6 .modal-title').html('修改用户资料');
                     reset(true);
                 }
@@ -433,10 +444,9 @@
             pageNav += '<li class="paginate_button " tabindex="0"><a href="javascript:;" onclick="getList('+(currentPage+3)+')">'+(currentPage+3)+'</a></li>';
             pageNav += '<li class="paginate_button disabled" tabindex="0"><a href="javascript:;">...</a></li>';
             pageNav += '<li class="paginate_button " tabindex="0"><a href="javascript:;" onclick="getList('+totalPage+')">'+totalPage+'</a></li>';
-        } else {
+        } else if(totalPage > 2) {
             pageNav += '<li class="paginate_button " tabindex="0"><a href="javascript:;" onclick="getList(1)">1</a></li>';
             pageNav += '<li class="paginate_button " tabindex="0"><a href="javascript:;" onclick="getList(2)">2</a></li>';
-            pageNav += '<li class="paginate_button " tabindex="0"><a href="javascript:;" onclick="getList(3)">3</a></li>';
             pageNav += '<li class="paginate_button " tabindex="0"><a href="javascript:;" onclick="getList('+totalPage+')">'+totalPage+'</a></li>';
         }
         pageNav += '<li class="paginate_button next ' + (currentPage==totalPage?'disabled':'') + '" tabindex="0"><a href="javascript:;" onclick="getList('+(currentPage+1)+')">下一页</a></li>';

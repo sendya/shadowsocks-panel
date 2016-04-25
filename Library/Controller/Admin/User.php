@@ -74,6 +74,7 @@ class User
                 $us->expireTime = date('Y-m-d H:i:s', $us->expireTime);
                 $result['error'] = 0;
                 $result['user'] = $us;
+                $result['admin'] = $us->isAdmin();
                 $result['message'] = 'Success';
             }
         }
@@ -158,6 +159,10 @@ class User
                     $us->setPassword(trim($_POST['user_password']));
                 }
                 $us->save();
+                if($_POST['user_isAdmin'] != null) { // 如果选中了管理员，设置管理员的值
+                    $us->setAdmin($_POST['user_isAdmin']);
+                }
+
                 $result['error'] = 0;
                 $result['message'] = '更新信息成功';
                 $us->plan = Utils::planAutoShow($us->plan);
