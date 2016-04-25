@@ -70,6 +70,7 @@ class MailGun implements IMailer
         }
 
         $this->config = json_decode($config, true);
-        Option::set('MAIL_' . $className, json_encode($this->config));
+        // 这里不要更新设置，否则多发几次邮件就会内存溢出了...
+        // Option::set('MAIL_' . $className, json_encode($this->config));
     }
 }
