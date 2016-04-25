@@ -84,6 +84,7 @@ class Smtp implements IMailer
     public function __construct()
     {
         $className = Utils::getShortName($this);
+        $this->isAvailable();
 
         $config = Option::get('MAIL_' . $className);
         if (!$config) {
