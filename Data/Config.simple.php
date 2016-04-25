@@ -27,18 +27,6 @@ define('THEME', 'Default');
 define('RESOURCE', 'Resource/'.THEME);
 
 /**
- * Mailer config:
- * open SSL send: 'secure' => 'ssl'
- */
-$MAIL = array(
-    'host' => 'smtp.exmail.qq.com',
-    'username' => 'h@loacg.com',
-    'password' => 'password',
-    'from'     => '某科学的H本 <h@loacg.com>',
-    'secure' => ''
-);
-
-/**
  * Rewrite setting:
  * remove "index.php" from url, needs to config apache/nginx manually
  */
