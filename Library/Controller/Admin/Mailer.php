@@ -130,7 +130,7 @@ class Mailer
         if (!empty($_POST['mail_mailer'])) {
             $config = json_encode($data);
             $mailer = trim($_POST['mail_mailer']);
-            Option::set($mailer, $config);
+            Option::set('MAIL_'.$mailer, $config);
             Option::set('MAIL_AVAILABLE', $mailer);
         } else {
             $result['error'] = 1;
