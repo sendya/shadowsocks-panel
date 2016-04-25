@@ -33,6 +33,34 @@ class Mailer
     }
 
     /**
+     * @JSON
+     */
+    public function test()
+    {
+        $result = array('error' => 1, 'message' => '发送邮件错误，请检查邮件配置');
+        $user = User::getCurrent();
+        $mailer = Mailer1::getInstance();
+
+        $mail = new Mail();
+        $mail->to = $user->email;
+        $mail->subject = '[' . SITE_NAME . '] 这是一封测试邮件';
+        $mail->content = '这是一封<b>单条发送</b>测试邮件';
+        if(!$mailer->send($mail)) {
+            return $result;
+        }
+        $mailer->toQueue(true);
+        $mail->subject = '[' . SITE_NAME . '] 这是一封多条发送测试邮件';
+        $mail->content = '这是一封<b>多条发送</b>测试邮件';
+        $mailer->send($mail);
+        if(!$mailer->send($mail)) {
+            return $result;
+        } else {
+            $result = array('error' => 0, 'message' => '邮件已经发送到您的邮箱上');
+            return $result;
+        }
+    }
+
+    /**
      * @return array
      * @throws \Core\Error
      */

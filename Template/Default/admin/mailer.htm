@@ -41,6 +41,7 @@
                             <br/>
                             <br/>
                             <button type="button" class="btn btn-success" id="save-setting">立即保存</button>
+                            <button type="button" class="btn btn-success" id="mail-test">邮件发送测试</button>
                         </form>
                     </div>
                 </div>
@@ -164,6 +165,23 @@
                 }
             });
             $('#modal-6').modal('show', {backdrop: 'static'});
+        });
+        $("#mail-test").on('click', function() {
+            $.ajax({
+                url: "admin/mailer/test.json",
+                method: "GET",
+                dataType: "json",
+                success: function(result) {
+                    if (result.code != 200) {
+                        showToastr(result.message, 0, 3000, '系统错误');
+                        return;
+                    }
+                    showToastr(result.data.message, 0);
+                },
+                error: function(jqXhr) {
+
+                }
+            });
         });
     });
     function optionModify(optionName) {
