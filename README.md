@@ -30,6 +30,9 @@ vim ./Data/Config.php
 # 开始执行安装
 php index.php install
 ```
+**任何情况出现 `Permission denied` 请对该文件设定权限**
+**任何情况出现 `system()` 报错，请运行php函数 system**
+
 请将`nginx`的 网站根目录路径指向到 `Public` 而不是 `shadowsocks-panel` 目录。
 [nginx 配置例子](#setNginx)
 
