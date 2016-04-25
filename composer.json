@@ -19,6 +19,7 @@
   },
   "require": {
     "robmorgan/phinx": "^0.5.3",
-    "nette/mail": "*"
+    "nette/mail": "*",
+    "mailgun/mailgun-php": "~2.0"
   }
 }

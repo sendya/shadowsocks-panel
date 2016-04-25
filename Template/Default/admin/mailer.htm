@@ -1,5 +1,5 @@
-<import template="/admin/_header" />
-<import template="/admin/_content" />
+<import template="/admin/_header"/>
+<import template="/admin/_content"/>
 
 <div class="page-title">
     <div class="title-env">
@@ -32,13 +32,15 @@
                     </div>
                     <div class="panel-body">
                         <form action="" onsubmit="return false;">
-                        <input type="radio" name="mail_type" class="cbr cbr-secondary" value="Smtp" checked /> SMTP方式<br/><br/>
-                        <input type="radio" name="mail_type" class="cbr cbr-secondary" value="CoreSend"/> PHP内置邮件发送函数<br/><br/>
-                        <input type="radio" name="mail_type" class="cbr cbr-secondary" value="MailGun"/> MailGun代发系统<br/><br/>
-                        <input type="radio" name="mail_type" class="cbr cbr-secondary" value="CAT_API"/> SS Cat提供的邮件投递API(发送者显示：SS Cat&lt;post@sscat.it&gt;)<br/>
-                        <br/>
-                        <br/>
-                        <button type="button" class="btn btn-success" id="save-setting">立即保存</button>
+                            <input type="radio" name="mail_type" class="cbr cbr-secondary" value="MailGun"/> MailGun代发系统<br/><br/>
+                            <input type="radio" name="mail_type" class="cbr cbr-secondary" value="Smtp" checked/> SMTP方式<br/><br/>
+                            <input type="radio" name="mail_type" class="cbr cbr-secondary disabled" value="CoreSend"
+                                   disabled="disabled"/> PHP内置邮件发送函数<br/><br/>
+                            <input type="radio" name="mail_type" class="cbr cbr-secondary disabled" value="CAT_API"
+                                   disabled="disabled"/> SS Cat提供的邮件投递API(发送者显示：SS Cat&lt;post@sscat.it&gt;)<br/>
+                            <br/>
+                            <br/>
+                            <button type="button" class="btn btn-success" id="save-setting">立即保存</button>
                         </form>
                     </div>
                 </div>
@@ -60,36 +62,16 @@
             </div>
             <form role="form" id="form1" method="post" action="/admin/setting/update.json" class="validate">
                 <input type="hidden" name="form_add" value="{(time())}"/>
-                <input type="hidden" name="option.k" id="option.k" value=""/>
+                <input type="hidden" name="mailer" id=mailer" value=""/>
                 <div class="modal-body">
                     <div id="modal-isload">Content is loading...</div>
                     <div id="modal-isbody" style="display: none;">
                         <div class="row">
                             <div class="col-md-12">
-
                                 <div class="form-group">
                                     <label for="field-1" class="control-label">键</label>
-                                    <input type="text" class="form-control disable" disabled="disabled" name="option.k2" id="field-1"
-                                           value="" placeholder="option.k">
+                                    <input type="text" class="form-control disable" disabled="disabled" name="option.k2" id="field-1" value="" placeholder="option.k">
                                 </div>
-
-                            </div>
-
-                            <div class="col-md-12">
-
-                                <div class="form-group" id="option-value">
-                                    <label for="field-2" class="control-label" >值</label>
-                                    <textarea class="form-control autogrow" rows="6" name="option.v" id="field-2" placeholder="option.v"></textarea>
-                                    <!--<select name="message.type" id="field-2" class="form-control">-->
-                                        <!--<option value="0">正常消息</option>-->
-                                        <!--<option value="-1">重复消息</option>-->
-                                        <!--<option value="-5">登录页公告</option>-->
-                                        <!--<option value="-4">首页浮动提示</option>-->
-                                        <!--<option value="-3">套餐处说明</option>-->
-                                        <!--<option value="-2">系统公告</option>-->
-                                    <!--</select>-->
-                                </div>
-
                             </div>
                         </div>
 
@@ -106,14 +88,8 @@
 </div>
 <script type="text/javascript">
     var modal_default_body = jQuery('#modal-6 .modal-body').html();
-    jQuery(document).ready(function($) {
+    jQuery(document).ready(function ($) {
         $("form#form1").validate({
-            rules: {
-                'option.v': "required"
-            },
-            messages: {
-                'option.v': "不填设置的值别想保存"
-            },
             errorElement: 'span',
             errorClass: 'validate-has-error',
             highlight: function (element) {
@@ -122,67 +98,76 @@
             unhighlight: function (element) {
                 $(element).closest('.form-group').removeClass('validate-has-error');
             },
-            errorPlacement: function (error, element)
-            {
-                if(element.closest('.has-switch').length)
-                {
+            errorPlacement: function (error, element) {
+                if (element.closest('.has-switch').length) {
                     error.insertAfter(element.closest('.has-switch'));
                 }
                 else {
-                    if(element.parent('.checkbox, .radio').length || element.parent('.input-group').length)
-                    {
+                    if (element.parent('.checkbox, .radio').length || element.parent('.input-group').length) {
                         error.insertAfter(element.parent());
                     }
-                    else
-                    {
+                    else {
                         error.insertAfter(element);
                     }
                 }
             },
-            submitHandler: function(form) {
+            submitHandler: function (form) {
                 $.ajax({
                     url: form.action,
                     method: "POST",
                     dataType: "json",
                     data: $(form).serialize(),
-                    success: function(result){
-                        if(result.code != 200) {
+                    success: function (result) {
+                        if (result.code != 200) {
                             showToastr(result.message, 0, 3000, '系统错误');
                             return;
                         }
                         showToastr(result.data.message, 0);
                         $('#modal-6').modal('hide');
                     },
-                    error: function(Xhr){
+                    error: function (Xhr) {
                         showToastr("出现未知错误，请重试", 0);
                     }
                 });
             }
         });
         $("#save-setting").on('click', function () {
+            reset(false);
             $.ajax({
                 url: "admin/mailer/saveSetting.json",
                 method: "POST",
                 dataType: "json",
-                data: {'mail_type': $("input[name='mail_type']").val()},
-                success: function(result) {
-                    if(result.code != 200) {
+                data: {'mail_type': $("input[name='mail_type']:checked").val()},
+                success: function (result) {
+                    if (result.code != 200) {
                         showToastr(result.message, 0, 3000, '系统错误');
                         return;
                     }
+
+                    $(".modal-body .row").empty();
+                    $("#mailer").val(result.data.mailer);
+                    if (result.data.configs != null) {
+                        var jsonObj = result.data.configs;
+                        /*遍历Json串获取其属性*/
+                        for (var item in jsonObj) {
+                            var obj = jsonObj[item];
+                            var strVar = "<div class=\"col-md-12\"><div class=\"form-group\"><label for=\"field-"+item+"\" class=\"control-label\">配置项："+obj.key+"<\/label><input type=\"text\" class=\"form-control\" name=\""+obj.key+"\" id=\"field-"+item+"\" value=\""+obj.value+"\" placeholder=\""+obj.value+"\"><\/div><\/div>";
+                            $(".modal-body .row").append(strVar);
+                            console.log("key: " + obj.key + ", value: " + obj.value);
+                        }
+                    }
+
                     showToastr(result.data.message, 0);
-
-
-
-                    /* $('#modal-6').modal('show', {backdrop: 'static'}); */
+                    reset(true);
                 },
-                error: function(jqXhr) {
+                error: function (jqXhr) {
 
                 }
             });
+            $('#modal-6').modal('show', {backdrop: 'static'});
         });
     });
-    function optionModify(optionName){
+    function optionModify(optionName) {
         $("#modal-6 .modal-body").html(modal_default_body);
         reset(false);
         $.ajax({
@@ -190,25 +175,25 @@
             method: "GET",
             dataType: "json",
             data: {'option': optionName},
-            success: function(result){
-                if(result.code != 200){
+            success: function (result) {
+                if (result.code != 200) {
                     showToastr(result.message, 0, 3000, '系统错误');
                     return;
                 }
-                if(result.data.error == 0 && result.data.modal != null){
+                if (result.data.error == 0 && result.data.modal != null) {
                     var option = result.data.modal;
                     $("input[name='option.k']").val(optionName);
                     $("input[name='option.k2']").val(optionName);
                     /* TODO 如果为键值对配置，则自动构建一个K:V对应编辑 */
                     /*
-                    if(result.data.isArray) {
-                        var newHtml = '<label for="field-2" class="control-label" >值</label>';
-                        newHtml += '<input'
+                     if(result.data.isArray) {
+                     var newHtml = '<label for="field-2" class="control-label" >值</label>';
+                     newHtml += '<input'
 
-                        $("#option-value").html();
-                    } else {
-                        $("textarea[name='option.v']").val(option);
-                    }*/
+                     $("#option-value").html();
+                     } else {
+                     $("textarea[name='option.v']").val(option);
+                     }*/
 
                     $("textarea[name='option.v']").val(option);
 
@@ -218,11 +203,11 @@
                     $('#modal-6').modal('hide');
                 }
             },
-            error: function(Xhr){
+            error: function (Xhr) {
                 showToastr("出现未知错误，请重试或联系管理员", 0);
             }
         });
         $('#modal-6').modal('show', {backdrop: 'static'});
     }
 </script>
-<import template="/admin/_footer" />
+<import template="/admin/_footer"/>

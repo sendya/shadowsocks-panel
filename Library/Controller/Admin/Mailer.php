@@ -69,20 +69,26 @@ class Mailer
     public function saveSetting()
     {
         $type = $_POST['mail_type'];
-        switch($type) {
-            case 'Smtp':
-
-                break;
-            case 'MailGun':
-
-                break;
-            case 'CoreSend':
-
-                break;
-            default:
-                return array('error' => 1, 'message' => '保存错误，找不到此邮件类');
-                break;
+        $mailer = self::createMailObject($type);
+        if(!$mailer->isAvailable()) {
+            $config = Option::get('MAIL_' . $type);
         }
+        $config = Option::get('MAIL_'.$type);
+        $config = json_decode($config, true);
+        $_config = [];
+        foreach($config as $key=>$val) {
+            $k = $key;
+            $v = $val;
+            $_config[] = ['key'=>$k, 'value'=>$v];
+        }
+        Option::set('MAIL_AVAILABLE', $type);
+        return array('error' => 0, 'message' => '请设置邮件参数', 'configs' => $_config, 'mailer' => $type);
+    }
+
+    private static function createMailObject($mailClass) {
+        $class = "\\Helper\\Mailer\\{$mailClass}";
+        $mailer = new $class;
+        return $mailer;
     }
 
 }
