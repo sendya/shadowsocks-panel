@@ -211,8 +211,15 @@ EOF;
             $user->save();
 
             $result['uid'] = $user->uid;
-            $result['message'] = '验证代码已经发送到该注册邮件地址，请注意查收!<br/>请勿关闭本页面，您还需要验证码来验证您的账户所有权才可重置密码！！';
-            $result['error'] = 0;
+            if ($isOk) {
+                $result['message'] = '验证代码已经发送到该注册邮件地址，请注意查收!<br/>请勿关闭本页面，您还需要验证码来验证您的账户所有权才可重置密码！！';
+                $result['error'] = 0;
+            } else {
+                $result['message'] = '邮件发送失败, 请联系管理员检查邮件系统设置！';
+                $result['error'] = 1;
+            }
+
+
             return $result;
         } else {
             if ($_POST['code'] != '' && $_POST['uid'] != '') {
@@ -251,9 +258,14 @@ EOF;
                     $mail->content = $content;
                     // $mailer->toQueue(true); 添加到邮件列队
                     $isOk = $mailer->send($mail);
+                    if ($isOk) {
+                        $result['message'] = '新密码已经发送到该账户邮件地址，请注意查收!<br/> 并且请在登陆后修改密码！';
+                        $result['error'] = 0;
+                    } else {
+                        $result['message'] = '邮件发送失败, 请联系管理员检查邮件系统设置！';
+                        $result['error'] = 1;
+                    }
 
-                    $result['message'] = '新密码已经发送到该账户邮件地址，请注意查收!<br/> 并且请在登陆后修改密码！';
-                    $result['error'] = 0;
 
                 } else {
                     $result['message'] = '验证码已经超时或者 验证码填写不正确。请再次确认';
