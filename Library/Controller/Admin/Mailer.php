@@ -81,7 +81,6 @@ class Mailer
             $v = $val;
             $_config[] = ['key'=>$k, 'value'=>$v];
         }
-        Option::set('MAIL_AVAILABLE', $type);
         return array('error' => 0, 'message' => '请设置邮件参数', 'configs' => $_config, 'mailer' => $type);
     }
 
@@ -101,7 +100,9 @@ class Mailer
 
         if(!empty($_POST['mail_mailer'])){
             $config = json_encode($data);
-            Option::set(trim($_POST['mail_mailer']), $config);
+            $mailer = trim($_POST['mail_mailer']);
+            Option::set($mailer, $config);
+            Option::set('MAIL_AVAILABLE', $mailer);
         } else {
             $result['error'] = 1;
             $result['message'] = '保存失败，参数不完整';
