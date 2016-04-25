@@ -23,6 +23,8 @@ use Helper\Mailer as Mailer1;
  */
 class Mailer
 {
+    private $subject;
+    private $content;
 
     public function index()
     {
@@ -83,24 +85,20 @@ class Mailer
         if ($subject == null || $subject == '' || $content == null || $content == '') {
             return array('error' => 1, 'message' => '请求错误，您提交的参数不对。');
         }
-
         $users = User::getUserList();
-
         $mailer = Mailer1::getInstance();
         $mailer->toQueue(true);
 
-        $mail = new Mail();
-        $mail->subject = $subject;
-        $mail->content = $content;
-
         foreach ($users as $user) {
+            $mail = new Mail();
+            $mail->subject = $subject;
+            $mail->content = $content;
             $mail->to = $user->email;
             $mailer->send($mail);
         }
 
         Option::set('mail_queue', 1);
-
-        return array('error' => 1, 'message' => '群邮件已经加入列队正在发送中..');
+        return array('error' => 0, 'message' => '邮件列队正在工作，将在稍后开始发送..');
     }
 
     /**

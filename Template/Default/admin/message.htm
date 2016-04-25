@@ -239,7 +239,7 @@
                             showToastr(result.message, 0, 3000, '系统错误');
                             return;
                         }
-                        if(result.data.error == 0) {
+                        if(result.data.error == 0 && result.data.modal != null && result.data.modal != undefined) {
                             changeTable(result.data.modal);
                         }
                         showToastr(result.data.message, 0);

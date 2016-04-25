@@ -37,7 +37,7 @@ final class Mailer
     {
         if (self::$available) {
 
-            if ($this->queue) { // 如果是发送到列队，则将邮件插入到邮件列队表
+            if ($this->queued) { // 如果是发送到列队，则将邮件插入到邮件列队表
                 $mail->save();
                 return true;
             } else {
