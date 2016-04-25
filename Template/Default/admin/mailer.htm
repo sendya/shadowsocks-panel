@@ -42,6 +42,8 @@
                             <br/>
                             <button type="button" class="btn btn-success" id="save-setting">立即保存</button>
                             <button type="button" class="btn btn-success" id="mail-test">邮件发送测试</button>
+                            &nbsp;&nbsp;
+                            <button type="button" class="btn btn-success" id="mail-reset">重置邮件配置项</button>
                         </form>
                     </div>
                 </div>
@@ -184,6 +186,24 @@
                 },
                 error: function(jqXhr) {
                     $(btn).html("邮件发送测试").attr('disabled', false);
+                }
+            });
+        });
+        $("#mail-reset").on('click', function() {
+            $.ajax({
+                url: "admin/mailer/reset.json",
+                method: "POST",
+                dataType: "json",
+                data: {'mail_type': $("input[name='mail_type']:checked").val()},
+                success: function(result) {
+                    if (result.code != 200) {
+                        showToastr(result.message, 0, 3000, '系统错误');
+                        return;
+                    }
+                    showToastr(result.data.message, 0);
+                },
+                error: function(jqXhr) {
+                    showToastr("请求服务器错误", 0);
                 }
             });
         });

@@ -69,6 +69,14 @@ class Option
         self::$list = self::init();
     }
 
+    public static function delete($k)
+    {
+        $sql = "DELETE FROM options WHERE k=:k";
+        $statement = DB::getInstance()->prepare($sql);
+        $statement->bindParam(":k", $k);
+        $statement->execute();
+    }
+
     public static function init()
     {
         $stn = DB::getInstance()->prepare("SELECT k, v FROM options");

@@ -51,13 +51,24 @@ class Mailer
         $mailer->toQueue(true);
         $mail->subject = '[' . SITE_NAME . '] 这是一封多条发送测试邮件';
         $mail->content = '这是一封<b>多条发送</b>测试邮件';
-        $mailer->send($mail);
         if (!$mailer->send($mail)) {
             return $result;
         } else {
             $result = array('error' => 0, 'message' => '邮件已经发送到您的邮箱上');
             return $result;
         }
+    }
+
+    /**
+     * @JSON
+     */
+    public function reset()
+    {
+        $result = array('error' => 0, 'message' => '重置 ' .$_POST['mail_type']. ' 邮件配置项完成');
+        Option::delete('Mail_' . $_POST['mail_type']);
+
+        Option::init();
+        return $result;
     }
 
     /**
