@@ -168,22 +168,22 @@
         });
         $("#mail-test").on('click', function() {
             var btn = this;
-            btn.html("请稍等").attr('disable', true);
+            $(btn).html("请求发送中，请稍等").attr('disabled', true);
             $.ajax({
                 url: "admin/mailer/test.json",
                 method: "GET",
                 dataType: "json",
                 success: function(result) {
                     if (result.code != 200) {
-                        btn.html("邮件发送测试").attr('disable', false);
+                        $(btn).html("邮件发送测试").attr('disabled', false);
                         showToastr(result.message, 0, 3000, '系统错误');
                         return;
                     }
-                    btn.html("邮件发送测试").attr('disable', false);
+                    $(btn).html("邮件发送测试").attr('disabled', false);
                     showToastr(result.data.message, 0);
                 },
                 error: function(jqXhr) {
-                    btn.html("邮件发送测试").attr('disable', false);
+                    $(btn).html("邮件发送测试").attr('disabled', false);
                 }
             });
         });
