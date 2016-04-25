@@ -136,6 +136,7 @@ class Mailer
             $result['error'] = 1;
             $result['message'] = '保存失败，参数不完整';
         }
+        Option::init();
         return $result;
     }
 
