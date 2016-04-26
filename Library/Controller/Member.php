@@ -285,7 +285,7 @@ class Member
      */
     public function checkIn()
     {
-        $user = User::getCurrent()->uid;
+        $user = User::getCurrent();
         $result = array('error' => 1, 'message' => '签到失败或已签到。');
         if ($user->lastCheckinTime <= strtotime(date('Y-m-d 00:00:00', time()))) {
         	$user = User::getUserByUserId($user->uid);
