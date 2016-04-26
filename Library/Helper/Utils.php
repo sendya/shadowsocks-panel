@@ -229,6 +229,114 @@ class Utils
         }
     }
 
+    /**
+     * 发送 HTTP 状态码
+     * http://httpstatus.es/
+     * http://en.wikipedia.org/wiki/List_of_HTTP_status_codes
+     * http://zh.wikipedia.org/wiki/HTTP%E7%8A%B6%E6%80%81%E7%A0%81
+     * @param integer $code 状态码
+     * @return void
+     */
+    public static function send_http_status($code)
+    {
+        static $_status = array(
+            // Informational 1xx
+            100 => 'Continue',              // Client should continue with request
+            101 => 'Switching Protocols',   // Server is switching protocols
+            102 => 'Processing',            // Server has received and is processing the request
+            103 => 'Checkpoint',            // resume aborted PUT or POST requests
+            122 => 'Request-URI Too Long',  // URI is longer than a maximum of 2083 characters
+            // Success 2xx
+            200 => 'OK',                              // standard response for successful HTTP requests
+            201 => 'Created',                         // request has been fulfilled; new resource created
+            202 => 'Accepted',                        // request accepted, processing pending
+            203 => 'Non-Authoritative Information',   // request processed, information may be from another source
+            204 => 'No Content',                      // request processed, no content returned
+            205 => 'Reset Content',                   // request processed, no content returned, reset document view
+            206 => 'Partial Content',                 // partial resource return due to request header
+            207 => 'Multi-Status',                    // XML, can contain multiple separate responses
+            208 => 'Already Reported',                // results previously returned
+            226 => 'IM Used',                         // request fulfilled, reponse is instance-manipulations
+            // Redirection 3xx
+            300 => 'Multiple Choices',                // multiple options for the resource delivered
+            301 => 'Moved Permanently',               // this and all future requests directed to the given URI
+            //302 => 'Moved Temporarily',
+            302 => 'Found',                           // temporary response to request found via alternative URI
+            303 => 'See Other',                       // permanent response to request found via alternative URI
+            304 => 'Not Modified',                    // resource has not been modified since last requested
+            305 => 'Use Proxy',                       // content located elsewhere, retrieve from there
+            // 306 is deprecated but reserved
+            306 => 'Switch Proxy',                    // subsequent requests should use the specified proxy
+            307 => 'Temporary Redirect',              // connect again to different URI as provided
+            308 => 'Permanent Redirect',              // connect again to a different URI using the same method
+            // Client Error 4xx
+            400 => 'Bad Request',                     // request cannot be fulfilled due to bad syntax
+            401 => 'Unauthorized',                    // authentication is possible but has failed
+            402 => 'Payment Required',                // payment required, reserved for future use
+            403 => 'Forbidden',                       // server refuses to respond to request
+            404 => 'Not Found',                       // requested resource could not be found
+            405 => 'Method Not Allowed',              // request method not supported by that resource
+            406 => 'Not Acceptable',                  // content not acceptable according to the Accept headers
+            407 => 'Proxy Authentication Required',   // client must first authenticate itself with the proxy
+            408 => 'Request Timeout',                 // server timed out waiting for the request
+            409 => 'Conflict',                        // request could not be processed because of conflict
+            410 => 'Gone',                            // resource is no longer available and will not be available again
+            411 => 'Length Required',                 // request did not specify the length of its content
+            412 => 'Precondition Failed',             // server does not meet request preconditions
+            413 => 'Request Entity Too Large',        // request is larger than the server is willing or able to process
+            414 => 'Request-URI Too Long',            // URI provided was too long for the server to process
+            415 => 'Unsupported Media Type',          // server does not support media type
+            416 => 'Requested Range Not Satisfiable', // client has asked for unprovidable portion of the file
+            417 => 'Expectation Failed',              // server cannot meet requirements of Expect request-header field
+            418 => 'I\'m a teapot',                   // I'm a teapot
+            419 => 'Authentication Timeout',
+            420 => 'Method Failure',
+            421 => 'Enhance Your Calm',
+            422 => 'Unprocessable Entity',
+            423 => 'Locked',
+            424 => 'Failed Dependency',
+            425 => 'Unordered Collection',
+            426 => 'Upgrade Required',
+            428 => 'Precondition Required',
+            429 => 'Too Many Requests',
+            431 => 'Request Header Fields Too Large',
+            440 => 'Login Timeout',
+            444 => 'No Response',
+            449 => 'Retry With',
+            450 => 'Blocked by Windows Parental Controls',
+            451 => 'Wrong Exchange Server',
+            494 => 'Request Header Too Large',
+            495 => 'Cert Error',
+            496 => 'No Cert',
+            497 => 'HTTP to HTTPS',
+            499 => 'Client Closed Request',
+            // Server Error 5xx
+            500 => 'Internal Server Error',           // generic error message
+            501 => 'Not Implemented',                 // server does not recognise method or lacks ability to fulfill
+            502 => 'Bad Gateway',                     // server received an invalid response from upstream server
+            503 => 'Service Unavailable',             // server is currently unavailable
+            504 => 'Gateway Timeout',                 // gateway did not receive response from upstream server
+            505 => 'HTTP Version Not Supported',      // server does not support the HTTP protocol version
+            506 => 'Variant Also Negotiates',
+            507 => 'Insufficient Storage',
+            508 => 'Loop Detected',
+            509 => 'Bandwidth Limit Exceeded',
+            510 => 'Not Extended',
+            511 => 'Network Authentication Required',
+            520 => 'Origin Error',
+            522 => 'Connection timed out',
+            523 => 'Proxy Declined Request',
+            524 => 'A timeout occurred',
+            598 => 'Network read timeout error',
+            599 => 'Network connect timeout error'
+        );
+        if (isset($_status[$code]) && !headers_sent()) {
+            header('HTTP/1.1 '.$code.' '.$_status[$code]);
+            header('Status:'.$code.' '.$_status[$code]); // 确保FastCGI模式下正常
+            return true;
+        }
+        return false;
+    }
 
     /**
      * 对邮件占位符进行替换

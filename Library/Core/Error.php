@@ -64,6 +64,8 @@ class Error extends \Exception
         if (!($instance instanceof Error)) {
             $instance = new self($instance->getMessage(), intval($instance->getCode()), $instance,
                 $instance->getTrace());
+        } elseif ($instance->getCode()) {
+            \Helper\Utils::send_http_status($instance->getCode());
         }
         Template::setView('Misc/Error');
         Template::putContext('instance', $instance);
