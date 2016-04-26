@@ -58,7 +58,6 @@ class Api
             Option::set('CREATE_CARD_API_KEY', $KEY);
         }
 
-
         if (strtoupper($KEY) == strtoupper($CURR_KEY)) {
             $card = new Card();
             $card->card = substr(hash("sha256", time() . Utils::randomChar(10)) . time(), 1, 26);
