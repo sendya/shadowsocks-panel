@@ -249,13 +249,13 @@ class Member
                 break;
             case 'VIP':
                 $result['error'] = 0;
-                $result['message'] = '卧槽，你不给肛凭什么给你VIP';
+                $result['message'] = '卧槽，你不给肛凭什么给你 GM账户';
                 break;
             default:
-                $result['message'] = '不知道服务器娘哪里出问题了喵.请求失败';
+                $result['message'] = '请求失败，不知道服务器娘哪里出问题了喵。';
                 break;
         }
-        $result['level'] = $user->plan;
+        $result['level'] = Utils::planAutoShow($user->plan);
         return $result;
 
     }
