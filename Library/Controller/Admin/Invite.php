@@ -110,7 +110,6 @@ class Invite
             $invite->delete();
             $result = array('error' => 0, 'message' => '删除成功', 'id' => $_POST['id']);
         }
-
         return $result;
     }
 
