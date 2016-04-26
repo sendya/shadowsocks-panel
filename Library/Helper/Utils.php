@@ -172,6 +172,11 @@ class Utils
      */
     public static function flowAutoShow($value, $type = 1)
     {
+        $negative = false;
+        if ($value < 0) {
+            $negative = true;
+            $value = abs(intval($value));
+        }
         if ($value > self::GB) {
             $str = round($value / self::GB, 2);
             if ($type) {
@@ -194,6 +199,9 @@ class Utils
                     $str .= "";
                 }
             }
+        }
+        if ($negative) {
+            $str = '-' . $str;
         }
         return $str;
     }
@@ -244,14 +252,15 @@ class Utils
         // 替换
         $content = str_replace(
             ['{SITE_NAME}', '{nickname}', '{email}', '{code}', '{newPassword}', '{useTraffic}', '{transfer}', '{expireTime}'],
-            [SITE_NAME, $params['nickname'], $params['email'], $params['code'], $params['newPassword'],$params['useTraffic'],$params['transfer'],$params['expireTime']],
+            [SITE_NAME, $params['nickname'], $params['email'], $params['code'], $params['newPassword'], $params['useTraffic'], $params['transfer'], $params['expireTime']],
             $content);
 
         return $content;
     }
 
 
-    public static function getShortName(&$class) {
+    public static function getShortName(&$class)
+    {
         $reflection = new ReflectionObject($class);
         return $reflection->getShortName();
     }
