@@ -97,7 +97,6 @@ class Mailer
             $mailer->send($mail);
         }
 
-        Option::set('mail_queue', 1);
         return array('error' => 0, 'message' => '邮件列队正在工作，将在稍后开始发送..');
     }
 
