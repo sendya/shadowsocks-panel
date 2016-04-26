@@ -13,13 +13,22 @@
 > 	4. 各项系统属性动态控制
 > 	5. 计划任务管控
 
-程序最低要求PHP版本为 **PHP5.5+** ~ **PHP7**
+程序要求PHP版本为 **PHP5.5+** ~ **PHP7** ，推荐使用PHP7。
 
 ### 安装教程
 ```bash
-# 克隆 shadowsocks-panel 库下来
+# 方式一：克隆最新版本
+cd /home/wwwroot/
 git clone https://github.com/sendya/shadowsocks-panel.git
 cd shadowsocks-panel
+
+# 方式二：下载稳定版本（推荐）
+# 前往 https://github.com/sendya/shadowsocks-panel/releases ，下载最新的release版本（当前版本：v1.04）
+wget https://github.com/sendya/shadowsocks-panel/releases/download/sspanel-v1.04/shadowsocks-panel-v1.04.zip -O shadowsocks-panel.zip
+# 解压到 /home/wwwroot/shadowsocks-panel/
+$ unzip -o -d /home/wwwroot/shadowsocks-panel/ shadowsocks-panel.zip
+$ cd /home/wwwroot/shadowsocks-panel/
+
 # 设定 Data 目录读写权限
 chmod -R 777 ./Data/
 # 复制一份 ./Data/Config.simple.php 为 ./Data/Config.php
@@ -36,17 +45,26 @@ php index.php install
 请将`nginx`的 网站根目录路径指向到 `Public` 而不是 `shadowsocks-panel` 目录。
 [nginx 配置例子](#setNginx)
 
-配置`nginx`伪静态规则
+选择1. 配置`nginx`伪静态规则
 ```nginx
 if (!-e $request_filename) {
     rewrite (.*) /index.php last;
 }
 ```
+选择2. 配置`apache`伪静态规则
+```apache
+RewriteEngine On
+
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^ index.php [L]
+```
+
 
 配置`CRON`计划任务
 ```bash
-$ crontab -l
-$ * * * * * /usr/bin/curl https://domain.com/cron
+$ crontab -e
+$ * * * * * /usr/bin/curl https://yourdomain.com/cron
 # 保存退出
 ```
 
@@ -54,9 +72,8 @@ $ * * * * * /usr/bin/curl https://domain.com/cron
 
 
 > 注意：  
-> 由于旧版本与新版本加密函数完全不同，既无法从旧版本平滑迁移数据到新版本。  
-> 从旧版本导入用户数据到新版本后 请通知用户使用`找回密码`功能重置一次密码(请设定好服务器mail配置)  
-> 请不要直接 `git clone` 代码下来安装。 除非你愿意自己构建 `js`和`css`。  
+> 由于旧版本与新版本加密函数完全不同，既无法从旧版本平滑迁移数据到新版本。
+> 从旧版本导入用户数据到新版本后 请通知用户使用`找回密码`功能重置一次密码(请设定好服务器mail配置)
 
 
 other
@@ -72,11 +89,17 @@ server{
     if (!-e $request_filename) {
         rewrite (.*) /index.php last;
     }
-	root /home/wwwroot/shadowsocks-panel/Public;
-	location ~ .*\.(php|php5)?$  {
+    root /home/wwwroot/shadowsocks-panel/Public;
+    
+    location ~ [^/]\.php(/|$) {
+        fastcgi_split_path_info ^(.+?\.php)(/.*)$;
+        if (!-f $document_root$fastcgi_script_name) {
+            return 404;
+        }
         fastcgi_pass 127.0.0.1:9000;
         fastcgi_index index.php;
-        include fastcgi.conf;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        include fastcgi_params;
     }
 }
 ```
