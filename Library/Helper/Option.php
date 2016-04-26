@@ -33,18 +33,27 @@ class Option
                 return self::$list[$k];
             }
         }
-
-        /*        if($GLOBALS['OPTIONS']!=null) {
-                    if($GLOBALS['OPTIONS'][$k]!=null)
-                        return $GLOBALS['OPTIONS'][$k];
-                }*/
-
         $querySQL = "SELECT k, v FROM options WHERE k=?";
         $statement = DB::getInstance()->prepare($querySQL);
         $statement->bindValue(1, $k);
         $statement->execute();
         $opt = $statement->fetchObject(__CLASS__);
         return $opt->v;
+    }
+
+    /**
+     * 模糊查找多个 Option
+     * @param $k
+     * @return Option
+     */
+    public static function getLike($k)
+    {
+        $querySQL = "SELECT k, v FROM options WHERE k LIKE '%?%'";
+        $statement = DB::getInstance()->prepare($querySQL);
+        $statement->bindValue(1, $k, DB::PARAM_STR);
+        $statement->execute();
+        return $statement->fetchAll(DB::FETCH_CLASS, __CLASS__);
+
     }
 
     public static function set($k, $v)

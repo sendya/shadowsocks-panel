@@ -7,6 +7,7 @@
 
 namespace Controller\Admin;
 
+use Core\Error;
 use Core\Template;
 use Helper\Option;
 use Model\User;
@@ -137,5 +138,31 @@ class Setting
         $result['error'] = 0;
         $result['message'] = '保存完毕';
         return $result;
+    }
+
+    public function getCustomMailContentList()
+    {
+        $opts = Option::getLike('custom_mail_');
+        Template::putContext('custom_mail_list', $opts);
+    }
+
+    /**
+     * @JSON
+     * @return array
+     * @throws Error
+     */
+    public function saveCustomMailContent()
+    {
+        $type = $_POST['custom_type']; // 获得修改类型
+        if (strpos($type, 'custom_mail_') !== false) {
+            $content = $_POST['content']; // 取得修改的内容
+            if(!$content) {
+                throw new Error('Parameter error', 405);
+            }
+            Option::set('$type', $content);
+            return array('error' => 0, 'message' => '保存完毕');
+        } else {
+            throw new Error('Parameter error', 405);
+        }
     }
 }
