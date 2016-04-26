@@ -124,7 +124,7 @@ class User extends Model
         return $statement->fetchAll(DB::FETCH_CLASS, __CLASS__);
     }
 
-    public static function getUserArrayByExpireEnable()
+    public static function enableUsersByExpireTime()
     {
         $selectSQL = "UPDATE member SET enable=1 WHERE expireTime>:expireTime AND (flow_up+flow_down)<transfer AND enable=0";
         $statement = DB::sql($selectSQL);

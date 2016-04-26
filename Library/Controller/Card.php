@@ -45,13 +45,17 @@ class Card
             if ($card->type == 0) {
 
                 if ($user->plan == 'Z' && $user->transfer > ($user->flow_up + $user->flow_down)) {
-                    $result['message'] = '您的流量套餐尚未使用完毕。无法转换到' . Utils::planAutoShow($card->info) . '套餐';
+                    $result['message'] = '您的流量套餐尚未使用完毕。无法转换到 ' . Utils::planAutoShow($card->info) . ' 套餐';
                     return $result;
                 }
                 $user->plan = $card->info;
                 $user->transfer = Utils::GB * intval($custom_transfer_level[$user->plan]);
                 $user->payTime = time();
-                $user->enable = 1;
+                if(($user->flow_up + $user->flow_down) < $user->transfer) {
+                    $user->enable = 1;
+                } else {
+                    $user->enable = 0;
+                }
                 if ($user->expireTime < time()) {
                     $user->expireTime = time() + (3600 * 24 * 31); // 到期时间
                 } else {
@@ -67,7 +71,11 @@ class Card
                         $user->flow_up = 0;
                         $user->flow_down = 0;
                     }
-                    $user->enable = 1;
+                    if(($user->flow_up + $user->flow_down) < $user->transfer) {
+                        $user->enable = 1;
+                    } else {
+                        $user->enable = 0;
+                    }
                     $user->plan = 'Z'; // 强制设定为Z
                     $user->expireTime = strtotime("+1 year"); // 账户可用时间增加一年
                     $result['message'] = '您的账户已经激活固定流量套餐，共有流量' . Utils::flowAutoShow($user->transfer) . ' ,该流量到期时间 ' . date('Y-m-d H:i:s',
@@ -77,6 +85,9 @@ class Card
 
                         $user_test_day = Option::get('user_test_day') ?: 7;
 
+                        if($user->plan != 'A') {
+                            return array('error' => 1, 'message' => '喂喂，你不是测试账户诶? 没办法帮你续命。');
+                        }
                         $user->plan = 'A';
                         $user->payTime = time();
                         if ($user->expireTime < time()) {
