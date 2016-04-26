@@ -185,27 +185,23 @@ class Auth
             $forgePwdCode['time'] = time();
 
             $user->forgePwdCode = json_encode($forgePwdCode);
-
-            $content = <<<EOF
-Dear {$user->nickname}:<br/>
-Use this code to disable your password and access your {$siteName} account:<br/>
-(这个验证码是用于停止您当前 {$siteName} 所在账户的旧密码):<br/>
-<br/>
-Code: {$code}
-<br/>
-<br/>
-<b>请将验证码在找回密码页面输入才能确认重置密码！</b>
-<br/>
-Yours,
-The {$siteName} Team
-EOF;
+            $content = Option::get('custom_mail_forgePassword_content');
+            $params = [
+                'code'      => $code,
+                'nickname'  => $user->nickname,
+                'email'     => $user->email,
+                'useTraffic'=> Utils::flowAutoShow($user->flow_up+$user->flow_down),
+                'transfer'  => Utils::flowAutoShow($user->transfer),
+                'expireTime'=> date('Y-m-d H:i:s', $user->expireTime)
+            ];
+            $content = Utils::placeholderReplace($content, $params);
 
             $mailer = Mailer::getInstance();
             $mail = new \Model\Mail();
             $mail->to = $user->email;
             $mail->subject = "[" . SITE_NAME . "] Password Recovery";
             $mail->content = $content;
-            // $mailer->toQueue(true); 添加到邮件列队
+            $mailer->toQueue(true); // 添加到邮件列队
             $isOk = $mailer->send($mail);
 
             $user->save();
@@ -237,26 +233,24 @@ EOF;
                     $user->lastFindPasswdTime = 0;
                     $user->save();
 
-                    $content = <<<EOF
-Dear {$user->nickname}:<br/>
-Here's your new password<br/>
-(这是你的新密码)<br/>
-<br/>
-Password: {$newPassword}
-<br/>
-<br/>
-<b>ATTENTION: PLEASE CHANGE THE PASSWORD AND DELETE THIS EMAIL IMMEDIATELY ALTER LOG IN YOUR ACCOUNT FOR SECURITY PURPOSES.</b>
-<b>请在登录后立即修改密码，并且删除此邮件.</b>
-<br/>
-<br/>
-Yours, The {$siteName} Team
-EOF;
+                    $content = Option::get('custom_mail_forgePassword_content_2');
+                    $params = [
+                        'code'      => $code,
+                        'newPassword'=> $newPassword,
+                        'nickname'  => $user->nickname,
+                        'email'     => $user->email,
+                        'useTraffic'=> Utils::flowAutoShow($user->flow_up+$user->flow_down),
+                        'transfer'  => Utils::flowAutoShow($user->transfer),
+                        'expireTime'=> date('Y-m-d H:i:s', $user->expireTime)
+                    ];
+                    $content = Utils::placeholderReplace($content, $params);
+
                     $mailer = Mailer::getInstance();
                     $mail = new \Model\Mail();
                     $mail->to = $user->email;
                     $mail->subject = "[" . SITE_NAME . "] Your new Password";
                     $mail->content = $content;
-                    // $mailer->toQueue(true); 添加到邮件列队
+                    $mailer->toQueue(true); // 添加到邮件列队
                     $isOk = $mailer->send($mail);
                     if ($isOk) {
                         $result['message'] = '新密码已经发送到该账户邮件地址，请注意查收!<br/> 并且请在登录后修改密码！';

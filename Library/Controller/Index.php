@@ -8,6 +8,8 @@ namespace Controller;
 
 use Core\Template;
 use Helper\Mailer;
+use Helper\Option;
+use Helper\Utils;
 use Model\Mail;
 
 class Index
@@ -23,6 +25,15 @@ class Index
 
     public function test()
     {
+        $content = Option::get('custom_mail_forgePassword_content_2');
+
+        $params = [
+            'nickname' => '言肆'
+        ];
+
+        $content = Utils::placeholderReplace($content, $params);
+        echo $content;
+
 
     }
 

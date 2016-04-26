@@ -222,6 +222,35 @@ class Utils
     }
 
 
+    /**
+     * 对邮件占位符进行替换
+     * 支持：
+     * <pre>
+     *      {SITE_NAME} : 站点名称
+     *      {nickname}  : 当前用户名称
+     *      {email}     : 用户电子邮件
+     *      {code}      : 验证码
+     *      {newPassword}: 新密码
+     *      {useTraffic}: 已用流量
+     *      {transfer}  : 总流量
+     *      {expireTime}: 到期时间
+     * </pre>
+     * @param $content
+     * @param $params array
+     * @return string
+     */
+    public static function placeholderReplace($content, $params)
+    {
+        // 替换
+        $content = str_replace(
+            ['{SITE_NAME}', '{nickname}', '{email}', '{code}', '{newPassword}', '{useTraffic}', '{transfer}', '{expireTime}'],
+            [SITE_NAME, $params['nickname'], $params['email'], $params['code'], $params['newPassword'],$params['useTraffic'],$params['transfer'],$params['expireTime']],
+            $content);
+
+        return $content;
+    }
+
+
     public static function getShortName(&$class) {
         $reflection = new ReflectionObject($class);
         return $reflection->getShortName();
