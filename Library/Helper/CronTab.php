@@ -39,11 +39,13 @@ class CronTab
         if (!Option::get('mail_queue')) {
             return;
         }
+        $mailer = Mailer::getInstance();
         $mailQueue = Mail::getMailQueue();
-        if ($mailQueue) {
-            $mailQueue->delete();
-            $mailer = new Mailer();
-            $mailer->send($mailQueue);
+        if (count($mailQueue) >0) {
+            foreach ($mailQueue as $key=>$value) {
+                $value->delete();
+                $mailer->send($value);
+            }
         } else {
             Option::set('mail_queue', 0);
         }
