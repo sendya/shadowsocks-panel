@@ -9,7 +9,7 @@ class MessageDefaultDb extends AbstractMigration
         $rows = [
             [
                 'id' => 1,
-                'content'   => '登陆页公告：<br/>由于服务器遭到攻击，为补偿用户。本月不计费。<br/><br/>发布时间: '. date('Y-m-d H:i:s', time()) . " - " . SITE_NAME,
+                'content'   => '登录页公告：<br/>由于服务器遭到攻击，为补偿用户。本月不计费。<br/><br/>发布时间: '. date('Y-m-d H:i:s', time()) . " - " . SITE_NAME,
                 'pushTime'  => time(),
                 'addTime'   => time(),
                 'pushUsers' => '-2',

@@ -106,7 +106,7 @@ class Member
     }
 
     /**
-     * 修改 网站登陆密码
+     * 修改 网站登录密码
      * @JSON
      * @throws Error
      */
@@ -135,7 +135,7 @@ class Member
             $_SESSION['currentUser'] = null;
 
             $result['error'] = 0;
-            $result['message'] = "修改密码成功, 请重新登陆";
+            $result['message'] = "修改密码成功, 请重新登录";
             return $result;
         } else {
             Template::putContext('user', $user);
@@ -181,7 +181,7 @@ class Member
             $user->nickname = htmlspecialchars(trim($_POST['nickname']));
             $user->save();
             $_SESSION['currentUser'] = $user;
-            return array('error' => 0, 'message' => '修改昵称成功，刷新页面或重新登陆生效。');
+            return array('error' => 0, 'message' => '修改昵称成功，刷新页面或重新登录生效。');
         } else {
             Template::putContext('user', $user);
             Template::setView("panel/changeNickname");

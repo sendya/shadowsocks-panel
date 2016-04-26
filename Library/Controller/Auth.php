@@ -32,9 +32,9 @@ class Auth
     public function login()
     {
         /**
-         * 1. 判断用户是否已经登陆,
-         *      若已经登陆,则直接跳转到控制面板(仪表盘)中.
-         * 2. 加载登陆页面模板,进入登陆页面.
+         * 1. 判断用户是否已经登录,
+         *      若已经登录,则直接跳转到控制面板(仪表盘)中.
+         * 2. 加载登录页面模板,进入登录页面.
          */
         $user = User::getCurrent();
         if ($user->uid) {
@@ -51,7 +51,7 @@ class Auth
                 if ($user) {
                     if ($user->verifyPassword($passwd)) {
                         $result['error'] = 0;
-                        $result['message'] = '登陆成功,即将跳转到 &gt;仪表盘';
+                        $result['message'] = '登录成功,即将跳转到 &gt;仪表盘';
 
                         $remember_me == 'week' ? $ext = 3600 * 24 * 7 : $ext = 3600;
 
@@ -259,7 +259,7 @@ EOF;
                     // $mailer->toQueue(true); 添加到邮件列队
                     $isOk = $mailer->send($mail);
                     if ($isOk) {
-                        $result['message'] = '新密码已经发送到该账户邮件地址，请注意查收!<br/> 并且请在登陆后修改密码！';
+                        $result['message'] = '新密码已经发送到该账户邮件地址，请注意查收!<br/> 并且请在登录后修改密码！';
                         $result['error'] = 0;
                     } else {
                         $result['message'] = '邮件发送失败, 请联系管理员检查邮件系统设置！';

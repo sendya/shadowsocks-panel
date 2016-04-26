@@ -19,7 +19,7 @@ use ReflectionObject;
 class LoginFilter implements IFilter
 {
 
-    private $data = array('error' => 1, 'message' => '尚未登陆或上次登录已失效，请重新登陆');
+    private $data = array('error' => 1, 'message' => '尚未登录或上次登录已失效，请重新登录');
     protected $isJson = false;
     protected $black = false;
 
