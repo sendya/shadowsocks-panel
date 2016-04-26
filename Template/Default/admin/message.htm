@@ -318,6 +318,7 @@
                     $("input[name='message.pushUsers']").val(message.pushUsers);
                     $("input[name='message.pushEndTime']").val(message.pushEndTime);
                     $("textarea[name='message.content']").val(message.content);
+                    $("select[name='message.enable']").val(message.enable);
                     $("#form1").attr("action", "admin/message/update.json");
                     $('#modal-6 .modal-title').html('修改消息');
                     reset(true);
@@ -329,7 +330,7 @@
                 showToastr("出现未知错误，请重试或联系管理员", 0);
             }
         });
-        jQuery('#modal-6').modal('show', {backdrop: 'static'});
+        $('#modal-6').modal('show', {backdrop: 'static'});
     }
     function changeTable(data) {
         var tid = $("tr#msg-" + data.id).html();
@@ -352,7 +353,7 @@
             newData += "<td>" + data.pushEndTime + "</td>";
             newData += "<td>" + data.pushUsers + "</td>";
             newData += "<td>" + data.type + "</td>";
-            newData += "<td>" + '<a class="btn btn-info btn-sm" href="javascript:;" onclick="messageModify('+data.id+');">编辑</a>' + '<a class="btn btn-danger btn-sm" href="javascript:;" onclick="messageRemove('+data.id+');">删除</a>' + "</td>";
+            newData += "<td>" + '<a class="btn btn-info btn-sm" href="javascript:;" onclick="messageModify('+data.id+');">编辑</a>'+ "</td>";
             $("tr#msg-" + data.id).html(newData);
         }
     }

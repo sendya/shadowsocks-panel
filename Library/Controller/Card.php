@@ -51,7 +51,7 @@ class Card
                 $user->plan = $card->info;
                 $user->transfer = Utils::GB * intval($custom_transfer_level[$user->plan]);
                 $user->payTime = time();
-                if(($user->flow_up + $user->flow_down) < $user->transfer) {
+                if (($user->flow_up + $user->flow_down) < $user->transfer) {
                     $user->enable = 1;
                 } else {
                     $user->enable = 0;
@@ -71,7 +71,7 @@ class Card
                         $user->flow_up = 0;
                         $user->flow_down = 0;
                     }
-                    if(($user->flow_up + $user->flow_down) < $user->transfer) {
+                    if (($user->flow_up + $user->flow_down) < $user->transfer) {
                         $user->enable = 1;
                     } else {
                         $user->enable = 0;
@@ -85,7 +85,7 @@ class Card
 
                         $user_test_day = Option::get('user_test_day') ?: 7;
 
-                        if($user->plan != 'A') {
+                        if ($user->plan != 'A') {
                             return array('error' => 1, 'message' => '喂喂，你不是测试账户诶? 没办法帮你续命。');
                         }
                         $user->plan = 'A';

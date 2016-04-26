@@ -181,14 +181,16 @@ class User extends Model
      */
     public function setAdmin($val)
     {
-        if($val == 1 && !$this->isAdmin()) {
+        if ($val == 1 && !$this->isAdmin()) {
             $stn = DB::sql("INSERT INTO `admin` SET uid=?");
             $stn->bindValue(1, $this->uid, DB::PARAM_INT);
             $stn->execute();
-        } else if($val == 0 && $this->isAdmin()) {
-            $stn = DB::sql("DELETE FROM `admin` WHERE uid=?");
-            $stn->bindValue(1, $this->uid, DB::PARAM_INT);
-            $stn->execute();
+        } else {
+            if ($val == 0 && $this->isAdmin()) {
+                $stn = DB::sql("DELETE FROM `admin` WHERE uid=?");
+                $stn->bindValue(1, $this->uid, DB::PARAM_INT);
+                $stn->execute();
+            }
         }
     }
 

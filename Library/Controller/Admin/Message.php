@@ -46,8 +46,9 @@ class Message
                 $msg->content = $_POST['message_content'] == null ? "" : $_POST['message_content'];
                 $msg->pushTime = $_POST['message_pushTime'] == null ? 0 : strtotime($_POST['message_pushTime']);
                 $msg->pushUsers = $_POST['message_pushUsers'] == null ? -1 : $_POST['message_pushUsers'];
-                $msg->type = $_POST['message_type'] == null ? 0 : $_POST['message_type'];
+                $msg->type = $_POST['message_type'];
                 $msg->pushEndTime = $_POST['message_pushEndTime'] == null ? 0 : strtotime($_POST['message_pushEndTime']);
+                $msg->enable = $_POST['message_enable'] == null ? 0 : $_POST['message_enable'];
                 $msg->save();
                 $result = array('error' => 0, 'message' => '更新成功');
             }
@@ -56,8 +57,9 @@ class Message
             $msg->content = $_POST['message_content'] == null ? "" : $_POST['message_content'];
             $msg->pushTime = $_POST['message_pushTime'] == null ? 0 : strtotime($_POST['message_pushTime']);
             $msg->pushUsers = $_POST['message_pushUsers'] == null ? 0 : $_POST['message_pushUsers'];
-            $msg->type = $_POST['message_type'] == null ? 0 : $_POST['message_type'];
+            $msg->type = $_POST['message_type'];
             $msg->pushEndTime = $_POST['message_pushEndTime'] == null ? 0 : strtotime($_POST['message_pushEndTime']);
+            $msg->enable = $_POST['message_enable'] == null ? 0 : $_POST['message_enable'];
             $msg->save();
             $result = array('error' => 0, 'message' => '添加新消息成功');
         }

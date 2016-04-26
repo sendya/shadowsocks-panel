@@ -36,7 +36,8 @@ class User
     /**
      * @JSON
      */
-    public function getList() {
+    public function getList()
+    {
         $pageData = new PageData('member', "ORDER BY uid",
             ['uid', 'port', 'email', 'nickname', 'plan', 'transfer', 'expireTime']);
         $pageData->execute();
@@ -51,7 +52,10 @@ class User
     {
         $result = array("error" => 1, "message" => "Request failed");
         if ($_POST['userId'] != null) {
-            UserModel::delete(trim($_POST['userId']));
+            $user = UserModel::getUserByUserId(intval($_POST['userId']));
+            if ($user) {
+                $user->delete();
+            }
             $result['error'] = 0;
             $result['message'] = '删除账户成功！';
         }
@@ -89,9 +93,9 @@ class User
      */
     public function setAdmin()
     {
-        if(!$_POST['uid']) {
+        if (!$_POST['uid']) {
             $user = UserModel::getUserByUserId(intval($_POST['uid']));
-            if($user && !$user->isAdmin()) {
+            if ($user && !$user->isAdmin()) {
                 $user->setAdmin(); // 设定用户的admin权限。
                 return array('error' => 0, 'message' => '用户：' . $user->nickname . ' 已经成为管理员。');
             }
@@ -159,7 +163,7 @@ class User
                     $us->setPassword(trim($_POST['user_password']));
                 }
                 $us->save();
-                if($_POST['user_isAdmin'] != null) { // 如果选中了管理员，设置管理员的值
+                if ($_POST['user_isAdmin'] != null) { // 如果选中了管理员，设置管理员的值
                     $us->setAdmin($_POST['user_isAdmin']);
                 }
 
