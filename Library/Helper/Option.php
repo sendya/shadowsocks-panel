@@ -11,8 +11,6 @@ use Core\Database as DB;
 
 class Option
 {
-    const CONFIG_FILE = DATA_PATH . "Config.php";
-
     public $k;
     public $v;
 
@@ -119,24 +117,27 @@ class Option
 
     public static function getConfig($k)
     {
-        if (!file_exists(self::CONFIG_FILE)) {
+        if (!file_exists(DATA_PATH . "Config.php")) {
             return false;
         }
-        $str = file_get_contents(self::CONFIG_FILE);
-        $config = preg_match("/define\\('" . preg_quote($k) . "', '(.*)'\\);/", $str, $res);
-        return $res[1];
+        $str = file_get_contents(DATA_PATH . "Config.php");
+        preg_match("/define\\('" . preg_quote($k) . "', '(.*)'\\);/", $str, $res);
+        if(count($res) > 0) {
+            return $res[1];
+        }
+        return null;
     }
 
     public static function setConfig($k, $v)
     {
-        if (!file_exists(self::CONFIG_FILE)) {
+        if (!file_exists(DATA_PATH . "Config.php")) {
             return false;
         }
-        $str = file_get_contents(self::CONFIG_FILE);
+        $str = file_get_contents(DATA_PATH . "Config.php");
 
         $str2 = preg_replace("/define\\('" . preg_quote($k) . "', '(.*)'\\);/",
             "define('" . preg_quote($k) . "', '" . $v . "');", $str);
 
-        file_put_contents(self::CONFIG_FILE, $str2);
+        file_put_contents(DATA_PATH . "Config.php", $str2);
     }
 }

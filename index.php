@@ -111,8 +111,17 @@ switch ($argv[1]) {
         if (Option::getConfig('ENCRYPT_KEY') == 'Please generate key and paste here') {
             Option::setConfig('ENCRYPT_KEY', Option::createKey());
         }
-        if (Option::getConfig('COOKIE_KEY') == 'Please generate key and paste here') {
+        if (Option::getConfig('COOKIE_KEY') === null) {
+            $str = file_get_contents(DATA_PATH . 'Config.php');
+            preg_match("/define\\('ENCRYPT_KEY', '(.*)'\\);/", $str, $res);
+            if (count($res) >= 1) {
+                $str2 = preg_replace("/define\\('ENCRYPT_KEY', '(.*)'\\);/",
+                    $res[0] . PHP_EOL . "define('COOKIE_KEY', '" . Option::createKey() . "');", $str);
+            }
+            file_put_contents(DATA_PATH . 'Config.php', $str2);
+        } elseif (Option::getConfig('COOKIE_KEY') == 'Please generate key and paste here' || Option::getConfig('COOKIE_KEY') == '') {
             Option::setConfig('COOKIE_KEY', Option::createKey());
+
         }
         echo 'Done!' . PHP_EOL;
 
