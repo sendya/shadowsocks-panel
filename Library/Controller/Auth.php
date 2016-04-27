@@ -14,7 +14,7 @@ use Model\Message as MessageModel;
 use Core\Template;
 use Helper\Utils;
 use Helper\Option;
-use Helper\Mail;
+use Helper\Encrypt;
 
 class Auth
 {
@@ -54,6 +54,11 @@ class Auth
                         $result['message'] = '登录成功,即将跳转到 &gt;仪表盘';
 
                         $remember_me == 'week' ? $ext = 3600 * 24 * 7 : $ext = 3600;
+                        $expire = time() + $ext;
+                        $token = md5($user->uid . ":" . $user->email . ":" . $user->passwd . ":" . $expire . ":" . COOKIE_KEY);
+                        setcookie("uid", base64_encode(Encrypt::encode($user->uid, ENCRYPT_KEY)), $expire, "/");
+                        setcookie("expire", base64_encode(Encrypt::encode($expire, ENCRYPT_KEY)), $expire, "/");
+                        setcookie("token", base64_encode(Encrypt::encode($token, ENCRYPT_KEY)), $expire, "/");
 
                         $_SESSION['currentUser'] = $user;
                     } else {
@@ -82,6 +87,8 @@ class Auth
 
     public function logout()
     {
+        setcookie("uid", '', time() - 3600, "/");
+        setcookie("expire", '', time() - 3600, "/");
         setcookie("token", '', time() - 3600, "/");
         $_SESSION['currentUser'] = null;
         header("Location:/");

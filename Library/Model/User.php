@@ -12,6 +12,7 @@ use Core\Database as DB;
 use Core\Error;
 use Core\Model;
 use Helper\Utils;
+use Helper\Encrypt;
 
 /**
  * Class User
@@ -72,8 +73,22 @@ class User extends Model
                 $userObj->lastActive = TIMESTAMP;
                 $user = $userObj;
             }
-            $_SESSION['currentUser'] = $user;
+        } elseif (!$user->uid) {
+            $uid = Encrypt::decode(base64_decode($_COOKIE['uid']), ENCRYPT_KEY);
+            $expire = Encrypt::decode(base64_decode($_COOKIE['expire']), ENCRYPT_KEY);
+            $token = Encrypt::decode(base64_decode($_COOKIE['token']), ENCRYPT_KEY);
+            if($uid && $expire && $token) {
+                $userObj = self::getUserByUserId($uid);
+                if($userObj) {
+                    $validateToken = md5($userObj->uid . ":" . $userObj->email . ":" . $userObj->passwd . ":" . $expire . ":" . COOKIE_KEY);
+                    if ($token == $validateToken) {
+                        $userObj->lastActive = TIMESTAMP;
+                        $user = $userObj;
+                    }
+                }
+            }
         }
+        $_SESSION['currentUser'] = $user;
         return $user;
     }
 
