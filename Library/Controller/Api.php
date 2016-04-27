@@ -24,19 +24,16 @@ class Api
     {
         $ipAddress = Utils::getUserIP();
         $ch = curl_init();
-        $url = 'http://apis.baidu.com/apistore/iplookupservice/iplookup?ip=' . $ipAddress;
-        $header = array(
-            'apikey: 8c2732c8237d220bb1a281aa6f9ea7ea',
-        );
-        // 添加apikey到header
-        curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        $url = 'http://ip.taobao.com/service/getIpInfo.php?ip=' . $ipAddress;
+
         // 执行HTTP请求
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_URL, $url);
         $res = curl_exec($ch);
         echo $res;
         exit();
     }
+
 
     /**
      * 淘宝自动发货API
