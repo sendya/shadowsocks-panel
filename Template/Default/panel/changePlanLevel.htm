@@ -32,12 +32,12 @@
                     <p>昵称：{$user->nickname}</p>
                     <p>账户：{$user->email}</p>
                     <p>套餐：<span class="label label-info">{$user->getPlan()}</span> </p>
-                    <p>账户余额：{$user->money}元 </p>
+                    <p>账户余额：<span id="money">{$user->money}</span>元 </p>
                     <hr/>
                     <p>您的总流量：{(\Helper\Utils::flowAutoShow($user->transfer))}</p>
-                    <p>可用流量：{(\Helper\Utils::flowAutoShow($user->transfer - ($user->flow_up+$user->flow_down)))}</p>
-                    <p>已用流量：{(\Helper\Utils::flowAutoShow($user->flow_up+$user->flow_down))}</p>
-                    <p><a class="btn btn-info" href="javascript:;" id="updatePlan">升级账户等级</a>&nbsp;&nbsp;<a class="btn btn-info" href="javascript:;" id="">临时增加流量(1元/G)</a></p>
+                    <p>可用流量：<span id="slaTransfer">{(\Helper\Utils::flowAutoShow($user->transfer - ($user->flow_up+$user->flow_down)))}</span></p>
+                    <p>已用流量：<span id="useTransfer">{(\Helper\Utils::flowAutoShow($user->flow_up+$user->flow_down))}</span></p>
+                    <p><a class="btn btn-info" href="javascript:;" id="updatePlan">升级账户等级</a>&nbsp;&nbsp;<a class="btn btn-info" href="javascript:;" id="buyTransfer">临时增加流量(1元/G)</a></p>
                 </div>
             </div>
         </div>
@@ -45,18 +45,52 @@
 </div>
 <script>
     $(document).ready(function(){
-        $("#updatePlan").click(function(){
+        $("#updatePlan").on('click', function(){
+            var btn = $(this);
+            btn.html("请稍等");
+            btn.attr('disabled', 'true').addClass("disabled");
             $.ajax({
                 type:"GET",
-                url:"/Form/UpdatePlan",
+                url:"/member/updatePlan.json",
                 dataType:"json",
-                success:function(data){
-                    showToastr(data.message, 0);
+                success:function(result){
+                    btn.removeAttr('disabled').removeClass("disabled").html("升级账户等级");
+                    if(result.code != 200) {
+                        showToastr(result.message, 0, 3000, '系统错误');
+                        return;
+                    }
+                    showToastr(result.data.message, 0);
                 },
                 error:function(jqXHR){
                     showToastr("发生错误："+jqXHR.status, 0);
                 }
-            })
+            });
+        });
+        $("#buyTransfer").on('click', function(){
+            var btn = $(this);
+            btn.html("请稍等");
+            btn.attr('disabled', 'true').addClass("disabled");
+            $.ajax({
+                type:"GET",
+                url:"/member/buyTransfer.json",
+                dataType:"json",
+                success:function(result){
+                    btn.removeAttr('disabled').removeClass("disabled").html("临时增加流量(1元/G)");
+                    if(result.hasError == true) {
+                        showToastr(result.message, 0, 3000, '系统错误');
+                        return;
+                    }
+                    if(result.data != null) {
+                        showToastr(result.data.message, 0);
+                        $("#useTransfer").text(result.data.useTransfer);
+                        $("#slaTransfer").text(result.data.slaTransfer);
+                        $("#money").text(result.data.money);
+                    }
+                },
+                error:function(jqXHR){
+                    showToastr("发生错误："+jqXHR.status, 0);
+                }
+            });
         });
     });
 </script>

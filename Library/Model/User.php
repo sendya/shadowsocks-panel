@@ -213,4 +213,9 @@ class User extends Model
     {
         return Utils::planAutoShow($this->plan);
     }
+
+    public function getUseTransfer()
+    {
+        return $this->flow_up + $this->flow_down;
+    }
 }

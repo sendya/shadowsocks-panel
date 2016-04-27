@@ -195,7 +195,7 @@ class Member
      */
     public function changePlan()
     {
-        Template::putContext('user', User::getCurrent());
+        Template::putContext('user', User::getUserByUserId(User::getCurrent()->uid));
         Template::setView("panel/changePlanLevel");
     }
 
@@ -260,9 +260,37 @@ class Member
 
     }
 
+    /**
+     * @JSON
+     * @return array
+     * @throws Error
+     */
+    public function buyTransfer()
+    {
+        $user = User::getCurrent();
+        if (!$user) {
+            throw new Error('login timeout', 405);
+        }
+        $user = User::getUserByUserId($user->uid);
+        if (($user->transfer - $user->getUseTransfer()) > Utils::GB * 10) {
+            throw new Error('流量还很充足，无需购买临时流量', 200);
+        }
+        if ($user->money <= 0) {
+            throw new Error('您的余额不足，无法购买', 200);
+        }
+        if($user->expireTime <= time()) {
+            throw new Error('告诉你一个秘密，你的账号已经到期了，到期账户是无法购买流量的。你需要先续期哟 (●\'◡\'●)', 200);
+        }
+        $user->money--;
+        $user->flow_down = $user->flow_down - Utils::GB;
+        $user->enable = 1;
+        $user->save();
+        return array('useTransfer' => Utils::flowAutoShow($user->getUseTransfer()), 'slaTransfer' => Utils::flowAutoShow($user->transfer - $user->getUseTransfer()), 'money' => $user->money, 'message' => '系统发动功力，将您之前使用的流量减去了 1GB。现在你可以继续使用了');
+    }
+
     public function actCard()
     {
-        Template::putContext('user', User::getCurrent());
+        Template::putContext('user', User::getUserByUserId(User::getCurrent()->uid));
         Template::setView('panel/actCard');
     }
 
@@ -288,8 +316,8 @@ class Member
         $user = User::getCurrent();
         $result = array('error' => 1, 'message' => '签到失败或已签到。');
         if ($user->lastCheckinTime <= strtotime(date('Y-m-d 00:00:00', time()))) {
-        	$user = User::getUserByUserId($user->uid);
-        	$user->lastCheckinTime = time();
+            $user = User::getUserByUserId($user->uid);
+            $user->lastCheckinTime = time();
             $checkinTransfer = rand(intval(Option::get('check_transfer_min')),
                     intval(Option::get('check_transfer_max'))) * Utils::MB;
             $user->transfer = $user->transfer + $checkinTransfer;
