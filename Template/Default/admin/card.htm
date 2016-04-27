@@ -171,8 +171,10 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    * [附加参数] 套餐卡填 套餐类型，流量卡填 流量(单位GB)，试用卡填天数，余额卡填 充值金额(单位元)
+                                    * [附加参数]
                                     <br/>
+                                    套餐卡:套餐类型/流量卡:流量(单位GB)/试用卡:天数/余额卡:充值金额(单位元)
+                                    <br/><br/>
                                     * [套餐有效期] 只对套餐卡生效(单位天)
                                 </div>
                             </div>
@@ -257,9 +259,6 @@
             $("input[name='card']").val('');
             $("input[name='card_no']").val('');
             $("#card_type").val(0);
-            $("input[name='card_info']").val('');
-            $("input[name='card_num']").val('');
-            $("input[name='card_exp']").val('');
             $("#is-modify").hide().val(0);
             $("#is-add").show();
             $('#modal-6 .modal-title').html('新增卡号');
@@ -333,7 +332,7 @@
             newData += "<td>" + data.add_time + "</td>";
             newData += "<td>" + data.type + "</td>";
             newData += "<td>" + data.info + "</td>";
-            if(data.type == "套餐卡") {
+            if(data.type == "0" || data.type == "套餐卡") {
                 newData += "<td>" + data.expireTime + "</td>";
             } else {
                 newData += "<td> - </td>";
@@ -353,7 +352,7 @@
                 newData += "<td>" + data[i].add_time + "</td>";
                 newData += "<td>" + data[i].type + "</td>";
                 newData += "<td>" + data[i].info + "</td>";
-                if(data[i].type == "套餐卡") {
+                if(data[i].type == "0" || data[i].type == "套餐卡") {
                     newData += "<td>" + data[i].expireTime + "</td>";
                 } else {
                     newData += "<td> - </td>";
