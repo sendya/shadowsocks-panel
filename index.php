@@ -5,6 +5,8 @@
  * Author: kookxiang <r18@ikk.me>
  */
 
+use Helper\Option;
+
 if (php_sapi_name() != 'cli') {
     exit('Sorry, This page is not available due to incorrect server configuration.');
 }
@@ -16,7 +18,7 @@ define('DATA_PATH', ROOT_PATH . 'Data/');
 define('TIMESTAMP', time());
 @ini_set('display_errors', 'on');
 @ini_set('expose_php', false);
-@ini_set('date.timezone','Asia/Shanghai');
+@ini_set('date.timezone', 'Asia/Shanghai');
 set_time_limit(0);
 
 function command_exists($command)
@@ -53,13 +55,13 @@ function copyDir($strSrcDir, $strDstDir)
         }
     }
     while (false !== ($file = readdir($dir))) {
-        if (($file!='.') && ($file!='..')) {
-            if (is_dir($strSrcDir.'/'.$file) ) {
-                if (!copydir($strSrcDir.'/'.$file, $strDstDir.'/'.$file)) {
+        if (($file != '.') && ($file != '..')) {
+            if (is_dir($strSrcDir . '/' . $file)) {
+                if (!copydir($strSrcDir . '/' . $file, $strDstDir . '/' . $file)) {
                     return false;
                 }
             } else {
-                if (!copy($strSrcDir.'/'.$file, $strDstDir.'/'.$file)) {
+                if (!copy($strSrcDir . '/' . $file, $strDstDir . '/' . $file)) {
                     return false;
                 }
             }
@@ -106,14 +108,20 @@ switch ($argv[1]) {
 
         @include ROOT_PATH . 'Package/autoload.php';
         @include DATA_PATH . 'Config.php';
+        if (Option::getConfig('ENCRYPT_KEY') == 'Please generate key and paste here') {
+            Option::setConfig('ENCRYPT_KEY', Option::createKey());
+        }
+        if (Option::getConfig('COOKIE_KEY') == 'Please generate key and paste here') {
+            Option::setConfig('COOKIE_KEY', Option::createKey());
+        }
         echo 'Done!' . PHP_EOL;
 
         echo 'Now migrating database...' . PHP_EOL;
-        if(PATH_SEPARATOR!=':') {
+        if (PATH_SEPARATOR != ':') {
             $phinxCommand = ROOT_PATH . 'Package\bin\phinx.bat migrate';
         } else {
             $phinxCommand = ROOT_PATH . 'Package/bin/phinx';
-            if(!is_executable($phinxCommand)) {
+            if (!is_executable($phinxCommand)) {
                 echo 'Package/ directory Permission denied , change your directory Permission(chmod -R +x Package/)' . PHP_EOL;
                 break;
             }
@@ -122,7 +130,7 @@ switch ($argv[1]) {
         system($phinxCommand);
 
         echo 'Now check resources is exits...' . PHP_EOL;
-        if(!is_dir(ROOT_PATH . 'Public/Resource')) {
+        if (!is_dir(ROOT_PATH . 'Public/Resource')) {
             echo 'Resources is not existed, gulping...' . PHP_EOL;
             copyDir(ROOT_PATH . 'Resource', ROOT_PATH . 'Public/Resource');
         }

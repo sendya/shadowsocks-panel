@@ -11,9 +11,11 @@ use Core\Database as DB;
 
 class Option
 {
+    const CONFIG_FILE = DATA_PATH . "Config.php";
 
     public $k;
     public $v;
+
 
     private static $list;
 
@@ -102,5 +104,39 @@ class Option
             self::$list = self::init();
         }
         return self::$list;
+    }
+
+    public static function createKey($length = 30)
+    {
+        $chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()-_ []{}<>~`+=,.;:/?|';
+
+        $str = '';
+        for ($i = 0; $i < $length; $i++) {
+            $str .= $chars[mt_rand(0, strlen($chars) - 1)];
+        }
+        return $str;
+    }
+
+    public static function getConfig($k)
+    {
+        if (!file_exists(self::CONFIG_FILE)) {
+            return false;
+        }
+        $str = file_get_contents(self::CONFIG_FILE);
+        $config = preg_match("/define\\('" . preg_quote($k) . "', '(.*)'\\);/", $str, $res);
+        return $res[1];
+    }
+
+    public static function setConfig($k, $v)
+    {
+        if (!file_exists(self::CONFIG_FILE)) {
+            return false;
+        }
+        $str = file_get_contents(self::CONFIG_FILE);
+
+        $str2 = preg_replace("/define\\('" . preg_quote($k) . "', '(.*)'\\);/",
+            "define('" . preg_quote($k) . "', '" . $v . "');", $str);
+
+        file_put_contents(self::CONFIG_FILE, $str2);
     }
 }

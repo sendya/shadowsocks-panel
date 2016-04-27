@@ -38,6 +38,7 @@ define('USE_REWRITE', true);
  * Don't touch it after application install finished.
  */
 define('ENCRYPT_KEY', 'Please generate key and paste here');
+define('COOKIE_KEY', 'Please generate key and paste here');
 
 /**
  * HTTPS support:
