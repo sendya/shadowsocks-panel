@@ -158,6 +158,11 @@ switch ($argv[1]) {
         */
         echo 'All done~ Cheers!';
         break;
+    case 'import-sspanel':
+        // TODO: 从 ss-panel 导入用户数据
+
+
+        break;
     default:
         echo 'Unknown command';
 }
