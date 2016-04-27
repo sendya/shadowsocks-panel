@@ -49,7 +49,7 @@
                                             <td>#{$card->id}</td>
                                             <td>{$card->card}</td>
                                             <td>{(date("Y-m-d H:i:s", $card->add_time))}</td>
-                                            <td><if condition="$card->type == 0">套餐卡<elseif condition="$card->type == 1">流量卡<elseif condition="$card->type == 2">试用延期卡<else>通用卡</if></td>
+                                            <td><if condition="$card->type == 0">套餐卡<elseif condition="$card->type == 1">流量卡<elseif condition="$card->type == 2">试用延期卡<elseif condition="$card->type == 3">余额卡<else>通用卡</if></td>
                                             <td>{$card->info}</td>
                                             <td>
                                                 <if condition="$card->status == 0">{$card->expireTime}
@@ -333,7 +333,7 @@
             newData += "<td>" + data.add_time + "</td>";
             newData += "<td>" + data.type + "</td>";
             newData += "<td>" + data.info + "</td>";
-            if(data.type == "0") {
+            if(data.type == "套餐卡") {
                 newData += "<td>" + data.expireTime + "</td>";
             } else {
                 newData += "<td> - </td>";
@@ -353,7 +353,7 @@
                 newData += "<td>" + data[i].add_time + "</td>";
                 newData += "<td>" + data[i].type + "</td>";
                 newData += "<td>" + data[i].info + "</td>";
-                if(data[i].type == "0") {
+                if(data[i].type == "套餐卡") {
                     newData += "<td>" + data[i].expireTime + "</td>";
                 } else {
                     newData += "<td> - </td>";
