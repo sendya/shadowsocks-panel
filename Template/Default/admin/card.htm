@@ -39,6 +39,7 @@
                                     <th>添加时间</th>
                                     <th>类型</th>
                                     <th>参数</th>
+                                    <th>有效时间</th>
                                     <th>状态</th>
                                     <th width="150px">操作</th>
                                 </tr>
@@ -50,6 +51,11 @@
                                             <td>{(date("Y-m-d H:i:s", $card->add_time))}</td>
                                             <td><if condition="$card->type == 0">套餐卡<elseif condition="$card->type == 1">流量卡<elseif condition="$card->type == 2">试用延期卡<else>通用卡</if></td>
                                             <td>{$card->info}</td>
+                                            <td>
+                                                <if condition="$card->status == 0">{$card->expireTime}
+                                                    <else> -
+                                                </if>
+                                            </td>
                                             <td>
                                                 <if condition="$card->status == 1">未用
                                                     <else>已用
@@ -89,7 +95,7 @@
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 <h4 class="modal-title"></h4>
             </div>
-            <form role="form" id="form1" method="post" action="/admin/card/update.json" class="validate">
+            <form role="form" id="card_form" method="post" action="/admin/card/update.json" class="validate">
                 <input type="hidden" name="form_add" value="{(time())}"/>
                 <input type="hidden" name="card" id="card" value=""/>
                 <div class="modal-body">
@@ -97,11 +103,10 @@
                     <div id="modal-isbody" style="display: none;">
                         <div class="row">
                             <div class="col-md-6">
-
                                 <div class="form-group">
-                                    <label for="field-1" class="control-label">卡号（只允许系统生成）</label>
+                                    <label for="card_no" class="control-label">卡号（只允许系统生成）</label>
 
-                                    <input type="text" class="form-control" name="card_2" id="field-1" value=""
+                                    <input type="text" class="form-control" name="card_no" id="card_no" value=""
                                            readonly placeholder="只允许系统生成">
                                 </div>
 
@@ -111,10 +116,11 @@
 
                                 <div class="form-group">
                                     <label for="card_type" class="control-label">卡类型</label>
-                                    <select name="card_type" id="card_type" id="field-2" class="form-control">
+                                    <select name="card_type" id="card_type" class="form-control">
                                         <option value="0">套餐卡（A/B/C/D/VIP）</option>
                                         <option value="1">流量卡</option>
                                         <option value="2">试用延期卡</option>
+                                        <option value="3">余额卡</option>
                                     </select>
                                 </div>
 
@@ -125,8 +131,8 @@
                             <div class="col-md-6">
 
                                 <div class="form-group">
-                                    <label for="field-3" class="control-label">附加参数</label>
-                                    <input type="text" class="form-control" name="card_info" id="field-3" value="C"
+                                    <label for="card_info" class="control-label">附加参数</label>
+                                    <input type="text" class="form-control" name="card_info" id="card_info" value="C"
                                            placeholder="C" >
                                 </div>
 
@@ -135,17 +141,26 @@
                             <div class="col-md-6" id="is-add">
 
                                 <div class="form-group">
-                                    <label for="field-5" class="control-label">卡号数量</label>
-                                    <input type="number" class="form-control" name="number" id="field-5" value="1"
+                                    <label for="card_num" class="control-label">卡号数量</label>
+                                    <input type="number" class="form-control" name="card_num" id="card_num" value="1"
                                            placeholder="1" data-message-required="卡号数量.">
                                 </div>
 
                             </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="card_exp" class="control-label">套餐有效期</label>
+                                    <input type="number" class="form-control" name="card_exp" id="card_exp" value="30"
+                                           placeholder="30" data-message-required="套餐有效期">
+                                </div>
 
+                            </div>
                             <div class="col-md-6" style="display: none;" id="is-modify">
                                 <div class="form-group">
-                                    <label for="field-6" class="control-label">是否有效</label>
-                                    <select class="form-control" name="card_status" id="field-6">
+                                    <label for="card_status" class="control-label">是否有效</label>
+                                    <select class="form-control" name="card_status" id="card_status">
                                         <option value="1">有效</option>
                                         <option value="0">失效</option>
                                     </select>
@@ -156,7 +171,9 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    * [附加参数] 套餐卡填 套餐类型，流量卡填 流量(单位GB)，试用卡填天数
+                                    * [附加参数] 套餐卡填 套餐类型，流量卡填 流量(单位GB)，试用卡填天数，余额卡填 充值金额(单位元)
+                                    <br/>
+                                    * [套餐有效期] 只对套餐卡生效(单位天)
                                 </div>
                             </div>
                         </div>
@@ -176,20 +193,14 @@
     var modal_default_body = jQuery('#modal-6 .modal-body').html();
     jQuery(document).ready(function($) {
 
-        $("form#form1").validate({
+        $("form#card_form").validate({
             rules: {
-                'user.email': "required",
-                'user.port': "required",
-                'user.sspwd': "required",
-                'user.invite_num': "required",
-                'user.transfer': "required"
+                'card_info': "required",
+                'number': "required"
             },
             messages: {
-                'user.email': "邮箱必须填写",
-                'user.port': "端口必须填写",
-                'user.sspwd': "SS连接密码必须填写",
-                'user.invite_num': "邀请码数量必须填写",
-                'user.transfer': "总流量必须填写"
+                'card_info': "附加信息必须填写",
+                'number': "数量必须填写"
             },
             errorElement: 'span',
             errorClass: 'validate-has-error',
@@ -244,10 +255,11 @@
         $("#card-add").on('click', function(){
             $("#modal-6 .modal-body").html(modal_default_body);
             $("input[name='card']").val('');
-            $("input[name='card_2']").val('');
+            $("input[name='card_no']").val('');
             $("#card_type").val(0);
             $("input[name='card_info']").val('');
-            $("input[name='number']").val('');
+            $("input[name='card_num']").val('');
+            $("input[name='card_exp']").val('');
             $("#is-modify").hide().val(0);
             $("#is-add").show();
             $('#modal-6 .modal-title').html('新增卡号');
@@ -296,10 +308,11 @@
                 if(result.data.error != 1 && result.data.card != null) {
                     var card = result.data.card;
                     $("input[name='card']").val(card.id);
-                    $("input[name='card_2']").val(card.card);
+                    $("input[name='card_no']").val(card.card);
                     $("#card_type").val(card.type);
                     $("input[name='card_info']").val(card.info);
                     $("select[name='card_status']").val(card.status);
+                    $("input[name='card_exp']").val(card.expireTime);
                     $("#is-modify").show().val(0);
                     $("#is-add").hide();
                     $('#modal-6 .modal-title').html('修改卡号');
@@ -320,6 +333,11 @@
             newData += "<td>" + data.add_time + "</td>";
             newData += "<td>" + data.type + "</td>";
             newData += "<td>" + data.info + "</td>";
+            if(data.type == "0") {
+                newData += "<td>" + data.expireTime + "</td>";
+            } else {
+                newData += "<td> - </td>";
+            }
             newData += "<td>" + data.status + "</td>";
             newData += "<td>" + '<a class="btn btn-info btn-sm" href="javascript:;" onclick="cardModify('+data.id+');">编辑</a>' + '<a class="btn btn-danger btn-sm" href="javascript:;" onclick="cardRemove('+data.id+');">删除</a>' + "</td></tr>";
             $("tr#card-" + data.id).html(newData);
@@ -335,6 +353,11 @@
                 newData += "<td>" + data[i].add_time + "</td>";
                 newData += "<td>" + data[i].type + "</td>";
                 newData += "<td>" + data[i].info + "</td>";
+                if(data[i].type == "0") {
+                    newData += "<td>" + data[i].expireTime + "</td>";
+                } else {
+                    newData += "<td> - </td>";
+                }
                 newData += "<td>" + data[i].status + "</td>";
                 newData += "<td>" + '<a class="btn btn-info btn-sm" href="javascript:;" onclick="cardModify('+data[i].id+');">编辑</a>' + '<a class="btn btn-danger btn-sm" href="javascript:;" onclick="cardRemove('+data[i].id+');">删除</a>' + "</td></tr>";
             }

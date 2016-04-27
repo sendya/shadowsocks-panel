@@ -24,7 +24,7 @@ class Card extends Model
      * 3. 为测试卡时，此字段为测试时长（单位天）
      */
     public $info;
-    public $expireTime; // 保留字段
+    public $expireTime; // 套餐有效期
     public $status; // 卡状态 0-失效 1-可用
 
     public static function queryAll()

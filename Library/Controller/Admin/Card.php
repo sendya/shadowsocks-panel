@@ -50,7 +50,7 @@ class Card
     {
         $result = array('error' => 1, 'message' => '请求错误');
         $user = User::getCurrent();
-        if ($_POST['card_2'] != null && $_POST['card'] != null) { // 修改
+        if ($_POST['card_no'] != null && $_POST['card'] != null) { // 修改
             $cardId = intval(trim($_POST['card']));
             $card = MCard::queryCardById($cardId);
             if (!$card) {
@@ -60,19 +60,19 @@ class Card
             $card->type = intval(trim($_POST['card_type']));
             $card->info = htmlspecialchars(trim($_POST['card_info']));
             $card->status = intval(trim($_POST['card_status']));
+            $card->expireTime = intval(trim($_POST['card_exp']));
             $card->save();
             $card->add_time = date("Y-m-d H:i:s", $card->add_time);
-            if ($card->type == 0) {
+            if($card->type == 0) {
                 $card->type = "套餐卡";
-            } else {
-                if ($card->type == 1) {
-                    $card->type = "流量卡";
-                } else {
-                    if ($card->type == 2) {
-                        $card->card = "试用延期卡";
-                    }
-                }
+            } elseif ($card->type == 1) {
+                $card->type = "流量卡";
+            } elseif ($card->type == 2) {
+                $card->type = "试用延期卡";
+            } elseif ($card->type == 3) {
+                $card->type = "余额卡";
             }
+
             $card->status = $card->status == 1 ? "未用" : "已用";
             $result['error'] = 0;
             $result['message'] = "修改卡号成功。";
@@ -81,8 +81,8 @@ class Card
         } else { // 新增
 
             $number = 1;
-            if ($_POST['number'] != null) {
-                $number = intval(trim($_POST['number']));
+            if ($_POST['card_num'] != null) {
+                $number = intval(trim($_POST['card_num']));
             }
             $cardList = array();
             for ($i = 0; $i < $number; ++$i) {
@@ -92,20 +92,20 @@ class Card
                 $card->card = $cardStr;
                 $card->type = intval(trim($_POST['card_type']));
                 $card->info = htmlspecialchars(trim($_POST['card_info']));
+                $card->expireTime = intval(trim($_POST['card_exp']));
                 $card->status = 1;
                 $card->save();
                 $card->add_time = date("Y-m-d H:i:s", $card->add_time);
-                if ($card->type == 0) {
+                if($card->type == 0) {
                     $card->type = "套餐卡";
-                } else {
-                    if ($card->type == 1) {
-                        $card->type = "流量卡";
-                    } else {
-                        if ($card->type == 2) {
-                            $card->card = "试用延期卡";
-                        }
-                    }
+                } elseif ($card->type == 1) {
+                    $card->type = "流量卡";
+                } elseif ($card->type == 2) {
+                    $card->type = "试用延期卡";
+                } elseif ($card->type == 3) {
+                    $card->type = "余额卡";
                 }
+
                 $card->status = $card->status == 1 ? "未用" : "已用";
                 $cardList[] = $card;
             }
