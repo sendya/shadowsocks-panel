@@ -31,24 +31,24 @@
                     <div class="panel-body">
                         <div class="dataTables_wrapper form-inline dt-bootstrap">
                             <div class="table-responsive">
-                            <table cellspacing="0" class="table table-small-font table-bordered table-striped">
-                                <thead>
-                                <tr>
-                                    <th width="90px">端口</th>
-                                    <th width="160px">用户名</th>
-                                    <th>邮箱</th>
-                                    <th>套餐</th>
-                                    <th>流量</th>
-                                    <th>到期时间</th>
-                                    <th width="150px">操作</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                </tbody>
-                            </table>
+                                <table cellspacing="0" class="table table-small-font table-bordered table-striped">
+                                    <thead>
+                                    <tr>
+                                        <th width="90px">端口</th>
+                                        <th width="160px">用户名</th>
+                                        <th>邮箱</th>
+                                        <th>套餐</th>
+                                        <th>流量</th>
+                                        <th>到期时间</th>
+                                        <th width="150px">操作</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
 
 
-                        </div>
+                            </div>
 
                             <div class="row">
                                 <div class="col-xs-6">
@@ -422,8 +422,8 @@
                         newData += '<td>'+user.port+'</td>';
                         newData += '<td>'+user.nickname+'</td>';
                         newData += '<td>'+user.email+'</td>';
-                        newData += '<td>'+user.plan+'</td>';
-                        newData += '<td>'+user.transfer+'</td>';
+                        newData += '<td>'+ planName[user.plan] +'</td>';
+                        newData += '<td>'+ transferAuthShow(user.transfer) +'</td>';
                         newData += '<td>'+getTime(user.expireTime)+'</td>';
                         newData += '<td>'+'<a class="btn btn-info btn-sm" href="javascript:;" onclick="userModify('+user.uid+');">编辑</a>' + '<a class="btn btn-danger btn-sm" href="javascript:;" onclick="userRemove('+user.uid+');">删除</a>' +'</td>';
                         newData += '</tr>';
@@ -464,5 +464,36 @@
         s = t.getSeconds();
         return y+'-'+(m<10?'0'+m:m)+'-'+(d<10?'0'+d:d)+' '+(h<10?'0'+h:h)+':'+(i<10?'0'+i:i)+':'+(s<10?'0'+s:s);
     }
+    function transferAuthShow(flow) {
+        var str = "";
+        if (flow > 1073741824) {
+            str = (flow / 1073741824).toFixed(2) + " GB";
+        } else {
+            if (flow > 1048576) {
+                str = (flow / 1048576).toFixed(2) + " MB";
+            } else  {
+                if (flow > 1024) {
+                    str = (flow / 1024).toFixed(2) + " KB";
+                } else {
+                    str = 'None';
+                }
+            }
+        }
+        return str;
+    }
+
+    var planName = {
+    <php>
+    $i=0;
+    foreach($planList as $key=>$val) {
+        $i++;
+        $lev = $key . ':"' . $val . '"';
+        if($i < count($planList)) {
+            $lev.=',';
+        }
+        echo $lev;
+    }
+    </php>
+    };
 </script>
 <import template="/admin/_footer" />
