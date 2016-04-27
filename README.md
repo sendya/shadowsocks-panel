@@ -29,10 +29,10 @@ wget https://github.com/sendya/shadowsocks-panel/releases/download/sspanel-v1.04
 $ unzip -o -d /home/wwwroot/shadowsocks-panel/ shadowsocks-panel.zip
 $ cd /home/wwwroot/shadowsocks-panel/
 
-# 设定 Data 目录读写权限
-chmod -R 777 ./Data/
 # 复制一份 ./Data/Config.simple.php 为 ./Data/Config.php
 cp ./Data/Config.simple.php ./Data/Config.php
+# 设定 Data 目录读写权限
+chmod -R 777 ./Data/
 # 配置数据库名及数据库账户密码(代码最下面)
 vim ./Data/Config.php
 
