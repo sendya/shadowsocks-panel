@@ -164,7 +164,8 @@ switch ($argv[1]) {
         system($phinxCommand);
 
         echo 'Now installing resources...' . PHP_EOL;
-        echo 'Deleting old resources...  ' . delDir(ROOT_PATH . 'Public/Resource') ? 'done.' : 'old resources not exist.';
+        echo 'Deleting old resources...  ' . PHP_EOL;
+        echo delDir(ROOT_PATH . 'Public/Resource') ? 'done.' . PHP_EOL : 'old resources not exist.' . PHP_EOL;
         echo 'Copying resources...' . PHP_EOL;
         copyDir(ROOT_PATH . 'Resource', ROOT_PATH . 'Public/Resource');
         
