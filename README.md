@@ -24,7 +24,7 @@ cd shadowsocks-panel
 
 # 方式二：下载稳定版本（推荐）
 # 前往 https://github.com/sendya/shadowsocks-panel/releases ，下载最新的release版本（当前版本：v1.04）
-wget https://github.com/sendya/shadowsocks-panel/releases/download/sspanel-v1.04/shadowsocks-panel-v1.04.zip -O shadowsocks-panel.zip
+wget https://github.com/sendya/shadowsocks-panel/archive/sspanel-v1.10.zip -O shadowsocks-panel.zip
 # 解压到 /home/wwwroot/shadowsocks-panel/
 $ unzip -o -d /home/wwwroot/shadowsocks-panel/ shadowsocks-panel.zip
 $ cd /home/wwwroot/shadowsocks-panel/
