@@ -140,22 +140,10 @@ switch ($argv[1]) {
 
         echo 'Now check resources is exits...' . PHP_EOL;
         if (!is_dir(ROOT_PATH . 'Public/Resource')) {
-            echo 'Resources is not existed, gulping...' . PHP_EOL;
+            echo 'Resources is not existed, copying...' . PHP_EOL;
             copyDir(ROOT_PATH . 'Resource', ROOT_PATH . 'Public/Resource');
         }
-
-        /*
-        临时屏蔽 npm 自动构建
-        if (!command_exists('npm')) {
-            echo 'It seems like you don\'t have a valid npm installation. Please refer to http://nodejs.org';
-            break;
-        }
-        echo 'Installing front-end packages...';
-        system('npm install');
-        echo 'Building front-end resources...'.PHP_EOL;
-        system('npm run build');
-        echo 'All done~ Cheers!';
-        */
+        
         echo 'All done~ Cheers!';
         break;
     case 'import-sspanel':
