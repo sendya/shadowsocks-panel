@@ -167,6 +167,7 @@
 								finish: function() {
 									toastr.error('程序出现致命错误，无法连接到登录服务器<br/>可能的问题：<br/>&nbsp;&nbsp;1.数据库连接失败<br/>&nbsp;&nbsp;2.请求地址API错误', "错误!", opts);
 									$('button[type="submit"]').removeAttr("disabled");
+									setTimeout("window.location.reload()", 2000);
 								}
 							});
 						}

@@ -1,0 +1,77 @@
+<import template="/panel/_header" />
+<import template="/panel/_content" />
+<div class="page-title">
+
+    <div class="title-env">
+        <h1 class="title">自定义加密方式</h1>
+        <p class="description">自定义节点加密方式，仅对允许自定义节点有效</p>
+    </div>
+
+    <div class="breadcrumb-env">
+        <ol class="breadcrumb bc-1">
+            <li>
+                <a href="/member"><i class="fa-home"></i>主页</a>
+            </li>
+            <li>
+                <a href="javascript:;">自定义信息</a>
+            </li>
+            <li class="active">
+                <strong>自定义加密</strong>
+            </li>
+        </ol>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <i class="fa fa-angle-right"></i>
+            </div>
+            <div class="panel-body">
+                <div class="form-group">
+                    <p>当前支持自定义节点：<if condition="count($nodeList)>0"><loop variable="$nodeList" key="$key" value="$node"><code>{$node->id}.{$node->name}</code>&nbsp;</loop><else>无</if></p>
+                    <label for="method-old" class="control-label">原加密方式：</label>
+                    <input type="text" class="form-control disabled" id="method-old" placeholder="{$user->method}" value="{$user->method}" disabled="disabled">
+                    <label for="method-new" class="control-label">新加密方式：（填写 -1 不使用自定义加密）</label>
+                    <input type="text" class="form-control" id="method-new" value="{$user->method}" placeholder="{$user->method}">
+                </div>
+            </div>
+            <button class="btn btn-info btn-block" id="submit-method">确定修改</button>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function(){
+        $("#submit-method").click(function(){
+            var but = $(this);
+            var method_new = $("#method-new").val();
+            if(method_new == null || method_new == '') {
+                showToastr("你不填写就想改真的好吗?", 0, 2000);
+                return;
+            }
+            but.attr('disabled', 'true').addClass('disabled');
+            $.ajax({
+                type:"POST",
+                url:"/member/changeMethod.json",
+                data:{method:$("#method-new").val()},
+                dataType:"json",
+                success:function(result){
+                    but.removeAttr('disabled').removeClass('disabled');
+                    if(result.code != 200) {
+                        showToastr(result.message, 0);
+                        return;
+                    }
+                    showToastr(result.data.message, 0);
+                    $("#method-old").val($("#method-new").val());
+                    $("#method-new").val('');
+                },
+                error:function(jqXHR){
+                    showToastr("发生错误："+jqXHR.status, 0);
+                    but.removeAttr('disabled').removeClass('disabled');
+                }
+            })
+        });
+    });
+    //nickname-new
+</script>
+<import template="/panel/_footer" />

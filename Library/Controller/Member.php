@@ -189,6 +189,32 @@ class Member
     }
 
     /**
+     * 修改 自定义加密方式
+     * @JSON
+     * @throws Error
+     */
+    public function changeMethod()
+    {
+        $user = User::getCurrent();
+        if ($_POST['method'] != null) {
+            $method = '';
+            if($_POST['method'] != '-1') {
+                $method = $_POST['method'];
+            }
+            $user = User::getUserByUserId($user->uid);
+            $user->method = htmlspecialchars(trim($method));
+            $user->save();
+            $_SESSION['currentUser'] = $user;
+            return array('error' => 0, 'message' => '修改加密方式成功，全部节点同步大约5分钟内生效。');
+        } else {
+            $nodeList = Node::getSupportCustomMethodArray();
+            Template::putContext('user', $user);
+            Template::putContext('nodeList', $nodeList);
+            Template::setView("panel/changeMethod");
+        }
+    }
+
+    /**
      * 升级面板 Plan
      * @JSON
      * @throws Error

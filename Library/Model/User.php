@@ -49,6 +49,7 @@ class User extends Model
     public $forgePwdCode; // 找回密码次数
     public $payTime; // 上次支付时间
     public $expireTime; // 到期时间
+    public $method; // 自定义加密方式
     /** @ignore */
     public $lastActive = TIMESTAMP;
     /** @ignore */

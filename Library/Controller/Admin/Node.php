@@ -58,6 +58,9 @@ class Node
             if ($_POST['node_status'] != null) {
                 $node->status = $_POST['node_status'];
             }
+            if ($_POST['node_custom_method'] != null) {
+                $node->custom_method = $_POST['node_custom_method'];
+            }
             if ($_POST['node_order'] != null) {
                 $node->order = intval($_POST['node_order']);
             }
@@ -83,6 +86,9 @@ class Node
                 }
                 if ($_POST['node_status'] != null) {
                     $node->status = $_POST['node_status'];
+                }
+                if ($_POST['node_custom_method'] != null) {
+                    $node->custom_method = $_POST['node_custom_method'];
                 }
                 if ($_POST['node_order'] != null) {
                     $node->order = intval($_POST['node_order']);

@@ -11,6 +11,7 @@ use Helper\Mailer;
 use Helper\Option;
 use Helper\Utils;
 use Model\Mail;
+use Model\Node;
 
 class Index
 {

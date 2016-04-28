@@ -20,6 +20,7 @@ class Node extends Model
     public $method; // 加密方式
     public $info; // 节点信息备注
     public $status; // 状态
+    public $custom_method; // 是否支持自定义加密 0-不可自定义 1-可自定义
     public $order; // 排序
 
     /**
@@ -48,6 +49,24 @@ class Node extends Model
             $selectSQL .= " WHERE type=?";
         }
         $selectSQL .= "  ORDER BY `order`";
+        $statement = DB::getInstance()->prepare($selectSQL);
+        $statement->bindValue(1, $type);
+        $statement->execute();
+        return $statement->fetchAll(DB::FETCH_CLASS, __CLASS__);
+    }
+
+    /**
+     * get support custom method node.
+     * @return Node[]
+     */
+    public static function getSupportCustomMethodArray()
+    {
+        $plan = User::getCurrent()->plan;
+        $selectSQL = 'SELECT * FROM node WHERE custom_method=1 AND `type` BETWEEN 0 AND ?';
+        $type = 0;
+        if($plan == 'VIP') {
+            $type = 1;
+        }
         $statement = DB::getInstance()->prepare($selectSQL);
         $statement->bindValue(1, $type);
         $statement->execute();

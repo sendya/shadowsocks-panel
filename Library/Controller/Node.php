@@ -33,7 +33,11 @@ class Node
         $id = trim($_REQUEST['id']);
         $user = User::getUserByUserId(User::getCurrent()->uid);
         $node = NodeModel::getNodeById($id);
-        $info = self::nodeQr($node->server, $user->port, $user->sspwd, $node->method);
+        $method = $node->method;
+        if($node->custom_method == 1 && $user->method != '' && $user->method != null) {
+            $method = $user->method;
+        }
+        $info = self::nodeQr($node->server, $user->port, $user->sspwd, $method);
         if (self::verifyPlan($user->plan, $node->type)) {
             Template::putContext('info', $info);
             Template::putContext('node', $node);
@@ -48,7 +52,11 @@ class Node
         $id = trim($_REQUEST['id']);
         $user = User::getUserByUserId(User::getCurrent()->uid);
         $node = NodeModel::getNodeById($id);
-        $info = self::nodeJson($node->server, $user->port, $user->sspwd, $node->method, $node->name);
+        $method = $node->method;
+        if($node->custom_method == 1 && $user->method != '' && $user->method != null) {
+            $method = $user->method;
+        }
+        $info = self::nodeJson($node->server, $user->port, $user->sspwd, $method, $node->name);
         if (self::verifyPlan($user->plan, $node->type)) {
             Template::putContext('info', $info);
             Template::putContext('node', $node);
@@ -66,9 +74,14 @@ class Node
         $user = User::getUserByUserId(User::getCurrent()->uid);
         $nodeList = NodeModel::getNodeArray();
         $info = "";
+
         foreach ($nodeList as $node) {
+            $method = $node->method;
+            if($node->custom_method == 1 && $user->method != '' && $user->method != null) {
+                $method = $user->method;
+            }
             if (self::verifyPlan($user->plan, $node->type)) {
-                $info .= self::nodeJson($node->server, $user->port, $user->sspwd, $node->method, $node->name) . ",";
+                $info .= self::nodeJson($node->server, $user->port, $user->sspwd, $method, $node->name) . ",";
             }
         }
         Template::putContext('info', $info);
