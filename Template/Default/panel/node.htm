@@ -30,7 +30,11 @@
             <div class="panel-body">
                 <button class="btn btn-secondary">IP: {$node->server}</button>
                 <button class="btn btn-orange">{$node->status}</button>
-                <button class="btn btn-turquoise">{$node->method}</button>
+                <if condition="$node->custom_method && $user->method">
+                    <button class="btn btn-turquoise">{$user->method}</button>
+                <else>
+                    <button class="btn btn-turquoise">{$node->method}</button>
+                </if>
                 <br>
                 <p>{$node->info}</p>
             </div>
@@ -58,7 +62,11 @@
             <div class="panel-body">
                 <button class="btn btn-secondary">IP: {$node->server}</button>
                 <button class="btn btn-orange">{$node->status}</button>
-                <button class="btn btn-turquoise">{$node->method}</button>
+                <if condition="$node->custom_method && $user->method">
+                    <button class="btn btn-turquoise">{$user->method}</button>
+                <else>
+                    <button class="btn btn-turquoise">{$node->method}</button>
+                </if>
                 <br>
                 <p>{$node->info}</p>
             </div>
