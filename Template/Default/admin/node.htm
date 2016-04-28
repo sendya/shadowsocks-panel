@@ -36,6 +36,7 @@
                                                 <th width="120px">加密</th>
                                                 <th width="310px">描述</th>
                                                 <th width="85px">类型</th>
+                                                <th width="95px">自定义加密</th>
                                                 <th width="150px">操作</th>
                                             </tr>
                                         </thead>
@@ -48,6 +49,7 @@
                                                     <td> {$node->method}</td>
                                                     <td>{$node->info}</td>
                                                     <td><if condition="$node->type == 0">普通节点<else>Pro 节点</if></td>
+                                                    <td><if condition="$node->custom_method == 0">不支持<else>支持</if></td>
                                                     <td>
                                                         <a class="btn btn-info btn-sm" href="javascript:;" onclick="nodeModify({$node->id});">编辑</a>
                                                         <a class="btn btn-danger btn-sm" href="javascript:;" onclick="nodeRemove({$node->id});">删除</a>
@@ -154,15 +156,39 @@
                     </div>
 
                     <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="custom_method" class="control-label">自定义加密</label>
+                                <select name="node.custom_method" id="custom_method" class="form-control">
+                                    <option value="0">不支持</option>
+                                    <option value="1">支持</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
                         <div class="col-md-12">
-                            <div class="form-group no-margin">
+                            <div class="form-group">
                                 <label for="field-7" class="control-label">备注信息</label>
                                 <textarea class="form-control autogrow" name="node.info" id="field-7" placeholder="Write something about server info" ></textarea>
                             </div>
                         </div>
                     </div>
 
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                * [自定义加密] 需要服务端支持自定义加密
+                                <br/>
+                                目前支持的服务端版本: <a href="https://github.com/Acris/shadowsocks-rm/tree/manyuser" target="_blank">shadowsocks-rm manyuser</a>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
+
+
 
             </div>
             <div class="modal-footer">
@@ -250,6 +276,7 @@
             $("textarea[name='node.info']").val('');
             $("input[name='node.status']").val('');
             $("input[name='node.order']").val('0');
+            $("input[name='node.custom_method']").val('0');
             $('#modal-6 .modal-title').html('新增节点');
             $('#modal-6').modal('show', {backdrop: 'static'});
         });
@@ -298,6 +325,7 @@
                     $("textarea[name='node.info']").val(node.info);
                     $("input[name='node.status']").val(node.status);
                     $("input[name='node.order']").val(node.order);
+                    $("select[name='node.custom_method']").val(node.custom_method);
                     $('#modal-6 .modal-title').html('修改节点');
                     reset(true);
                 } else {
@@ -313,6 +341,7 @@
     function changeTable(data) {
         var tid = $("tr#node-" + data.id).html();
         if(data.type == '0') {data.type = '普通节点';} else {data.type = 'Pro 节点';}
+        if(data.custom_method == '0') {data.custom_method = '不支持';} else {data.custom_method = '支持';}
         if(tid == undefined || tid == null) {
             /* 新增 */
             var trCount = $("table tbody").children("tr").length;
@@ -322,6 +351,7 @@
             newData += "<td>" + data.method + "</td>";
             newData += "<td>" + data.info + "</td>";
             newData += "<td>" + data.type + "</td>";
+            newData += "<td>" + data.custom_method + "</td>";
             newData += "<td>" + '<a class="btn btn-info btn-sm" href="javascript:;" onclick="nodeModify('+data.id+');">编辑</a>' + '<a class="btn btn-danger btn-sm" href="javascript:;" onclick="nodeRemove('+data.id+');">删除</a>' + "</td></tr>";
             $("table tbody").append(newData);
             if($("#node-0").html() != undefined) $("#node-0").remove();
@@ -332,6 +362,7 @@
             newData += "<td>" + data.method + "</td>";
             newData += "<td>" + data.info + "</td>";
             newData += "<td>" + data.type + "</td>";
+            newData += "<td>" + data.custom_method + "</td>";
             newData += "<td>" + '<a class="btn btn-info btn-sm" href="javascript:;" onclick="nodeModify('+data.id+');">编辑</a>' + '<a class="btn btn-danger btn-sm" href="javascript:;" onclick="nodeRemove('+data.id+');">删除</a>' + "</td>";
             $("tr#node-" + data.id).html(newData);
         }
