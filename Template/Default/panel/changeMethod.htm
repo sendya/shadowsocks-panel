@@ -22,14 +22,13 @@
     </div>
 </div>
 <div class="row">
-    <div class="col-sm-12">
+    <div class="col-sm-6">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <i class="fa fa-angle-right"></i>
+                <i class="fa fa-angle-right"></i>修改自定义加密方式
             </div>
             <div class="panel-body">
                 <div class="form-group">
-                    <p>当前支持自定义节点：<if condition="count($nodeList)>0"><loop variable="$nodeList" key="$key" value="$node"><code>{$node->id}.{$node->name}</code>&nbsp;</loop><else>无</if></p>
                     <label for="method-old" class="control-label">原加密方式：</label>
                     <input type="text" class="form-control disabled" id="method-old" placeholder="{$user->method}" value="{$user->method}" disabled="disabled">
                     <label for="method-new" class="control-label">新加密方式：（填写 -1 不使用自定义加密）</label>
@@ -37,6 +36,18 @@
                 </div>
             </div>
             <button class="btn btn-info btn-block" id="submit-method">确定修改</button>
+        </div>
+    </div>
+    <div class="col-sm-6">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <i class="fa fa-angle-right"></i>当前支持自定义加密的节点
+            </div>
+            <div class="panel-body">
+                <div class="form-group">
+                    <if condition="count($nodeList)>0"><loop variable="$nodeList" key="$key" value="$node"><i class="fa fa-server" aria-hidden="true"></i> {$node->name}<br/></loop><else>无</if>
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -62,7 +73,11 @@
                         return;
                     }
                     showToastr(result.data.message, 0);
-                    $("#method-old").val($("#method-new").val());
+                    if($("#method-new").val() == '-1') {
+                        $("#method-old").val('');
+                    } else {
+                        $("#method-old").val($("#method-new").val());
+                    }
                     $("#method-new").val('');
                 },
                 error:function(jqXHR){
