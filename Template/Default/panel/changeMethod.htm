@@ -79,6 +79,7 @@
                         $("#method-old").val($("#method-new").val());
                     }
                     $("#method-new").val('');
+                    $("#method-new").prop('placeholder','');
                 },
                 error:function(jqXHR){
                     showToastr("发生错误："+jqXHR.status, 0);
