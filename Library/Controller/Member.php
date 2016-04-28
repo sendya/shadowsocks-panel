@@ -197,12 +197,12 @@ class Member
     {
         $user = User::getCurrent();
         if ($_POST['method'] != null) {
-            $method = '';
+            $method = null;
             if($_POST['method'] != '-1') {
-                $method = $_POST['method'];
+                $method = htmlspecialchars(trim($_POST['method']));
             }
             $user = User::getUserByUserId($user->uid);
-            $user->method = htmlspecialchars(trim($method));
+            $user->method = $method;
             $user->save();
             $_SESSION['currentUser'] = $user;
             return array('error' => 0, 'message' => '修改加密方式成功，全部节点同步大约5分钟内生效。');
