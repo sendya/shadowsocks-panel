@@ -16,6 +16,5 @@ class UpdateVersion extends AbstractMigration
 
         $this->execute("DELETE FROM `options` WHERE `k` = 'version'");
         $this->insert('options', $option);
-
     }
 }
