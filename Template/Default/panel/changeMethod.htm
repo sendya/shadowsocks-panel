@@ -45,7 +45,7 @@
             </div>
             <div class="panel-body">
                 <div class="form-group">
-                    <if condition="count($nodeList)>0"><loop variable="$nodeList" key="$key" value="$node"><i class="fa fa-server" aria-hidden="true"></i> {$node->name}<br/></loop><else>无</if>
+                    <if condition="count($nodeList)>0"><loop variable="$nodeList" key="$key" value="$node"><i class="fa fa-server" aria-hidden="true"></i> &nbsp; {$node->name}<br/></loop><else>无</if>
                 </div>
             </div>
         </div>
