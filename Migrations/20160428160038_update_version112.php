@@ -25,9 +25,13 @@ class UpdateVersion112 extends AbstractMigration
         $this->execute("DELETE FROM `options` WHERE `k` LIKE '%custom_mail_%'");
         $this->insert('options', $option);
         // update table column 20160427073456
+
         $table = $this->table('card');
-        $table->renameColumn('pram1', 'expireTime');
-        $table->changeColumn('expireTime', 'integer', ['null'=> true, 'default'=> 0]);
-        $table->save();
+        $column = $table->hasColumn('pram1');
+        if($column) {
+            $table->renameColumn('pram1', 'expireTime');
+            $table->changeColumn('expireTime', 'integer', ['null'=> true, 'default'=> 0]);
+            $table->save();
+        }
     }
 }
