@@ -30,9 +30,16 @@
             <div class="panel-body">
                 <div class="form-group">
                     <label for="method-old" class="control-label">原加密方式：</label>
-                    <input type="text" class="form-control disabled" id="method-old" placeholder="{$user->method}" value="{$user->method}" disabled="disabled">
-                    <label for="method-new" class="control-label">新加密方式：（填写 -1 不使用自定义加密）</label>
-                    <input type="text" class="form-control" id="method-new" value="{$user->method}" placeholder="{$user->method}">
+                    <input type="text" class="form-control disabled" id="method-old" value="{$user->method}" disabled="disabled">
+                    <label for="method-new" class="control-label">新加密方式：</label>
+                    <select class="form-control" id="method-new" data-value="">
+                        <option value="-1">不使用自定义加密</option>
+                        <option value="rc4-md5">rc4-md5</option>
+                        <option value="aes-256-cfb">aes-256-cfb</option>
+                        <option value="aes-192-cfb">aes-192-cfb</option>
+                        <option value="aes-128-cfb">aes-128-cfb</option>
+                        <option value="chacha20">chacha20</option>
+                    </select>
                 </div>
             </div>
             <button class="btn btn-info btn-block" id="submit-method">确定修改</button>
@@ -53,6 +60,14 @@
 </div>
 <script>
     $(document).ready(function(){
+        var method = '{$user->method}';
+        if(method) {
+            $("#method-new").val(method);
+        } else {
+            $("#method-new").val('-1');
+            $("#method-old").val('不使用自定义加密');
+        }
+
         $("#submit-method").click(function(){
             var but = $(this);
             var method_new = $("#method-new").val();
@@ -74,12 +89,10 @@
                     }
                     showToastr(result.data.message, 0);
                     if($("#method-new").val() == '-1') {
-                        $("#method-old").val('');
+                        $("#method-old").val('不使用自定义加密');
                     } else {
                         $("#method-old").val($("#method-new").val());
                     }
-                    $("#method-new").val('');
-                    $("#method-new").prop('placeholder','');
                 },
                 error:function(jqXHR){
                     showToastr("发生错误："+jqXHR.status, 0);
