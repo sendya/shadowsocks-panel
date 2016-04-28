@@ -43,17 +43,21 @@ class Api
      */
     public function createCard()
     {
-        $CURR_KEY = $_SERVER['CARD_API_KEY'];
+        $CURR_KEY = $_SERVER['HTTP_AUTHORIZATION'];
         if (!$CURR_KEY) {
             header("HTTP/1.1 405 Method Not Allowed");
             exit();
         }
 
-        $KEY = Option::get('CREATE_CARD_API_KEY');
+        $KEY = Option::get('SYSTEM_API_KEY');
         if ($KEY == null) {
             $KEY = password_hash(Utils::randomChar(12) . time(), PASSWORD_BCRYPT);
-            Option::set('CREATE_CARD_API_KEY', $KEY);
+            Option::set('SYSTEM_API_KEY', $KEY);
         }
+
+        $CURR_KEY = str_replace('Basic ', '', $CURR_KEY);
+        $CURR_KEY = md5($CURR_KEY . ENCRYPT_KEY);
+        $KEY = md5($KEY . ENCRYPT_KEY);
 
         if (strtoupper($KEY) == strtoupper($CURR_KEY)) {
             $card = new Card();

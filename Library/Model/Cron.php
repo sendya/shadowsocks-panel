@@ -16,12 +16,14 @@ class Cron extends Model
 
     public $id;
     public $enable;
+    public $system; // 是否为系统任务 0-false 1-true
+    public $remark;
     public $nextrun;
     public $order;
 
     public static function getCronArray()
     {
-        $st = DB::sql("SELECT id, enable, nextrun, `order` FROM cron");
+        $st = DB::sql("SELECT id, enable, system, remark, nextrun, `order` FROM cron");
         $st->execute();
         return $st->fetchAll(DB::FETCH_CLASS, __CLASS__);
     }

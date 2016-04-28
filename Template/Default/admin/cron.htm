@@ -40,9 +40,9 @@
                                 <loop variable="$cronList" key="$key" value="$cron">
                                 <tr id="cron-{$cron->id}">
                                     <td>#{$cron->id}</td>
-                                    <td></td>
-                                    <td>{(date("Y-m-d H:i:s", $cron->nextrun))}</td>
-                                    <td>{(\Helper\Utils::cronStatus($cron->enable, $cron->nextrun))}</td>
+                                    <td>{$cron->remark}</td>
+                                    <td><if condition="$cron->system">-<else>{(date("Y-m-d H:i:s", $cron->nextrun))}</if></td>
+                                    <td><if condition="$cron->system">-<else>{(\Helper\Utils::cronStatus($cron->enable, $cron->nextrun))}</if></td>
                                     <td>{$cron->order}</td>
                                 </tr>
                                 </loop>
