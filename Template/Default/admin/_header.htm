@@ -109,49 +109,51 @@
                 </div>
                 <div class="settings-icon">
                     <a href="javascript:;" data-toggle="settings-pane" data-animate="true">
-                        <i class="linecons-cog"></i>
+                        <i class="fa fa-cog"></i>
                     </a>
                 </div>
             </header>
             <ul id="main-menu" class="main-menu">
                 <li class="{(\Helper\Utils::menuActive('admin', 'opened'))}">
                 <a href="/Admin" class="pjax">
-                    <i class="linecons-cog"></i>
+                    <i class="fa fa-desktop"></i>
                     <span class="title">仪表盘</span>
                 </a>
                 </li>
                 <li class="{(\Helper\Utils::menuActive('node'))}">
                 <a href="/admin/node" class="pjax">
-                    <i class="linecons-params "></i>
+                    <i class="fa fa-server"></i>
                     <span class="title">节点管理</span>
                     <span class="label label-success pull-right">{$openNode}/{$allNode}</span>
                 </a>
                 </li>
                 <li class="{(\Helper\Utils::menuActive('user'))}">
                 <a href="/admin/user" class="pjax">
-                    <i class="linecons-user "></i>
+                    <i class="fa fa-users"></i>
                     <span class="title">用户管理</span>
                 </a>
                 </li>
                 <li class="{(\Helper\Utils::menuActive('card'))}">
                     <a href="/admin/card" class="pjax">
-                        <i class="linecons-money "></i>
+                        <i class="fa fa-credit-card"></i>
                         <span class="title">卡号管理</span>
                     </a>
                 </li>
                 <li class="{(\Helper\Utils::menuActive('invite', ' opened expanded'))} has-sub">
                 <a href="javascript:;">
-                    <i class="linecons-heart"></i>
+                    <i class="fa fa-heart"></i>
                     <span class="title">邀请码管理</span>
                 </a>
                 <ul>
                     <li class="{(\Helper\Utils::menuActive('inviteList'))}">
                     <a href="/admin/invite/inviteList" class="pjax">
+                        <i class="fa fa-heart-o"></i>
                         <span class="title">邀请码列表</span>
                     </a>
                     </li>
                     <li class="{(\Helper\Utils::menuActive('inviteOldList'))}">
                     <a href="/admin/invite/inviteOldList" class="pjax">
+                        <i class="fa fa-heartbeat"></i>
                         <span class="title">历史邀请码</span>
                     </a>
                     </li>
@@ -159,37 +161,37 @@
                 </li>
                 <li class="{(\Helper\Utils::menuActive('message'))}">
                     <a href="/admin/message" class="pjax">
-                        <i class="linecons-comment "></i>
+                        <i class="fa fa-comment"></i>
                         <span class="title">消息管理</span>
                     </a>
                 </li>
                 <li class="{(\Helper\Utils::menuActive('setting|cron|system|mailer', ' opened expanded'))} has-sub">
                 <a href="javascript:;">
-                    <i class="linecons-beaker"></i>
+                    <i class="fa fa-cogs"></i>
                     <span class="title">系统设置</span>
                 </a>
                 <ul>
                     <li class="{(\Helper\Utils::menuActive('setting'))}">
                         <a href="/admin/setting">
-                            <i class="linecons-params "></i>
+                            <i class="fa fa-cog"></i>
                             <span class="title">系统设置</span>
                         </a>
                     </li>
                     <li class="{(\Helper\Utils::menuActive('system'))}">
                         <a href="/admin/setting/system" class="pjax">
-                            <i class="linecons-note "></i>
+                            <i class="fa fa-cogs"></i>
                             <span class="title">详细参数</span>
                         </a>
                     </li>
                     <li class="{(\Helper\Utils::menuActive('mailer'))}">
                         <a href="/admin/mailer">
-                            <i class="linecons-comment "></i>
+                            <i class="fa fa-envelope"></i>
                             <span class="title">邮件设置</span>
                         </a>
                     </li>
                     <li class="{(\Helper\Utils::menuActive('cron'))}">
                         <a href="/admin/cron" class="pjax">
-                            <i class="linecons-calendar "></i>
+                            <i class="fa fa-tasks"></i>
                             <span class="title">计划任务</span>
                         </a>
                     </li>
@@ -197,7 +199,7 @@
                 </li>
                 <li>
                     <a href="/member">
-                        <i class="fa-mail-reply"></i>
+                        <i class="fa fa-reply"></i>
                         <span class="title">返回前台</span>
                     </a>
                 </li>

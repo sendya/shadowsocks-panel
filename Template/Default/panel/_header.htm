@@ -109,33 +109,33 @@
                 </div>
                 <div class="settings-icon">
                     <a href="javascript:;" data-toggle="settings-pane" data-animate="true">
-                        <i class="linecons-cog"></i>
+                        <i class="fa fa-cog"></i>
                     </a>
                 </div>
             </header>
             <ul id="main-menu" class="main-menu">
                 <li class="{(\Helper\Utils::menuActive('member', 'opened'))}">
                 <a href="/member" class="pjax">
-                    <i class="linecons-cog"></i>
+                    <i class="fa fa-desktop"></i>
                     <span class="title">仪表盘</span>
                 </a>
                 </li>
                 <li class="{(\Helper\Utils::menuActive('node'))}">
                     <a href="/member/node" class="pjax">
-                        <i class="linecons-params "></i>
+                        <i class="fa fa-server"></i>
                         <span class="title">节点列表</span>
                         <span class="label label-success pull-right">{$openNode}/{$allNode}</span>
                     </a>
                 </li>
                 <li class="{(\Helper\Utils::menuActive('info'))}">
                     <a href="/member/info" class="pjax">
-                        <i class="linecons-user "></i>
+                        <i class="fa fa-user"></i>
                         <span class="title">个人资料</span>
                     </a>
                 </li>
                 <li class="{(\Helper\Utils::menuActive('Change|actCard', ' opened expanded'))} has-sub">
                     <a href="javascript:;">
-                        <i class="linecons-pencil"></i>
+                        <i class="fa fa-pencil"></i>
                         <span class="title">资料修改</span>
                     </a>
                     <ul>
@@ -168,25 +168,25 @@
                 </li>
                 <li class="{(\Helper\Utils::menuActive('invite'))}">
                     <a href="/member/invite" class="pjax">
-                        <i class="linecons-heart "></i>
+                        <i class="fa fa-heart"></i>
                         <span class="title">邀请好友</span>
                     </a>
                 </li>
                 <li class="has-sub">
                     <a href="javascript:;">
-                        <i class="linecons-paper-plane"></i>
+                        <i class="fa fa-paper-plane"></i>
                         <span class="title">SS服务</span>
                     </a>
                     <ul>
                         <li>
                             <a href="https://cn.gravatar.com/" target="_blank" title="Gravatar 全球通用头像">
-                                <i class="entypo-flow-line"></i>
+                                <i class="fa fa-camera"></i>
                                 <span class="title">修改头像</span>
                             </a>
                         </li>
                         <li><a href="support/tos">
-                            <i class="entypo-flow-line"></i>
-                            <span class="title">关于{SITE_NAME}</span>
+                            <i class="fa fa-question"></i>
+                            <span class="title">{SITE_NAME}</span>
                         </a>
                         </li>
                     </ul>
@@ -194,7 +194,7 @@
                 <if condition="$user->isAdmin()">
                 <li>
                     <a href="/admin">
-                        <i class="linecons-cog"></i>
+                        <i class="fa fa-cogs"></i>
                         <span class="title">管理员后台</span>
                     </a>
                 </li>
