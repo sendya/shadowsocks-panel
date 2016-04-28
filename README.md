@@ -1,44 +1,46 @@
 ## Shadowsocks Panel
 
-**A simple Shadowsocks management system**
+**A powerful Shadowsocks management system**
 
-全新面板发布啦
+The new panel released.
 
-> 更加安全的权限管理
-> 超简洁的 注解式代码
-> 优化各种操作
-> 	1. 用户端个人资料修改/卡号充值优化
-> 	2. 邀请码添加逻辑优化, 全无刷新展示列表
-> 	3. 管理端各个增删改功能优化
-> 	4. 各项系统属性动态控制
-> 	5. 计划任务管控
+> More secure rights management
+> Super simple annotation type codes
+> Optimization of various operations
+> 	1. The client profile to modify / card recharge optimization
+> 	2. The invitation code to add logic optimization, no display refresh list
+> 	3. Management additions and deletions to the end of each function optimization
+> 	4. The dynamic properties of the control system
+> 	5. Scheduled Tasks control
+> 	6. PRO Node purview! support ss manyuser service
+> 	7. Custom encryption method(support `chacha20`, `aes-128-cfb`, `aes-192-cfb`, `aes-256-cfb` and `rc4-md5`)
 
-程序要求PHP版本为 **PHP5.5** ~ **PHP7** ，推荐使用PHP7。
+Require PHP version PHP5.5 ~ PHP7 , recommended PHP7.
 
 ### Quick Start
 ```bash
-# 方式一：克隆最新版本
+# First way: The latest version of the clone
 cd /home/wwwroot/
 git clone https://github.com/sendya/shadowsocks-panel.git
 cd shadowsocks-panel
 
-# 方式二：下载稳定版本（推荐）
-# 前往 https://github.com/sendya/shadowsocks-panel/releases ，下载最新的release版本（当前版本：v1.04）
+# Second way: download the stable version (recommended)
+# Go https://github.com/sendya/shadowsocks-panel/releases, download the latest release version (current version: v1.10)
 wget https://github.com/sendya/shadowsocks-panel/archive/sspanel-v1.10.zip -O shadowsocks-panel.zip
-# 解压到 /home/wwwroot/shadowsocks-panel/
+# Extract to /home/wwwroot/shadowsocks-panel/
 $ unzip -o -d /home/wwwroot/shadowsocks-panel/ shadowsocks-panel.zip
 $ cd /home/wwwroot/shadowsocks-panel/
 
-# 复制一份 ./Data/Config.simple.php 为 ./Data/Config.php
+# Copy ./Data/Config.simple.php to ./Data/Config.php
 cp ./Data/Config.simple.php ./Data/Config.php
-# 设定 Data 目录读写权限
+# Set the Data directory permissions to read and write
 chmod -R 777 ./Data/
-# 配置数据库名及数据库账户密码(代码最下面)
+# Configure the name of the database and the database account password (code at the bottom)
 vim ./Data/Config.php
 
-# 开始执行安装
+# Start the installation
 php index.php install
 ```
 
 ### Documentation
-详细的安装配置文档请移步 [Wiki](https://github.com/sendya/shadowsocks-panel/wiki)
+Detailed installation documentation [Wiki](https://github.com/sendya/shadowsocks-panel/wiki)
