@@ -71,6 +71,31 @@ function copyDir($strSrcDir, $strDstDir)
     return true;
 }
 
+
+function delDir($dir) {
+    //先删除目录下的文件：
+    $dh=opendir($dir);
+    while ($file=readdir($dh)) {
+        if($file!="." && $file!="..") {
+            $fullpath=$dir."/".$file;
+            if(!is_dir($fullpath)) {
+                unlink($fullpath);
+            } else {
+                deldir($fullpath);
+            }
+        }
+    }
+
+    closedir($dh);
+    //删除当前文件夹：
+    if(rmdir($dir)) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+
 switch ($argv[1]) {
     case 'install':
         if (!file_exists(ROOT_PATH . 'composer.phar')) {
@@ -138,11 +163,10 @@ switch ($argv[1]) {
         }
         system($phinxCommand);
 
-        echo 'Now check resources is exits...' . PHP_EOL;
-        if (!is_dir(ROOT_PATH . 'Public/Resource')) {
-            echo 'Resources is not existed, copying...' . PHP_EOL;
-            copyDir(ROOT_PATH . 'Resource', ROOT_PATH . 'Public/Resource');
-        }
+        echo 'Now installing resources...' . PHP_EOL;
+        echo 'Deleting old resources...  ' . delDir(ROOT_PATH . 'Public/Resource') ? 'done.' : 'old resources not exist.';
+        echo 'Copying resources...' . PHP_EOL;
+        copyDir(ROOT_PATH . 'Resource', ROOT_PATH . 'Public/Resource');
         
         echo 'All done~ Cheers!';
         break;
