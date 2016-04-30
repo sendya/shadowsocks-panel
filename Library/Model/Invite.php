@@ -96,11 +96,12 @@ class Invite extends Model
      * @param string $plan
      * @return bool
      */
-    public static function addInvite($uid, $plan = 'A')
+    public static function addInvite($uid, $plan = 'A', $expiration = 10)
     {
         $inviteStr = substr(hash("sha256", $uid . Utils::randomChar(10)), 0, 26) . $uid;
         $obj = new self;
         $obj->inviteIp = Utils::getUserIP();
+        $obj->expiration = $expiration;
         $obj->invite = $inviteStr;
         $obj->plan = $plan;
         $obj->uid = $uid;
