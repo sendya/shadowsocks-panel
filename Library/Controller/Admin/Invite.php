@@ -53,10 +53,14 @@ class Invite
         if ($_POST['invite'] == null) {
             $result = array('error' => 0, 'message' => '添加成功，刷新可见');
             $plan = 'A';
+            $expiration = 10;
             $add_uid = -1;
             $inviteNumber = 1;
             if ($_POST['plan'] != null) {
                 $plan = $_POST['plan'];
+            }
+            if ($_POST['expiration'] != null) {
+                $expiration = $_POST['expiration'];
             }
             if ($_POST['add_uid'] != null) {
                 $add_uid = trim($_POST['add_uid']);
@@ -74,12 +78,13 @@ class Invite
             }
             if ($inviteNumber > 1) {
                 for ($i = 0; $i < $inviteNumber; $i++) {
-                    InviteModel::addInvite($add_uid, $plan);
+                    InviteModel::addInvite($add_uid, $plan, $expiration);
                 }
             } else {
-                InviteModel::addInvite($add_uid, $plan);
+                InviteModel::addInvite($add_uid, $plan, $expiration);
             }
             $result['inviteNumber'] = $inviteNumber;
+            $result['expiration'] = $expiration;
             $result['plan'] = $plan;
 
         } else {
