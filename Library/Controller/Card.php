@@ -114,6 +114,8 @@ class Card
             }
             $card->destroy(); // 将此卡片禁止
             $user->save();
+            $_SESSION['currentUser'] = $user; // 将用户信息更新到 session 中.
+
         }
 
         return $result;

@@ -159,6 +159,7 @@ class Member
             }
             $user->sspwd = $ssPwd;
             $user->save();
+            $_SESSION['currentUser'] = $user;
             $result = array('error' => 0, 'message' => '修改SS连接密码成功', 'sspwd' => $ssPwd);
             return $result;
         } else {
@@ -243,6 +244,7 @@ class Member
                     $user->plan = 'B';
                     $user->transfer = Utils::GB * intval($custom_transfer_level['B']);
                     $user->save();
+                    $_SESSION['currentUser'] = $user;
                     $result['error'] = 0;
                     $result['message'] = '升级成功，您的当前等级为';
                 } else {
@@ -255,6 +257,7 @@ class Member
                     $user->plan = 'C';
                     $user->transfer = Utils::GB * intval($custom_transfer_level['C']);
                     $user->save();
+                    $_SESSION['currentUser'] = $user;
                     $result['error'] = 0;
                     $result['message'] = '升级成功，您的当前等级为';
                 } else {
@@ -267,6 +270,7 @@ class Member
                     $user->plan = 'D';
                     $user->transfer = Utils::GB * intval($custom_transfer_level['D']);
                     $user->save();
+                    $_SESSION['currentUser'] = $user;
                     $result['error'] = 0;
                     $result['message'] = '升级成功，您的当前等级为';
                 } else {
@@ -281,6 +285,7 @@ class Member
                 $result['message'] = '请求失败，不知道服务器娘哪里出问题了喵。';
                 break;
         }
+
         $result['level'] = Utils::planAutoShow($user->plan);
         return $result;
 
@@ -311,6 +316,7 @@ class Member
         $user->flow_down = $user->flow_down - Utils::GB;
         $user->enable = 1;
         $user->save();
+        $_SESSION['currentUser'] = $user; // 将用户信息更新到 session 中.
         return array('useTransfer' => Utils::flowAutoShow($user->getUseTransfer()), 'slaTransfer' => Utils::flowAutoShow($user->transfer - $user->getUseTransfer()), 'money' => $user->money, 'message' => '系统发动功力，将您之前使用的流量减去了 1GB。现在你可以继续使用了');
     }
 
