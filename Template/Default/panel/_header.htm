@@ -149,6 +149,11 @@
                                 <span class="title">昵称修改</span>
                             </a>
                         </li>
+                        <li>
+                            <a href="https://cn.gravatar.com/" target="_blank" title="Gravatar 全球通用头像">
+                                <span class="title">修改头像</span>
+                            </a>
+                        </li>
                         <li class="{(\Helper\Utils::menuActive('ChangePlan'))}">
                             <a href="/member/changePlan" class="pjax">
                                 <span class="title">续费升级</span>
@@ -172,21 +177,27 @@
                         <span class="title">邀请好友</span>
                     </a>
                 </li>
-                <li class="has-sub">
+                <li class="{(\Helper\Utils::menuActive('order|support', ' opened expanded'))} has-sub">
                     <a href="javascript:;">
                         <i class="fa fa-paper-plane"></i>
-                        <span class="title">SS服务</span>
+                        <span class="title">服务支持</span>
                     </a>
                     <ul>
                         <li>
-                            <a href="https://cn.gravatar.com/" target="_blank" title="Gravatar 全球通用头像">
-                                <i class="fa fa-camera"></i>
-                                <span class="title">修改头像</span>
+                            <a href="/order" title="购买卡号，套餐，各项升级服务，或充值账户余额">
+                                <i class="fa fa-shopping-cart"></i>
+                                <span class="title">购买服务</span>
                             </a>
                         </li>
-                        <li><a href="support/tos">
-                            <i class="fa fa-question"></i>
-                            <span class="title">{SITE_NAME}</span>
+                        <li>
+                            <a href="/support/ticket" title="Ticket · Services">
+                                <i class="fa fa-ticket"></i>
+                                <span class="title">工单服务</span>
+                            </a>
+                        </li>
+                        <li><a href="/support/tos">
+                            <i class="fa fa-paper-plane-o"></i>
+                            <span class="title">关于{SITE_NAME}</span>
                         </a>
                         </li>
                     </ul>
