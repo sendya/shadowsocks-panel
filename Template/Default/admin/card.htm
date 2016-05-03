@@ -52,7 +52,7 @@
                                             <td><if condition="$card->type == 0">套餐卡<elseif condition="$card->type == 1">流量卡<elseif condition="$card->type == 2">试用延期卡<elseif condition="$card->type == 3">余额卡<else>通用卡</if></td>
                                             <td>{$card->info}</td>
                                             <td>
-                                                <if condition="$card->status == 0">{$card->expireTime}
+                                                <if condition="$card->type == 0">{$card->expireTime}
                                                     <else> -
                                                 </if>
                                             </td>
