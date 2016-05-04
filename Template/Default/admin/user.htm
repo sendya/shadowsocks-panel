@@ -468,9 +468,9 @@
         var str = "";
         if (flow > 1073741824) {
             str = (flow / 1073741824).toFixed(2) + " GB";
-        } else if(flow > 1048576) {
+        } else if(flow > 1048576 && flow < 1073741824) {
             str = (flow / 1048576).toFixed(2) + " MB";
-        } else if(flow > 1024) {
+        } else if(flow > 1024 && flow < 1048576) {
             str = (flow / 1024).toFixed(2) + " KB";
         } else {
             str = '0 KB';
