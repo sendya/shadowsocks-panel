@@ -24,7 +24,7 @@ class Mail extends Model
     public $content;
 
     /**
-     * Get mail queue list on limit 3
+     * Get mail queue list on limit 2
      * @return Mail
      */
     public static function getQueueList()
