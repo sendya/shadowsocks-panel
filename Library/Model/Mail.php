@@ -24,10 +24,10 @@ class Mail extends Model
     public $content;
 
     /**
-     * Get mail queue on limit 3
+     * Get mail queue list on limit 3
      * @return Mail
      */
-    public static function getMailQueue()
+    public static function getQueueList()
     {
         $st = DB::sql("SELECT * FROM mail_queue AS t1 JOIN (SELECT ROUND(RAND() * ((SELECT MAX(id) FROM mail_queue)-(SELECT MIN(id) FROM mail_queue))+(SELECT MIN(id) FROM mail_queue)) AS id) AS t2 WHERE t1.id >= t2.id ORDER BY t1.id LIMIT 3");
         $st->execute();

@@ -59,7 +59,7 @@ final class Mailer
     public function toQueue($bool)
     {
         $this->queued = $bool;
-        Option::set('mail_queue', $bool==true? 1 : 0 );
+        Option::set('mail_queue', $bool?1:0);
     }
 
     /*
