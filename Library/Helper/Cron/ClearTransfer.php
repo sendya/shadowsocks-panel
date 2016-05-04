@@ -30,7 +30,7 @@ class ClearTransfer implements ICron
             if (!$inTransaction) {
                 DB::getInstance()->beginTransaction();
             }
-            $st = DB::sql("UPDATE member SET flow_up=0, flow_down=0 WHERE `plan`!='Z'");
+            $st = DB::sql("UPDATE member SET flow_up=0, flow_down=0 WHERE `enable`=1 AND `plan`!='Z'");
             $st->execute();
             if (!$inTransaction) {
                 DB::getInstance()->commit();
