@@ -11,7 +11,7 @@ define('DATA_PATH', ROOT_PATH . 'Data/');
 define('TIMESTAMP', time());
 @ini_set('display_errors', 'on');
 @ini_set('expose_php', false);
-
+@ini_set('date.timezone', 'Asia/Shanghai');
 // Register composer
 require ROOT_PATH . 'Package/autoload.php';
 
