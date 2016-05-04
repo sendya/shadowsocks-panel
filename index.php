@@ -146,7 +146,6 @@ switch ($argv[1]) {
             file_put_contents(DATA_PATH . 'Config.php', $str2);
         } elseif (Option::getConfig('COOKIE_KEY') == 'Please generate key and paste here' || Option::getConfig('COOKIE_KEY') == '') {
             Option::setConfig('COOKIE_KEY', Option::createKey());
-
         }
         echo 'Done!' . PHP_EOL;
 

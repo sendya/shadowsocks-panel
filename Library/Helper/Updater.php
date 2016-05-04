@@ -39,6 +39,7 @@ class Updater
         }
         if (User::getCurrent()->isAdmin()) {
             $current_version = Option::get("version");
+            $git_current_version = file_get_contents(DATA_PATH.'version.lock');
             // 从 update.loacg.com 服务器上获取版本变化
             $response = self::doGet(self::UPDATE_SERVER . self::CHECK, array("Cookie: ver:" . $current_version));
 
@@ -54,7 +55,12 @@ class Updater
                     $message = $data['message'];
                 }
                 self::$isCheck = true;
+
                 if ($current_version != $online_version) {
+                    if($git_current_version == $online_version) {
+                        Option::set("version", $git_current_version);
+                        return false;
+                    }
                     if ($message == "") {
                         $message = "发现新版本 " . $online_version . " , 可以前往Github下载更新(本消息仅管理员可接收到)";
                     }

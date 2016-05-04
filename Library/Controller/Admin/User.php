@@ -39,7 +39,7 @@ class User
     public function getList()
     {
         $pageData = new PageData('member', "ORDER BY uid",
-            ['uid', 'port', 'email', 'nickname', 'plan', 'transfer', 'expireTime']);
+            ['uid', 'port', 'email', 'nickname', 'plan', 'flow_up', 'flow_down', 'transfer', 'expireTime']);
         $pageData->execute();
         Template::setContext($pageData->getContext());
     }

@@ -38,7 +38,7 @@
                                         <th width="160px">用户名</th>
                                         <th>邮箱</th>
                                         <th>套餐</th>
-                                        <th>流量</th>
+                                        <th>已用/总流量</th>
                                         <th>到期时间</th>
                                         <th width="150px">操作</th>
                                     </tr>
@@ -423,7 +423,7 @@
                         newData += '<td>'+user.nickname+'</td>';
                         newData += '<td>'+user.email+'</td>';
                         newData += '<td>'+ planName[user.plan] +'</td>';
-                        newData += '<td>'+ transferAuthShow(user.transfer) +'</td>';
+                        newData += '<td>'+ transferAuthShow(user.flow_up + user.flow_down) + '/' + transferAuthShow(user.transfer) +'</td>';
                         newData += '<td>'+getTime(user.expireTime)+'</td>';
                         newData += '<td>'+'<a class="btn btn-info btn-sm" href="javascript:;" onclick="userModify('+user.uid+');">编辑</a>' + '<a class="btn btn-danger btn-sm" href="javascript:;" onclick="userRemove('+user.uid+');">删除</a>' +'</td>';
                         newData += '</tr>';
@@ -468,16 +468,12 @@
         var str = "";
         if (flow > 1073741824) {
             str = (flow / 1073741824).toFixed(2) + " GB";
+        } else if(flow > 1048576) {
+            str = (flow / 1048576).toFixed(2) + " MB";
+        } else if(flow > 1024) {
+            str = (flow / 1024).toFixed(2) + " KB";
         } else {
-            if (flow > 1048576) {
-                str = (flow / 1048576).toFixed(2) + " MB";
-            } else  {
-                if (flow > 1024) {
-                    str = (flow / 1024).toFixed(2) + " KB";
-                } else {
-                    str = 'None';
-                }
-            }
+            str = '0 KB';
         }
         return str;
     }
