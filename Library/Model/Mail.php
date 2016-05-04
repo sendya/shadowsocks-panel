@@ -29,7 +29,7 @@ class Mail extends Model
      */
     public static function getQueueList()
     {
-        $st = DB::sql("SELECT `id`,`to`,`subject`,`content` FROM mail_queue LIMIT 3");
+        $st = DB::sql("SELECT `id`,`to`,`subject`,`content` FROM mail_queue LIMIT 2");
         $st->execute();
         return $st->fetchAll(DB::FETCH_CLASS, __CLASS__);
     }
