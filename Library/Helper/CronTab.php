@@ -40,7 +40,7 @@ class CronTab
             return;
         }
         $mailer = Mailer::getInstance();
-        $mailer->toQueue(false); // set to queue.
+        $mailer->toQueue(false, true); // set to queue.
         $mailQueue = Mail::getQueueList();
         if (count($mailQueue) >0) {
             foreach ($mailQueue as $key=>$mail) {
