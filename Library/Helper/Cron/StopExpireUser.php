@@ -52,6 +52,7 @@ class StopExpireUser implements ICron
                     'expireTime' => date('Y-m-d H:i:s', $user->expireTime)
                 ];
                 $mailContent = Utils::placeholderReplace($mailContent, $params);
+                $mailContent .= "<p style=\"padding: 1.5em 1em 0; color: #999; font-size: 12px;\">—— 本邮件由 ". SITE_NAME ." (<a href=\"".BASE_URL."\">".BASE_URL."</a>) 账户管控系统发送</p>";
                 $mail->content = $mailContent;
                 $mailer->send($mail);
             }

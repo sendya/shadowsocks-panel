@@ -47,12 +47,14 @@ class Mailer
         $mail->to = $user->email;
         $mail->subject = '[' . SITE_NAME . '] 这是一封测试邮件';
         $mail->content = '这是一封<b>单条发送</b>测试邮件';
+        $mail->content .= "<p style=\"padding: 1.5em 1em 0; color: #999; font-size: 12px;\">—— 本邮件由 " . SITE_NAME . " (<a href=\"" . BASE_URL . "\">" . BASE_URL . "</a>) 管理员发送</p>";
         if (!$mailer->send($mail)) {
             return $result;
         }
         $mailer->toQueue(true);
         $mail->subject = '[' . SITE_NAME . '] 这是一封多条发送测试邮件';
         $mail->content = '这是一封<b>多条发送</b>测试邮件';
+        $mail->content .= "<p style=\"padding: 1.5em 1em 0; color: #999; font-size: 12px;\">—— 本邮件由 " . SITE_NAME . " (<a href=\"" . BASE_URL . "\">" . BASE_URL . "</a>) 管理员发送</p>";
         if (!$mailer->send($mail)) {
             return $result;
         } else {
@@ -66,7 +68,7 @@ class Mailer
      */
     public function reset()
     {
-        $result = array('error' => 0, 'message' => '重置 ' .$_POST['mail_type']. ' 邮件配置项完成');
+        $result = array('error' => 0, 'message' => '重置 ' . $_POST['mail_type'] . ' 邮件配置项完成');
         Option::delete('Mail_' . $_POST['mail_type']);
 
         Option::init();
@@ -80,8 +82,10 @@ class Mailer
      */
     public function postAll()
     {
-        $subject = $_POST['mailer_subject'];
-        $content = $_POST['mailer_content'];
+        $subject = daddslashes($_POST['mailer_subject']);
+        $content = daddslashes($_POST['mailer_content']);
+        $content = nl2br(htmlspecialchars($content));
+        $content .= "<p style=\"padding: 1.5em 1em 0; color: #999; font-size: 12px;\">—— 本邮件由 " . SITE_NAME . " (<a href=\"" . BASE_URL . "\">" . BASE_URL . "</a>) 管理员发送</p>";
         if ($subject == null || $subject == '' || $content == null || $content == '') {
             return array('error' => 1, 'message' => '请求错误，您提交的参数不对。');
         }
