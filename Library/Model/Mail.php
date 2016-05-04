@@ -29,7 +29,7 @@ class Mail extends Model
      */
     public static function getQueueList()
     {
-        $st = DB::sql("SELECT * FROM mail_queue AS t1 JOIN (SELECT ROUND(RAND() * ((SELECT MAX(id) FROM mail_queue)-(SELECT MIN(id) FROM mail_queue))+(SELECT MIN(id) FROM mail_queue)) AS id) AS t2 WHERE t1.id >= t2.id ORDER BY t1.id LIMIT 3");
+        $st = DB::sql("SELECT `id`,`to`,`subject`,`content` FROM mail_queue LIMIT 3");
         $st->execute();
         return $st->fetchAll(DB::FETCH_CLASS, __CLASS__);
     }
