@@ -37,28 +37,29 @@ class Updater
         if (self::$isCheck) {
             return false;
         }
-        $current_version = Option::get("version");
-        // 从 update.loacg.com 服务器上获取版本变化
-        $response = self::doGet(self::UPDATE_SERVER . self::CHECK, array("Cookie: ver:" . $current_version));
+        if (User::getCurrent()->isAdmin()) {
+            $current_version = Option::get("version");
+            // 从 update.loacg.com 服务器上获取版本变化
+            $response = self::doGet(self::UPDATE_SERVER . self::CHECK, array("Cookie: ver:" . $current_version));
 
-        if ($response != null) {
-            $response = json_decode($response, true);
-            $data = $response['data'];
-            $online_version = $data['version'];
-            if ($data['download_url'] != null) {
+            if ($response != null) {
+                $response = json_decode($response, true);
+                $data = $response['data'];
+                $online_version = $data['version'];
+                if ($data['download_url'] != null) {
 
-            }
-            $message = "";
-            if ($data['message'] != null) {
-                $message = $data['message'];
-            }
-            self::$isCheck = true;
-            if ($current_version != $online_version && User::getCurrent()->isAdmin()) {
-                if ($message == "") {
-                    $message = "发现新版本 " . $online_version . " , 可以前往Github下载更新(本消息仅管理员可接收到)";
                 }
-
-                return htmlspecialchars($message);
+                $message = "";
+                if ($data['message'] != null) {
+                    $message = $data['message'];
+                }
+                self::$isCheck = true;
+                if ($current_version != $online_version) {
+                    if ($message == "") {
+                        $message = "发现新版本 " . $online_version . " , 可以前往Github下载更新(本消息仅管理员可接收到)";
+                    }
+                    return htmlspecialchars($message);
+                }
             }
         }
         return false;
