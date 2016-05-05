@@ -46,7 +46,7 @@
                                     <loop variable="$lists" key="$key" value="$msg">
                                         <tr id="msg-{$msg->id}">
                                             <td>#{$msg->id}</td>
-                                            <td>{(mb_substr(htmlspecialchars($msg->content),0,20,'utf-8'))}</td>
+                                            <td>{(mb_substr(htmlspecialchars($msg->content),0,500,'utf-8'))}</td>
                                             <td>{(date("Y-m-d H:i:s", $msg->pushEndTime))}</td>
                                             <td>
                                                 <if condition="$msg->pushUsers == -1">系统消息
