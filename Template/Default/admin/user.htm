@@ -423,7 +423,7 @@
                         newData += '<td>'+user.nickname+'</td>';
                         newData += '<td>'+user.email+'</td>';
                         newData += '<td>'+ planName[user.plan] +'</td>';
-                        newData += '<td>'+ transferAuthShow(user.flow_up + user.flow_down) + '/' + transferAuthShow(user.transfer) +'</td>';
+                        newData += '<td>'+ transferAuthShow(parseInt(user.flow_up,10) + parseInt(user.flow_down,10)) + '/' + transferAuthShow(user.transfer) +'</td>';
                         newData += '<td>'+getTime(user.expireTime)+'</td>';
                         newData += '<td>'+'<a class="btn btn-info btn-sm" href="javascript:;" onclick="userModify('+user.uid+');">编辑</a>' + '<a class="btn btn-danger btn-sm" href="javascript:;" onclick="userRemove('+user.uid+');">删除</a>' +'</td>';
                         newData += '</tr>';
