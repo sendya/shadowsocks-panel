@@ -8,6 +8,7 @@ namespace Controller;
 
 use Helper\Mailer;
 use Model\Invite;
+use Model\Mail;
 use Model\User;
 use Model\Message as MessageModel;
 
@@ -145,10 +146,23 @@ class Auth
                         $user->payTime = time(); // 注册时支付时间
                         $user_test_day = Option::get('user_test_day') ?: 7;
                         $user->expireTime = time() + (3600 * 24 * intval($user_test_day)); // 到期时间
+                        $user->enable = 0; // 停止账户
+                        $code = Utils::randomChar(10);
+                        $forgePwdCode['verification'] = $code;
+                        $forgePwdCode['time'] = time();
+                        $user->forgePwdCode = json_encode($forgePwdCode);
 
                         $user->port = Utils::getNewPort(); // 端口号
                         $user->setPassword($passwd);
                         $user->save();
+
+                        $mailer = Mailer::getInstance();
+                        $mailer->toQueue(true, true);
+                        $mail = new Mail();
+                        $mail->to = $user->email;
+                        $mail->subject = '[' . SITE_NAME . '] 新账户注册邮箱校验';
+                        $mail->content = Option::get('custom_mail_verification_content');
+                        $mailer->send($mail);
 
                         $invite->reguid = $user->uid;
                         $invite->regDateLine = $user->regDateLine;
