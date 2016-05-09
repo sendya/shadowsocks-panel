@@ -106,6 +106,7 @@ class Auth
         $repasswd = trim($_POST['r_passwd2']);
         $inviteCode = trim($_POST['r_invite']);
         $invite = Invite::getInviteByInviteCode($inviteCode); //校验 invite 是否可用
+
         if ($invite->status != 0 || $invite == null || empty($invite)) {
             $result['message'] = '邀请码不可用';
         } else {
@@ -167,6 +168,41 @@ class Auth
     }
 
     /**
+     * 校验
+     *
+     * @JSON
+     */
+    public function verification()
+    {
+        if($_GET['verification']!=null) {
+            $list = explode("\t", base64_decode($_GET['verification']));
+            if(count($list)>1) {
+                $user = User::getUserByUserId($list[0]);
+                $verification = $list[1];
+                $json = json_decode($user->forgePwdCode, true);
+                $userVerificationCode = $json['verification'];
+                $verifyTime = strtotime($json['time']);
+                $baseURL = BASE_URL . 'auth/login';
+                if($userVerificationCode == $verification && $verifyTime>time()) {
+                    $html = <<<EOF
+<p>校验成功，感谢您的注册。</p>
+<p style="padding: 1.5em 1em 0; color: #999; font-size: 12px;"><a href="{$baseURL}">3秒后跳转到登录页</a></p>";
+EOF;
+                    echo $html;
+                    exit();
+                }
+            }
+
+            $html = <<<EOF
+<p>校验失败，校验时间超时或校验码不对。</p>
+<p style="padding: 1.5em 1em 0; color: #999; font-size: 12px;"><a href="{$baseURL}">3秒后跳转到登录页</a></p>";
+EOF;
+            echo $html;
+            exit();
+        }
+    }
+
+    /**
      * @JSON
      * @throws \Core\Error
      */
@@ -181,6 +217,15 @@ class Auth
             if (!$user) {
                 return $result;
             }
+
+            if($user->enable == 0) {
+                $verify_code = json_decode($user->forgePwdCode, true)['code'];
+                if($verify_code!=null) {
+                    $result['message'] = '您的账户还未进行邮箱校验，请校验完毕后再试!';
+                    return $result;
+                }
+            }
+
             $user->lastFindPasswdTime = time();
             if ($user->lastFindPasswdCount != 0 && $user->lastFindPasswdCount > 2) {
                 $result['message'] = '找回密码重试次数已达上限!';
