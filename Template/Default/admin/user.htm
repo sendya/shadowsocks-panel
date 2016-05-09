@@ -422,7 +422,7 @@
                         newData += '<td>'+user.port+'</td>';
                         newData += '<td>'+user.nickname+'</td>';
                         newData += '<td>'+user.email+'</td>';
-                        newData += '<td>'+ planName[user.plan] +'</td>';
+                        newData += '<td>'+ planName[user.plan] + '(' + user.plan +')' +'</td>';
                         newData += '<td>'+ transferAuthShow(parseInt(user.flow_up,10) + parseInt(user.flow_down,10)) + '/' + transferAuthShow(user.transfer) +'</td>';
                         newData += '<td>'+getTime(user.expireTime)+'</td>';
                         newData += '<td>'+'<a class="btn btn-info btn-sm" href="javascript:;" onclick="userModify('+user.uid+');">编辑</a>' + '<a class="btn btn-danger btn-sm" href="javascript:;" onclick="userRemove('+user.uid+');">删除</a>' +'</td>';
@@ -466,11 +466,12 @@
     }
     function transferAuthShow(flow) {
         var str = "";
+        var flow = parseInt(flow, 10);
         if (flow > 1073741824) {
             str = (flow / 1073741824).toFixed(2) + " GB";
-        } else if(flow > 1048576 && flow < 1073741824) {
+        } else if(flow > 1048576 ) {
             str = (flow / 1048576).toFixed(2) + " MB";
-        } else if(flow > 1024 && flow < 1048576) {
+        } else if(flow > 1024) {
             str = (flow / 1024).toFixed(2) + " KB";
         } else {
             str = '0 KB';
