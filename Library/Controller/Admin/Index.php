@@ -30,6 +30,7 @@ class Index
         $data['flow_num100'] = Stats::dataUsage(2);
         $data['flow_max'] = Stats::dataUsage(3);
         $data['userCount'] = Stats::countUser();
+        $data['money'] = Stats::countMoney();
         Template::setContext($data);
         Template::setView('admin/index');
     }

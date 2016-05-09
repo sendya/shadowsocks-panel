@@ -96,6 +96,18 @@ class Stats
         return $stn->fetch(DB::FETCH_NUM)[0];
     }
 
+    /**
+     * Count money
+     * @return int money
+     */
+    public static function countMoney()
+    {
+        $querySQL = "select sum(money) from `member` ";
+        $stn = DB::getInstance()->prepare($querySQL);
+        $stn->execute();
+        return $stn->fetch(DB::FETCH_NUM)[0];
+    }
+
 
     /**
      * 后端统计 <b>使用量区间</b>
