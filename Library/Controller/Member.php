@@ -378,10 +378,12 @@ class Member
         $flag = $_POST['delete'];
         $result = array('error' => 1, "message" => "请求错误");
         if ($flag != null && $flag == '1') {
-            if ($user->delete()) {
-                $result = array("error" => 0, "message" => "您已经从本站消除所有记忆，将在 3秒 后执行世界初始化...<br/>祝您过得愉快。");
-                $_SESSION['currentUser'] = null;
-            }
+            $user->delete();
+            $result = array("error" => 0, "message" => "您已经从本站消除所有记忆，将在 3秒 后执行世界初始化...<br/>祝您过得愉快。");
+            $_SESSION['currentUser'] = null;
+            setcookie("uid", '', time() - 3600, "/");
+            setcookie("expire", '', time() - 3600, "/");
+            setcookie("token", '', time() - 3600, "/");
         }
 
         return $result;

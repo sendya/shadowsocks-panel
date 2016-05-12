@@ -63,7 +63,7 @@ class Message
             $msg->save();
             $result = array('error' => 0, 'message' => '添加新消息成功');
         }
-        $msg->content = nl2br(mb_substr(htmlspecialchars($msg->content), 0, 500, 'utf-8'));
+        $msg->content = nl2br(mb_substr(htmlspecialchars($msg->content), 0, 20, 'utf-8'));
         $msg->pushEndTime = date('Y-m-d H:i:s', $msg->pushEndTime);
         $type = "";
         switch ($msg->type) {

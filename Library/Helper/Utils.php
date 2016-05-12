@@ -350,6 +350,7 @@ class Utils
      *      {useTraffic}: 已用流量
      *      {transfer}  : 总流量
      *      {expireTime}: 到期时间
+     *      {REGISTER_URL}: 注册校验链接
      * </pre>
      * @param $content
      * @param $params array
@@ -357,10 +358,14 @@ class Utils
      */
     public static function placeholderReplace($content, $params)
     {
+        if($params['REGISTER_URL']!=null) {
+            $url = BASE_URL . 'auth/verification?verification=' . urlencode($params['REGISTER_URL']);
+            $params['REGISTER_URL'] = "<a href=\"{$url}\" target=\"_blank\" title=\"点击校验您的账户并完成注册！\">{$url}</a>";
+        }
         // 替换
         $content = str_replace(
-            ['{SITE_NAME}', '{nickname}', '{email}', '{code}', '{newPassword}', '{useTraffic}', '{transfer}', '{expireTime}'],
-            [SITE_NAME, $params['nickname'], $params['email'], $params['code'], $params['newPassword'], $params['useTraffic'], $params['transfer'], $params['expireTime']],
+            ['{SITE_NAME}', '{nickname}', '{email}', '{code}', '{newPassword}', '{useTraffic}', '{transfer}', '{expireTime}', '{REGISTER_URL}'],
+            [SITE_NAME, $params['nickname'], $params['email'], $params['code'], $params['newPassword'], $params['useTraffic'], $params['transfer'], $params['expireTime'], $params['REGISTER_URL']],
             $content);
 
         return $content;

@@ -136,7 +136,7 @@ class User
                     $us->transfer = floatval($_POST['user_transfer']) * Utils::GB;
                 }
                 if ($_POST['user_flow_down'] != null) {
-                    $us->flow_down = intval($_POST['user_flow_down']) * Utils::GB;
+                    $us->flow_down = floatval($_POST['user_flow_down']) * Utils::GB;
                     $us->flow_up = 0;
                 }
                 if ($_POST['user_enable'] != null) {

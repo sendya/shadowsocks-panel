@@ -189,7 +189,7 @@ class User extends Model
 
     public function isAdmin()
     {
-        return $this->admin;
+        return $this->admin==0?false:true;
     }
 
     /**
