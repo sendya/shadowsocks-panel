@@ -359,7 +359,7 @@ class Utils
     public static function placeholderReplace($content, $params)
     {
         if($params['REGISTER_URL']!=null) {
-            $url = BASE_URL . 'auth/register.json?verification=' . urlencode($params['REGISTER_URL']);
+            $url = BASE_URL . 'auth/verification?verification=' . urlencode($params['REGISTER_URL']);
             $params['REGISTER_URL'] = "<a href=\"{$url}\" target=\"_blank\" title=\"点击校验您的账户并完成注册！\">{$url}</a>";
         }
         // 替换
