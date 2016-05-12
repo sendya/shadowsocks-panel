@@ -303,7 +303,7 @@ EOF;
             }
 
             if($user->enable == 0) {
-                $verify_code = json_decode($user->forgePwdCode, true)['code'];
+                $verify_code = json_decode($user->forgePwdCode, true)['verification'];
                 if($verify_code!=null) {
                     $result['message'] = '您的账户还未进行邮箱校验，请校验完毕后再试!';
                     return $result;
