@@ -199,6 +199,43 @@ class Auth
     }
 
     /**
+     * 重发校验码
+     * @JSON
+     * @Authorization
+     */
+    public function resend()
+    {
+        if($_POST['auth'] == 'y') {
+            $user = User::getCurrent();
+
+            $code = Utils::randomChar(10);
+            $forgePwdCode['verification'] = $code;
+            $forgePwdCode['time'] = time();
+            $user->forgePwdCode = json_encode($forgePwdCode);
+
+            $mailer = Mailer::getInstance();
+            $mailer->toQueue(false);
+            $mail = new Mail();
+            $mail->to = $user->email;
+            $mail->subject = '[' . SITE_NAME . '] 新账户注册邮箱校验';
+            $mail->content = Option::get('custom_mail_verification_content');
+            $params = [
+                'code' => $code,
+                'nickname' => $user->nickname,
+                'email' => $user->email,
+                'useTraffic' => Utils::flowAutoShow($user->flow_up + $user->flow_down),
+                'transfer' => Utils::flowAutoShow($user->transfer),
+                'expireTime' => date('Y-m-d H:i:s', $user->expireTime),
+                'REGISTER_URL' => base64_encode($user->uid . "\t" . $forgePwdCode['verification'] . "\t" . $forgePwdCode['time'])
+            ];
+            $mail->content = Utils::placeholderReplace($mail->content, $params);
+            $mailer->send($mail);
+            $user->save();
+        }
+        return array('error'=>0, 'message'=> '重新发送邮件成功。');
+    }
+
+    /**
      * 校验
      *
      */
@@ -303,7 +340,7 @@ EOF;
             }
 
             if($user->enable == 0) {
-                $verify_code = json_decode($user->forgePwdCode, true)['code'];
+                $verify_code = json_decode($user->forgePwdCode, true)['verification'];
                 if($verify_code!=null) {
                     $result['message'] = '您的账户还未进行邮箱校验，请校验完毕后再试!';
                     return $result;

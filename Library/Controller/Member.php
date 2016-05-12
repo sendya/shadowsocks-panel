@@ -101,7 +101,14 @@ class Member
      */
     public function info()
     {
-        Template::putContext('user', User::getCurrent());
+        $user = User::getUserByUserId(User::getCurrent()->uid);
+        $json = json_decode($user->forgePwdCode, true);
+        $flag = true;
+        if(!$json || $json['verification']==null) {
+            $flag= false;
+        }
+        Template::putContext('is_verification', $flag);
+        Template::putContext('user', $user);
         Template::setView("panel/info");
     }
 
