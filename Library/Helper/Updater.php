@@ -71,6 +71,38 @@ class Updater
         return false;
     }
 
+
+    public static function fileCheck()
+    {
+        $channel = Option::get('channel') == 'dev' ?: 'stable';
+        $current_version = Option::get("version");
+        $data = self::doGet(self::UPDATE_SERVER . "file.json?channel={$channel}&ver={$current_version}");
+        if(!$data) return -1; // 请求更新服务器失败
+        $data = json_decode($data, true);
+        $file_list = $data['list'];
+        if (!$file_list) return -2; // 更新服务器文件列表为空
+
+        $err_file = $list = array();
+        foreach($file_list as $file) {
+            $path = $file['path'];
+            $hash = $file['hash'];
+            $file_hash = md5_file(ROOT_PATH."{$path}");
+            if ($file_hash != $hash){
+                $err_file[] = array($path, $hash);
+                $list[] = $path;
+            }
+        }
+        if(!$list) return 0; // 无文件更新
+
+        Option::set('new_version', 1);
+        sort($list);
+        sort($err_file);
+
+        Downloader::save('kk_updater', $err_file);
+        Downloader::save('need_download', $err_file);
+        return $list;
+    }
+
     public static function doGet($url, $header)
     {
         $refer = BASE_URL;
