@@ -24,6 +24,9 @@
     function pageJSload() {
         xenon_toggles_init();
         xenon_init();
+        if( typeof node_modal_init === 'function' ) {
+            node_modal_init();
+        }
     }
 </script>
 </div>

@@ -149,78 +149,82 @@
 
     </div>
 </div>
-<script src="//static-2.loacg.com/open/static/javascript/jQuery/jquery.min.js"></script>
-<script src="{RESOURCE}/js/jquery.qrcode.min.js"></script>
-<script type="text/javascript">
-    $(function(){
-        $("body").append('<div class="modal fade" id="node-info-modal"></div>');
-        $("#node-info-modal").append($("#node-info-modal-temp").html());
-        $("#node-info-modal-temp").remove();
-    });
-    var modal_default_body = jQuery('#node-info-modal .modal-body').html();
-
-    function getNodeInfo(nodeId) {
-        $("#node-info-modal .modal-body").html(modal_default_body);
-        reset(false);
-        $.ajax({
-            url: "/node/getNodeInfo.json",
-            method: "POST",
-            dataType: "json",
-            data: {id: nodeId},
-            success: function (result) {
-                if(result.code != 200){
-                    $('#node-info-modal').modal('hide');
-                    showToastr(result.message, 0, 3000, '系统错误');
-                    return;
+    <script src="{RESOURCE}/js/jquery.qrcode.min.js"></script>
+    <script type="text/javascript">
+        node_modal_init();
+        function node_modal_init() {
+            $(function(){
+                if($("#node-info-modal-temp").length > 0 && $("#node-info-modal").length <= 0) {
+                    $("body").append('<div class="modal fade" id="node-info-modal"></div>');
+                    $("#node-info-modal").append($("#node-info-modal-temp").html());
+                    $("#node-info-modal-temp").remove();
                 }
-                if(result.data.error == 0 && result.data.node != null && result.data.info != null) {
-                    $('#node-info-modal .modal-title').text(result.data.node.name);
-                    $('#node-info-modal #node-info-json').text(result.data.info.ssjson);
-                    $('#node-info-modal #node-info-url').val(result.data.info.ssurl);
-                    $('#node-info-modal #node-info-qrcode').empty().qrcode(result.data.info.ssurl);
-                    reset(true);
-                } else {
-                    showToastr(result.data.message, 0);
-                }
-
-            },
-            error: function (Xhr) {
-                showToastr("出现未知错误，请重试或联系管理员", 0);
-            }
-        });
-        $('#node-info-modal').modal('show', {backdrop: 'static'});
-    }
-    function addToAndroid(nodeId) {
-        $.ajax({
-            url: "/node/getNodeInfo.json",
-            method: "POST",
-            dataType: "json",
-            data: {id: nodeId},
-            success: function (result) {
-                if(result.code != 200){
-                    showToastr(result.message, 0, 3000, '系统错误');
-                    return;
-                }
-                if(result.data.error == 0 && result.data.node != null && result.data.info != null) {
-                    location.href = result.data.info.ssurl;
-                } else {
-                    showToastr(result.data.message, 0);
-                }
-            },
-            error: function (Xhr) {
-                showToastr("出现未知错误，请重试或联系管理员", 0);
-            }
-        });
-    }
-    function reset(isShow) {
-        pageJSload();
-        if(isShow) {
-            jQuery('#modal-isload').hide();
-            jQuery('#modal-isbody').show();
-        } else {
-            jQuery('#modal-isload').show();
-            jQuery('#modal-isbody').hide();
+            });
         }
-    }
-</script>
+        var modal_default_body = jQuery('#node-info-modal .modal-body').html();
+
+        function getNodeInfo(nodeId) {
+            $("#node-info-modal .modal-body").html(modal_default_body);
+            reset(false);
+            $.ajax({
+                url: "/node/getNodeInfo.json",
+                method: "POST",
+                dataType: "json",
+                data: {id: nodeId},
+                success: function (result) {
+                    if(result.code != 200){
+                        $('#node-info-modal').modal('hide');
+                        showToastr(result.message, 0, 3000, '系统错误');
+                        return;
+                    }
+                    if(result.data.error == 0 && result.data.node != null && result.data.info != null) {
+                        $('#node-info-modal .modal-title').text(result.data.node.name);
+                        $('#node-info-modal #node-info-json').text(result.data.info.ssjson);
+                        $('#node-info-modal #node-info-url').val(result.data.info.ssurl);
+                        $('#node-info-modal #node-info-qrcode').empty().qrcode(result.data.info.ssurl);
+                        reset(true);
+                    } else {
+                        showToastr(result.data.message, 0);
+                    }
+
+                },
+                error: function (Xhr) {
+                    showToastr("出现未知错误，请重试或联系管理员", 0);
+                }
+            });
+            $('#node-info-modal').modal('show', {backdrop: 'static'});
+        }
+        function addToAndroid(nodeId) {
+            $.ajax({
+                url: "/node/getNodeInfo.json",
+                method: "POST",
+                dataType: "json",
+                data: {id: nodeId},
+                success: function (result) {
+                    if(result.code != 200){
+                        showToastr(result.message, 0, 3000, '系统错误');
+                        return;
+                    }
+                    if(result.data.error == 0 && result.data.node != null && result.data.info != null) {
+                        location.href = result.data.info.ssurl;
+                    } else {
+                        showToastr(result.data.message, 0);
+                    }
+                },
+                error: function (Xhr) {
+                    showToastr("出现未知错误，请重试或联系管理员", 0);
+                }
+            });
+        }
+        function reset(isShow) {
+            pageJSload();
+            if(isShow) {
+                jQuery('#modal-isload').hide();
+                jQuery('#modal-isbody').show();
+            } else {
+                jQuery('#modal-isload').show();
+                jQuery('#modal-isbody').hide();
+            }
+        }
+    </script>
 <import template="/panel/_footer" />
