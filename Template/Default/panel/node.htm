@@ -90,7 +90,7 @@
     </loop>
 </div>
 <!-- Node Info Modal-->
-<div class="modal fade" id="node-info-modal">
+<div class="modal fade" id="node-info-modal-temp">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -152,6 +152,11 @@
 <script src="//static-2.loacg.com/open/static/javascript/jQuery/jquery.min.js"></script>
 <script src="{RESOURCE}/js/jquery.qrcode.min.js"></script>
 <script type="text/javascript">
+    $(function(){
+        $("body").append('<div class="modal fade" id="node-info-modal"></div>');
+        $("#node-info-modal").append($("#node-info-modal-temp").html());
+        $("#node-info-modal-temp").remove();
+    });
     var modal_default_body = jQuery('#node-info-modal .modal-body').html();
 
     function getNodeInfo(nodeId) {
@@ -172,9 +177,8 @@
                     $('#node-info-modal .modal-title').text(result.data.node.name);
                     $('#node-info-modal #node-info-json').text(result.data.info.ssjson);
                     $('#node-info-modal #node-info-url').val(result.data.info.ssurl);
-                    $('#node-info-modal #node-info-qrcode').qrcode(result.data.info.ssurl);
+                    $('#node-info-modal #node-info-qrcode').empty().qrcode(result.data.info.ssurl);
                     reset(true);
-                    $('#node-info-modal').modal('show', {backdrop: 'static'});
                 } else {
                     showToastr(result.data.message, 0);
                 }
@@ -184,6 +188,7 @@
                 showToastr("出现未知错误，请重试或联系管理员", 0);
             }
         });
+        $('#node-info-modal').modal('show', {backdrop: 'static'});
     }
     function addToAndroid(nodeId) {
         $.ajax({
@@ -206,6 +211,16 @@
                 showToastr("出现未知错误，请重试或联系管理员", 0);
             }
         });
+    }
+    function reset(isShow) {
+        pageJSload();
+        if(isShow) {
+            jQuery('#modal-isload').hide();
+            jQuery('#modal-isbody').show();
+        } else {
+            jQuery('#modal-isload').show();
+            jQuery('#modal-isbody').hide();
+        }
     }
 </script>
 <import template="/panel/_footer" />
