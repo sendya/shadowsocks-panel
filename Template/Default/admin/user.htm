@@ -21,7 +21,6 @@
 
                     <div class="panel-heading">
                         <h3 class="panel-title"></h3>
-
                         <div class="panel-options">
                             <a href="javascript:;" data-toggle="reload">
                                 <i class="fa-rotate-right"></i>
@@ -30,6 +29,16 @@
                     </div>
                     <div class="panel-body">
                         <div class="dataTables_wrapper form-inline dt-bootstrap">
+                            <div class="row">
+                                <div class="col-xs-12" >
+                                    <div class="dataTables_filter" style="font-weight: normal;float: right;">
+                                        <label >端口:<input type="text" name="port" id="search_port" class="form-control input-sm" placeholder=""></label>
+                                        <label >邮箱:<input type="text" name="email" id="search_email" class="form-control input-sm" placeholder="@qq.com"></label>
+                                        <button class="btn btn-info btn-sm" style="margin-bottom: 0;margin-left: 10px;" id="search_but">查询</button>
+                                    </div>
+
+                                </div>
+                            </div>
                             <div class="table-responsive">
                                 <table cellspacing="0" class="table table-small-font table-bordered table-striped">
                                     <thead>
@@ -256,7 +265,9 @@
 <script type="text/javascript">
     var modal_default_body = jQuery('#modal-6 .modal-body').html();
     jQuery(document).ready(function($) {
-
+        $("#search_but").on('click', function(){
+            getList();
+        });
         getList();
 
         $("form#form1").validate({
@@ -401,11 +412,20 @@
     function getList(page) {
         if(page == null)
             page = 0;
+
+        var params = {'page': page};
+        if($("#search_port").val().length > 0 && $("#search_port").val()!='') {
+            params['port'] = $("#search_port").val();
+        }
+        if($("#search_email").val().length > 0 && $("#search_email").val()!='') {
+            params['email'] = $("#search_email").val();
+        }
+
         $.ajax({
             url: "/admin/user/GetList.json",
             method: "GET",
             dataType: "json",
-            data: {'page': page},
+            data: params,
             success: function(result) {
                 if(result.code != 200) {
                     showToastr(result.message, 0, 3000, '系统错误');

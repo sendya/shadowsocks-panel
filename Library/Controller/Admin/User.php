@@ -35,10 +35,20 @@ class User
 
     /**
      * @JSON
+     * @Authorization
      */
     public function getList()
     {
-        $pageData = new PageData('member', "ORDER BY uid",
+        $port = $_GET['port'];
+        $email = $_GET['email'];
+        $where = ' WHERE 1=1 ';
+        if($port) {
+            $where .= " AND port={$port} ";
+        }
+        if($email) {
+            $where .= " AND email like '%{$email}%' ";
+        }
+        $pageData = new PageData('member', " {$where} ORDER BY uid",
             ['uid', 'port', 'email', 'nickname', 'plan', 'flow_up', 'flow_down', 'transfer', 'expireTime']);
         $pageData->execute();
         Template::setContext($pageData->getContext());
