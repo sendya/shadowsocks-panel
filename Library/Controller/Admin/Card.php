@@ -155,11 +155,12 @@ class Card
             }
             $data .= $card->id . ',' . $card->card . ',' . $type . ',' . $card->info . ',' . date('Y-m-d H:i:s', $card->add_time) . ',' . '可用' . "\n";
         }
-        header("Content-type:text/csv");
+        header("Content-type:text/csv;charset=utf-8");
         header("Content-Disposition:attachment;filename=".$file_name);
         header('Cache-Control:must-revalidate,post-check=0,pre-check=0');
         header('Expires:0');
         header('Pragma:public');
+        $data = iconv('utf-8','gb2312',$data);
         echo $data;
         exit();
     }
