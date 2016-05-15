@@ -126,4 +126,41 @@ class Card
         return array('error' => 0, 'message' => '删除成功');
     }
 
+    /**
+     * 导出卡号
+     */
+    public function export()
+    {
+        $cards = MCard::queryAll(1);
+        $file_name = '卡号列表_' . time() . '.csv';
+        $data = '#ID,卡号,类型,参数（套餐卡：套餐类型 / 流量卡:流量(GB) / 试用卡:天数 / 余额卡:充值金额(元)）,添加时间,状态'. "\n";
+        foreach ($cards as $card) {
+
+            switch($card->type) {
+                case 0:
+                    $type = '套餐卡';
+                    break;
+                case 1:
+                    $type = '流量卡';
+                    break;
+                case 2:
+                    $type = '测试卡';
+                    break;
+                case 3:
+                    $type = '余额卡';
+                    break;
+                default:
+                    $type = '-';
+                    break;
+            }
+            $data .= $card->id . ',' . $card->card . ',' . $type . ',' . $card->info . ',' . date('Y-m-d H:i:s', $card->add_time) . ',' . '可用' . "\n";
+        }
+        header("Content-type:text/csv");
+        header("Content-Disposition:attachment;filename=".$file_name);
+        header('Cache-Control:must-revalidate,post-check=0,pre-check=0');
+        header('Expires:0');
+        header('Pragma:public');
+        echo $data;
+        exit();
+    }
 }

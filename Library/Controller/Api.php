@@ -8,9 +8,12 @@
 
 namespace Controller;
 
+use Core\Error;
+use Helper\Http;
 use Helper\Option;
 use Helper\Utils;
 use Model\Card;
+use Model\Node;
 
 class Api
 {
@@ -73,5 +76,35 @@ class Api
             return array('error' => 1, 'message' => 'Bad Request');
         }
 
+    }
+
+    /**
+     * @JSON
+     * @Authorization
+     */
+    public function nodeStatus()
+    {
+        $API_BASE = "https://nodequery.com/api/";
+
+        $API_KEY = Option::get('SERVER_NODE_QUERY_API_KEY');
+        if (!$API_KEY) {
+            throw new Error('API_KEY is not available', 500);
+        }
+
+        $status = array();
+        $nodes = Node::getNodeArray();
+
+        foreach ($nodes as $node) {
+            $result = Http::doGet($API_BASE . 'servers/' . $node->api_id . '?api_key=' . $API_KEY);
+            $result = json_decode($result, true);
+            $status[] = array('id' => $node->id,
+                'current_rx' => $result['data'][0]['current_rx'],
+                'current_tx' => $result['data'][0]['current_tx'],
+                'total_rx' => $result['data'][0]['total_rx'],
+                'total_tx' => $result['data'][0]['total_tx'],
+                'availability' => $result['data'][0]['availability']);
+            unset($result);
+        }
+        return $status;
     }
 }
