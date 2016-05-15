@@ -143,11 +143,12 @@ class Invite
         foreach ($invites as $invite) {
             $data .= $invite->id . ',' . $invite->invite . ',' . Utils::planAutoShow($invite->plan) . '(' . $invite->plan  . '),' . date('Y-m-d H:i:s', $invite->dateLine) . ',' . '可用' . "\n";
         }
-        header("Content-type:text/csv");
+        header("Content-type:text/csv;charset=utf-8");
         header("Content-Disposition:attachment;filename=".$file_name);
         header('Cache-Control:must-revalidate,post-check=0,pre-check=0');
         header('Expires:0');
         header('Pragma:public');
+        $data = iconv('utf-8','gb2312',$data);
         echo $data;
         exit();
     }
