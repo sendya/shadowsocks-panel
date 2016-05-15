@@ -27,9 +27,14 @@ class Card extends Model
     public $expireTime; // 套餐有效期
     public $status; // 卡状态 0-失效 1-可用
 
-    public static function queryAll()
+    public static function queryAll($type = 0)
     {
-        $st = DB::sql("SELECT * FROM card ORDER BY add_time");
+        $sql = 'SELECT * FROM card ';
+        if($type == 1) {
+            $sql .= 'WHERE status=1 ';
+        }
+        $sql .= ' ORDER BY add_time';
+        $st = DB::sql($sql);
         $st->execute();
         return $st->fetchAll(DB::FETCH_CLASS, __CLASS__);
     }

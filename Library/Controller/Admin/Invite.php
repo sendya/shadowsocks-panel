@@ -9,6 +9,7 @@ namespace Controller\Admin;
 
 use \Core\Template;
 
+use Helper\Utils;
 use Model\Invite as InviteModel;
 use Model\User;
 use Helper\Option;
@@ -131,4 +132,23 @@ class Invite
         return $result;
     }
 
+    /**
+     * 导出邀请码
+     */
+    public function export()
+    {
+        $invites = InviteModel::getInviteArray(0);
+        $file_name = '邀请码列表_' . time() . '.csv';
+        $data = 'id,邀请码,邀请码等级,创建时间,状态'. "\n";
+        foreach ($invites as $invite) {
+            $data .= $invite->id . ',' . $invite->invite . ',' . Utils::planAutoShow($invite->plan) . '(' . $invite->plan  . '),' . date('Y-m-d H:i:s', $invite->dateLine) . ',' . '可用' . "\n";
+        }
+        header("Content-type:text/csv");
+        header("Content-Disposition:attachment;filename=".$file_name);
+        header('Cache-Control:must-revalidate,post-check=0,pre-check=0');
+        header('Expires:0');
+        header('Pragma:public');
+        echo $data;
+        exit();
+    }
 }
