@@ -1,7 +1,7 @@
 #!env php
 <?php
 /**
- * Project Titor
+ * KK-Framework install
  * Author: kookxiang <r18@ikk.me>
  */
 
@@ -71,7 +71,6 @@ function copyDir($strSrcDir, $strDstDir)
     return true;
 }
 
-
 function delDir($dir) {
     //先删除目录下的文件：
     $dh=@opendir($dir);
@@ -117,6 +116,11 @@ switch ($argv[1]) {
             echo 'Done!' . PHP_EOL;
         }
         echo 'Now installing dependencies...' . PHP_EOL;
+        if(!function_exists('system')) {
+            echo 'FAILED! system() function is disabled!' . PHP_EOL;
+            echo 'Please run command: php -d disable_functions=\'\' index.php install' . PHP_EOL;
+            break;
+        }
         system(PHP_BINARY . ' ' . ROOT_PATH . 'composer.phar install');
         if (!file_exists(ROOT_PATH . 'Package/autoload.php')) {
             echo 'It seems composer failed to install package';
@@ -153,22 +157,17 @@ switch ($argv[1]) {
         if (PATH_SEPARATOR != ':') {
             $phinxCommand = ROOT_PATH . 'Package\bin\phinx.bat migrate';
         } else {
-            $phinxCommand = ROOT_PATH . 'Package/bin/phinx';
-            if (!is_executable($phinxCommand)) {
-                echo 'Package/ directory Permission denied , change your directory Permission(chmod -R +x Package/)' . PHP_EOL;
-                break;
-            }
-            $phinxCommand .= ' migrate';
+            $phinxCommand = PHP_BINARY . ' ' . ROOT_PATH . 'Package/bin/phinx migrate';
         }
         system($phinxCommand);
 
         echo 'Now installing resources...' . PHP_EOL;
         echo 'Deleting old resources...  ' . PHP_EOL;
-        echo delDir(ROOT_PATH . 'Public/Resource') ? 'done.' . PHP_EOL : 'old resources not exist.' . PHP_EOL;
+        echo delDir(ROOT_PATH . 'Public/Resource') ? 'Done.' . PHP_EOL : 'old resources not exist.' . PHP_EOL;
         echo 'Copying resources...' . PHP_EOL;
         copyDir(ROOT_PATH . 'Resource', ROOT_PATH . 'Public/Resource');
-        
-        echo 'All done~ Cheers!';
+
+        echo 'All done~ Cheers! open ' . BASE_URL . 'yourdomain.com/';
         break;
     case 'import-sspanel':
         // TODO: 从 ss-panel 导入用户数据
