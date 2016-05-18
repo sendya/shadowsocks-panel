@@ -38,7 +38,7 @@ chmod -R 777 ./Data/
 vim ./Data/Config.php
 
 # Start the installation
-php index.php install
+php -d disable_functions='' index.php install
 ```
 
 ### Documentation
