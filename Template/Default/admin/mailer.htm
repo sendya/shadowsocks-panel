@@ -205,47 +205,5 @@
             });
         });
     });
-    function optionModify(optionName) {
-        $("#modal-6 .modal-body").html(modal_default_body);
-        reset(false);
-        $.ajax({
-            url: "/admin/setting/query.json",
-            method: "GET",
-            dataType: "json",
-            data: {'option': optionName},
-            success: function (result) {
-                if (result.code != 200) {
-                    showToastr(result.message, 0, 3000, '系统错误');
-                    return;
-                }
-                if (result.data.error == 0 && result.data.modal != null) {
-                    var option = result.data.modal;
-                    $("input[name='option.k']").val(optionName);
-                    $("input[name='option.k2']").val(optionName);
-                    /* TODO 如果为键值对配置，则自动构建一个K:V对应编辑 */
-                    /*
-                     if(result.data.isArray) {
-                     var newHtml = '<label for="field-2" class="control-label" >值</label>';
-                     newHtml += '<input'
-
-                     $("#option-value").html();
-                     } else {
-                     $("textarea[name='option.v']").val(option);
-                     }*/
-
-                    $("textarea[name='option.v']").val(option);
-
-                    $('#modal-6 .modal-title').html('修改参数');
-                    reset(true);
-                } else {
-                    $('#modal-6').modal('hide');
-                }
-            },
-            error: function (Xhr) {
-                showToastr("出现未知错误，请重试或联系管理员", 0);
-            }
-        });
-        $('#modal-6').modal('show', {backdrop: 'static'});
-    }
 </script>
 <import template="/admin/_footer"/>
