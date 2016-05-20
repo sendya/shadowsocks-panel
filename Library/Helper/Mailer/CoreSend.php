@@ -47,8 +47,8 @@ class CoreSend implements IMailer
         $headers = "MIME-Version: 1.0\r\n";
         $headers .= "Content-Type: text/html;charset=utf-8\r\n";
         $headers .= "Content-Transfer-Encoding: Base64\r\n";
-        $headers .= 'From: =?UTF-8?B?' . $this->config['from'] . "\r\n";
-        $result = mail($mail->to, '=?UTF-8?B?' . base64_encode($mail->subject) . '?=', base64_encode($mail->message), $headers);
+        $headers .= 'From: ' . $this->config['from'] . "\r\n";
+        $result = mail($mail->to, $mail->subject, base64_encode($mail->content), $headers);
         return $result;
     }
 
