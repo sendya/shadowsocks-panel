@@ -34,10 +34,7 @@
                         <form action="" onsubmit="return false;">
                             <input type="radio" name="mail_type" class="cbr cbr-secondary" value="MailGun" <if condition="$selectMail == 'MailGun'">checked</if>/> MailGun代发系统<br/><br/>
                             <input type="radio" name="mail_type" class="cbr cbr-secondary" value="Smtp" <if condition="$selectMail == 'Smtp'">checked</if>/> SMTP方式<br/><br/>
-                            <input type="radio" name="mail_type" class="cbr cbr-secondary disabled" value="CoreSend"
-                                   disabled="disabled" <if condition="$selectMail == 'CoreSend'">checked</if>/> PHP内置邮件发送函数<br/><br/>
-                            <input type="radio" name="mail_type" class="cbr cbr-secondary disabled" value="CAT_API"
-                                   disabled="disabled" <if condition="$selectMail == 'CAT_API'">checked</if>/> SS Cat提供的邮件投递API(发送者显示：SS Cat&lt;post@sscat.it&gt;)<br/>
+                            <input type="radio" name="mail_type" class="cbr cbr-secondary" value="CoreSend" <if condition="$selectMail == 'CoreSend'">checked</if>/> PHP内置邮件发送函数<br/><br/>
                             <br/>
                             <br/>
                             <button type="button" class="btn btn-success" id="save-setting">立即保存</button>
