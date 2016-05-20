@@ -32,8 +32,8 @@
                             <div class="row">
                                 <div class="col-xs-12" >
                                     <div class="dataTables_filter" style="font-weight: normal;float: right;">
-                                        <label >端口:<input type="text" name="port" id="search_port" class="form-control input-sm" placeholder=""></label>
-                                        <label >邮箱:<input type="text" name="email" id="search_email" class="form-control input-sm" placeholder="@qq.com"></label>
+                                        <label >&nbsp;&nbsp;端口:<input type="text" name="port" id="search_port" class="form-control input-sm" placeholder="">&nbsp;&nbsp;</label>
+                                        <label >&nbsp;&nbsp;邮箱:<input type="text" name="email" id="search_email" class="form-control input-sm" placeholder="@qq.com">&nbsp;&nbsp;</label>
                                         <button class="btn btn-info btn-sm" style="margin-bottom: 0;margin-left: 10px;" id="search_but">查询</button>
                                     </div>
 
@@ -61,15 +61,11 @@
 
                             <div class="row">
                                 <div class="col-xs-6">
-                                    <div class="dataTables_info" id="dataTables_info">显示 1 - 10 共 57 条数据</div>
+                                    <div class="dataTables_info" id="dataTables_info"></div>
                                 </div>
                                 <div class="col-xs-6">
                                     <div class="dataTables_paginate paging_simple_numbers" style=" float: right;margin: 0">
-                                        <ul class="pagination">
-                                            <li class="paginate_button previous disabled" tabindex="0"><a href="javascript:;">上一页</a></li>
-                                            <li class="paginate_button active" tabindex="0"><a href="javascript:;">1</a></li>
-                                            <li class="paginate_button next disabled" tabindex="0"><a href="javascript:;">下一页</a></li>
-                                        </ul>
+                                        <ul class="pagination"></ul>
                                     </div>
                                 </div>
                             </div>
@@ -411,7 +407,7 @@
     }
     function getList(page) {
         if(page == null)
-            page = 0;
+            page = 1;
 
         var params = {'page': page};
         if($("#search_port").val().length > 0 && $("#search_port").val()!='') {
@@ -449,27 +445,41 @@
                         newData += '</tr>';
                         table.append(newData);
                     }
-                    $("#dataTables_info").html("显示 "+ (data.currentPage-1)*data.pageSize +" - " + (data.currentPage)*data.pageSize + " 条数据, 共 "+data.totalPage+" 页");
+                    var itemNum = data.data.length;
+                    var startNum = (data.currentPage - 1) * data.pageSize + 1;
+                    $("#dataTables_info").html("显示 "+ startNum +" - " + (startNum + itemNum -1) + " 条数据, 共 "+data.totalPage+" 页");
                     createPageNav(data.totalPage, data.currentPage);
                 }
             }
         });
     }
     function createPageNav(totalPage, currentPage) {
-        var pageNav = '<li class="paginate_button previous ' + (currentPage==1?'disabled':'') + '" tabindex="0"><a href="javascript:;" onclick="getList('+(currentPage-1)+')">上一页</a></li>';
-        if(totalPage - currentPage > 3) {
-            pageNav += '<li class="paginate_button " tabindex="0"><a href="javascript:;" onclick="getList('+(currentPage-1)+')">'+(currentPage-1)+'</a></li>';
-            pageNav += '<li class="paginate_button " tabindex="0"><a href="javascript:;" onclick="getList('+(currentPage+1)+')">'+(currentPage+1)+'</a></li>';
-            pageNav += '<li class="paginate_button " tabindex="0"><a href="javascript:;" onclick="getList('+(currentPage+2)+')">'+(currentPage+2)+'</a></li>';
-            pageNav += '<li class="paginate_button " tabindex="0"><a href="javascript:;" onclick="getList('+(currentPage+3)+')">'+(currentPage+3)+'</a></li>';
-            pageNav += '<li class="paginate_button disabled" tabindex="0"><a href="javascript:;">...</a></li>';
-            pageNav += '<li class="paginate_button " tabindex="0"><a href="javascript:;" onclick="getList('+totalPage+')">'+totalPage+'</a></li>';
-        } else if(totalPage > 2) {
-            pageNav += '<li class="paginate_button " tabindex="0"><a href="javascript:;" onclick="getList(1)">1</a></li>';
-            pageNav += '<li class="paginate_button " tabindex="0"><a href="javascript:;" onclick="getList(2)">2</a></li>';
-            pageNav += '<li class="paginate_button " tabindex="0"><a href="javascript:;" onclick="getList('+totalPage+')">'+totalPage+'</a></li>';
+        var pageNav = '<li class="paginate_button active" tabindex="0"><a href="javascript:;" onclick="getList('+(currentPage)+')">'+(currentPage)+'</a></li>';
+
+        for (var i = 1; i <= 3; i++) {
+            if (currentPage - i > 1) {
+                pageNav = '<li class="paginate_button " tabindex="0"><a href="javascript:;" onclick="getList('+(currentPage - i)+')">'+(currentPage - i)+'</a></li>' + pageNav;
+            }
+            if (currentPage + i < totalPage) {
+                pageNav = pageNav + '<li class="paginate_button " tabindex="0"><a href="javascript:;" onclick="getList('+(currentPage + i)+')">'+(currentPage + i)+'</a></li>';
+            }
         }
-        pageNav += '<li class="paginate_button next ' + (currentPage==totalPage?'disabled':'') + '" tabindex="0"><a href="javascript:;" onclick="getList('+(currentPage+1)+')">下一页</a></li>';
+
+        if (currentPage - 4 > 1) {
+            pageNav = '<li class="paginate_button disabled" tabindex="0"><a href="javascript:;">...</a></li>' + pageNav;
+        }
+
+        if (currentPage > 1) {
+            pageNav = '<li class="paginate_button previous ' + (currentPage==1?'disabled':'') + '" tabindex="0"><a href="javascript:;" onclick="getList('+(currentPage-1)+')">上一页</a></li>' + '<li class="paginate_button " tabindex="0"><a href="javascript:;" onclick="getList(1)">1</a></li>' + pageNav;
+        }
+
+        if (currentPage + 4 < totalPage) {
+            pageNav = pageNav + '<li class="paginate_button disabled" tabindex="0"><a href="javascript:;">...</a></li>';
+        }
+
+        if (currentPage < totalPage) {
+            pageNav = pageNav + '<li class="paginate_button " tabindex="0"><a href="javascript:;" onclick="getList('+totalPage+')">'+totalPage+'</a></li>' + '<li class="paginate_button next ' + (currentPage==totalPage?'disabled':'') + '" tabindex="0"><a href="javascript:;" onclick="getList('+(currentPage+1)+')">下一页</a></li>';
+        }
         $(".pagination").html(pageNav);
     }
     function getTime(/** timestamp=0 **/) {
