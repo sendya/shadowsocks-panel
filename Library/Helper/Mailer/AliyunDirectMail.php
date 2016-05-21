@@ -12,7 +12,11 @@ use Contactable\IMailer;
 use Helper\Option;
 use Helper\Utils;
 use Model\Mail;
-use Aliyun\Dm\Request\SingleSendMailRequest;
+
+include_once ROOT_PATH . 'Library/Helper/SDK/Aliyun/aliyun-php-sdk-core/Config.php';
+use Dm\Request\V20151123 as Dm;
+use DefaultProfile;
+use DefaultAcsClient;
 
 /**
  * Class AliyunDirectMail
@@ -49,22 +53,9 @@ class AliyunDirectMail implements IMailer
      */
     public function send(Mail $mail)
     {
-        /**
-         * 配置网关
-         */
-        $endpoint = new Endpoint($this->config['region'], EndpointConfig::getRegionIds(), EndpointConfig::getProductDomains());
-        EndpointProvider::setEndpoints([ $endpoint ]);
-
-        /**
-         * 授权资料
-         */
-        $profile = DefaultProfile::getProfile($this->config['region'], $this->config['accessKey'], $this->config['accessSecret']);
-        $client = new DefaultAcsClient($profile);
-
-        /**
-         * 请求对象
-         */
-        $request = new SingleSendMailRequest();
+        $iClientProfile = DefaultProfile::getProfile($this->config['region'], $this->config['accessKey'], $this->config['accessSecret']);
+        $client = new DefaultAcsClient($iClientProfile);
+        $request = new Dm\SingleSendMailRequest();
         $request->setAccountName($this->config['accountName']);
         $request->setFromAlias($this->config['alias']);
         $request->setAddressType(1);
@@ -74,9 +65,6 @@ class AliyunDirectMail implements IMailer
         $request->setSubject($mail->subject);
         $request->setHtmlBody($mail->content);
         $response = $client->getAcsResponse($request);
-        if($response) { //TODO
-            return false;
-        }
         return true;
     }
 
