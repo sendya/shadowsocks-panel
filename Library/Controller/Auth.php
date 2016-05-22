@@ -152,6 +152,7 @@ class Auth
                             $user->enable = 0; // 停止账户
                         } else {
                             $user->enable = 1; // 第一个账户，默认设定为启用
+                            $user->forgePwdCode = null;
                         }
                         $code = Utils::randomChar(10);
                         $forgePwdCode['verification'] = $code;
