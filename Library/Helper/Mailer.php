@@ -65,18 +65,4 @@ final class Mailer
             Option::set('mail_queue', 1);
         }
     }
-
-    /*
-     * ---------------------------------------------------------
-
-       Smtp config = array(
-            "server" => "smtp.exmail.qq.com",
-            'from' => '游宅网社区 <no-reply@loacg.com>',
-            "address" => "no-reply@loacg.com",
-            "smtp_name" => "no-reply@loacg.com",
-            "smtp_pass" => "lO^Nf&4x"
-        );
-
-     * ---------------------------------------------------------
-     */
 }

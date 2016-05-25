@@ -35,21 +35,6 @@ class CronTab
             $cron->run();
             $this->setNextRun($cron->getStep());
         }
-
-        if (!Option::get('mail_queue')) {
-            return;
-        }
-        $mailer = Mailer::getInstance();
-        $mailer->toQueue(false, true); // set to queue.
-        $mailQueue = Mail::getQueueList();
-        if (count($mailQueue) >0) {
-            foreach ($mailQueue as $key=>$mail) {
-                $mail->delete();
-                $mailer->send($mail);
-            }
-        } else {
-            Option::set('mail_queue', 0);
-        }
         return;
     }
 

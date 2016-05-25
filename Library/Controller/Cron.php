@@ -16,7 +16,6 @@ class Cron
     public function index()
     {
         define('ENABLE_CRON', true);
-        define('CLEAN_TRANSFER', true);
         echo 'ok';
     }
 
