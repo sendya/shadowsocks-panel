@@ -157,10 +157,17 @@ switch ($argv[1]) {
         if (PATH_SEPARATOR != ':') {
             $phinxCommand = ROOT_PATH . 'Package\bin\phinx.bat migrate';
         } else {
-            $phinxCommand = PHP_BINARY . ' ' . ROOT_PATH . 'Package/bin/phinx migrate';
+            $phinxCommand = PHP_BINARY . ' ' . ROOT_PATH . 'Package/robmorgan/phinx/bin/phinx migrate';
         }
-        system($phinxCommand);
-
+        exec($phinxCommand, $return_arr, $return_arr2);
+        if($return_arr[count($return_arr)-1] == '"${dir}/phinx" "$@"') {
+            echo 'FAILED! migrate database wrong. Please run command: ./Package/bin/phinx migrate';
+            break;
+        } else {
+            foreach($return_arr as $ret) {
+                echo $ret . PHP_EOL;
+            }
+        }
         echo 'Now installing resources...' . PHP_EOL;
         echo 'Deleting old resources...  ' . PHP_EOL;
         echo delDir(ROOT_PATH . 'Public/Resource') ? 'Done.' . PHP_EOL : 'old resources not exist.' . PHP_EOL;
