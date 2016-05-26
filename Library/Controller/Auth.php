@@ -6,6 +6,7 @@
  */
 namespace Controller;
 
+use Helper\Logger;
 use Helper\Mailer;
 use Helper\Stats;
 use Model\Invite;
@@ -63,8 +64,10 @@ class Auth
                         setcookie("token", base64_encode(Encrypt::encode($token, ENCRYPT_KEY)), $expire, "/");
 
                         $_SESSION['currentUser'] = $user;
+                        Logger::getInstance()->info('user ['.$user->email.'] Login success');
                     } else {
                         $result['message'] = "账户名或密码错误, 请检查后再试!";
+                        Logger::getInstance()->info('user ['.$user->email.'] Login failed! wrong password');
                     }
                 }
 
@@ -89,6 +92,7 @@ class Auth
 
     public function logout()
     {
+        Logger::getInstance()->info('user ['.User::getCurrent()->email.'] Logout');
         setcookie("uid", '', time() - 3600, "/");
         setcookie("expire", '', time() - 3600, "/");
         setcookie("token", '', time() - 3600, "/");
@@ -192,6 +196,7 @@ class Auth
                             $result['error'] = 0;
                             $result['message'] = '注册成功，您需要验证邮箱后才能使用本站功能。';
                         }
+                        Logger::getInstance()->info('user ['.$user->email.'] register success');
                     }
                 }
             }
@@ -232,6 +237,7 @@ class Auth
             $mail->content = Utils::placeholderReplace($mail->content, $params);
             $mailer->send($mail);
             $user->save();
+            Logger::getInstance()->info('user ['.$user->email.'] find password, code ' . $code);
         }
         return array('error'=>0, 'message'=> '重新发送邮件成功。');
     }

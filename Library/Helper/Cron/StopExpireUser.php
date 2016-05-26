@@ -9,6 +9,7 @@ namespace Helper\Cron;
 
 use Contactable\ICron;
 
+use Helper\Logger;
 use Helper\Mailer;
 use Helper\Option;
 use Helper\Utils;
@@ -40,6 +41,7 @@ class StopExpireUser implements ICron
 
         foreach ($users as $user) {
             $user->stop();
+            Logger::getInstance()->info('user ['.$user->email.'] 未续费或流量超用已被暂停服务');
             if ($notificationMail) {
                 $mail = new Mail();
                 $mail->to = $user->email;

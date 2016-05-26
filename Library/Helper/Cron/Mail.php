@@ -9,7 +9,9 @@ namespace Helper\Cron;
 
 
 use Contactable\ICron;
+use Helper\Logger;
 use Helper\Mailer;
+use Helper\Option;
 use Model\Mail as MMail;
 
 class Mail implements ICron
@@ -21,6 +23,7 @@ class Mail implements ICron
         if (!Option::get('mail_queue')) {
             return;
         }
+        Logger::getInstance()->info('mail queue running..');
         $mailer = Mailer::getInstance();
         $mailer->toQueue(false, true); // set to queue.
         $mailQueue = MMail::getQueueList();
