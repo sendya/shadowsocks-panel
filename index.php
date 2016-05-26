@@ -94,6 +94,26 @@ function delDir($dir) {
     }
 }
 
+function colorize($text, $status) {
+    $out = "";
+    switch($status) {
+        case "SUCCESS":
+            $out = "[1;31;42m"; //Green background
+            break;
+        case "FAILURE":
+            $out = "[1;37;41m"; //Red background
+            break;
+        case "WARNING":
+            $out = "[1;37;43m"; //Yellow background
+            break;
+        case "NOTE":
+            $out = "[44m"; //Blue background
+            break;
+        default:
+            throw new Exception("Invalid status: " . $status);
+    }
+    return chr(27) . "$out" . "$text" . chr(27) . "[0m";
+}
 
 switch ($argv[1]) {
     case 'install':
@@ -105,7 +125,7 @@ switch ($argv[1]) {
             // curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
             $binary = curl_exec($ch);
             if (curl_errno($ch)) {
-                echo 'FAILED!' . PHP_EOL . curl_error($ch);
+                echo colorize('FAILED!' . PHP_EOL . curl_error($ch), 'FAILURE');
                 curl_close($ch);
                 break;
             }
@@ -117,13 +137,13 @@ switch ($argv[1]) {
         }
         echo 'Now installing dependencies...' . PHP_EOL;
         if(!function_exists('system')) {
-            echo 'FAILED! system() function is disabled!' . PHP_EOL;
+            echo colorize('FAILED! system() function is disabled!' . PHP_EOL, 'FAILURE');
             echo 'Please run command: php -d disable_functions=\'\' index.php install' . PHP_EOL;
             break;
         }
         system(PHP_BINARY . ' ' . ROOT_PATH . 'composer.phar install');
         if (!file_exists(ROOT_PATH . 'Package/autoload.php')) {
-            echo 'It seems composer failed to install package';
+            echo colorize('It seems composer failed to install package', 'FAILURE');
             break;
         }
         echo 'Now reloading packages and config...';
@@ -131,7 +151,7 @@ switch ($argv[1]) {
         if (!file_exists($configFile)) {
             echo 'Config Unknown... copying..' . PHP_EOL;
             copy(DATA_PATH . 'Config.simple.php', $configFile);
-            echo 'Please modify ./Data/Config.php and try again';
+            echo colorize('Please modify ./Data/Config.php and try again', 'WARNING');
             break;
         }
 
@@ -161,7 +181,7 @@ switch ($argv[1]) {
         }
         exec($phinxCommand, $return_arr, $return_arr2);
         if($return_arr[count($return_arr)-1] == '"${dir}/phinx" "$@"') {
-            echo 'FAILED! migrate database wrong. Please run command: ./Package/bin/phinx migrate';
+            echo colorize('FAILED! migrate database wrong. Please run command: ./Package/bin/phinx migrate', 'FAILURE');
             break;
         } else {
             foreach($return_arr as $ret) {
@@ -174,7 +194,7 @@ switch ($argv[1]) {
         echo 'Copying resources...' . PHP_EOL;
         copyDir(ROOT_PATH . 'Resource', ROOT_PATH . 'Public/Resource');
 
-        echo 'All done~ Cheers! open ' . BASE_URL . 'yourdomain.com/';
+        echo colorize('All done~ Cheers! open ', 'NOTE') . colorize(BASE_URL . 'yourdomain.com/', 'NOTE');
         break;
     case 'import-sspanel':
         // TODO: 从 ss-panel 导入用户数据
