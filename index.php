@@ -98,7 +98,7 @@ function colorize($text, $status) {
     $out = "";
     switch($status) {
         case "SUCCESS":
-            $out = "[1;31;42m"; //Green background
+            $out = "[1;34;42m"; //Green background
             break;
         case "FAILURE":
             $out = "[1;37;41m"; //Red background
@@ -137,13 +137,13 @@ switch ($argv[1]) {
         }
         echo 'Now installing dependencies...' . PHP_EOL;
         if(!function_exists('system')) {
-            echo colorize('FAILED! system() function is disabled!' . PHP_EOL, 'FAILURE');
-            echo 'Please run command: php -d disable_functions=\'\' index.php install' . PHP_EOL;
+            echo colorize('FAILED! system() function is disabled!', 'FAILURE') . PHP_EOL;
+            echo 'Please run command: ' . colorize('php -d disable_functions=\'\' index.php install', 'FAILURE') . PHP_EOL;
             break;
         }
         system(PHP_BINARY . ' ' . ROOT_PATH . 'composer.phar install');
         if (!file_exists(ROOT_PATH . 'Package/autoload.php')) {
-            echo colorize('It seems composer failed to install package', 'FAILURE');
+            echo colorize('It seems composer failed to install package', 'FAILURE') . PHP_EOL;
             break;
         }
         echo 'Now reloading packages and config...';
@@ -151,7 +151,7 @@ switch ($argv[1]) {
         if (!file_exists($configFile)) {
             echo 'Config Unknown... copying..' . PHP_EOL;
             copy(DATA_PATH . 'Config.simple.php', $configFile);
-            echo colorize('Please modify ./Data/Config.php and try again', 'WARNING');
+            echo colorize('Please modify ./Data/Config.php and try again', 'WARNING') . PHP_EOL;
             break;
         }
 
@@ -181,7 +181,7 @@ switch ($argv[1]) {
         }
         exec($phinxCommand, $return_arr, $return_arr2);
         if($return_arr[count($return_arr)-1] == '"${dir}/phinx" "$@"') {
-            echo colorize('FAILED! migrate database wrong. Please run command: ./Package/bin/phinx migrate', 'FAILURE');
+            echo colorize('FAILED! migrate database wrong. Please run command: ', 'FAILURE') . colorize('./Package/bin/phinx migrate', 'WARNING') . PHP_EOL;
             break;
         } else {
             foreach($return_arr as $ret) {
@@ -194,7 +194,7 @@ switch ($argv[1]) {
         echo 'Copying resources...' . PHP_EOL;
         copyDir(ROOT_PATH . 'Resource', ROOT_PATH . 'Public/Resource');
 
-        echo colorize('All done~ Cheers! open ', 'NOTE') . colorize(BASE_URL . 'yourdomain.com/', 'NOTE');
+        echo colorize('All done~ Cheers! open site: ', 'NOTE') . colorize(BASE_URL . 'yourdomain.com/', 'SUCCESS') . PHP_EOL;
         break;
     case 'import-sspanel':
         // TODO: 从 ss-panel 导入用户数据
