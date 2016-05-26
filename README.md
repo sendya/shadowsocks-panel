@@ -24,8 +24,8 @@ git clone https://github.com/sendya/shadowsocks-panel.git
 cd shadowsocks-panel
 
 # Download script: Stable Version (Recommended)
-# Go to https://github.com/sendya/shadowsocks-panel/releases, download the latest release version (current version: v1.17)
-wget https://github.com/sendya/shadowsocks-panel/archive/sspanel-v1.17.zip -O shadowsocks-panel.zip
+# Go to https://github.com/sendya/shadowsocks-panel/releases, download the latest release version (current version: v1.18)
+wget https://github.com/sendya/shadowsocks-panel/archive/sspanel-v1.18.zip -O shadowsocks-panel.zip
 # Extract to /home/wwwroot/shadowsocks-panel/
 $ unzip -o -d /home/wwwroot/shadowsocks-panel/ shadowsocks-panel.zip
 $ cd /home/wwwroot/shadowsocks-panel/
@@ -38,7 +38,7 @@ chmod -R 777 ./Data/
 vim ./Data/Config.php
 
 # Start the installation
-php -d disable_functions='' index.php install
+php index.php install
 ```
 
 ### Documentation
