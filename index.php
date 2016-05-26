@@ -175,13 +175,15 @@ switch ($argv[1]) {
 
         echo 'Now migrating database...' . PHP_EOL;
         if (PATH_SEPARATOR != ':') {
-            $phinxCommand = ROOT_PATH . 'Package\bin\phinx.bat migrate';
+            $phinxCommand = ROOT_PATH . 'Package\bin\phinx.bat';
         } else {
-            $phinxCommand = PHP_BINARY . ' ' . ROOT_PATH . 'Package/robmorgan/phinx/bin/phinx migrate';
+            $phinxCommand = PHP_BINARY . ' ' . ROOT_PATH . 'Package/robmorgan/phinx/bin/phinx';
         }
-        exec($phinxCommand, $return_arr, $return_arr2);
-        if($return_arr[count($return_arr)-1] == '"${dir}/phinx" "$@"') {
+        exec($phinxCommand . ' migrate', $return_arr, $return_arr2);
+        if(stripos($return_arr[count($return_arr)-1], 'All Done.') === false) {
             echo colorize('FAILED! migrate database wrong. Please run command: ', 'FAILURE') . colorize('./Package/bin/phinx migrate', 'WARNING') . PHP_EOL;
+            // rollback
+            exec($phinxCommand . ' rollback', $return_arr, $return_arr2);
             break;
         } else {
             foreach($return_arr as $ret) {
