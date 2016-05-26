@@ -34,10 +34,8 @@
                         <form action="" onsubmit="return false;">
                             <input type="radio" name="mail_type" class="cbr cbr-secondary" value="MailGun" <if condition="$selectMail == 'MailGun'">checked</if>/> MailGun代发系统<br/><br/>
                             <input type="radio" name="mail_type" class="cbr cbr-secondary" value="Smtp" <if condition="$selectMail == 'Smtp'">checked</if>/> SMTP方式<br/><br/>
-                            <input type="radio" name="mail_type" class="cbr cbr-secondary disabled" value="CoreSend"
-                                   disabled="disabled" <if condition="$selectMail == 'CoreSend'">checked</if>/> PHP内置邮件发送函数<br/><br/>
-                            <input type="radio" name="mail_type" class="cbr cbr-secondary disabled" value="CAT_API"
-                                   disabled="disabled" <if condition="$selectMail == 'CAT_API'">checked</if>/> SS Cat提供的邮件投递API(发送者显示：SS Cat&lt;post@sscat.it&gt;)<br/>
+                            <input type="radio" name="mail_type" class="cbr cbr-secondary" value="AliyunDirectMail" <if condition="$selectMail == 'AliyunDirectMail'">checked</if>/> 阿里云邮件推送<br/><br/>
+                            <input type="radio" name="mail_type" class="cbr cbr-secondary" value="CoreSend" <if condition="$selectMail == 'CoreSend'">checked</if>/> PHP内置邮件发送函数<br/><br/>
                             <br/>
                             <br/>
                             <button type="button" class="btn btn-success" id="save-setting">立即保存</button>
@@ -208,47 +206,5 @@
             });
         });
     });
-    function optionModify(optionName) {
-        $("#modal-6 .modal-body").html(modal_default_body);
-        reset(false);
-        $.ajax({
-            url: "/admin/setting/query.json",
-            method: "GET",
-            dataType: "json",
-            data: {'option': optionName},
-            success: function (result) {
-                if (result.code != 200) {
-                    showToastr(result.message, 0, 3000, '系统错误');
-                    return;
-                }
-                if (result.data.error == 0 && result.data.modal != null) {
-                    var option = result.data.modal;
-                    $("input[name='option.k']").val(optionName);
-                    $("input[name='option.k2']").val(optionName);
-                    /* TODO 如果为键值对配置，则自动构建一个K:V对应编辑 */
-                    /*
-                     if(result.data.isArray) {
-                     var newHtml = '<label for="field-2" class="control-label" >值</label>';
-                     newHtml += '<input'
-
-                     $("#option-value").html();
-                     } else {
-                     $("textarea[name='option.v']").val(option);
-                     }*/
-
-                    $("textarea[name='option.v']").val(option);
-
-                    $('#modal-6 .modal-title').html('修改参数');
-                    reset(true);
-                } else {
-                    $('#modal-6').modal('hide');
-                }
-            },
-            error: function (Xhr) {
-                showToastr("出现未知错误，请重试或联系管理员", 0);
-            }
-        });
-        $('#modal-6').modal('show', {backdrop: 'static'});
-    }
 </script>
 <import template="/admin/_footer"/>
