@@ -53,6 +53,11 @@ define('HTTPS_SUPPORT', true);
 define('DEBUG_ENABLE', false);
 
 /**
+ * Logger:
+ */
+define('LOG_LEVEL', 4);
+
+/**
  * Base URL:
  * To manually config this, uncomment the following line and change the URL
  * To use auto detect, keep this commented
