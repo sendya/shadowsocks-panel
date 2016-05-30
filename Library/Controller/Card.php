@@ -40,6 +40,7 @@ class Card
             }
 
             $custom_transfer_level = json_decode(Option::get('custom_transfer_level'), true);
+            $custom_transfer_repeat = json_decode(Option::get('custom_transfer_repeat'), true);
 
             /* 0-套餐卡 1-流量卡 2-测试卡 3-余额卡 */
             if ($card->type == 0) {
@@ -60,7 +61,7 @@ class Card
                 if (is_numeric($card->expireTime)) {
                     $cardDay = intval($card->expireTime);
                 }
-                if ($user->expireTime < time()) {
+                if ($user->expireTime < time() && !$custom_transfer_repeat) {
                     $user->expireTime = time() + (3600 * 24 * $cardDay); // 到期时间
                 } else {
                     $user->expireTime = $user->expireTime + (3600 * 24 * $cardDay); // 到期时间
