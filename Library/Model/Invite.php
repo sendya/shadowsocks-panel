@@ -94,17 +94,18 @@ class Invite extends Model
      * Add a invite
      * @param $uid
      * @param string $plan
+     * @param bool $isTransfer
      * @return bool
      */
-    public static function addInvite($uid, $plan = 'A')
+    public static function addInvite($uid, $plan = 'A', $isTransfer = false)
     {
         $inviteStr = substr(hash("sha256", $uid . Utils::randomChar(10)), 0, 26) . $uid;
-        $obj = new self;
+        $obj = new self();
         $obj->inviteIp = Utils::getUserIP();
         $obj->invite = $inviteStr;
         $obj->plan = $plan;
         $obj->uid = $uid;
-        if ($uid != -1) {
+        if ($isTransfer) {
             $user = User::getUserByUserId($uid);
             $user->transfer = $user->transfer - Utils::GB * 10;
             $user->invite_num = $user->invite_num - 1;

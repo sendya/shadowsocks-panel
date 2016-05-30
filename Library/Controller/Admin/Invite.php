@@ -87,7 +87,7 @@ class Invite
             if ($_POST['invite'] != null) {
                 $invite = InviteModel::getInviteByInviteCode(trim($_POST['invite']));
                 if ($invite != null) {
-                    $invite->dateLine = time(); // TODO -- 前端时间获取
+                    $invite->dateLine = time();
                     $invite->expiration = $_POST['expiration'];
                     $invite->plan = $_POST['plan'];
                     $invite->save();
