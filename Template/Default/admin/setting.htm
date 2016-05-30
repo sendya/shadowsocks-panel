@@ -97,7 +97,13 @@
                 </div><!-- /.box-body -->
             </div><!-- /.box -->
         </div>
-        <div class="col-sm-12 col-md-12 col-lg-12">
+    </div>
+
+    <div class="row">
+        <div class="col-sm-6 col-md-6 col-lg-6">
+
+        </div>
+        <div class="col-sm-6 col-md-6 col-lg-6">
             <div class="box">
                 <div class="panel panel-default">
                     <div class="panel-heading">
@@ -114,28 +120,40 @@
                     <div class="panel-body">
                         <div class="table-responsive">
                             <form id="other-form" name="other-form" action="/admin/setting/saveOther.json">
-                            <table cellspacing="0" class="table table-small-font table-bordered table-striped">
-                                <thead>
-                                <tr>
-                                    <th width="200px">#</th>
-                                    <th>值</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>最大值(MB)</td>
-                                        <td><input class="form-control" name="check_transfer_max" value="{$check_transfer_max}"/></td>
-                                    </tr>
-                                    <tr>
-                                        <td>最小值(MB)</td>
-                                        <td><input class="form-control" name="check_transfer_min" value="{$check_transfer_min}"/></td>
-                                    </tr>
-                                    <tr>
-                                        <td>测试用户试用时长</td>
-                                        <td><input class="form-control" name="user_test_day" value="{$user_test_day}"/></td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                                <table cellspacing="0" class="table table-small-font table-bordered table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th width="200px">#</th>
+                                            <th>值</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>新用户注册邮箱验证</td>
+                                            <td>
+                                                <input type="checkbox" name="mail_verify" value="1" class="iswitch-lg iswitch-info" <if condition="$mail_verify == 1">checked</if>>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>套餐卡充值时间叠加</td>
+                                            <td>
+                                                <input type="checkbox" name="custom_transfer_repeat" value="1" class="iswitch-lg iswitch-info" <if condition="$custom_transfer_repeat == 1">checked</if>>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>签到流量最大值(MB)</td>
+                                            <td><input class="form-control" name="check_transfer_max" value="{$check_transfer_max}"/></td>
+                                        </tr>
+                                        <tr>
+                                            <td>签到流量最小值(MB)</td>
+                                            <td><input class="form-control" name="check_transfer_min" value="{$check_transfer_min}"/></td>
+                                        </tr>
+                                        <tr>
+                                            <td>测试用户试用时长(天)</td>
+                                            <td><input class="form-control" name="user_test_day" value="{$user_test_day}"/></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
                             </form>
                         </div>
                     </div>
@@ -148,6 +166,8 @@
 </div>
 <script type="text/javascript">
     jQuery(document).ready(function($) {
+
+
         $("#setting-save,#transfer-save,#other-save").on('click', function(){
             var formName = $(this).attr('data-form-id');
 

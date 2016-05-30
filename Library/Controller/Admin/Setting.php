@@ -31,6 +31,8 @@ class Setting
         $data['custom_transfer_level'] = json_decode(Option::get('custom_transfer_level'), true);
         $data['check_transfer_max'] = Option::get('check_transfer_max');
         $data['check_transfer_min'] = Option::get('check_transfer_min');
+        $data['mail_verify'] = Option::get('mail_verify');
+        $data['custom_transfer_repeat'] = Option::get('custom_transfer_repeat');
         $data['user_test_day'] = Option::get('user_test_day');
 
         Template::setContext($data);
@@ -87,10 +89,14 @@ class Setting
      */
     public function saveOther()
     {
+        intval(trim($_POST['mail_verify'])) == 1 ? $mail_verify = 1 : $mail_verify = 0;
+        intval(trim($_POST['custom_transfer_repeat'])) == 1 ? $custom_transfer_repeat = 1 : $custom_transfer_repeat = 0;
         $check_transfer_max = intval(trim($_POST['check_transfer_max']));
         $check_transfer_min = intval(trim($_POST['check_transfer_min']));
         $user_test_day = intval(trim($_POST['user_test_day']));
 
+        Option::set('mail_verify', $mail_verify);
+        Option::set('custom_transfer_repeat', $custom_transfer_repeat);
         Option::set('check_transfer_max', $check_transfer_max);
         Option::set('check_transfer_min', $check_transfer_min);
         Option::set('user_test_day', $user_test_day);
