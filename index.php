@@ -136,8 +136,8 @@ switch ($argv[1]) {
             echo 'Done!' . PHP_EOL;
         }
         echo 'Now installing dependencies...' . PHP_EOL;
-        if(!function_exists('system')) {
-            echo colorize('FAILED! system() function is disabled!', 'FAILURE') . PHP_EOL;
+        if(!function_exists('system') || !function_exists('exec')) {
+            echo colorize('FAILED! system() or exec() function is disabled!', 'FAILURE') . PHP_EOL;
             echo 'Please run command: ' . colorize('php -d disable_functions=\'\' index.php install', 'FAILURE') . PHP_EOL;
             break;
         }
