@@ -13,12 +13,6 @@ a {
 input:-webkit-autofill {
     /*-webkit-box-shadow: 0 0 0px 1000px #313334 inset;*/
 }
-/**
- * 隐藏默认的checkbox
- */
-input[type=checkbox] {
-	visibility: hidden;
-}
 
 .settings-pane .link-blocks-env {
     text-align: right;
