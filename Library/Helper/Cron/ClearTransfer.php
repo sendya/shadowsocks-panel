@@ -9,7 +9,7 @@ namespace Helper\Cron;
 
 use Contactable\ICron;
 
-use Core\Database;
+use Core\Database as DB;
 
 /**
  * 计划任务 - ClearTransfer
@@ -41,6 +41,6 @@ class ClearTransfer implements ICron
 
     public function getStep()
     {
-        return strtotime(date('Y-m-01 00:00:00', strtotime("1 month"))); // 下个月
+        return strtotime(date('Y-m-01 00:00:01', strtotime("1 month"))); // 下个月
     }
 }
