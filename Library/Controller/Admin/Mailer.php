@@ -11,6 +11,7 @@ namespace Controller\Admin;
 
 use Core\Template;
 use Helper\Option;
+use Helper\Utils;
 use Model\Mail;
 use Model\User;
 use Helper\Mailer as Mailer1;
@@ -94,8 +95,15 @@ class Mailer
 
         foreach ($users as $user) {
             $mail = new Mail();
+            $params = [
+                'nickname' => $user->nickname,
+                'email' => $user->email,
+                'useTraffic' => Utils::flowAutoShow($user->flow_up + $user->flow_down),
+                'transfer' => Utils::flowAutoShow($user->transfer),
+                'expireTime' => date('Y-m-d H:i:s', $user->expireTime),
+            ];
             $mail->subject = $subject;
-            $mail->content = $content;
+            $mail->content = Utils::placeholderReplace($content, $params);
             $mail->to = $user->email;
             $mailer->send($mail);
         }
