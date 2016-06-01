@@ -18,7 +18,7 @@ var bgm = $("#bgmusic")[0];
 
 bgm.volume = .1;
 
-var BASEDIR = "https://static-2.loacg.com/open/static/l4d/img/", IMGNUM = 20;
+var BASEDIR = "/Resource/Default/home/images/", IMGNUM = 20;
 
 var imgs = [], rds = Math.random(), rgImg;
 
