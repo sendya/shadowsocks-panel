@@ -107,4 +107,44 @@ class Api
         }
         return $status;
     }
+
+    /**
+     * @JSON
+     * @Authorization
+     */
+    public function nodeQuery()
+    {
+        $API_BASE = "https://nodequery.com/api/";
+
+        $API_KEY = Option::get('SERVER_NODE_QUERY_API_KEY');
+        if (!$API_KEY) {
+            throw new Error('API_KEY is not available', 500);
+        }
+
+        $status = array();
+        $result = Http::doGet($API_BASE . 'servers?api_key=' . $API_KEY, array());
+        if($result) {
+            $result = json_decode($result, true);
+
+            foreach ($result['data'] as $node) {
+                $status[] = array('id' => $node['id'],
+                    'status' => $node['status'],
+                    'availability' => $node['availability'],
+                    'update_time' => $node['update_time'],
+                    'name' => $node['name'],
+                    'load_percent' => $node['load_percent'],
+                    'load_average' => $node['load_average'],
+                    'ram_total' => $node['ram_total'],
+                    'ram_usage' => $node['ram_usage'],
+                    'disk_total' => $node['disk_total'],
+                    'disk_usage' => $node['disk_usage_'],
+                    'current_rx' => $node['current_rx'],
+                    'current_tx' => $node['current_tx']
+                    );
+            }
+
+
+        }
+        return $status;
+    }
 }
