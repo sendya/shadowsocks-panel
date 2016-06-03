@@ -9,6 +9,7 @@ namespace Helper;
 
 
 use Core\Error;
+use Core\Filter;
 use Core\IFilter;
 use Core\Template;
 use Helper\Message;
@@ -35,6 +36,7 @@ class LoginFilter implements IFilter
 
         $user = User::getCurrent();
 
+
         $reflection = new ReflectionMethod($className, $method);
         $docComment = $reflection->getDocComment();
         // $this->isJson = $this->isJSON($docComment);
@@ -51,11 +53,11 @@ class LoginFilter implements IFilter
                 $this->data['message'] = '你不是管理员，无法访问此页面';
                 $this->black = true;
             }
-
         }
         if ($this->black) {
             if ($this->isJson) {
                 Template::setContext($this->data);
+                Filter::preRender();
             } else {
                 Message::show($this->data['message'], 'auth/login', 3);
             }
