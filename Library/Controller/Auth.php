@@ -173,7 +173,7 @@ class Auth
                                 'useTraffic' => Utils::flowAutoShow($user->flow_up + $user->flow_down),
                                 'transfer' => Utils::flowAutoShow($user->transfer),
                                 'expireTime' => date('Y-m-d H:i:s', $user->expireTime),
-                                'REGISTER_URL' => base64_encode($user->uid . "\t" . $forgePwdCode['verification'] . "\t" . $forgePwdCode['time'])
+                                'REGISTER_URL' => base64_encode($user->email . "\t" . $forgePwdCode['verification'] . "\t" . $forgePwdCode['time'])
                             ];
                             $mail->content = Utils::placeholderReplace($mail->content, $params);
                             $mailer->send($mail);
@@ -235,7 +235,7 @@ class Auth
                 'useTraffic' => Utils::flowAutoShow($user->flow_up + $user->flow_down),
                 'transfer' => Utils::flowAutoShow($user->transfer),
                 'expireTime' => date('Y-m-d H:i:s', $user->expireTime),
-                'REGISTER_URL' => base64_encode($user->uid . "\t" . $forgePwdCode['verification'] . "\t" . $forgePwdCode['time'])
+                'REGISTER_URL' => base64_encode($user->email . "\t" . $forgePwdCode['verification'] . "\t" . $forgePwdCode['time'])
             ];
             $mail->content = Utils::placeholderReplace($mail->content, $params);
             $mailer->send($mail);
@@ -255,7 +255,7 @@ class Auth
             $list = explode("\t", base64_decode($_GET['verification']));
 
             if (count($list) > 2) {
-                $user = User::getUserByUserId($list[0]);
+                $user = User::getUserByEmail($list[0]);
                 $verification = trim($list[1]);
                 $json = json_decode($user->forgePwdCode, true);
                 $userVerificationCode = $json['verification'];
