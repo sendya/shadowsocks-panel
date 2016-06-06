@@ -77,6 +77,8 @@
     $(document).ready(function(){
         $(".invitec").click(function(){
             showToastr("生成邀请码中..", 0, 2000);
+            var btn = $(this);
+            btn.attr('disabled', 'disabled');
             $.ajax({
                 type:"GET",
                 url:"/invite/create.json",
@@ -94,17 +96,16 @@
                         $("#invitec_num2").html(data.invite_num);
 
                         if(data.invite != null) {
-
                             $("#data-tbody").append('<tr><td>'+ $("#data-tbody").children("tr").length +'</td><td>'+data.invite.invite+'</td><td><a href="javascript:;" class="btn btn-sm btn-secondary" data-set-skin="">可用</a></td></tr>');
                         }
-
                     } else {
                         showToastr(data.message, 0, 5000, '错误');
                     }
-
+                    btn.removeAttr('disabled');
                 },
                 error:function(jqXHR){
                     showToastr("发生错误："+jqXHR.status, 0);
+                    btn.removeAttr('disabled');
                 }
             })
         });

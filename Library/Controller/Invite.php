@@ -41,12 +41,12 @@ class Invite
             $result = array(
                 'error' => 0,
                 'message' => '创建邀请码成功，刷新后可见',
-                'invite_num' => $user->invite_num -1,
+                'invite_num' => $user->invite_num - 1,
                 'invite' => $invite
             );
+            $user->invite_num = $user->invite_num - 1;
+            $user->save();
         }
-        $user->invite_num = $user->invite_num -1;
-        $user->save();
 
         return $result;
     }
