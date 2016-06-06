@@ -18,6 +18,7 @@ define('DATA_PATH', ROOT_PATH . 'Data/');
 define('TIMESTAMP', time());
 @ini_set('display_errors', 'on');
 @ini_set('expose_php', false);
+@date_default_timezone_set('Asia/Shanghai');
 @ini_set('date.timezone', 'Asia/Shanghai');
 set_time_limit(0);
 
@@ -98,21 +99,27 @@ function colorize($text, $status) {
     $out = "";
     switch($status) {
         case "SUCCESS":
-            $out = "[1;34;42m"; //Green background
+            $out = "[44m"; //Blue fonts
             break;
         case "FAILURE":
-            $out = "[1;37;41m"; //Red background
+            $out = "[1;137;41m"; //Red background
             break;
         case "WARNING":
-            $out = "[1;37;43m"; //Yellow background
+            $out = "[1;37;31m"; //Red fonts
             break;
         case "NOTE":
-            $out = "[44m"; //Blue background
+            $out = "[1;134;34m"; //Blue background
             break;
         default:
             throw new Exception("Invalid status: " . $status);
     }
     return chr(27) . "$out" . "$text" . chr(27) . "[0m";
+}
+
+function print_arr($arr) {
+    foreach($arr as $ret) {
+        echo $ret . PHP_EOL;
+    }
 }
 
 switch ($argv[1]) {
@@ -135,6 +142,14 @@ switch ($argv[1]) {
             curl_close($ch);
             echo 'Done!' . PHP_EOL;
         }
+        exec(PHP_BINARY . ' ' . ROOT_PATH . 'composer.phar -V', $return_arr);
+        print_arr($return_arr);
+        if(!file_exists(ROOT_PATH . 'composer.phar') || stripos($return_arr[count($return_arr)-1], 'Composer') === false) {
+            @unlink(ROOT_PATH . 'composer.phar');
+            echo colorize('Failed to download composer binary!', 'FAILURE') . PHP_EOL;
+            break;
+        }
+        unset($return_arr);
         echo 'Now installing dependencies...' . PHP_EOL;
         if(!function_exists('system') || !function_exists('exec')) {
             echo colorize('FAILED! system() or exec() function is disabled!', 'FAILURE') . PHP_EOL;
@@ -180,15 +195,12 @@ switch ($argv[1]) {
             $phinxCommand = PHP_BINARY . ' ' . ROOT_PATH . 'Package/robmorgan/phinx/bin/phinx';
         }
         exec($phinxCommand . ' migrate', $return_arr, $return_arr2);
+        print_arr($return_arr);
         if(stripos($return_arr[count($return_arr)-1], 'All Done.') === false) {
-            echo colorize('FAILED! migrate database wrong. Please run command: ', 'FAILURE') . colorize('./Package/bin/phinx migrate', 'WARNING') . PHP_EOL;
+            echo colorize(PHP_EOL. PHP_EOL.'Failed to migrate database, you can try it manually: ', 'WARNING') . colorize('./Package/bin/phinx migrate', 'WARNING') . PHP_EOL;
             // rollback
             exec($phinxCommand . ' rollback', $return_arr, $return_arr2);
             break;
-        } else {
-            foreach($return_arr as $ret) {
-                echo $ret . PHP_EOL;
-            }
         }
         echo 'Now installing resources...' . PHP_EOL;
         echo 'Deleting old resources...  ' . PHP_EOL;
@@ -196,11 +208,18 @@ switch ($argv[1]) {
         echo 'Copying resources...' . PHP_EOL;
         copyDir(ROOT_PATH . 'Resource', ROOT_PATH . 'Public/Resource');
 
-        echo colorize('All done~ Cheers! open site: ', 'NOTE') . colorize(BASE_URL . 'yourdomain.com/', 'SUCCESS') . PHP_EOL;
+        echo colorize('All done~ Cheers! open site: '.BASE_URL . 'yourdomain.com/', 'NOTE') . PHP_EOL;
         break;
     case 'import-sspanel':
         // TODO: 从 ss-panel 导入用户数据
 
+
+        break;
+    case 'test':
+        echo colorize('FAILED!' . PHP_EOL, 'SUCCESS');
+        echo colorize('FAILED!' . PHP_EOL, 'FAILURE');
+        echo colorize('FAILED!' . PHP_EOL, 'WARNING');
+        echo colorize('FAILED!' . PHP_EOL, 'NOTE');
 
         break;
     default:

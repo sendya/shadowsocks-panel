@@ -12,6 +12,8 @@ define('ROOT_PATH', dirname(__FILE__) . DIRECTORY_SEPARATOR);
 define('LIBRARY_PATH', ROOT_PATH . 'Library/');
 define('DATA_PATH', ROOT_PATH . 'Data/');
 @ini_set('display_errors', 'on');
+@date_default_timezone_set('Asia/Shanghai');
+@ini_set('date.timezone', 'Asia/Shanghai');
 
 require ROOT_PATH . 'Package/autoload.php';
 Core\Error::registerHandler();
