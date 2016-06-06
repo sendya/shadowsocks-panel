@@ -2,7 +2,6 @@
 
 **A powerful Shadowsocks management system**
 
-
 > Comprehensive user permissions management.
 > All codes come with clear annotation.
 > Optimized for various operations:
@@ -18,14 +17,14 @@ Required PHP version: PHP5.5 ~ PHP7. PHP7 is recommended.
 ### Quick Start
 ```bash
 #Pick one version: Latest or Stable
-# Download script: The Latest Version
+# Download script: The Latest Version (Recommended)
 cd /home/wwwroot/
 git clone https://github.com/sendya/shadowsocks-panel.git
 cd shadowsocks-panel
 
-# Download script: Stable Version (Recommended)
-# Go to https://github.com/sendya/shadowsocks-panel/releases, download the latest release version (current version: v1.18)
-wget https://github.com/sendya/shadowsocks-panel/archive/sspanel-v1.18.zip -O shadowsocks-panel.zip
+# Download script: Stable Version
+# Go to https://github.com/sendya/shadowsocks-panel/releases, download the latest release version (current version: v1.1.90)
+wget https://github.com/sendya/shadowsocks-panel/archive/sspanel-v1.1.90.zip -O shadowsocks-panel.zip
 # Extract to /home/wwwroot/shadowsocks-panel/
 $ unzip -o -d /home/wwwroot/shadowsocks-panel/ shadowsocks-panel.zip
 $ cd /home/wwwroot/shadowsocks-panel/
