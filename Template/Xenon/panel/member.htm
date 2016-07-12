@@ -1,0 +1,252 @@
+<import template="/panel/_header" />
+<div class="page-container">
+    <div class="main-content">
+        <div class="row">
+            <div class="col-sm-3">
+
+                <div class="xe-widget xe-counter" data-count=".num" data-from="0" data-to="99.9" data-suffix="%"
+                     data-duration="2">
+                    <div class="xe-icon">
+                        <i class="fa fa-cloud"></i>
+                    </div>
+                    <div class="xe-label">
+                        <strong class="num">99.9%</strong>
+                        <span>服务在线率</span>
+                    </div>
+                </div>
+
+                <div class="xe-widget xe-counter xe-counter-purple" data-count=".num">
+                    <div class="xe-icon">
+                        <i class="fa-calendar"></i>
+                    </div>
+                    <div class="xe-label">
+                        <!-- reset -->
+
+                        <div id="checkin-on" <if condition="!$checked">style="display:none;"</if> >
+                        <strong>
+                            <a id="checkin" href="javascript:;" style="color:#000;">点击签到</a>
+                        </strong>
+                        <span id="checkin-tag">签到送流量</span>
+                    </div>
+                    <div id="checkin-off" <if condition="$checked">style="display:none;"</if> >
+                    <strong>
+                        <div id="checkinoff">您已签到</div>
+                    </strong>
+                    <span id="checkinoff-tag">{$checkedTime}</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="xe-widget xe-counter xe-counter-info" data-count=".num" data-from="1" data-to="{$allNode}" data-duration="1"
+             data-easing="true">
+            <div class="xe-icon">
+                <i class="fa fa-server"></i>
+            </div>
+            <div class="xe-label">
+                <strong class="num">{$allNode}</strong>
+                <span>共有节点</span>
+            </div>
+        </div>
+
+    </div>
+    <div class="col-sm-6">
+
+        <div class="chart-item-bg">
+            <div class="chart-label">
+                <div class="h3 text-secondary text-bold" data-count="this" data-from="0" data-to="{$useTransfer}" data-suffix="{$useTransferUnit}" data-duration="1">{$useTransfer} {$useTransferUnit}</div>
+                <span class="text-medium text-muted">流量使用情况</span>
+            </div>
+            <div class="progress progress-striped active" style="height: 20px;position: absolute;left:30px;right:30px;top:30%">
+                <div class="progress-bar progress-bar-info" style="width: {$pctTransfer}%;height:20px;"></div>
+            </div>
+            <div style="position: absolute;left:30px;right:30px;top:40%">共有流量：{$allTransfer}<br/>可用流量：{$slaTransfer}<br/><br/>您的当前IP：<code>{$userIp}</code><br/>您的地区：<code id="country_id">获取中.</code><br/>
+                <h2><a href="support/help" target="_blank">使用教程&gt;&gt;</a></h2>
+            </div>
+            <div  style="height: 298px;">
+
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-3">
+        <div class="chart-item-bg">
+            <div class="chart-label chart-label-small">
+                <div class="h4 text-purple text-bold" data-count="this" data-from="0.00" data-to="{$onlineNum}" data-suffix="%" data-duration="1.5">{$onlineNum}%</div>
+                <span class="text-small text-upper text-muted">在线人数百分比</span><br />
+                <span class="text-small text-upper text-muted">注册用户：<code> {$userCount} </code><br/>签到人数：<code> {$checkCount} </code><br/></span>
+                <span class="text-small text-upper text-muted">实时在线：<code> {$online} </code><br/></span>
+            </div>
+            <div id="server-uptime-chart" style="height: 134px;"></div>
+        </div>
+
+        <div class="chart-item-bg">
+            <div class="chart-label chart-label-small">
+                <div class="h4 text-secondary text-bold" data-count="this" data-from="0.00" data-to="{$systemTransfer}" data-suffix="GB" data-decimal="." data-duration="2">{$systemTransfer}</div>
+                <span class="text-small text-upper text-muted">{SITE_NAME} 已经产生流量<code>{$systemTransfer}</code>GB</span><br />
+                <span class="text-small text-upper text-muted">{SITE_NAME} 已经有<code>{$useUserCount}</code>人使用</span>
+            </div>
+
+            <div id="sales-avg-chart" style="height: 134px; position: relative;">
+                <div style="position: absolute; top: 25px; right: 0; left: 40%; bottom: 0"></div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="col-sm-6">
+
+        <div class="chart-item-bg">
+            <div class="chart-entry-view">
+                <div class="chart-entry-label">
+                    <if condition="count($globalMessage)>0">
+                        <span>{$globalMessage[1]->content}</span><br/>
+                    </if>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="col-sm-6">
+
+        <div class="chart-item-bg">
+            <div class="chart-label">
+                <div  class="h1 text-purple text-bold">连接信息</div>
+                端口：<code>{$user->port}</code><br />
+                密码：<div id="showpwd" style="display: inline"><b>点击显示密码</b></div><br />
+                <button class="btn btn-sm btn-info" id="plan-level">{$user->getPlan()}</button>   &nbsp;
+                <button class="btn btn-sm btn-secondary" id="updatePlan"> 升级套餐 </button>   &nbsp;
+                <button class="btn btn-sm btn-secondary" id="planList"> 套餐详情 </button><br /><br />
+                最后使用时间：<code>{$lastOnlineTime}</code>
+
+            </div>
+            <div style="height: 200px"></div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function() {
+        <php>
+        $update = \Helper\Updater::getInstance();
+        $message = $update->check();
+        if($message !== false) {
+            echo "showToastr(\"".$message."\", 0);";
+        }
+        $user_json = json_decode($user->forgePwdCode, true);
+        if($user_json['verification']!=null && $user->enable == 0) {
+            echo "showToastr(\"您的账户尚未校验邮箱，暂时无法使用本站服务，请校验后重新登陆。\", 0);";
+        }
+        </php>
+        $("#checkin").click(function() {
+            var chkin = $(this);
+            chkin.text("请稍等");
+            showToastr("正在请求签到..请稍等", 0, 1500);
+            var checkInUrl = chkin.attr("href");
+            chkin.removeAttr("href").addClass("disabled");
+            $.ajax({
+                type:"GET",
+                url:"/member/checkIn.json",
+                dataType:"json",
+                success:function(result) {
+                    chkin.text("点击签到");
+                    if(result.code != 200) {
+                        chkin.removeClass("disabled").attr("href", checkInUrl);
+                        showToastr(result.message, 0, 3000, '系统错误');
+                        return;
+                    }
+                    if(result.data.error == 0) {
+                        $("#checkin-on").hide();
+                        $("#checkin-off").show();
+                        $("#checkinoff-tag").html(result.data.time);
+                    }
+                    showToastr(result.data.message, 0);
+                },
+                error:function(jqXHR) {
+                    chkin.removeClass("disabled").attr("href", checkInUrl);
+                    showToastr("出现未知错误，请重试或联系管理员", 0);
+                }
+            });
+        });
+        $("#updatePlan").on('click', function(){
+            var btn = $(this);
+            btn.html("请稍等");
+            btn.attr('disabled', 'true').addClass("disabled");
+            $.ajax({
+                type:"GET",
+                url:"/member/updatePlan.json",
+                dataType:"json",
+                success:function(result) {
+                    btn.removeAttr('disabled').removeClass("disabled").html("升级套餐");
+                    if(result.code != 200) {
+                        showToastr(result.message, 0, 3000, '系统错误');
+                        return;
+                    }
+                    if(result.data.error == 0) {
+                        $("#plan-level").html(result.data.level);
+                    }
+                    showToastr(result.data.message, 0);
+                },
+                error:function(jqXHR) {
+                    btn.removeAttr('disabled').removeClass("disabled").html("升级套餐");
+                    showToastr("发生错误：" + jqXHR.status, 0);
+                }
+            });
+        });
+        $("#showpwd").on('click', function() {
+            if ($(this).html() == "<b>点击显示密码</b>") {
+                $(this).html("{$user->sspwd}");
+            } else {
+                $(this).html("<b>点击显示密码</b>");
+            }
+        });
+        <if condition="$globalMessage[3]!=null && $globalMessage[3]->enable==1">
+                showToastr("{$globalMessage[3]->content}", 800);
+        </if>
+
+        $("#planList").on('click', function(){
+            <if condition="$globalMessage[2]!=null && $globalMessage[2]->enable==1">
+                    $("#modal-1 .modal-body").html("{$globalMessage[2]->content}");
+            <else>
+            $("#modal-1 .modal-body").html("管理员未设置内容..");
+            </if>
+
+            $("#modal-1").modal("show", {backdrop:"fade"});
+        });
+        $.get("/api/queryCountry.json",{}, function(data){
+            var flag = data.code;
+            var desc = "";
+            if(flag == "0") {
+                if(data.data.country != '' && data.data.country != undefined){
+                    desc += data.data.country;
+                }
+                if(data.data.area != '' && data.data.area != undefined){
+                    desc += " " + data.data.area;
+                }
+                if(data.data.region != '' && data.data.region != undefined){
+                    desc += " " + data.data.region;
+                }
+                if(data.data.city != '' && data.data.city != undefined){
+                    desc += " " + data.data.city;
+                }
+                if(data.data.county != '' && data.data.county != undefined) {
+                    desc += " " + data.data.county;
+                }
+                if(data.data.isp != '' && data.data.isp != undefined) {
+                    desc += " " + data.data.isp;
+                }
+                if(desc == "" || desc == undefined)
+                    desc = "未知";
+            } else {
+                desc = "未知";
+            }
+
+            $("#country_id").html(desc);
+        },"json");
+    });
+</script>
+        <import template="/panel/_copyright" />
+    </div>
+</div>
+<import template="/panel/_footer" />

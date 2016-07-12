@@ -1,0 +1,83 @@
+<import template="/panel/_header" />
+<div class="page-container">
+    <div class="main-content">
+        <div class="page-title">
+            <div class="title-env">
+                <h1 class="title">创建订单</h1>
+                <p class="description">继续将创建订单</p>
+            </div>
+            <div class="breadcrumb-env">
+                <ol class="breadcrumb bc-1"><li><a href="/member"><i class="fa-home"></i>主页</a></li><li><a href="javascript:;">服务购买</a></li><li class="active"><strong>创建订单</strong></li></ol>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <i class="fa fa-angle-right"></i>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <div class="xe-widget xe-progress-counter ">
+
+                                        <div class="xe-background">
+                                            <i class="fa-paper-plane"></i>
+                                        </div>
+
+                                        <div class="xe-upper">
+                                            <div class="xe-icon">
+                                                <i class="fa fa-paper-plane"></i>
+                                            </div>
+                                            <div class="xe-label">
+                                                <span>套餐</span>
+                                                <strong class="num">{$plan_name}({$plan})</strong>
+                                            </div>
+                                        </div>
+
+                                        <div class="xe-progress">
+                                            <span class="xe-progress-fill" data-fill-from="0" data-fill-to="85" data-fill-unit="%" data-fill-property="width" data-fill-duration="2" data-fill-easing="true"></span>
+                                        </div>
+
+                                        <div class="xe-lower plan-info">
+                                            <span>订单: {$order_id}</span><br/>
+                                            <strong>{$transfer}GB 流量</strong><br/>
+                                            <strong>共需支付 {$money} 元</strong><br/>
+                                        </div>
+
+                                        <div class="xe-lower">
+                                            <button class="btn btn-white btn-buy">确定支付</button>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-8">
+                                <div class="form-group">
+                                    <p>用户名：{$user->nickname}</p>
+                                    <p>邮箱：{$user->email}&nbsp;<if condition="$is_verification">&nbsp;&nbsp;您还没有校验邮箱地址！（<a href="javascript:;" id="resend_verification">重新发送校验码</a>）<else>(该邮箱地址已校验)</if></p>
+                                    <p>套餐：<span class="label label-info">{$user->getPlan()}</span>
+                                        <if condition="$user->plan == 'A'">
+                                            &nbsp;&nbsp;您为免费体验账户，流量将不会每月重置，升级到会员账户即可提升流量限额。
+                                        </if>
+                                    </p>
+                                    <p>账户余额：{$user->money} 元 </p>
+                                    <hr/>
+                                    <p>您的总流量：{(\Helper\Utils::flowAutoShow($user->transfer))}</p>
+                                    <p>可用流量：<span id="slaTransfer">{(\Helper\Utils::flowAutoShow($user->transfer - ($user->flow_up+$user->flow_down)))}</span></p>
+                                    <p>已用流量：<span id="useTransfer">{(\Helper\Utils::flowAutoShow($user->flow_up+$user->flow_down))}</span></p>
+                                    <!--
+                                    <p><button class="btn btn-danger btn-sm" id="deleteMe">删除我的账户</button></p>
+                                    -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <import template="/panel/_copyright" />
+    </div>
+</div>
+<import template="/panel/_footer" />

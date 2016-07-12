@@ -222,7 +222,7 @@ class Utils
             return $arg;
         }
 
-        if (stripos($controllerName, $link) !== false) {
+        if (stripos($requestPath, $link) !== false) {
             return 'active ' . $args;
         } else {
             return "";

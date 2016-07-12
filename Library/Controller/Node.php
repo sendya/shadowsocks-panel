@@ -6,12 +6,10 @@
  */
 namespace Controller;
 
-use Core\Error;
+
 use Core\Template;
-use Helper\Message;
-use Helper\Utils;
 use Model\User;
-use Model\Node as NodeModel;
+use Model\Node as MNode;
 
 /**
  * Class Node
@@ -22,7 +20,12 @@ class Node
 {
     public function Index()
     {
-        throw new Error("无知的人类啊", 555);
+        $data['user'] = User::getCurrent();
+        $data['nodes'] = MNode::getNodeArray(0);
+        $data['nodeVip'] = MNode::getNodeArray(1);
+
+        Template::setContext($data);
+        Template::setView("panel/node");
     }
 
     /**
@@ -34,7 +37,7 @@ class Node
         $id = trim($_REQUEST['id']);
         $result = array('error' => -1, 'message' => 'Request failed');
         $user = User::getUserByUserId(User::getCurrent()->uid);
-        $node = NodeModel::getNodeById($id);
+        $node = MNode::getNodeById($id);
         $method = $node->method;
         if($node->custom_method == 1 && $user->method != '' && $user->method != null) {
             $method = $user->method;

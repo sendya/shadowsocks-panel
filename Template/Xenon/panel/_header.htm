@@ -1,0 +1,247 @@
+<import template="/panel/_head"/>
+<body class="page-body">
+
+<div class="modal fade" id="modal-1" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title">提示</h4>
+            </div>
+            <div class="modal-body"></div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-white" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-info" data-dismiss="modal">确定</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="settings-pane">
+    <a href="javascript:;" data-toggle="settings-pane" data-animate="true">&times;</a>
+    <div class="settings-pane-inner">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="user-info">
+                    <div class="user-image">
+                        <a href="/user/info">
+                            <img src="{(\Helper\Utils::gravatar($user->email))}" class="img-responsive img-circle"/>
+                        </a>
+                    </div>
+                    <div class="user-details">
+                        <h3>
+                            <a href="/user/info">{$user->nickname}</a>
+                            <!-- Available statuses: is-online, is-idle, is-busy and is-offline -->
+                            <span class="user-status is-online"></span>
+                        </h3>
+                        <p class="user-title">加入时间：{(date('Y-m-d H:i:s', $user->regDateLine))}</p>
+                        <div class="user-links">
+                            <a href="/user/info" class="btn btn-primary">个人资料</a>
+                            <a href="/auth/logout" class="btn btn-success">登出</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 link-blocks-env">
+                <div class="links-block left-sep">
+                    <h4>
+                        <a href="javascript:;">
+                            <span>帮助</span>
+                        </a>
+                    </h4>
+                    <ul class="list-unstyled">
+                        <li>
+                            <a href="/support/tos">
+                                <i class="fa-angle-right"></i>
+                                支持中心
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/support/feedback">
+                                <i class="fa-angle-right"></i>
+                                提交问题
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/support/tos">
+                                <i class="fa-angle-right"></i>
+                                使用协议
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/support/tos">
+                                <i class="fa-angle-right"></i>
+                                服务条款
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<nav class="navbar horizontal-menu navbar-fixed-top">
+
+    <div class="navbar-inner">
+
+        <!-- Navbar Brand -->
+        <div class="navbar-brand">
+            <a href="/member" class="logo">
+                <img src="{RESOURCE}/images/logo-white-bg@2x.png" width="80" alt="" class="hidden-xs"/>
+                <img src="{RESOURCE}/images/logo@2x.png" width="80" alt="" class="visible-xs"/>
+            </a>
+            <a href="javascript:;" data-toggle="settings-pane" data-animate="true">
+                <i class="fa fa-cog"></i>
+            </a>
+        </div>
+
+        <!-- Mobile Toggles Links -->
+        <div class="nav navbar-mobile">
+
+            <!-- This will toggle the mobile menu and will be visible only on mobile devices -->
+            <div class="mobile-menu-toggle">
+                <!-- This will open the popup with user profile settings, you can use for any purpose, just be creative -->
+                <a href="javascript:;" data-toggle="settings-pane" data-animate="true">
+                    <i class="linecons-cog"></i>
+                </a>
+
+                <a href="javascript:;" data-toggle="mobile-menu-horizontal">
+                    <i class="fa-bars"></i>
+                </a>
+            </div>
+
+        </div>
+
+        <div class="navbar-mobile-clear"></div>
+        <ul class="navbar-nav">
+            <li class="{(\Helper\Utils::menuActive('member', 'opened'))}">
+                <a href="/member">
+                    <i class="fa fa-desktop"></i>
+                    <span class="title">仪表盘</span>
+                </a>
+            </li>
+            <li class="{(\Helper\Utils::menuActive('node'))}">
+                <a href="/node">
+                    <i class="fa fa-server"></i>
+                    <span class="title">节点列表</span>
+                </a>
+            </li>
+            <li class="{(\Helper\Utils::menuActive('user', ' opened active'))} has-sub">
+                <a href="javascript:;">
+                    <i class="fa fa-user"></i>
+                    <span class="title">账户中心</span>
+                </a>
+                <ul>
+                    <li class="{(\Helper\Utils::menuActive('info'))}">
+                        <a href="/user/info">
+                            <span class="title">个人资料</span>
+                        </a>
+                    </li>
+                    <li class="{(\Helper\Utils::menuActive('invite'))}">
+                        <a href="/user/invite">
+                            <span class="title">邀请好友</span>
+                        </a>
+                    </li>
+                    <li class="{(\Helper\Utils::menuActive('renew'))}">
+                        <a href="/user/renew">
+                            <span class="title">续费充值(卡号)</span>
+                        </a>
+                    </li>
+                    <li class="{(\Helper\Utils::menuActive('password'))}">
+                        <a href="/user/password">
+                            <span class="title">修改密码</span>
+                        </a>
+                    </li>
+                    <li class="{(\Helper\Utils::menuActive('nickname'))}">
+                        <a href="/user/nickname">
+                            <span class="title">修改昵称</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://cn.gravatar.com/" title="Gravatar 全球公认的头像">
+                            <span class="title">修改头像</span>
+                        </a>
+                    </li>
+                    <li class="{(\Helper\Utils::menuActive('method'))}">
+                        <a href="/user/method">
+                            <span class="title">自定义节点加密</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li class="{(\Helper\Utils::menuActive('order', ' opened active'))} has-sub">
+                <a href="/order">
+                    <i class="fa fa-shopping-bag"></i>
+                    <span class="title">订单中心</span>
+                </a>
+                <ul>
+                    <li class="{(\Helper\Utils::menuActive('lists'))}">
+                        <a href="/order/lists">
+                            <span class="title">订单管理</span>
+                        </a>
+                    </li>
+                    <li class="{(\Helper\Utils::menuActive('my'))}">
+                        <a href="/order/my">
+                            <span class="title">我的工单</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li class="{(\Helper\Utils::menuActive('support'))}">
+                <a href="/support">
+                    <i class="fa fa-paper-plane"></i>
+                    <span class="title">服务支持</span>
+                </a>
+            </li>
+            <li>
+                <a href="/admin">
+                    <i class="fa fa-cogs"></i>
+                    <span class="title">管理员后台</span>
+                </a>
+            </li>
+        </ul>
+
+        <ul class="nav nav-userinfo navbar-right">
+            <li class="dropdown user-profile">
+                <a href="#" data-toggle="dropdown">
+                    <img src="{(\Helper\Utils::gravatar($user->email))}" alt="user-image"
+                         class="img-circle img-inline userpic-32" width="28"/>
+                        <span>
+                            {$user->nickname}&nbsp;
+                            <i class="fa-angle-down"></i>
+                        </span>
+                </a>
+
+                <ul class="dropdown-menu user-profile-menu list-unstyled">
+                    <li>
+                        <a href="/user/info">
+                            <i class="fa-user"></i>
+                            个人资料
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/user/password">
+                            <i class="fa-pencil"></i>
+                            修改密码
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/support/help">
+                            <i class="fa-info"></i>
+                            帮助
+                        </a>
+                    </li>
+                    <li class="last">
+                        <a href="/auth/logout">
+                            <i class="fa-lock"></i>
+                            登出
+                        </a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+
+    </div>
+
+</nav>

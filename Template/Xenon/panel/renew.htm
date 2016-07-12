@@ -1,0 +1,164 @@
+<import template="/panel/_header"/>
+<div class="page-container">
+    <div class="main-content">
+        <div class="page-title">
+
+            <div class="title-env">
+                <h1 class="title">账户续费/激活</h1>
+                <p class="description">使用套餐卡 激活账户..</p>
+            </div>
+
+            <div class="breadcrumb-env">
+                <ol class="breadcrumb bc-1">
+                    <li>
+                        <a href="/member"><i class="fa-home"></i>主页</a>
+                    </li>
+                    <li>
+                        <a href="javascript:;">用户中心</a>
+                    </li>
+                    <li class="active">
+                        <strong>个人资料</strong>
+                    </li>
+                </ol>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <i class="fa fa-angle-right"></i>&nbsp;卡号充值
+                    </div>
+                    <div class="panel-body">
+                        <div class="form-group">
+                            <p>用户名：{$user->nickname}</p>
+                            <p>邮箱：{$user->email}</p>
+                            <p>套餐：<span class="label label-info">{$user->getPlan()}</span>
+                                <if condition="$user->plan == 'A'">
+                                    &nbsp;&nbsp;您为免费体验账户，流量将不会每月重置，升级到会员账户即可提升流量限额。
+                                </if>
+                            </p>
+                            <p>支付时间：{(date('Y-m-d H:i:s', $user->payTime))}</p>
+                            <p>到期时间：<span id="outtime_sp">{(date('Y-m-d H:i:s', $user->expireTime))}</span>&nbsp; <span
+                                    class="btn btn-sm btn-secondary" id="checkExTime"
+                                    style="padding: 1px;margin-bottom: 0px;"> 刷新到期时间 </span></p>
+                            <p>账户余额：{$user->money} 元
+                            <p>
+                                <a class="btn btn-info" href="javascript:;" id="updatePlan">升级账户等级</a>&nbsp;&nbsp;
+                                <a class="btn btn-info" href="javascript:;" id="buyTransfer">临时增加流量(1元/G)</a>
+                            </p>
+                        </div>
+                        <div class="form-group">
+                            <label for="actCard">套餐卡/流量卡/试用卡/余额卡激活：</label>
+                            <input class="form-control" id="actCard" value="" placeholder="请输入您的卡号">
+                        </div>
+                    </div>
+                    <div class="box-footer">
+                        <button type="button" id="submit" name="submit" class="btn btn-primary">使用并激活</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script>
+            $(function () {
+                $("#checkExTime").on('click', function () {
+                    $.ajax({
+                        type: "POST",
+                        url: "/member/expireDate.json",
+                        dataType: "json",
+                        success: function (result) {
+                            if (result.code != 200) {
+                                showToastr(result.message, 0, 5000, '系统错误');
+                                return;
+                            }
+                            showToastr(result.data.message, 0);
+                            $("#outtime_sp").html(result.data.expireTime);
+                        },
+                        error: function (jqXHR) {
+                            showToastr("发生错误：" + jqXHR.status, 0);
+                        }
+                    });
+                });
+
+                $("#submit").on('click', function () {
+                    var btn = $("#actCard");
+                    if (btn.val() == null || btn.val() == '') {
+                        showToastr('请输入卡号', 0, 3000, '错误');
+                        return;
+                    }
+
+                    $.ajax({
+                        type: "POST",
+                        url: "/card/activation.json",
+                        data: {"actCard": btn.val()},
+                        dataType: "json",
+                        success: function (result) {
+                            if (result.code != 200) {
+                                showToastr(result.message, 0, 5000, '系统错误');
+                                return;
+                            }
+                            if (result.data.error == 0) {
+
+                            }
+
+                            showToastr(result.data.message, 0);
+                        },
+                        error: function (jqXHR) {
+                            showToastr("发生错误：" + jqXHR.status, 0);
+                        }
+                    });
+                });
+
+                $("#updatePlan").on('click', function(){
+                    var btn = $(this);
+                    btn.html("请稍等");
+                    btn.attr('disabled', 'true').addClass("disabled");
+                    $.ajax({
+                        type:"GET",
+                        url:"/member/updatePlan.json",
+                        dataType:"json",
+                        success:function(result){
+                            btn.removeAttr('disabled').removeClass("disabled").html("升级账户等级");
+                            if(result.code != 200) {
+                                showToastr(result.message, 0, 3000, '系统错误');
+                                return;
+                            }
+                            showToastr(result.data.message, 0);
+                        },
+                        error:function(jqXHR){
+                            showToastr("发生错误："+jqXHR.status, 0);
+                        }
+                    });
+                });
+
+                $("#buyTransfer").on('click', function(){
+                    var btn = $(this);
+                    btn.html("请稍等");
+                    btn.attr('disabled', 'true').addClass("disabled");
+                    $.ajax({
+                        type:"GET",
+                        url:"/member/buyTransfer.json",
+                        dataType:"json",
+                        success:function(result){
+                            btn.removeAttr('disabled').removeClass("disabled").html("临时增加流量(1元/G)");
+                            if(result.hasError == true) {
+                                showToastr(result.message, 0, 3000, '系统错误');
+                                return;
+                            }
+                            if(result.data != null) {
+                                showToastr(result.data.message, 0);
+                                $("#useTransfer").text(result.data.useTransfer);
+                                $("#slaTransfer").text(result.data.slaTransfer);
+                                $("#money").text(result.data.money);
+                            }
+                        },
+                        error:function(jqXHR){
+                            showToastr("发生错误："+jqXHR.status, 0);
+                        }
+                    });
+                });
+            });
+        </script>
+        <import template="/panel/_copyright"/>
+    </div>
+</div>
+<import template="/panel/_footer"/>
