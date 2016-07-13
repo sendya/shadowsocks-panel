@@ -1,0 +1,149 @@
+<import template="/panel/_head" />
+<body class="page-body lockscreen-page">
+<div class="login-container">
+    <div class="row">
+        <div class="col-sm-7">
+            <script type="text/javascript">
+                jQuery(document).ready(function($) {
+                    setTimeout(function() {
+                        $(".fade-in-effect").addClass("in");
+                    }, 1);
+                    $("#email").on("change", function(){
+                        var reg = /\w+[@]{1}\w+[.]\w+/;
+                        if(reg.test($("#email").val())) {
+                            $("#gravatar_img").attr("src", "https://gravatar.lug.ustc.edu.cn/avatar/" + $.md5($("#email").val()) + "?s=128&r=G&d=");
+                        }
+                    });
+                    $(".user-thumb a").on("click", function(ev) {
+                        ev.preventDefault();
+                        $("#email").focus();
+                    });
+                    $(".lockcreen-form").validate({
+                        rules:{
+                            email:{
+                                required:true
+                            },
+                            code:{
+                                required:true
+                            }
+                        },
+                        messages:{
+                            email:{
+                                required:"请输入注册时的邮件地址."
+                            },
+                            code:{
+                                required:"请输出邮箱接收到的重置验证码"
+                            }
+                        },
+                        submitHandler:function(form) {
+                            show_loading_bar(70);
+                            var opts = {
+                                closeButton:true,
+                                debug:false,
+                                positionClass:"toast-top-full-width",
+                                onclick:null,
+                                showDuration:"300",
+                                hideDuration:"1000",
+                                timeOut:"5000",
+                                extendedTimeOut:"1000",
+                                showEasing:"swing",
+                                hideEasing:"linear",
+                                showMethod:"fadeIn",
+                                hideMethod:"fadeOut"
+                            };
+                            $("#resetButton").attr("disabled", "true").html("请稍等");
+                            if($("#email").attr("name") == "email") {
+                                $.ajax({
+                                    url:"/auth/forgePwd.json",
+                                    method:"POST",
+                                    timeout : 4000,
+                                    dataType:"json",
+                                    data:{
+                                        email:$("#email").val()
+                                    },
+                                    success:function(resp) {
+                                        show_loading_bar({
+                                            delay:.5,
+                                            pct:100,
+                                            finish:function() {
+                                                $("#resetButton").removeAttr("disabled").html("确定重置");
+                                                if(resp.code != 200) {
+                                                    toastr.error(resp.message, "系统错误", opts);
+                                                    return;
+                                                }
+                                                if (resp.data.error == 0) {
+
+                                                    $("#uid").val(resp.data.uid);
+                                                    $("#email").attr("name", "code").attr("placeholder", "请填写邮件验证代码").val("");
+                                                    $(".form-group h3").text("最后一步");
+                                                    $(".form-message").html("请输入邮件中收到的验证码，请暂时不要关闭本页面。");
+                                                }
+                                                toastr.success(resp.data.message, "提示", opts);
+                                                $("#email").select();
+                                            }
+                                        });
+                                    },
+                                    error: function(jqXhr) {
+                                        toastr.error("请求服务器失败。<b>可能邮件系统配置出错无法发送邮件</b>！", "提示", opts);
+                                        $("#email").select();
+                                        $("#resetButton").removeAttr("disabled").html("重试");
+                                    }
+                                });
+                            } else {
+                                $.ajax({
+                                    url:"/auth/forgePwd.json",
+                                    method:"POST",
+                                    dataType:"json",
+                                    data:{
+                                        uid:$("#uid").val(),
+                                        code:$("#email").val()
+                                    },
+                                    success:function(resp) {
+                                        show_loading_bar({
+                                            delay:.5,
+                                            pct:100,
+                                            finish:function() {
+                                                $("#resetButton").removeAttr("disabled").html("重置");
+                                                if(resp.code != 200) {
+                                                    toastr.error(resp.message, "系统错误", opts);
+                                                    return;
+                                                }
+                                                if (resp.data.error == 0) {
+                                                    setTimeout("window.location.href = '/auth/login#login';", 3e3);
+                                                }
+                                                toastr.success(resp.data.message, "提示", opts);
+                                                $("#email").select();
+                                            }
+                                        });
+                                    }
+                                });
+                            }
+                        }
+                    });
+                    $("form#lockscreen .form-group:has(.form-control):first .form-control").focus();
+                });
+            </script>
+            <form role="form" id="resetpwd" class="lockcreen-form fade-in-effect">
+                <div class="user-thumb">
+                    <a href="#">
+                        <img src="{RESOURCE}/images/user-5.png" width="120" height="120" id="gravatar_img" class="img-responsive img-circle" />
+                    </a>
+                </div>
+                <div class="form-group">
+                    <h3>找回密码</h3>
+                    <p class="form-message">如果你忘记了密码,可以在这里重置.&nbsp;<a href="/auth/login" style="color:#FFF">返回登录</a></p>
+                    <div class="input-group">
+                        <input type="hidden" id="code" name="code" class="form-control" value="" required autofocus>
+                        <input type="hidden" id="uid" name="uid" class="form-control" value="" required autofocus>
+                        <input type="text" class="form-control input-dark" name="email" id="email" placeholder="注册时填写的邮件地址" />
+                        <span class="input-group-btn">
+								<button type="submit" id="resetButton" class="btn btn-primary">重置</button>
+							</span>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+    <import template="/panel/_footer" />

@@ -451,7 +451,7 @@ EOF;
                 return $result;
             } else {
                 Template::putContext('user', User::getCurrent());
-                Template::setView('home/forgePwd');
+                Template::setView('panel/forgePwd');
             }
         }
 

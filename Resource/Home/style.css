@@ -1491,7 +1491,7 @@ a.jms-link.laptop {
 	padding: 30px 0px;
 	float: left;
 	padding-top: 0px;
-	background: url(img/bg-icon.png) no-repeat center bottom;
+	background: url(Resource/Home/img/bg-icon.png) no-repeat center bottom;
 	}
 	
 .services-header {
@@ -1608,7 +1608,7 @@ a.jms-link.laptop {
 .item .hover {
     background: none repeat scroll 0 0 rgba(255, 212, 64, 0.9);
     bottom: 0;
-    cursor: url("img/cursure.png") 40 40, crosshair;
+    cursor: url("Resource/Home/img/cursure.png") 40 40, crosshair;
     height: 87.5%;
     left: 0;
     opacity: 0;
@@ -1708,7 +1708,6 @@ a.jms-link.laptop {
 
 .bx-wrapper .bx-prev {
 	left: 10px;
-	/*background: url(img/ad_scroll_back.png) no-repeat center center;*/
 	left: 15%;
 	padding: 10px 50px;
 	border: 1px solid #333;
@@ -1716,7 +1715,6 @@ a.jms-link.laptop {
 
 .bx-wrapper .bx-next {
 	right: 10px;
-	/*background: url(img/ad_scroll_forward.png) no-repeat center center;*/
 	right: 15%;
 	padding: 10px 50px;
 	border: 1px solid #333;
@@ -1884,14 +1882,6 @@ a.jms-link.laptop {
 	height: 400%;
 	opacity: 1;
 }
-
-/*.bx-wrapper .bx-controls-direction a:hover:after .bx-prev {
-	background: url(img/ad_scroll_back-h.png) no-repeat center center;
-	}
-	
-.bx-wrapper .bx-controls-direction a:hover:after .bx-next {
-	background: url(img/ad_scroll_forward-h.png) no-repeat center center;
-	}*/
 	
 		/*  End gellary   */
 		
@@ -1931,19 +1921,19 @@ a.jms-link.laptop {
 	}
 	
 .p-img-1 {
-	background:url(img/p-img-1.png) no-repeat center center;
+	background:url(Resource/Home/img/p-img-1.png) no-repeat center center;
 	}
 	
 .p-img-2 {
-	background:url(img/p-img-2.png) no-repeat center center;
+	background:url(Resource/Home/img/p-img-2.png) no-repeat center center;
 	}
 	
 .p-img-3 {
-	background:url(img/p-img-3.png) no-repeat center center;
+	background:url(Resource/Home/img/p-img-3.png) no-repeat center center;
 	}
 	
 .p-img-4 {
-	background:url(img/p-img-4.png) no-repeat center center;
+	background:url(Resource/Home/img/p-img-4.png) no-repeat center center;
 	}
 	
 .process-box h1 {
@@ -2115,7 +2105,7 @@ ul.post-by li {
 	width: 100%;
 	height: auto;
 	padding: 20px 0px;
-	background: url(img/subscribe.jpg) no-repeat center bottom #C0392B;
+	background: url(Resource/Home/img/subscribe.jpg) no-repeat center bottom #C0392B;
 	}
 	
 .subscribe h1 {
@@ -2165,7 +2155,7 @@ ul.post-by li {
 	
 	
 .footer {
-	background: url(img/map.png) no-repeat center center #2a3448;
+	background: url(/Resource/Home/img/map.png) no-repeat center center #2a3448;
 	width: 100%;
 	height: auto;
 	padding: 80px 0px;
@@ -2777,7 +2767,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 	right: -33px;
 	width: 32px;
 	height: 32px;
-	background: transparent url('img/fancybox.png');
+	background: transparent url('Resource/Home/img/fancybox.png');
 	cursor: pointer;
 	z-index: 1103;
 	display: none;
@@ -3746,7 +3736,7 @@ ul.team-social li {
 	}
 	
 a.fb {
-	background: url(img/fb.png) no-repeat center center;
+	background: url(Resource/Home/img/fb.png) no-repeat center center;
 	width: 60px;
 	height: 60px;
 	float: left;
@@ -3758,14 +3748,14 @@ a.fb {
 	}
 	
 a:hover.fb {
-	background: url(img/fb-h.png) no-repeat center center #75c8b9;
+	background: url(Resource/Home/img/fb-h.png) no-repeat center center #75c8b9;
 	width: 60px;
 	height: 60px;
 	float: left;
 	}
 	
 a.gm {
-	background: url(img/gm.png) no-repeat center center;
+	background: url(Resource/Home/img/gm.png) no-repeat center center;
 	width: 60px;
 	height: 60px;
 	float: left;
@@ -3777,14 +3767,14 @@ a.gm {
 	}
 	
 a:hover.gm {
-	background: url(img/gm-h.png) no-repeat center center #75c8b9;
+	background: url(Resource/Home/img/gm-h.png) no-repeat center center #75c8b9;
 	width: 60px;
 	height: 60px;
 	float: left;
 	}
 	
 a.twt {
-	background: url(img/twt.png) no-repeat center center;
+	background: url(Resource/Home/img/twt.png) no-repeat center center;
 	width: 60px;
 	height: 60px;
 	float: left;
@@ -3796,7 +3786,7 @@ a.twt {
 	}
 	
 a:hover.twt {
-	background: url(img/twt-h.png) no-repeat center center #75c8b9;
+	background: url(Resource/Home/img/twt-h.png) no-repeat center center #75c8b9;
 	width: 60px;
 	height: 60px;
 	float: left;
@@ -3852,7 +3842,7 @@ a:hover.about-contact {
 	width: 100%;
 	height: auto;
 	padding: 30px 0px;
-	background: url(img/skill-bg.jpg) no-repeat center center;
+	background: url(Resource/Home/img/skill-bg.jpg) no-repeat center center;
 	}
 
 .skill h1 {
@@ -3904,7 +3894,7 @@ border-bottom-left-radius: 12px;
 	}
 	
 .skill-levels li {
-	background: url(img/skill-levels.png) no-repeat scroll 0 0 rgba(0, 0, 0, 0);
+	background: url(Resource/Home/img/skill-levels.png) no-repeat scroll 0 0 rgba(0, 0, 0, 0);
     color: #4EA696;
     font: 300 42px/60px 'Open Sans',sans-serif;
     height: 60px;

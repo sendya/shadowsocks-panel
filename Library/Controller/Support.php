@@ -32,12 +32,12 @@ class Support
 
     public function tos()
     {
-        Template::setView('home/Tos');
+        Template::setView('panel/Tos');
     }
 
     public function help()
     {
-        Template::setView('home/help');
+        Template::setView('panel/help');
     }
 
 }
