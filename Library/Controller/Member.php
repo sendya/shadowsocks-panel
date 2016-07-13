@@ -63,6 +63,7 @@ class Member
 
         // Message
         $data['globalMessage'] = Message::getGlobalMessage();
+        $data['allNode'] = Stats::countNode();
 
         Template::setContext($data);
         Template::setView('panel/member');
