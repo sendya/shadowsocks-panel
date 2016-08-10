@@ -1,9 +1,3 @@
-<script type="text/javascript">
-    function pageJSload() {
-        xenon_toggles_init();
-        xenon_init();
-    }
-</script>
 </div>
 <script src="{RESOURCE}/js/bootstrap.min.js"></script>
 <script src="{RESOURCE}/js/TweenMax.min.js"></script>
@@ -23,12 +17,8 @@
 <script src="{RESOURCE}/js/timepicker/bootstrap-timepicker.min.js"></script>
 <!-- JavaScripts initializations and stuff -->
 <script src="{RESOURCE}/js/xenon-custom.js"></script>
-<!-- 后台禁止pjax
-<script src="{RESOURCE}/js/pjax.js"></script>
--->
 <script type="text/javascript">
     function reset(isShow) {
-        pageJSload();
         if(isShow) {
             jQuery('#modal-isload').hide();
             jQuery('#modal-isbody').show();

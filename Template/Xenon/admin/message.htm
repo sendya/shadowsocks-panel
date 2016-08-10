@@ -268,7 +268,7 @@
             newHtml += '<input class="form-control autogrow" name="mailer.subject" id="field-0" /></div>';
             newHtml += '<div class="form-group no-margin"><label for="field-1" class="control-label">消息内容</label>';
             newHtml += '<textarea class="form-control autogrow" name="mailer.content" rows="15" id="field-0" placeholder="请填写消息内容，支持 HTML 标记"></textarea>';
-            newHtml += '<p><br/>支持消息内容标记：{SITE_NAME} : 站点名称,{nickname}  : 当前用户名称,{email}     : 用户电子邮件,{useTraffic}: 已用流量,{transfer}  : 总流量,{expireTime}: 到期时间</p>';
+            newHtml += '<p><br/>支持消息内容标记：\{SITE_NAME\} : 站点名称,{nickname}  : 当前用户名称,{email}     : 用户电子邮件,{useTraffic}: 已用流量,{transfer}  : 总流量,{expireTime}: 到期时间</p>';
             newHtml += '</div></div>';
             $("#form1").attr("action", "admin/mailer/postAll.json");
             $("#modal-6 .modal-body").html(newHtml);

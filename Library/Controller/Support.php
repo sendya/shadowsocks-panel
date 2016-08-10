@@ -6,6 +6,7 @@
  */
 namespace Controller;
 
+use Core\Response;
 use Core\Template;
 use Model\User;
 
@@ -37,7 +38,7 @@ class Support
 
     public function help()
     {
-        Template::setView('panel/help');
+        Response::redirect("http://www.ishadowsocks.org/");
     }
 
 }
