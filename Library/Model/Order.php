@@ -19,7 +19,7 @@ class Order extends Model
 {
 
     public $id;
-    public $userid;
+    public $userId;
     public $createTime;
     public $type; // 类型： 0 - 购买套餐 1 - 账户金额充值 2 - 购买卡号
     public $status;

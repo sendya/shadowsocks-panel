@@ -17,7 +17,7 @@ define('SITE_NAME', 'SS Cat');
  * Theme setting:
  *
  */
-define('THEME', 'Default');
+define('THEME', 'Xenon');
 
 /**
  * Resource url setting:
