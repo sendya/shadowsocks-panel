@@ -23,8 +23,8 @@ git clone https://github.com/sendya/shadowsocks-panel.git
 cd shadowsocks-panel
 
 # Download script: Stable Version
-# Go to https://github.com/sendya/shadowsocks-panel/releases, download the latest release version (current version: v1.1.90)
-wget https://github.com/sendya/shadowsocks-panel/archive/sspanel-v1.1.90.zip -O shadowsocks-panel.zip
+# Go to https://github.com/sendya/shadowsocks-panel/releases, download the latest release version (current version: v1.2.0.B)
+wget https://github.com/sendya/shadowsocks-panel/archive/sspanel-v1.2.0.B.zip -O shadowsocks-panel.zip
 # Extract to /home/wwwroot/shadowsocks-panel/
 $ unzip -o -d /home/wwwroot/shadowsocks-panel/ shadowsocks-panel.zip
 $ cd /home/wwwroot/shadowsocks-panel/
