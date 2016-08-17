@@ -10,6 +10,9 @@ if (!defined('ROOT_PATH')) {
 
 /**
  * Site Name
+ * 网站名称
+ * 模板 LOGO 若是图制，则需自行修改图片
+ * 其余所有页面展示名称皆为此配置项内容
  */
 define('SITE_NAME', 'SS Cat');
 
@@ -67,6 +70,10 @@ Core\Request::autoDetectBaseURL();
 
 /**
  * Database Connection:
+ * 请修改此处配置：
+ *  dbname 数据库名称
+ *  host   数据库连接IP地址
+ *  最后两项  root  password 替换成你的数据库 用户 与 密码
  */
 Core\Database::initialize('mysql:dbname=sspanel;host=localhost;port=3306;charset=UTF8', 'root', 'password');
 

@@ -116,6 +116,25 @@ function colorize($text, $status) {
     return chr(27) . "$out" . "$text" . chr(27) . "[0m";
 }
 
+function download_composer($url) {
+    echo 'Downloading composer...';
+    $ch = curl_init($url);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    curl_setopt($ch, CURLOPT_TIMEOUT, 60);
+    // curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+    $binary = curl_exec($ch);
+    if (curl_errno($ch)) {
+        echo colorize('FAILED!' . PHP_EOL . curl_error($ch), 'FAILURE');
+        curl_close($ch);
+        return false;
+    }
+    $fp = fopen(ROOT_PATH . 'composer.phar', 'wb');
+    fputs($fp, $binary);
+    fclose($fp);
+    curl_close($ch);
+    echo 'Done!' . PHP_EOL;
+}
+
 function print_arr($arr) {
     foreach($arr as $ret) {
         echo $ret . PHP_EOL;
@@ -125,22 +144,9 @@ function print_arr($arr) {
 switch ($argv[1]) {
     case 'install':
         if (!file_exists(ROOT_PATH . 'composer.phar')) {
-            echo 'Downloading composer...';
-            $ch = curl_init("http://getcomposer.org/composer.phar");
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-            curl_setopt($ch, CURLOPT_TIMEOUT, 60);
-            // curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-            $binary = curl_exec($ch);
-            if (curl_errno($ch)) {
-                echo colorize('FAILED!' . PHP_EOL . curl_error($ch), 'FAILURE');
-                curl_close($ch);
-                break;
+            if (download_composer("http://getcomposer.org/composer.phar") === false) {
+                download_composer("http://static.loacg.com/soft/composer.phar");
             }
-            $fp = fopen(ROOT_PATH . 'composer.phar', 'wb');
-            fputs($fp, $binary);
-            fclose($fp);
-            curl_close($ch);
-            echo 'Done!' . PHP_EOL;
         }
         exec(PHP_BINARY . ' ' . ROOT_PATH . 'composer.phar -V', $return_arr);
         print_arr($return_arr);
@@ -161,7 +167,7 @@ switch ($argv[1]) {
             echo colorize('It seems composer failed to install package', 'FAILURE') . PHP_EOL;
             break;
         }
-        echo 'Now reloading packages and config...';
+        echo 'Now reloading packages and config...'. PHP_EOL;
         $configFile = DATA_PATH . 'Config.php';
         if (!file_exists($configFile)) {
             echo 'Config Unknown... copying..' . PHP_EOL;
@@ -171,7 +177,13 @@ switch ($argv[1]) {
         }
 
         @include ROOT_PATH . 'Package/autoload.php';
-        @include DATA_PATH . 'Config.php';
+        try {
+            @include DATA_PATH . 'Config.php';
+        } catch (PDOException $e) {
+            echo colorize('Database not available! Please modify ./Data/Config.php and try again', 'WARNING') . PHP_EOL;
+            break;
+        }
+
         if (Option::getConfig('ENCRYPT_KEY') == 'Please generate key and paste here') {
             Option::setConfig('ENCRYPT_KEY', Option::createKey());
         }
