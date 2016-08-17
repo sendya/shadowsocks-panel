@@ -167,7 +167,7 @@ switch ($argv[1]) {
             echo colorize('It seems composer failed to install package', 'FAILURE') . PHP_EOL;
             break;
         }
-        echo 'Now reloading packages and config...';
+        echo 'Now reloading packages and config...'. PHP_EOL;
         $configFile = DATA_PATH . 'Config.php';
         if (!file_exists($configFile)) {
             echo 'Config Unknown... copying..' . PHP_EOL;
@@ -177,7 +177,13 @@ switch ($argv[1]) {
         }
 
         @include ROOT_PATH . 'Package/autoload.php';
-        @include DATA_PATH . 'Config.php';
+        try {
+            @include DATA_PATH . 'Config.php';
+        } catch (PDOException $e) {
+            echo colorize('Database not available! Please modify ./Data/Config.php and try again', 'WARNING') . PHP_EOL;
+            break;
+        }
+
         if (Option::getConfig('ENCRYPT_KEY') == 'Please generate key and paste here') {
             Option::setConfig('ENCRYPT_KEY', Option::createKey());
         }
