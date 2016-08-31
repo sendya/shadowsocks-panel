@@ -61,14 +61,9 @@ class Utils
     public static function gravatar($email, $s = 128, $d = 'mm', $r = 'g', $img = false, $atts = array())
     {
         $host = array(
-            '//gravatar0.ifdream.net/avatar/',
-            '//www.gravatar.com/avatar/',
-            'https://gravatar.css.network/avatar/',
-            'http://ruby-china.org/',
-            'http://gravatar.duoshuo.com/',
-            'https://gravatar.lug.ustc.edu.cn/avatar/'
+            '//cdn.v2ex.co/gravatar/'
         ); // 前三个支持https
-        $url = $host[5];
+        $url = $host[0];
         $url .= md5(strtolower(trim($email)));
         $url .= "?s=$s&d=$d&r=$r";
         if ($img) {
