@@ -11,7 +11,7 @@
                     $("#email").on("change", function(){
                         var reg = /\w+[@]{1}\w+[.]\w+/;
                         if(reg.test($("#email").val())) {
-                            $("#gravatar_img").attr("src", "https://gravatar.lug.ustc.edu.cn/avatar/" + $.md5($("#email").val()) + "?s=128&r=G&d=");
+                            $("#gravatar_img").attr("src", "//cdn.v2ex.co/gravatar/" + $.md5($("#email").val()) + "?s=128&r=G&d=");
                         }
                     });
                     $(".user-thumb a").on("click", function(ev) {
