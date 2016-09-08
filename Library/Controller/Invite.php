@@ -63,7 +63,9 @@ class Invite
         $user = User::getUserByUserId(User::getCurrent()->uid);
         $result = array('error' => 1, 'message' => '购买失败，至少需要20GB流量才能购买邀请码。');
         $transfer = Utils::GB * 10;
-        if ($user->transfer > ($transfer * 2)) {
+        // update by github.com/BorLee
+        // 1abd9e6be7bfd7e3b1e9f34acd357fa7fa29923c
+        if ($user->transfer > ($transfer * 2) && $user->transfer-$user->getUseTransfer() > $transfer) {
             $user->transfer = $user->transfer - $transfer;
             $user->invite_num = $user->invite_num + 1;
             $user->save();
