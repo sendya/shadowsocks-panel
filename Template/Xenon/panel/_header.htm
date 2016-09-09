@@ -194,12 +194,14 @@
                     <span class="title">服务支持</span>
                 </a>
             </li>
-            <li>
-                <a href="/admin/home">
-                    <i class="fa fa-cogs"></i>
-                    <span class="title">管理员后台</span>
-                </a>
-            </li>
+            <if condition="$user->isAdmin()">
+                <li>
+                    <a href="/admin/home">
+                        <i class="fa fa-cogs"></i>
+                        <span class="title">管理员后台</span>
+                    </a>
+                </li>
+            </if>
         </ul>
 
         <ul class="nav nav-userinfo navbar-right">
