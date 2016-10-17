@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<php>$code = $instance->getCode() ? $instance->getCode() : '500'</php>
+<head>
+    <meta charset="utf-8"/>
+    <title>Error - {$code} - {SITE_NAME}</title>
+    <base href="{BASE_URL}"/>
+    <meta name="Robots" content="NOINDEX, NOFOLLOW, NOARCHIVE"/>
+    <meta name="ViewPort" content="initial-scale=1, minimum-scale=1, width=device-width"/>
+    <link rel="stylesheet" href="Resource/Misc/Error.css">
+</head>
+<body>
+<p class="title">{SITE_NAME}</p>
+<div class="box">
+    <h2><i18n key="Error.Title" code="{$code}">System Error - <b>{code}</b></i18n></h2>
+    <p class="main selectable">{$instance->getMessage()}</p>
+    <p><i18n key="Error.Tips">We're now fixing this problem, sorry for the inconveniences.</i18n></p>
+    <if condition="defined('DEBUG_ENABLE') && DEBUG_ENABLE">
+        <pre>BackTrace:<br>{$instance->formatBackTrace()}</pre>
+    </if>
+</div>
+<p class="foot">Powered by KK Framework</p>
+</body>
+</html>

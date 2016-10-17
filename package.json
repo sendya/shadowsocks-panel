@@ -1,0 +1,41 @@
+{
+  "name": "kk-framework",
+  "version": "1.0.0",
+  "description": "",
+  "dependencies": {},
+  "devDependencies": {
+    "autoprefixer": "^6.3.6",
+    "browserify": "^13.0.0",
+    "cssnano": "^3.6.2",
+    "del": "^2.2.0",
+    "event-stream": "^3.3.2",
+    "gulp": "^3.9.1",
+    "gulp-if": "^2.0.0",
+    "gulp-notify": "^2.2.0",
+    "gulp-postcss": "^6.1.1",
+    "gulp-replace": "^0.5.4",
+    "gulp-streamify": "^1.0.2",
+    "gulp-uglify": "^1.5.3",
+    "gulp-util": "^3.0.7",
+    "jstify": "^0.14.0",
+    "postcss-image-inliner": "^0.3.1",
+    "postcss-import": "^8.1.2",
+    "vinyl-source-stream": "^1.1.0",
+    "watchify": "^3.7.0"
+  },
+  "scripts": {
+    "watch": "gulp watch",
+    "clean": "gulp clean",
+    "build": "gulp build"
+  },
+  "entries": {
+    "js": [
+      "Resource/Demo/test.js"
+    ],
+    "css": [
+      "Resource/Misc/Error.css"
+    ]
+  },
+  "author": "kookxiang <r18@ikk.me>",
+  "license": "ISC"
+}

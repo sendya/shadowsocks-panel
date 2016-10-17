@@ -1,0 +1,17 @@
+Program:
+  Title: A demo of {framework_name}
+
+Pages:
+  Demo:
+    Title: Welcome
+    DemoText: Welcome to use KK-Framework. El Psy Congroo.
+
+Error:
+  Title: System Error - <b>{code}</b>
+  Tips: We're now fixing this problem, sorry for the inconveniences.
+  Messages:
+    PageNotExists: The request URL is not exists.
+
+Redirect:
+  Title: System Message
+  CountDown: If you didn't redirect in {timeout} seconds, please click here.
