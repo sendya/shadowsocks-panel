@@ -8,6 +8,7 @@
 
 namespace Controller;
 
+use Core\Model;
 use Core\Template;
 use Helper\Option;
 use Model\User;
@@ -68,7 +69,7 @@ class Order
         }
 
         $order = new MOrder();
-        $order->userid = $user->uid;
+        $order->uid = $user->uid;
         $order->createTime = time();
         $order->money = $money;
         $order->plan = $plan;
@@ -77,7 +78,7 @@ class Order
         $remark = $order->type==0?"购买套餐 ": $order->type==1?"金额充值 ":"购买卡号 ";
         $remark.= $plan . ', ' . $money . '元';
         $order->remark = $remark;
-        $order->save();
+        $order->save(Model::SAVE_INSERT);
 
         Template::putContext("order_id", $order->id);
         Template::putContext('transfer', $data['custom_transfer_level'][$plan]);

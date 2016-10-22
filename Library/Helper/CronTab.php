@@ -35,6 +35,7 @@ class CronTab
             $cron->run();
             $this->setNextRun($cron->getStep());
         }
+
         return;
     }
 

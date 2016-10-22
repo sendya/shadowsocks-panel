@@ -19,7 +19,7 @@ class Order extends Model
 {
 
     public $id;
-    public $userId;
+    public $uid;
     public $createTime;
     public $type; // 类型： 0 - 购买套餐 1 - 账户金额充值 2 - 购买卡号
     public $status;
@@ -42,7 +42,7 @@ class Order extends Model
 
     public static function getByUserId($userid)
     {
-        $stm = DB::sql("SELECT * FROM `orders` WHERE `userid`=? AND status = 0");
+        $stm = DB::sql("SELECT * FROM `orders` WHERE `uid`=? AND status = 0");
         $stm->bindValue(1, $userid, DB::PARAM_INT);
         $stm->execute();
         return $stm->fetchAll(DB::FETCH_CLASS, __CLASS__);

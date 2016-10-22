@@ -7,8 +7,10 @@
 namespace Controller;
 
 use Core\Template;
+use Helper\Logger;
 use Helper\Mailer;
 use Helper\Option;
+use Helper\Payment\alipay\Alipay;
 use Helper\Utils;
 use Model\Mail;
 use Model\Node;
@@ -26,6 +28,17 @@ class Index
 
     public function test()
     {
+        $alipay = new Alipay(Option::get('alipay_conf'));
+        $alipay->run();
 
+    }
+
+
+    public function notify()
+    {
+        $log = Logger::getInstance();
+        $log->debug('ALIPAY Notify');
+        echo 'success';
+        exit();
     }
 }
