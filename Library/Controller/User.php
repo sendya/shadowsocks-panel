@@ -32,6 +32,7 @@ class User
         if(!$json || $json['verification']==null) {
             $flag= false;
         }
+        Template::putContext('enable_status', $user->enable == 1 ? '启用' : '停用');
         Template::putContext('is_verification', $flag);
         Template::putContext('user', $user);
         Template::setView("panel/info");
@@ -143,6 +144,28 @@ class User
             Template::putContext('nodeList', $nodeList);
             Template::setView("panel/change_method");
         }
+    }
+
+    /**
+     * 重新检查账户 启用/停用 状态
+     * 如果符合启用状态，则将账户调整为 启用
+     *
+     * @JSON
+     */
+    public function checkEnable()
+    {
+        $user = MUser::getCurrent();
+        if ($user->getUseTransfer() < $user->transfer && $user->expireTime > time()) {
+            $user->enable = 1;
+        } else {
+            $user->enable = 0;
+        }
+        if ($user->isAdmin()) {
+            $user->enable = 1;
+        }
+        $user->save();
+
+        return array('enable' => $user->enable, 'message' => '状态检测完毕');
     }
 
 }

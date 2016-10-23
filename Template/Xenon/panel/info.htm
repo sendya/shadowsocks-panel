@@ -42,6 +42,7 @@
                             <p>您的总流量：{(\Helper\Utils::flowAutoShow($user->transfer))}</p>
                             <p>可用流量：<span id="slaTransfer">{(\Helper\Utils::flowAutoShow($user->transfer - ($user->flow_up+$user->flow_down)))}</span></p>
                             <p>已用流量：<span id="useTransfer">{(\Helper\Utils::flowAutoShow($user->flow_up+$user->flow_down))}</span></p>
+                            <p><button class="btn btn-danger btn-sm" id="check_enable">刷新账户状态（当前：{$enable_status}）</button></p>
                             <!--
                             <p><button class="btn btn-danger btn-sm" id="deleteMe">删除我的账户</button></p>
                             -->
@@ -105,8 +106,35 @@
                         $(".main-content").fadeTo('slow', 1);
                     }
                 });
-
             });
+            $("#check_enable").on('click', function () {
+                var but = $(this);
+                but.attr("disabled", "disabled").html("确认中");
+                $.ajax({
+                    url: "/user/checkEnable.json",
+                    type: "POST",
+                    data: {},
+                    dataType: "json",
+                    success: function(result) {
+                        if(result.code != 200) {
+                            showToastr(result.message, 0, '系统错误');
+                            return;
+                        }
+                        if(result.data.enable == 1) {
+                            showToastr('账户已经是启用状态，如果您之前是停用状态，过30秒后尝试即可连接上服务器。谢谢', 0);
+                        } else {
+                            showToastr('账户已经被停用', 0);
+                        }
+                        var stat = result.data.enable == 1 ? "启用" : "停用";
+                        but.removeAttr("disabled").html("刷新账户状态（当前：" + stat +")");
+                    },
+                    error: function(Xhr) {
+                        showToastr('请求服务器失败', 0);
+                        $(".main-content").fadeTo('slow', 1);
+                    }
+                });
+
+            })
         </script>
         <import template="/panel/_copyright" />
     </div>

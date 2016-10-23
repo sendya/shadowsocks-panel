@@ -62,11 +62,12 @@ class Order
                 $money = 50;
                 break;
         }
-
+        /*
         if(count(MOrder::getByUserId($user->uid)) > 0) {
             header("Location: /order/lists");
             exit();
         }
+        */
 
         $order = new MOrder();
         $order->uid = $user->uid;
