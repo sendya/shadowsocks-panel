@@ -28,7 +28,7 @@ Package/**/*
 
 # Data folder
 Data/**/*
-!Data/Config.php
+!Data/Config.simple.php
 
 # Front-end Resources (compiled)
 Public/**/*
