@@ -11,7 +11,8 @@ namespace Controller\Admin;
 use \Core\Template;
 
 use \Model\Message as MessageModel;
-use Model\User;
+use \Model\User;
+use \Helper\Utils;
 
 /**
  * Controller: 消息管理
@@ -43,7 +44,7 @@ class Message
         if ($_POST['message_id'] != null) { // 修改
             $msg = MessageModel::getMessageById(trim($_POST['message_id']));
             if ($msg) { // 修改
-                $msg->content = $_POST['message_content'] == null ? "" : $_POST['message_content'];
+                $msg->content = $_POST['message_content'] == null ? "" : str_replace(array("\r\n", "\n", "\r"), '<br />', $_POST['message_content']);
                 $msg->pushTime = $_POST['message_pushTime'] == null ? 0 : strtotime($_POST['message_pushTime']);
                 $msg->pushUsers = $_POST['message_pushUsers'] == null ? -1 : $_POST['message_pushUsers'];
                 $msg->type = $_POST['message_type'];
@@ -54,7 +55,7 @@ class Message
             }
         } else {
             $msg = new MessageModel();
-            $msg->content = $_POST['message_content'] == null ? "" : $_POST['message_content'];
+            $msg->content = $_POST['message_content'] == null ? "" : str_replace(array("\r\n", "\n", "\r"), '<br />', $_POST['message_content']);
             $msg->pushTime = $_POST['message_pushTime'] == null ? 0 : strtotime($_POST['message_pushTime']);
             $msg->pushUsers = $_POST['message_pushUsers'] == null ? 0 : $_POST['message_pushUsers'];
             $msg->type = $_POST['message_type'];
@@ -134,6 +135,7 @@ class Message
             $rs = MessageModel::getMessageById(trim($_GET['message_id']));
             $rs->pushTime = date('Y-m-d H:i:s', $rs->pushTime);
             $rs->pushEndTime = date('Y-m-d H:i:s', $rs->pushEndTime);
+            $rs->content = Utils::br2nl($rs->content);
             if ($rs) {
                 $result = array('error' => 0, 'message' => 'success', 'modal' => $rs);
             }

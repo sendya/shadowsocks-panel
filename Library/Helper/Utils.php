@@ -326,8 +326,8 @@ class Utils
             599 => 'Network connect timeout error'
         );
         if (isset($_status[$code]) && !headers_sent()) {
-            header('HTTP/1.1 '.$code.' '.$_status[$code]);
-            header('Status:'.$code.' '.$_status[$code]); // 确保FastCGI模式下正常
+            header('HTTP/1.1 ' . $code . ' ' . $_status[$code]);
+            header('Status:' . $code . ' ' . $_status[$code]); // 确保FastCGI模式下正常
             return true;
         }
         return false;
@@ -353,7 +353,7 @@ class Utils
      */
     public static function placeholderReplace($content, $params)
     {
-        if($params['REGISTER_URL']!=null) {
+        if ($params['REGISTER_URL'] != null) {
             $url = BASE_URL . 'auth/verification?verification=' . urlencode($params['REGISTER_URL']);
             $params['REGISTER_URL'] = "<a href=\"{$url}\" target=\"_blank\" title=\"点击校验您的账户并完成注册！\">{$url}</a>";
         }
@@ -371,6 +371,17 @@ class Utils
     {
         $reflection = new ReflectionObject($class);
         return $reflection->getShortName();
+    }
+
+    /**
+     * 将html中的<br />换行符转换为文本框中的换行符
+     * @param $text
+     * @return mixed
+     */
+    public static function br2nl($text)
+    {
+        $text = preg_replace('/<br\s*?\/?>/i', chr(13), $text);
+        return preg_replace('/ /i', ' ', $text);
     }
 
     /* get & set */
