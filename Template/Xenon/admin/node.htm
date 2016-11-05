@@ -11,68 +11,68 @@
     </div>
 </div>
 <section class="content">
-            <div class="row">
-                <div class="col-xs-12">
-                    <div class="box">
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                <h3 class="panel-title"></h3>
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title"></h3>
 
-                                <div class="panel-options">
-                                    <a href="javascript:;" id="node-add"><span>+</span></a>
-                                    <a href="javascript:;" data-toggle="reload">
-                                        <i class="fa-rotate-right"></i>
-                                    </a>
-                                </div>
-                            </div>
-                            <div class="panel-body">
-                                <div class="table-responsive">
+                        <div class="panel-options">
+                            <a href="javascript:;" id="node-add"><span>+</span></a>
+                            <a href="javascript:;" data-toggle="reload">
+                                <i class="fa-rotate-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <div class="table-responsive">
 
-                                    <table cellspacing="0" class="table table-small-font table-bordered table-striped">
-                                        <thead>
-                                            <tr>
-                                                <th>ID</th>
-                                                <th>节点</th>
-                                                <th width="120px">加密</th>
-                                                <th width="310px">描述</th>
-                                                <th width="85px">类型</th>
-                                                <th width="95px">自定义加密</th>
-                                                <th width="150px">操作</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                        <if condition="count($nodes) > 0">
-                                            <loop variable="$nodes" key="$key" value="$node">
-                                                <tr id="node-{$node->id}">
-                                                    <td>#{$node->id}</td>
-                                                    <td> {$node->name}</td>
-                                                    <td> {$node->method}</td>
-                                                    <td>{$node->info}</td>
-                                                    <td><if condition="$node->type == 0">普通节点<else>Pro 节点</if></td>
-                                                    <td><if condition="$node->custom_method == 0">不支持<else>支持</if></td>
-                                                    <td>
-                                                        <a class="btn btn-info btn-sm" href="javascript:;" onclick="nodeModify({$node->id});">编辑</a>
-                                                        <a class="btn btn-danger btn-sm" href="javascript:;" onclick="nodeRemove({$node->id});">删除</a>
-                                                    </td>
-                                                </tr>
-                                            </loop>
-                                            <else>
-                                                <tr id="node-0">
-                                                    <td>#</td>
-                                                    <td colspan="5">没有节点</td>
-                                                </tr>
-                                        </if>
-                                        </tbody>
-                                    </table>
+                            <table cellspacing="0" class="table table-small-font table-bordered table-striped">
+                                <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>节点</th>
+                                    <th width="120px">加密</th>
+                                    <th width="310px">描述</th>
+                                    <th width="85px">类型</th>
+                                    <th width="95px">自定义加密</th>
+                                    <th width="150px">操作</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <if condition="count($nodes) > 0">
+                                    <loop variable="$nodes" key="$key" value="$node">
+                                        <tr id="node-{$node->id}">
+                                            <td>#{$node->id}</td>
+                                            <td> {$node->name}</td>
+                                            <td> {$node->method}</td>
+                                            <td>{$node->info}</td>
+                                            <td><if condition="$node->type == 0">普通节点<else>Pro 节点</if></td>
+                                            <td><if condition="$node->custom_method == 0">不支持<else>支持</if></td>
+                                            <td>
+                                                <a class="btn btn-info btn-sm" href="javascript:;" onclick="nodeModify({$node->id});">编辑</a>
+                                                <a class="btn btn-danger btn-sm" href="javascript:;" onclick="nodeRemove({$node->id});">删除</a>
+                                            </td>
+                                        </tr>
+                                    </loop>
+                                    <else>
+                                        <tr id="node-0">
+                                            <td>#</td>
+                                            <td colspan="5">没有节点</td>
+                                        </tr>
+                                </if>
+                                </tbody>
+                            </table>
 
-                                </div>
+                        </div>
 
-                            </div>
-                        </div><!-- /.box-body -->
-                    </div><!-- /.box -->
-                </div>
-            </div>
-        </section>
+                    </div>
+                </div><!-- /.box-body -->
+            </div><!-- /.box -->
+        </div>
+    </div>
+</section>
 </div>
 </div>
 <!-- Modal 6 (Long Modal)-->
@@ -86,115 +86,156 @@
             </div>
 
             <form role="form" id="form1" method="post" action="/admin/node/update.json" class="validate">
-            <input type="hidden" name="form_add" value="{(time())}"/>
-            <input type="hidden" name="node.id" id="node_id" value=""/>
-            <div class="modal-body">
-                <div id="modal-isload">Content is loading...</div>
-                <div id="modal-isbody" style="display: none;">
+                <input type="hidden" name="form_add" value="{(time())}"/>
+                <input type="hidden" name="node.id" id="node_id" value=""/>
+                <div class="modal-body">
+                    <div id="modal-isload">Content is loading...</div>
+                    <div id="modal-isbody" style="display: none;">
 
-                    <div class="row">
-                        <div class="col-md-6">
+                        <div class="row">
+                            <div class="col-md-6">
 
-                            <div class="form-group">
-                                <label for="field-1" class="control-label">节点名称</label>
+                                <div class="form-group">
+                                    <label for="field-1" class="control-label">节点名称</label>
 
-                                <input type="text" class="form-control" name="node.name" id="field-1" value="" data-validate="required" data-message-required="节点名称必须填写.">
+                                    <input type="text" class="form-control" name="node.name" id="field-1" value="" data-validate="required" data-message-required="节点名称必须填写.">
+                                </div>
+
                             </div>
 
+                            <div class="col-md-6">
+
+                                <div class="form-group">
+                                    <label for="field-2" class="control-label">节点地址</label>
+
+                                    <input type="text" class="form-control" name="node.server" id="field-2" placeholder="127.0.0.1" data-validate="required" data-message-required="服务器地址必须填写.">
+                                </div>
+
+                            </div>
                         </div>
 
-                        <div class="col-md-6">
+                        <div class="row">
+                            <div class="col-md-6">
 
-                            <div class="form-group">
-                                <label for="field-2" class="control-label">节点地址</label>
+                                <div class="form-group">
+                                    <label for="field-3" class="control-label">加密方式</label>
 
-                                <input type="text" class="form-control" name="node.server" id="field-2" placeholder="127.0.0.1" data-validate="required" data-message-required="服务器地址必须填写.">
+                                    <input type="text" class="form-control" name="node.method" id="field-3" placeholder="aes-128-cfb" data-validate="required" data-message-required="加密方式必须填写.">
+                                </div>
+
                             </div>
 
+                            <div class="col-md-6">
+
+                                <div class="form-group">
+                                    <label for="field-4" class="control-label">节点分类(0 普通 1 vip)</label>
+
+                                    <select name="node.type" id="field-4" class="form-control">
+                                        <option value="0">普通节点</option>
+                                        <option value="1">Pro 节点</option>
+                                    </select>
+                                </div>
+
+                            </div>
                         </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="field-5" class="control-label">节点状态</label>
+                                    <input type="text" class="form-control" name="node.status" id="field-5" placeholder="可用 / 不可用" data-validate="required" data-message-required="节点状态必须填写.">
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="field-6" class="control-label">排序</label>
+                                    <input type="number" class="form-control" name="node.order" id="field-6" value="0" placeholder="0" data-validate="required" data-message-required="必须填写.">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="custom_method" class="control-label">自定义加密</label>
+                                    <select name="node.custom_method" id="custom_method" class="form-control">
+                                        <option value="0">不支持</option>
+                                        <option value="1">支持</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="custom_laji" class="control-label">(???)SSR支持</label>
+                                    <select name="node.custom_laji" id="custom_laji" class="form-control">
+                                        <option value="0">不支持</option>
+                                        <option value="1">支持</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row hidden" id="laji_support">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="custom_laji1" class="control-label">(SSR?)混淆插件</label>
+                                    <select name="node.custom_laji1" id="custom_laji1" class="form-control">
+                                        <option value="plain">plain</option>
+                                        <option value="http_simple">http_simple</option>
+                                        <option value="http_post">http_post</option>
+                                        <option value="random_head">random_head</option>
+                                        <option value="tls1.2_ticket_auth">tls1.2_ticket_auth</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="custom_laji2" class="control-label">(SSR?)自定义协议插件</label>
+                                    <select name="node.custom_laji2" id="custom_laji2" class="form-control">
+                                        <option value="origin">origin</option>
+                                        <option value="verify_simple">verify_simple</option>
+                                        <option value="verify_deflate">verify_deflate</option>
+                                        <option value="verify_sha1">verify_sha1</option>
+                                        <option value="auth_simple">auth_simple</option>
+                                        <option value="auth_sha1">auth_sha1</option>
+                                        <option value="auth_sha1_v2">auth_sha1_v2</option>
+                                        <option value="auth_sha1_v4">auth_sha1_v4</option>
+                                        <option value="auth_aes128_md5">auth_aes128_md5</option>
+                                        <option value="auth_aes128_sha1">auth_aes128_sha1</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="field-7" class="control-label">备注信息</label>
+                                    <textarea class="form-control autogrow" name="node.info" id="field-7" placeholder="Write something about server info" ></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    * [自定义加密] 需要服务端支持自定义加密
+                                    <br/>
+                                    目前支持的服务端版本: <a href="https://github.com/Acris/shadowsocks-rm/tree/manyuser" target="_blank">shadowsocks-rm manyuser</a>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
 
-                    <div class="row">
-                        <div class="col-md-6">
 
-                            <div class="form-group">
-                                <label for="field-3" class="control-label">加密方式</label>
-
-                                <input type="text" class="form-control" name="node.method" id="field-3" placeholder="aes-128-cfb" data-validate="required" data-message-required="加密方式必须填写.">
-                            </div>
-
-                        </div>
-
-                        <div class="col-md-6">
-
-                            <div class="form-group">
-                                <label for="field-4" class="control-label">节点分类(0 普通 1 vip)</label>
-
-                                <select name="node.type" id="field-4" class="form-control">
-                                    <option value="0">普通节点</option>
-                                    <option value="1">Pro 节点</option>
-                                </select>
-                            </div>
-
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="field-5" class="control-label">节点状态</label>
-                                <input type="text" class="form-control" name="node.status" id="field-5" placeholder="可用 / 不可用" data-validate="required" data-message-required="节点状态必须填写.">
-                            </div>
-                        </div>
-
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="field-6" class="control-label">排序</label>
-                                <input type="number" class="form-control" name="node.order" id="field-6" value="0" placeholder="0" data-validate="required" data-message-required="必须填写.">
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="custom_method" class="control-label">自定义加密</label>
-                                <select name="node.custom_method" id="custom_method" class="form-control">
-                                    <option value="0">不支持</option>
-                                    <option value="1">支持</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label for="field-7" class="control-label">备注信息</label>
-                                <textarea class="form-control autogrow" name="node.info" id="field-7" placeholder="Write something about server info" ></textarea>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                * [自定义加密] 需要服务端支持自定义加密
-                                <br/>
-                                目前支持的服务端版本: <a href="https://github.com/Acris/shadowsocks-rm/tree/manyuser" target="_blank">shadowsocks-rm manyuser</a>
-                            </div>
-                        </div>
-                    </div>
 
                 </div>
-
-
-
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
-                <button type="submit" class="btn btn-success">立即保存</button>
-            </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+                    <button type="submit" class="btn btn-success">立即保存</button>
+                </div>
             </form>
         </div>
 
@@ -203,6 +244,8 @@
 <script type="text/javascript">
     var modal_default_body = jQuery('#modal-6 .modal-body').html();
     jQuery(document).ready(function($) {
+
+
 
         $("form#form1").validate({
             rules: {
@@ -278,6 +321,7 @@
             $("input[name='node.order']").val('0');
             $("input[name='node.custom_method']").val('0');
             $('#modal-6 .modal-title').html('新增节点');
+            bind_laji();
             $('#modal-6').modal('show', {backdrop: 'static'});
         });
     });
@@ -327,6 +371,7 @@
                     $("input[name='node.order']").val(node.order);
                     $("select[name='node.custom_method']").val(node.custom_method);
                     $('#modal-6 .modal-title').html('修改节点');
+                    bind_laji();
                     reset(true);
                 } else {
                     $('#modal-6').modal('hide');
@@ -337,6 +382,16 @@
             }
         });
         $('#modal-6').modal('show', {backdrop: 'static'});
+    }
+
+    function bind_laji() {
+        $("#custom_laji").unbind().on('change', function() {
+            if ($("#custom_laji option:selected").val() == '1') {
+                $("#laji_support").removeClass('hidden');
+            } else {
+                $("#laji_support").addClass('hidden');
+            }
+        });
     }
     function changeTable(data) {
         var tid = $("tr#node-" + data.id).html();
