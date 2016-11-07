@@ -158,7 +158,7 @@
                                         $('#email').select();
                                     }
                                 } else {
-                                    toastr.error("请求服务器失败，请稍后重试", "无效登录!", opts);
+                                    toastr.error("请求服务器失败，请稍后重试<br /> 错误信息：" + result.message, "无效登录!", opts);
                                     $('#email').select();
                                 }
                             }
@@ -255,7 +255,7 @@
                                         $('#email').select();
                                     }
                                 }  else {
-                                    toastr.error("请求服务器失败，请稍后重试", "系统错误!", opts);
+                                    toastr.error("请求服务器失败，请稍后重试。<br /> 错误信息：" + result.message, "系统错误!", opts);
                                     $('#email').select();
                                 }
                             }

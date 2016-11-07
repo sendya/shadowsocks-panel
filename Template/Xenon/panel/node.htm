@@ -28,7 +28,7 @@
                             </div>
                         </div>
                         <div class="panel-body">
-                            <button class="btn btn-secondary" style="user-select: all">{$node->server}</button>
+                            <span class="btn btn-secondary" style="user-select: all">{$node->server}</span>
                             <button class="btn btn-orange">{$node->status}</button>
                             <if condition="$node->custom_method && $user->method">
                                 <button class="btn btn-turquoise">{$user->method}</button>
@@ -60,7 +60,7 @@
                                 </div>
                             </div>
                             <div class="panel-body">
-                                <button class="btn btn-secondary" style="user-select: all">{$node->server}</button>
+                                <span class="btn btn-secondary" style="user-select: all">{$node->server}</span>
                                 <button class="btn btn-orange">{$node->status}</button>
                                 <if condition="$node->custom_method && $user->method">
                                     <button class="btn btn-turquoise">{$user->method}</button>
