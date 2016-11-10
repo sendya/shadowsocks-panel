@@ -101,6 +101,7 @@ class Mailer
                 'useTraffic' => Utils::flowAutoShow($user->flow_up + $user->flow_down),
                 'transfer' => Utils::flowAutoShow($user->transfer),
                 'expireTime' => date('Y-m-d H:i:s', $user->expireTime),
+                'avatar' => true
             ];
             $mail->subject = $subject;
             $mail->content = Utils::placeholderReplace($content, $params);
