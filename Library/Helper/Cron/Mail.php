@@ -30,6 +30,8 @@ class Mail implements ICron
         if (count($mailQueue) >0) {
             foreach ($mailQueue as $mail) {
                 $mail->delete();
+                $mail->content = htmlspecialchars_decode($mail->content);
+                Logger::getInstance()->info('send mail to ' . $mail->to);
                 $mailer->send($mail);
             }
         } else {
