@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<!--
+    No loli no life.
+    Author: Sendya <18x@loacg.com>
+-->
+<html lang="zh-cmn-Hans">
+<head>
+    <meta charset="utf-8">
+    <base href="{BASE_URL}">
+    <title>{SITE_NAME} - リバティ</title>
+    <link rel="shortcut icon" type="image/ico" href="/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="HandheldFriendly" content="true">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="description" content="SS Cat Server - Sendya" />
+    <link rel="stylesheet" href="/Resource/Home/index.css">
+</head>
+<body>
+<div class="main">
+    <h1>リバティ</h1>
+    <p><span>This is the {SITE_NAME} of the server's home page</span></p>
+    <p class="flow"><a href="javascript:;" onClick="location.href='{BASE_URL}auth/login'">link Start!</a></p>
+    <img id="rgImage" src="" style="display: none"/>
+</div>
+<div class="console"><a href="javascript:;" id="aconsole">OFF BGM</a></div>
+<div id="flow">Tips:键盘方向可以调整声音</div>
+<audio src="/Resource/Home/2924700931132787.mp3" id="bgm" autoplay="autoplay" style="display:none;"></audio>
+<div class="footer">Powered by <a href="https://www.loacg.com/" target="_blank">Sendya</a></div>
+<script src="/Resource/js/jquery.min.js"></script>
+<script src="/Resource/Home/index.js"></script>
+<script type="text/javascript">
+    setInterval(function() {
+        $("#flow").css("margin-bottom") == "-20px" ? $("#flow").css("margin-bottom", "0px") : $("#flow").css("margin-bottom", "-20px");
+    }, 1500);
+
+    var bgm = $("#bgm")[0];
+    bgm.volume = .1;
+    var BASEDIR = "/Resource/Home/images/", IMGNUM = 20;
+    var imgs = [], rds = Math.random(), rgImg;
+    for (var i = 1; i < IMGNUM; i++) {
+        imgs.push({
+            src:BASEDIR + i + ".jpg",
+            fade:1e3
+        });
+    }
+    $("body").vegas({
+        delay:6e3,
+        shuffle:true,
+        transitionDuration:2e3,
+        slides:imgs,
+        walk: function (index, slideSettings) {
+        }
+    });
+    $("#aconsole").click(function() {
+        if (!bgm.paused) {
+            bgm.pause();
+            $(this).html("ON BGM");
+        } else {
+            bgm.play();
+            $(this).html("OFF BGM");
+        }
+    });
+    $(document).keydown(function(event) {
+        if (event.keyCode == 37) {
+            if (bgm.volume > 0) bgm.volume = bgm.volume - .1;
+        } else if (event.keyCode == 39) {
+            if (bgm.volume < 1) bgm.volume = bgm.volume + .1;
+        }
+    });
+</script>
+</body>
+</html>

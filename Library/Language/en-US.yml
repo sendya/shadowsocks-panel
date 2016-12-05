@@ -6,6 +6,39 @@ Pages:
     Title: Welcome
     DemoText: Welcome to use KK-Framework. El Psy Congroo.
 
+Auth:
+  Login:
+    Title: Login
+    AppBrand: Login
+    PlaceholderUser: Username
+    PlaceholderPwd: Password
+    Message: Loggin in...
+    Button:
+      Login: Sign IN
+      Register: Sign UP
+  Controller:
+    Login:
+      Success: Login success
+      Error: Login failed
+      Failed: User or Password failed
+      Unknown: Unknown error
+  Register:
+    Title: Create a new User
+    AppBrand: Sign UP
+    Suggestion: Create an account for free.
+    TitlePaperPlane: Fast web experience
+    TitleCubes: Simple configuration program
+    TitleUsd: Affordable
+    Message: Register in..
+    Nickname: Nickname
+    Email: E-mail
+    Password: Password
+    ConfirmPassword: Confirm Password
+    InviteCode: Invite Code
+    Button:
+      Login: Sign IN
+      Register: Sign UP
+
 Error:
   Title: System Error - <b>{code}</b>
   Tips: We're now fixing this problem, sorry for the inconveniences.

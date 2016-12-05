@@ -9,6 +9,9 @@
 namespace Controller;
 
 
+use Core\I18N;
+use Core\Template;
+
 class Auth
 {
     /**
@@ -16,7 +19,7 @@ class Auth
      */
     public function login()
     {
-
+        Template::setView("Panel/login");
     }
 
     /**
@@ -24,16 +27,22 @@ class Auth
      */
     public function register()
     {
-
+        Template::setView("Panel/register");
     }
 
     /**
      * @JSON
-     * @Route /auth/login.json
+     * @Route /auth/doLogin.json
      */
     public function doLogin()
     {
-
+        $username = $_POST['username'];
+        $password = $_POST['password'];
+        sleep(1);
+        if ($username != null && $password != null) {
+            return array("hasError" => false, "message" => I18N::parse("Auth.Controller.Login.Success"));
+        }
+        return array("hasError" => true, "message" => I18N::parse("Auth.Controller.Login.Failed"));
     }
 
     /**

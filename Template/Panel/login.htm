@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="HandheldFriendly" content="true">
+    <base href="{BASE_URL}">
+    <title>{SITE_NAME} - <i18n key="Auth.Login.Title"/></title>
+
+    <link rel="stylesheet" type="text/css" href="/Resource/Panel/css/vendor.css">
+    <link rel="stylesheet" type="text/css" href="/Resource/Panel/css/flat-admin.css">
+    <!-- Theme -->
+    <link rel="stylesheet" type="text/css" href="/Resource/Panel/css/theme/blue-sky.css">
+    <link rel="stylesheet" type="text/css" href="/Resource/Panel/css/theme/blue.css">
+    <link rel="stylesheet" type="text/css" href="/Resource/Panel/css/theme/red.css">
+    <link rel="stylesheet" type="text/css" href="/Resource/Panel/css/theme/yellow.css">
+    <script type="text/javascript" src="/Resource/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/Resource/js/vue.js"></script>
+</head>
+<body>
+<div class="app app-default">
+
+    <div class="app-container app-login" id="app" v-bind:class="{  __loading: doLogin }">
+        <div class="flex-center">
+            <div class="app-header"></div>
+            <div class="app-body">
+                <div class="loader-container text-center">
+                    <div class="icon">
+                        <div class="sk-folding-cube">
+                            <div class="sk-cube1 sk-cube"></div>
+                            <div class="sk-cube2 sk-cube"></div>
+                            <div class="sk-cube4 sk-cube"></div>
+                            <div class="sk-cube3 sk-cube"></div>
+                        </div>
+                    </div>
+                    <div class="title">{{ message }}</div>
+                </div>
+                <div class="app-block">
+                    <div class="app-form">
+                        <form action="#" method="post" onsubmit="return false;">
+                            <div class="form-header">
+                                <div class="app-brand"><span class="highlight">{SITE_NAME}</span> <i18n key="Auth.Login.AppBrand"/></div>
+                            </div>
+                            <div class="input-group">
+                                <span class="input-group-addon" id="basic-addon1"><i class="fa fa-user" aria-hidden="true"></i></span>
+                                <input type="text" class="form-control" placeholder="<i18n key="Auth.Login.PlaceholderUser"/>" aria-describedby="basic-addon1" v-model="username">
+                            </div>
+                            <div class="input-group">
+                                <span class="input-group-addon" id="basic-addon2"><i class="fa fa-key" aria-hidden="true"></i></span>
+                                <input type="password" class="form-control" placeholder="<i18n key="Auth.Login.PlaceholderPwd"/>" aria-describedby="basic-addon2" v-model="password">
+                            </div>
+                            <div class="text-center">
+                                <input type="button" class="btn btn-success btn-submit" value="<i18n key="Auth.Login.Button.Login"/>"  v-on:click="login">
+                            </div>
+
+                            <div class="form-line">
+                                <div class="title">OR</div>
+                            </div>
+                            <div class="form-footer">
+                                <button type="button" class="btn btn-primary" v-on:click="register">
+                                    <div class="info">
+                                        <i class="icon fa fa-user-plus" aria-hidden="true"></i>
+                                        <span class="title"><i18n key="Auth.Login.Button.Register"/></span>
+                                    </div>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="app-footer">
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    var login = new Vue({
+        el: '#app',
+        data: {
+            username: "",
+            password: "",
+            message: "<i18n key="Auth.Login.Message"/>",
+            doLogin: false
+        },
+        methods: {
+            login: function (event) {
+                var that = this;
+                $.ajax({
+                    url: "/auth/doLogin.json",
+                    type: "post",
+                    data: {username: that.username, password: that.password},
+                    dataType: "json",
+                    beforeSend: function () {
+                        that.doLogin = true;
+                    },
+                    complete: function () {
+
+                    },
+                    success: function (result) {
+                        that.message = result.data.message;
+                        if (!result.data.hasError) {
+                            setTimeout(function(){
+                                window.location.href = "/member";
+                            }, 1000);
+                        } else {
+                            that.doLogin = false;
+                        }
+                    },
+                    error: function () {
+
+                    }
+                });
+            },
+            register: function () {
+                window.location.href = "/auth/register";
+            }
+        }
+    });
+</script>
+</body>
+</html>

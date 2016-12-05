@@ -1,0 +1,50 @@
+Program:
+  Title: A demo of {framework_name}
+
+Pages:
+  Demo:
+    Title: 欢迎
+    DemoText: 欢迎使用 KK-Framework.
+
+Auth:
+  Login:
+    Title: 登陆
+    AppBrand: 登陆
+    PlaceholderUser: 用户名
+    PlaceholderPwd: 密码
+    Message: 登陆中...
+    Button:
+      Login: 登陆
+      Register: 注册新用户
+  Controller:
+    Login:
+      Success: 登陆成功
+      Error: 登陆失败
+      Failed: 账户或密码错误
+      Unknown: 未知错误
+  Register:
+    Title: 创建新用户
+    AppBrand: 注册
+    Suggestion: 免费创建用户.
+    TitlePaperPlane: 快速的网络体验
+    TitleCubes: 简单的配置程式
+    TitleUsd: 价格实惠
+    Message: 注册中..
+    Nickname: 昵称
+    Email: 电子邮件
+    Password: 密码
+    InviteCode: 邀请码
+    ConfirmPassword: 确认密码
+    Button:
+      Login: 登陆
+      Register: 立即注册
+
+Error:
+  Title: System Error - <b>{code}</b>
+  Tips: We're now fixing this problem, sorry for the inconveniences.
+  Messages:
+    PageNotExists: The request URL is not exists.
+
+Redirect:
+  Title: System Message
+  CountDown: If you didn't redirect in {timeout} seconds, please click here.

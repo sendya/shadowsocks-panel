@@ -70,8 +70,6 @@ switch ($argv[1]) {
             echo colorize('Database not available! Please modify ./Data/Config.php and try again', 'WARNING') . PHP_EOL;
             break;
         }
-
-
         break;
     case 'update':
 
