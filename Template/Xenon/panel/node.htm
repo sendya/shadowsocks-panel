@@ -43,7 +43,7 @@
             </loop>
             <!-- /.pro-box-begin -->
             <loop variable="$nodeVip" key="$key" value="$node">
-                <if condition="$user->plan == 'VIP' || $user->plan == 'SVIP' ">
+                <if condition="$user->enable == 1 && ($user->plan == 'VIP' || $user->plan == 'SVIP')">
                     <div class="col-sm-6">
                         <div class="panel panel-default">
                             <div class="panel-heading">
