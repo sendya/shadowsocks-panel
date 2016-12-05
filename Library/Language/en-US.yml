@@ -15,3 +15,19 @@ Error:
 Redirect:
   Title: System Message
   CountDown: If you didn't redirect in {timeout} seconds, please click here.
+
+# install i18n
+Install:
+  Function: Please run command php -d disable_functions='' index.php install
+  Composer:
+    Downloading: Downloading...
+    Failed: Failed to download composer binary! Retry the installation or download manually "composer"
+    Install: Now installing dependencies...
+    InstallFailed: It seems composer failed to install package, Please retry install
+  Config:
+    Load: Now reloading packages and config...
+    Unknown: Config Unknown... copying..
+    Modify: Please modify ./Data/Config.php and try again
+  Database:
+    NotAvailable: Database not available! Please modify ./Data/Config.php and try again
+
