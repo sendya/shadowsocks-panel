@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:v-bind="http://www.w3.org/1999/xhtml" xmlns:v-on="http://www.w3.org/1999/xhtml">
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="HandheldFriendly" content="true">
   <base href="{BASE_URL}">
-  <title>{SITE_NAME} - <i18n key="Auth.Register.Title"/></title>
+  <title>{SITE_NAME} - #i18n(Auth.Register.Title)</title>
 
   <link rel="stylesheet" type="text/css" href="/Resource/Panel/css/vendor.css">
   <link rel="stylesheet" type="text/css" href="/Resource/Panel/css/flat-admin.css">
@@ -69,30 +69,30 @@
                   <div class="input-group has-error">
                     <span class="input-group-addon" id="basic-addon1">
                       <i class="fa fa-paper-plane" aria-hidden="true"></i></span>
-                    <input type="text" class="form-control" placeholder="<i18n key="Auth.Register.Nickname"/>" aria-describedby="basic-addon1" v-model="nickname">
+                    <input type="text" class="form-control" placeholder="#i18n(Auth.Register.Nickname)" aria-describedby="basic-addon1" v-model="nickname">
                   </div>
                   <div class="input-group">
                     <span class="input-group-addon" id="basic-addon2">
                       <i class="fa fa-envelope" aria-hidden="true"></i></span>
-                    <input type="text" class="form-control" placeholder="<i18n key="Auth.Register.Email"/>" aria-describedby="basic-addon2" v-model="email">
+                    <input type="text" class="form-control" placeholder="#i18n(Auth.Register.Email)" aria-describedby="basic-addon2" v-model="email">
                   </div>
                   <div class="input-group">
                     <span class="input-group-addon" id="basic-addon3">
                       <i class="fa fa-key" aria-hidden="true"></i></span>
-                    <input type="text" class="form-control" placeholder="<i18n key="Auth.Register.Password"/>" aria-describedby="basic-addon3" v-model="password">
+                    <input type="text" class="form-control" placeholder="#i18n(Auth.Register.Password)" aria-describedby="basic-addon3" v-model="password">
                   </div>
                   <div class="input-group">
                     <span class="input-group-addon" id="basic-addon4">
                       <i class="fa fa-check" aria-hidden="true"></i></span>
-                    <input type="text" class="form-control" placeholder="<i18n key="Auth.Register.ConfirmPassword"/>" aria-describedby="basic-addon4" v-model="confirmPassword">
+                    <input type="text" class="form-control" placeholder="#i18n(Auth.Register.ConfirmPassword)" aria-describedby="basic-addon4" v-model="confirmPassword">
                   </div>
                   <div class="input-group">
                       <span class="input-group-addon" id="basic-addon5">
                         <i class="fa fa-heart" aria-hidden="true"></i></span>
-                    <input type="text" class="form-control" placeholder="<i18n key="Auth.Register.InviteCode"/>" aria-describedby="basic-addon5" v-model="inviteCode">
+                    <input type="text" class="form-control" placeholder="#i18n(Auth.Register.InviteCode)" aria-describedby="basic-addon5" v-model="inviteCode">
                   </div>
                   <div class="text-center">
-                      <input type="button" class="btn btn-success btn-submit" value="<i18n key="Auth.Register.Button.Register"/>" v-on:click="register">
+                      <input type="button" class="btn btn-success btn-submit" value="#i18n(Auth.Register.Button.Register)" v-on:click="register">
                   </div>
               </form>
               <div class="form-line">
@@ -123,7 +123,8 @@ var register = new Vue({
         password: "",
         confirmPassword: "",
         inviteCode: "",
-        message: "<i18n key="Auth.Register.Message"/>",
+        message: "#i18n(Auth.Register.Message)",
+        oldMessage: "#i18n(Auth.Register.Message)",
         doRegister: false
     },
     methods: {
@@ -138,6 +139,7 @@ var register = new Vue({
                 data: {nickname: that.nickname, email: that.email, password: that.confirmPassword, inviteCode: that.inviteCode},
                 dataType: "json",
                 beforeSend: function () {
+                    that.message = that.oldMessage;
                     that.doRegister = true;
                 },
                 complete: function () {

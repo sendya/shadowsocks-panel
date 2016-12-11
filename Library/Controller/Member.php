@@ -9,6 +9,8 @@
 namespace Controller;
 
 
+use Core\Template;
+
 class Member
 {
     /**
@@ -17,7 +19,7 @@ class Member
      */
     public function home()
     {
-
+        Template::setView("Panel/member");
     }
 
 }

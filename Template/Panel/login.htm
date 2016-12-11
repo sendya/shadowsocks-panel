@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="HandheldFriendly" content="true">
     <base href="{BASE_URL}">
-    <title>{SITE_NAME} - <i18n key="Auth.Login.Title"/></title>
+    <title>{SITE_NAME} - #i18n(Auth.Login.Title)</title>
 
     <link rel="stylesheet" type="text/css" href="/Resource/Panel/css/vendor.css">
     <link rel="stylesheet" type="text/css" href="/Resource/Panel/css/flat-admin.css">
@@ -44,14 +44,14 @@
                             </div>
                             <div class="input-group">
                                 <span class="input-group-addon" id="basic-addon1"><i class="fa fa-user" aria-hidden="true"></i></span>
-                                <input type="text" class="form-control" placeholder="<i18n key="Auth.Login.PlaceholderUser"/>" aria-describedby="basic-addon1" v-model="username">
+                                <input type="text" class="form-control" placeholder="#i18n(Auth.Login.PlaceholderUser)" aria-describedby="basic-addon1" v-model="username">
                             </div>
                             <div class="input-group">
                                 <span class="input-group-addon" id="basic-addon2"><i class="fa fa-key" aria-hidden="true"></i></span>
-                                <input type="password" class="form-control" placeholder="<i18n key="Auth.Login.PlaceholderPwd"/>" aria-describedby="basic-addon2" v-model="password">
+                                <input type="password" class="form-control" placeholder="#i18n(Auth.Login.PlaceholderPwd)" aria-describedby="basic-addon2" v-model="password">
                             </div>
                             <div class="text-center">
-                                <input type="button" class="btn btn-success btn-submit" value="<i18n key="Auth.Login.Button.Login"/>"  v-on:click="login">
+                                <input type="button" class="btn btn-success btn-submit" value="#i18n(Auth.Login.Button.Login)"  v-on:click="login">
                             </div>
 
                             <div class="form-line">
@@ -82,7 +82,8 @@
         data: {
             username: "",
             password: "",
-            message: "<i18n key="Auth.Login.Message"/>",
+            message: "#i18n(Auth.Login.Message)",
+            oldMessage: "#i18n(Auth.Login.Message)",
             doLogin: false
         },
         methods: {
@@ -94,6 +95,7 @@
                     data: {username: that.username, password: that.password},
                     dataType: "json",
                     beforeSend: function () {
+                        that.message = that.oldMessage;
                         that.doLogin = true;
                     },
                     complete: function () {
