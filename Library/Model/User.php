@@ -210,6 +210,19 @@ class User extends Model
         }
     }
 
+    /**
+     * update user enable status
+     */
+    public function updateUserStatus()
+    {
+        // check user transfer and expireTime
+        if ($this->getUseTransfer() < $this->transfer && $this->expireTime < time()) {
+            // sett enable = 1
+            $this->enable = 1;
+            $this->save();
+        }
+    }
+
     public function getPlan()
     {
         return Utils::planAutoShow($this->plan);

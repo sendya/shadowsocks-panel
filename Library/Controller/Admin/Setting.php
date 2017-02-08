@@ -21,10 +21,15 @@ use Model\User;
 class Setting
 {
 
+    public function index()
+    {
+        $this->system();
+    }
+
     /**
      * 系统设置 页面
      */
-    public function index()
+    public function system()
     {
         $data['user'] = User::getCurrent();
         $data['custom_plan_name'] = json_decode(Option::get('custom_plan_name'), true);
@@ -42,7 +47,7 @@ class Setting
     /**
      * 详细参数 页面
      */
-    public function system()
+    public function information()
     {
         $data['user'] = User::getCurrent();
         $data['options'] = Option::getOptions();
