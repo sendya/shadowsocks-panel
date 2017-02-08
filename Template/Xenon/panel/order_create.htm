@@ -19,6 +19,9 @@
                     <div class="panel-body">
                         <div class="row">
                             <div class="col-sm-4">
+                                <form action="${payment_url}" method="post" name="apply_pay">
+
+                                </form>
                                 <div class="form-group">
                                     <div class="xe-widget xe-progress-counter ">
 
@@ -80,4 +83,12 @@
         <import template="/panel/_copyright" />
     </div>
 </div>
+<script type="text/javascript">
+    // btn-buy
+    jQuery(document).ready(function($) {
+        $("btn-buy").off().on('click', function () {
+
+        });
+    });
+</script>
 <import template="/panel/_footer" />

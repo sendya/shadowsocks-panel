@@ -21,6 +21,9 @@
                     <div class="panel-heading">
                         <h3 class="panel-title">套餐自定义</h3>
                         <div class="panel-options">
+                            <a href="javascript:;" id="setting-add" data-form-id="setting-form">
+                                <i class="fa fa-plus"></i>
+                            </a>
                             <a href="javascript:;" id="setting-save" data-form-id="setting-form">
                                 <i class="fa fa-save"></i>
                             </a>
@@ -185,6 +188,19 @@
 
                 }
             });
+        });
+
+        $("#setting-add").off().on('click', function () {
+            var formName = $(this).data("form-id");
+            var tbody = $("form#"+ formName + " table tbody");
+            var tr = tbody.find("tr");
+            var trNum = tr.length;
+
+            var htmlStr = '<tr id="setting-'+trNum+'">';
+                htmlStr += '<td><input class="form-control" name="setting-name" value=""/></td>';
+                htmlStr += '<td><input class="form-control" name="setting-k" value=""/></td></tr>';
+
+            tbody.append(htmlStr);
         });
     });
 </script>

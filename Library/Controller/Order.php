@@ -10,6 +10,7 @@ namespace Controller;
 
 use Core\Model;
 use Core\Template;
+use Helper\Logger;
 use Helper\Option;
 use Model\User;
 use Model\Order as MOrder;
@@ -62,12 +63,12 @@ class Order
                 $money = 50;
                 break;
         }
-        /*
-        if(count(MOrder::getByUserId($user->uid)) > 0) {
+
+        if(count(MOrder::getByUserId($user->uid)) > 3) {
             header("Location: /order/lists");
             exit();
         }
-        */
+
 
         $order = new MOrder();
         $order->uid = $user->uid;
@@ -113,7 +114,33 @@ class Order
      */
     public function notice()
     {
-        
+        if (isset($_POST['pay_success']) && $_POST['pay_success'] == '1') {
+            // 支付成功
+            $order_id = $_POST['order_id']; // 回调通知时，我们通知对方的参数
+
+            $order = MOrder::getById($order_id);
+            if (!$order) {
+                Logger::getInstance()->warn('订单 ' . $order_id . ' 不存在.');
+                exit();
+            }
+
+            $order->status = 1; // 支付成功的标识
+            // Order 表还缺少记录支付时间，支付金额类型 : CNY, JPY, USD... 流水号等支付回调时的参数
+
+            $user = User::getUserByUserId($order->uid); // 获取到购买用户
+            $user->plan = $order->plan; //
+
+            $custom_transfer_level = json_decode(Option::get('custom_transfer_level'), true); // 格式化 json 为数组
+            $transfer = $custom_transfer_level[$order->plan];
+            $user->transfer = $transfer; // 这里设置 plan 对应流量
+
+            $user->flow_up = 0; // 这里是清空使用量，看情况而定义
+            $user->flow_down = 0;
+
+            $user-save();
+            $order->save();
+            // 这个方法必须加事物，不然保存失败就出问题了。
+        }
     }
 
 }
