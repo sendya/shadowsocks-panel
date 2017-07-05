@@ -155,7 +155,7 @@ class User
     public function checkEnable()
     {
         $user = MUser::getCurrent();
-        if ($user->getUseTransfer() < $user->transfer && $user->expireTime > time()) {
+        if ($user->getUseTransfer() < $user->transfer && $user->expireTime > time() && $user->forgePwdCode == null) {
             $user->enable = 1;
         } else {
             $user->enable = 0;
