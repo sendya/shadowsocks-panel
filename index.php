@@ -243,11 +243,10 @@ switch ($argv[1]) {
                 $unzipPath = iconv("utf-8","gb2312", $unzipPath);
             }
 
-            if (download('https://github.com/sendya/shadowsocks-panel/releases/download/sspanel-v1.2.0.B/Resource.zip', $resourcePath) === false) {
+            if (download('https://mirrors.loacg.com/shadowsocks/shadowsocks-panel/Resource.zip', $resourcePath) === false) {
                 echo colorize('FAILED' . PHP_EOL . 'Downloading...', 'WARNING');
-                download('https://github.com/sendya/shadowsocks-panel/releases/download/sspanel-v1.2.0.B/Resource.zip', $resourcePath);
+                download('https://mirrors.loacg.com/shadowsocks/shadowsocks-panel/Resource.zip', $resourcePath);
             }
-            echo 'Resource File: ' . $resourcePath . PHP_EOL;
             if (file_exists($resourcePath)) {
 /*                echo 'Unzip Resource.zip...' . PHP_EOL;
                 $resource = zip_open($resourcePath);
@@ -272,12 +271,11 @@ switch ($argv[1]) {
                 }*/
 
                 exec("unzip $resourcePath");
-
-                echo 'Copying resources...' . PHP_EOL;
             }
+            echo 'Copying resources...';
             copyDir(ROOT_PATH . 'Resource', ROOT_PATH . 'Public/Resource');
+            echo 'Success' . PHP_EOL;
         }
-
         echo colorize('All done~ Cheers! ', 'NOTE') . PHP_EOL;
         break;
     case 'import-sspanel':
