@@ -97,6 +97,9 @@ function delDir($dir) {
 }
 
 function colorize($text, $status) {
+    if ($whereIsCommand = (PHP_OS == 'WINNT')) {
+        return $text;
+    }
     $out = "";
     switch($status) {
         case "SUCCESS":
@@ -117,15 +120,14 @@ function colorize($text, $status) {
     return chr(27) . "$out" . "$text" . chr(27) . "[0m";
 }
 
-function download_composer($url) {
-    echo 'Downloading composer...';
+function download($url, $filePath) {
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $url);
     curl_setopt($ch, CURLOPT_TIMEOUT, 10);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
     $binary = curl_exec($ch);
-    if (!@file_put_contents(ROOT_PATH . 'composer.phar', $binary) || curl_errno($ch)) {
+    if (!@file_put_contents($filePath, $binary) || curl_errno($ch)) {
         echo colorize('FAILED!'. PHP_EOL . curl_error($ch) . PHP_EOL, 'WARNING');
         curl_close($ch);
         return false;
@@ -151,13 +153,14 @@ switch ($argv[1]) {
             break;
         }
         echo 'Success' . PHP_EOL;
+        echo 'Check composer install...';
         if (!file_exists(ROOT_PATH . 'composer.phar')) {
-            if (download_composer("http://getcomposer.org/composer.phar") === false) {
+            echo 'Not Installed' . PHP_EOL . 'Downloading...';
+            if (download("http://getcomposer.org/composer.phar", ROOT_PATH . 'composer.phar') === false) {
                 echo 'Retry...' . PHP_EOL;
-                download_composer("https://install.phpcomposer.com/composer.phar");
+                download("https://install.phpcomposer.com/composer.phar", ROOT_PATH . 'composer.phar');
             }
         }
-        echo 'Check composer install...';
         $return_arr = [];
         exec(PHP_BINARY . ' ' . ROOT_PATH . 'composer.phar -V', $return_arr);
         // print_arr($return_arr);
@@ -222,13 +225,60 @@ switch ($argv[1]) {
             exec($phinxCommand . ' rollback', $return_arr, $return_arr2);
             break;
         }
-        echo 'Now installing resources...' . PHP_EOL;
-        echo 'Deleting old resources...  ' . PHP_EOL;
-        echo delDir(ROOT_PATH . 'Public/Resource') ? 'Done.' . PHP_EOL : 'old resources not exist.' . PHP_EOL;
-        echo 'Copying resources...' . PHP_EOL;
-        copyDir(ROOT_PATH . 'Resource', ROOT_PATH . 'Public/Resource');
 
-        echo colorize('All done~ Cheers! open site: '.BASE_URL . 'yourdomain.com/', 'NOTE') . PHP_EOL;
+        fwrite(STDOUT, "Do you want to install a resource file? (y or n): ");
+        $installResource = trim(fgets(STDIN));
+
+        if ($installResource == 'y' || $installResource == 'yes') {
+            echo 'Now installing resources...' . PHP_EOL;
+            echo 'Deleting old resources...  ' . PHP_EOL;
+            echo delDir(ROOT_PATH . 'Public/Resource') ? 'Done.' . PHP_EOL : 'old resources not exist.' . PHP_EOL;
+            echo 'Downloading resources...' . PHP_EOL;
+            // download resource
+            $resourcePath = ROOT_PATH . 'Resource.zip';
+            $unzipPath = ROOT_PATH . 'Resource/';
+
+            if ($whereIsCommand = (PHP_OS == 'WINNT')) {
+                $resourcePath = iconv("utf-8","gb2312", $resourcePath);
+                $unzipPath = iconv("utf-8","gb2312", $unzipPath);
+            }
+
+            if (download('https://github.com/sendya/shadowsocks-panel/releases/download/sspanel-v1.2.0.B/Resource.zip', $resourcePath) === false) {
+                echo colorize('FAILED' . PHP_EOL . 'Downloading...', 'WARNING');
+                download('https://github.com/sendya/shadowsocks-panel/releases/download/sspanel-v1.2.0.B/Resource.zip', $resourcePath);
+            }
+            echo 'Resource File: ' . $resourcePath . PHP_EOL;
+            if (file_exists($resourcePath)) {
+/*                echo 'Unzip Resource.zip...' . PHP_EOL;
+                $resource = zip_open($resourcePath);
+                echo $resource . PHP_EOL;
+                while ($dirResource = zip_read($resource)) {
+                    if (zip_entry_open($resource, $dirResource)) {
+                        $zipFileName = $unzipPath . zip_entry_name($dirResource);
+                        $zipFilePath = substr($zipFileName,0,strrpos($zipFileName, "/"));
+                        echo $zipFileName . PHP_EOL;
+                        if(!is_dir($zipFilePath)) {
+                            mkdir($zipFilePath,0755,true);
+                        }
+                        if(!is_dir($zipFileName)) {
+                            $zipFileSize = zip_entry_filesize($dirResource);
+                            if($zipFileSize < (1024*1024*6)) {
+                                $zipFileContent = zip_entry_read($dirResource, $zipFileSize);
+                                file_put_contents($zipFileName, $zipFileContent);
+                            }
+                        }
+
+                    }
+                }*/
+
+                exec("unzip $resourcePath");
+
+                echo 'Copying resources...' . PHP_EOL;
+            }
+            copyDir(ROOT_PATH . 'Resource', ROOT_PATH . 'Public/Resource');
+        }
+
+        echo colorize('All done~ Cheers! ', 'NOTE') . PHP_EOL;
         break;
     case 'import-sspanel':
         // TODO: 从 ss-panel 导入用户数据
