@@ -29,6 +29,6 @@ class Home
         $data['userCount'] = Stats::countUser();
         $data['money'] = Stats::countMoney();
         Template::setContext($data);
-        Template::setView('admin/index');
+        Template::setView('Xenon/admin/index');
     }
 }

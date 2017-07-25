@@ -74,8 +74,11 @@ class Auth
                 return $result;
             } else {
                 $data['globalMessage'] = MessageModel::getGlobalMessage();
+                if (empty($_GET['invite']) && User::getCount() <= 0) {
+                    header("Location:/invite");
+                }
                 Template::setContext($data);
-                Template::setView('panel/login');
+                Template::setView('Xenon/panel/login');
             }
         }
     }
@@ -451,7 +454,7 @@ EOF;
                 return $result;
             } else {
                 Template::putContext('user', User::getCurrent());
-                Template::setView('panel/forgePwd');
+                Template::setView('Xenon/panel/forgePwd');
             }
         }
 

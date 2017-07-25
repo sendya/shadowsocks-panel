@@ -5,7 +5,7 @@
  * Author: Sendya <18x@loacg.com>
  */
 
-namespace Contactable;
+namespace Interfaces;
 
 /**
  * Interface IPay

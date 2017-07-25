@@ -4,7 +4,7 @@
  * Add: 2016/3/27 9:39
  * Author: Sendya <18x@loacg.com>
  */
-namespace Contactable;
+namespace Interfaces;
 
 
 interface ICron

@@ -7,7 +7,7 @@
 
 namespace Helper\Cron;
 
-use Contactable\ICron;
+use Interfaces\ICron;
 
 use Core\Database as DB;
 

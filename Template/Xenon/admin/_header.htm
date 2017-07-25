@@ -1,4 +1,4 @@
-<import template="/panel/_head" />
+<import template="/Xenon/panel/_head" />
 <php>
     $openNode = \Helper\Stats::countNode(1);
     $allNode = \Helper\Stats::countNode()
@@ -36,7 +36,6 @@
                     <div class="user-details">
                         <h3>
                             <a href="/member">{$user->nickname}</a>
-                            <!-- Available statuses: is-online, is-idle, is-busy and is-offline -->
                             <span class="user-status is-online"></span>
                         </h3>
                         <p class="user-title">加入时间：{(date('Y-m-d H:i:s', $user->regDateLine))}</p>
@@ -85,6 +84,7 @@
         </div>
     </div>
 </div>
+
 <div class="page-container">
     <div class="sidebar-menu toggle-others fixed">
         <div class="sidebar-menu-inner">

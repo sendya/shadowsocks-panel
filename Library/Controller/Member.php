@@ -66,7 +66,7 @@ class Member
         $data['allNode'] = Stats::countNode();
 
         Template::setContext($data);
-        Template::setView('panel/member');
+        Template::setView('Xenon/panel/member');
 
     }
 
@@ -331,7 +331,7 @@ class Member
     public function actCard()
     {
         Template::putContext('user', User::getUserByUserId(User::getCurrent()->uid));
-        Template::setView('panel/actCard');
+        Template::setView('Xenon/panel/actCard');
     }
 
     /**

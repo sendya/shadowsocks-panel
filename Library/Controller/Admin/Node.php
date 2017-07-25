@@ -28,7 +28,7 @@ class Node
         $data['nodes'] = NodeModel::getNodeArray();
 
         Template::setContext($data);
-        Template::setView('admin/node');
+        Template::setView('Xenon/admin/node');
     }
 
     /**

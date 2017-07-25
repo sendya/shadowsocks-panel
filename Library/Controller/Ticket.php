@@ -14,6 +14,6 @@ class Ticket
     public function index()
     {
         Template::putContext('user', User::getCurrent());
-        Template::setView('panel/ticket');
+        Template::setView('Xenon/panel/ticket');
     }
 }

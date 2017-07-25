@@ -26,7 +26,7 @@ class Cron
         $data['user'] = User::getCurrent();
         $data['cronList'] = CronModel::getCronArray();
         Template::setContext($data);
-        Template::setView('admin/cron');
+        Template::setView('Xenon/admin/cron');
     }
 
 }

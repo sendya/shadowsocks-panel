@@ -9,7 +9,7 @@
 namespace Helper\Mailer;
 
 
-use Contactable\IMailer;
+use Interfaces\IMailer;
 use Helper\Option;
 use Helper\Utils;
 use Model\Mail;

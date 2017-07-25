@@ -20,7 +20,7 @@ class Invite
     public function index()
     {
         $inviteList = InviteModel::getInviteArray(-1);
-        Template::setView('panel/home_invite');
+        Template::setView('Xenon/panel/home_invite');
         Template::putContext('inviteList', $inviteList);
     }
 

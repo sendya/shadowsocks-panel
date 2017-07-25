@@ -5,7 +5,7 @@
  * Author: Sendya <18x@loacg.com>
  * Time: 2016/3/26 16:18
  */
-namespace Contactable;
+namespace Interfaces;
 
 use Model\Mail;
 

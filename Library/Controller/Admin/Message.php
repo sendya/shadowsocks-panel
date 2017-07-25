@@ -27,7 +27,7 @@ class Message
         $data['user'] = User::getCurrent();
         $data['lists'] = MessageModel::getPushMessage(-1);
         Template::setContext($data);
-        Template::setView('admin/message');
+        Template::setView('Xenon/admin/message');
     }
 
     /**

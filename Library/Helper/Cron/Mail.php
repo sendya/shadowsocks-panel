@@ -8,7 +8,7 @@
 namespace Helper\Cron;
 
 
-use Contactable\ICron;
+use Interfaces\ICron;
 use Helper\Logger;
 use Helper\Mailer;
 use Helper\Option;

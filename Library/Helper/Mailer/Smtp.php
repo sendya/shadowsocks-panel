@@ -8,7 +8,7 @@
 namespace Helper\Mailer;
 
 
-use Contactable\IMailer;
+use Interfaces\IMailer;
 use Core\Error;
 use Helper\Option;
 use Helper\Utils;

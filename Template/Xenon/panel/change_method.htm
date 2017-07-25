@@ -1,4 +1,4 @@
-<import template="/panel/_header" />
+<import template="/Xenon/panel/_header" />
 <div class="page-container">
     <div class="main-content">
         <div class="page-title">
@@ -39,11 +39,19 @@
                                 <option value="aes-256-cfb">aes-256-cfb</option>
                                 <option value="aes-192-cfb">aes-192-cfb</option>
                                 <option value="aes-128-cfb">aes-128-cfb</option>
+                                <option value="aes-256-gcm">aes-256-gcm</option>
+                                <option value="aes-192-gcm">aes-192-gcm</option>
+                                <option value="aes-128-gcm">aes-128-gcm</option>
                                 <option value="chacha20">chacha20</option>
+                                <option value="chacha20-ietf">chacha20-ietf</option>
+                                <option value="chacha20-ietf-poly1305">chacha20-ietf-poly1305</option>
                             </select>
                         </div>
                     </div>
                     <button class="btn btn-info btn-block" id="submit-method">确定修改</button>
+                    <p>
+                        提示：<br/>请根据节点说明选择可用加密方式，若节点不支持的加密方式，选择后可能导致无法连接
+                    </p>
                 </div>
             </div>
             <div class="col-sm-6">
@@ -103,7 +111,7 @@
                 });
             });
         </script>
-        <import template="/panel/_copyright" />
+        <import template="/Xenon/panel/_copyright" />
     </div>
 </div>
-<import template="/panel/_footer" />
+<import template="/Xenon/panel/_footer" />

@@ -23,7 +23,7 @@ class Index
      */
     public function index()
     {
-        Template::setView('../Home/index');
+        Template::setView('Home/index');
     }
 
     public function test()

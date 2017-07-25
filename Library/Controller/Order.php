@@ -26,13 +26,13 @@ class Order
     public function index()
     {
         Template::putContext('user', User::getCurrent());
-        Template::setView('panel/order');
+        Template::setView('Xenon/panel/order');
     }
 
     public function lists()
     {
         Template::putContext('user', User::getCurrent());
-        Template::setView('panel/order_lists');
+        Template::setView('Xenon/panel/order_lists');
     }
 
     /**
@@ -88,7 +88,7 @@ class Order
         Template::putContext('plan_name', $data['custom_plan_name'][$plan]);
         Template::putContext('money', $money);
         Template::putContext('user', $user);
-        Template::setView('panel/order_create');
+        Template::setView('Xenon/panel/order_create');
 
     }
 

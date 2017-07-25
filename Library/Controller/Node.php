@@ -25,7 +25,7 @@ class Node
         $data['nodeVip'] = MNode::getNodeArray(1);
 
         Template::setContext($data);
-        Template::setView("panel/node");
+        Template::setView("Xenon/panel/node");
     }
 
     /**

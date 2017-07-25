@@ -35,7 +35,7 @@ class User
         Template::putContext('enable_status', $user->enable == 1 ? '启用' : '停用');
         Template::putContext('is_verification', $flag);
         Template::putContext('user', $user);
-        Template::setView("panel/info");
+        Template::setView("Xenon/panel/info");
     }
 
     /**
@@ -48,7 +48,7 @@ class User
         $data['inviteList'] = Invite::getInvitesByUid($data['user']->uid, "0");
 
         Template::setContext($data);
-        Template::setView("panel/invite");
+        Template::setView("Xenon/panel/invite");
     }
 
     /**
@@ -58,7 +58,7 @@ class User
     public function renew()
     {
         Template::putContext('user', MUser::getUserByUserId(MUser::getCurrent()->uid));
-        Template::setView("panel/renew");
+        Template::setView("Xenon/panel/renew");
     }
 
     /**
@@ -95,7 +95,7 @@ class User
             return $result;
         } else {
             Template::putContext('user', $user);
-            Template::setView("panel/change_password");
+            Template::setView("Xenon/panel/change_password");
         }
     }
 
@@ -116,7 +116,7 @@ class User
             return array('error' => 0, 'message' => '修改昵称成功，刷新页面或重新登录生效。');
         } else {
             Template::putContext('user', $user);
-            Template::setView("panel/change_nickname");
+            Template::setView("Xenon/panel/change_nickname");
         }
     }
 
@@ -142,7 +142,7 @@ class User
             $nodeList = Node::getSupportCustomMethodArray();
             Template::putContext('user', $user);
             Template::putContext('nodeList', $nodeList);
-            Template::setView("panel/change_method");
+            Template::setView("Xenon/panel/change_method");
         }
     }
 

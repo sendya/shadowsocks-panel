@@ -30,7 +30,7 @@ class User
         $data['users'] = UserModel::getUserList();
         $data['planList'] = json_decode(Option::get('custom_plan_name'), true);
         Template::setContext($data);
-        Template::setView('admin/user');
+        Template::setView('Xenon/admin/user');
     }
 
     /**

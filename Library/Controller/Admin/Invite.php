@@ -30,7 +30,7 @@ class Invite
         $data['planList'] = json_decode(Option::get('custom_plan_name'), true);
         array_splice($data['planList'], -1, 1); // 移除 Z(固定流量套餐)
         Template::setContext($data);
-        Template::setView('admin/invite');
+        Template::setView('Xenon/admin/invite');
     }
 
     public function inviteOldList()
@@ -40,7 +40,7 @@ class Invite
         $data['planList'] = json_decode(Option::get('custom_plan_name'), true);
         array_splice($data['planList'], -1, 1);
         Template::setContext($data);
-        Template::setView('admin/invite');
+        Template::setView('Xenon/admin/invite');
     }
 
     /**

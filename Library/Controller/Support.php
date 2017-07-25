@@ -28,12 +28,12 @@ class Support
     public function ticket()
     {
         Template::putContext('user', User::getCurrent());
-        Template::setView('panel/ticket');
+        Template::setView('Xenon/panel/ticket');
     }
 
     public function tos()
     {
-        Template::setView('panel/Tos');
+        Template::setView('Xenon/panel/Tos');
     }
 
     public function help()

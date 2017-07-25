@@ -1,5 +1,5 @@
-<import template="/admin/_header" />
-<import template="/admin/_content" />
+<import template="/Xenon/admin/_header" />
+<import template="/Xenon/admin/_content" />
 
 <div class="page-title">
     <div class="title-env">
@@ -19,7 +19,7 @@
                         <h3 class="panel-title"></h3>
 
                         <div class="panel-options">
-                            <a href="javascript:;" id="node-add"><span>+</span></a>
+                            <a href="javascript:;" id="node-add"><span>新增节点(+)</span></a>
                             <a href="javascript:;" data-toggle="reload">
                                 <i class="fa-rotate-right"></i>
                             </a>
@@ -220,7 +220,8 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    * [自定义加密] 需要服务端支持自定义加密
+                                    * [自定义加密] 需要服务端支持自定义加密<br/>
+                                    * chacha20 系列必须安装新版本 <code>libsodium</code> 支持库
                                     <br/>
                                     目前支持的服务端版本: <a href="https://github.com/Acris/shadowsocks-rm/tree/manyuser" target="_blank">shadowsocks-rm manyuser</a>
                                 </div>
@@ -423,4 +424,4 @@
         }
     }
 </script>
-<import template="/admin/_footer" />
+<import template="/Xenon/admin/_footer" />

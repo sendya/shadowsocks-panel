@@ -32,7 +32,7 @@ class Mailer
         $data['selectMail'] = Option::get('MAIL_AVAILABLE');
         $data['user'] = User::getCurrent();
         Template::setContext($data);
-        Template::setView('admin/mailer');
+        Template::setView('Xenon/admin/mailer');
     }
 
     /**

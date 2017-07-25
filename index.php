@@ -243,9 +243,9 @@ switch ($argv[1]) {
                 $unzipPath = iconv("utf-8","gb2312", $unzipPath);
             }
 
-            if (download('https://mirrors.loacg.com/shadowsocks/shadowsocks-panel/Resource.zip', $resourcePath) === false) {
+            if (download('https://mirrors.loacg.com/shadowsocks/shadowsocks-panel/1.3.0/Resource.zip', $resourcePath) === false) {
                 echo colorize('FAILED' . PHP_EOL . 'Downloading...', 'WARNING');
-                download('https://mirrors.loacg.com/shadowsocks/shadowsocks-panel/Resource.zip', $resourcePath);
+                download('https://mirrors.loacg.com/shadowsocks/shadowsocks-panel/1.3.0/Resource.zip', $resourcePath);
             }
             if (file_exists($resourcePath)) {
 /*                echo 'Unzip Resource.zip...' . PHP_EOL;
@@ -276,6 +276,7 @@ switch ($argv[1]) {
             copyDir(ROOT_PATH . 'Resource', ROOT_PATH . 'Public/Resource');
             echo 'Success' . PHP_EOL;
         }
+        echo colorize('Note: new installed panel not have an administrator user. Please register your account directly', 'NOTE') . PHP_EOL;
         echo colorize('All done~ Cheers! ', 'NOTE') . PHP_EOL;
         break;
     case 'import-sspanel':
