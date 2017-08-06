@@ -269,10 +269,10 @@ switch ($argv[1]) {
 
                     }
                 }*/
-		$return_arr = [];
-		$resPath = ROOT_PATH . 'Resource/';
+		        $return_arr = [];
+		        $resPath = ROOT_PATH . 'Resource/';
                 exec("unzip -o -d $resPath $resourcePath", $return_arr);
-		print_arr($return_arr);
+		        print_arr($return_arr);
             }
             echo 'Copying resources...';
             copyDir(ROOT_PATH . 'Resource', ROOT_PATH . 'Public/Resource');

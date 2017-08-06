@@ -125,11 +125,14 @@
         $("form#login").validate({
             rules: {
                 email: {required: true},
-                passwd: {required: true}},
+                passwd: {required: true}
+            },
             messages: {
                 email: {required: "请输入用户名."},
-                passwd: {required: "请输入密码."}},
+                passwd: {required: "请输入密码."}
+            },
             submitHandler: function(form) {
+                console.log('form#login submit');
                 $('button[type="submit"]').attr('disabled',"true");
                 show_loading_bar(70);
                 $.ajax({
