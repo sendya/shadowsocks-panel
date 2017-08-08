@@ -41,7 +41,7 @@ class Setting
         $data['user_test_day'] = Option::get('user_test_day');
 
         Template::setContext($data);
-        Template::setView("admin/setting");
+        Template::setView("Xenon/admin/setting");
     }
 
     /**
@@ -53,7 +53,7 @@ class Setting
         $data['options'] = Option::getOptions();
 
         Template::setContext($data);
-        Template::setView("admin/system");
+        Template::setView("Xenon/admin/system");
     }
 
     /**

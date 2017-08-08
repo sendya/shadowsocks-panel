@@ -29,7 +29,7 @@ class Card
 
         Template::putContext('cardList', MCard::queryAll());
         Template::putContext('user', User::getCurrent());
-        Template::setView("admin/card");
+        Template::setView("Xenon/admin/card");
     }
 
     /**
