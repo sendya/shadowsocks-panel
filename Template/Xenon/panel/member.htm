@@ -129,11 +129,6 @@
 <script type="text/javascript">
     $(document).ready(function() {
         <php>
-        $update = \Helper\Updater::getInstance();
-        $message = $update->check();
-        if($message !== false) {
-            echo "showToastr(\"".$message."\", 0);";
-        }
         $user_json = json_decode($user->forgePwdCode, true);
         if($user_json['verification']!=null && $user->enable == 0) {
             echo "showToastr(\"您的账户尚未校验邮箱，暂时无法使用本站服务，请校验后重新登陆。\", 0);";
