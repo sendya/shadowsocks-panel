@@ -15,6 +15,7 @@ use Core\Template;
 class Auth
 {
     /**
+     * @GET
      * @Route /auth/login
      */
     public function login()
@@ -32,6 +33,7 @@ class Auth
 
     /**
      * @JSON
+     * @POST
      * @Route /auth/doLogin.json
      */
     public function doLogin()
@@ -47,6 +49,7 @@ class Auth
 
     /**
      * @JSON
+     * @POST
      * @Route /auth/register.json
      */
     public function doRegister()
@@ -56,6 +59,7 @@ class Auth
 
     /**
      * @JSON
+     * @PUT
      * @Route /auth/logout.json
      */
     public function doLogout()

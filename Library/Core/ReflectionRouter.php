@@ -76,7 +76,13 @@ class ReflectionRouter
                 throw new Error(I18N::parse('Error.Messages.PageNotExists', 'The request URL is not exists'), 404);
             }
         }
-        list($className, $method) = $route;
+        list($requestType, $className, $method) = $route;
+
+        $requestType = strtr($requestType, array('@' => ''));
+        if ($requestType != $_SERVER['REQUEST_METHOD']) {
+            throw new Error(I18N::parse('Error.Message.RequestMethodNotSupport', 'The request method is not support'), 405);
+        }
+
         Filter::afterRoute($className, $method);
         $controller = new $className();
         if ($parameter) {
@@ -124,13 +130,15 @@ class ReflectionRouter
                 $methods = $reflectionClass->getMethods();
                 foreach ($methods as $reflectionMethod) {
                     $markers = ReflectionHelper::parseDocComment($reflectionMethod);
-                    $callback = array($reflectionClass->getName(), $reflectionMethod->getName());
+                    // REQUEST METHOD
+                    $callback = array($this->requestMethod($markers), $reflectionClass->getName(), $reflectionMethod->getName());
                     if ($markers['Home']) {
                         $this->StaticRoute['@home'] = $callback;
                     }
                     if ($markers['Route']) {
                         $path = strtolower(trim($markers['Route'], ' /'));
                         $this->StaticRoute[$path] = $callback;
+
                     }
                     if ($markers['DynamicRoute']) {
                         // Convert wildcard to regular expression
@@ -158,6 +166,25 @@ class ReflectionRouter
                 throw new Error('Internal Error: Cannot parse router file');
             }
         }
+    }
+
+    public function requestMethod($markers) {
+        if ($markers['GET']) {
+            return '@GET';
+        }
+        if ($markers['POST']) {
+            return '@POST';
+        }
+        if ($markers['PUT']) {
+            return '@PUT';
+        }
+        if ($markers['DELETE']) {
+            return '@DELETE';
+        }
+        if ($markers['PATCH']) {
+            return '@PATCH';
+        }
+        return '@GET';
     }
 
     public function saveRouterCache()
